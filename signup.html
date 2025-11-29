@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign up – DentAIstudy</title>
+
+  <!-- Favicon (rounded icon you just updated) -->
+  <link rel="icon" href="assets/img/favicon.png?v=2" type="image/png" />
+  <link rel="apple-touch-icon" href="assets/img/favicon.png?v=2" />
+
+  <!-- Main CSS -->
+  <link rel="stylesheet" href="assets/css/style-v2.5.css" />
+
+  <!-- JS: Supabase + Auth Guard + Logout + Signup + Main (all deferred) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+  <script src="assets/js/auth-client.js" defer></script>
+  <script src="assets/js/auth-guard.js" defer></script>
+  <script src="assets/js/auth-logout.js" defer></script>
+  <script src="assets/js/auth-signup.js" defer></script>
+  <script defer src="assets/js/main.js"></script>
+</head>
+
+<body>
+<div class="main-wrapper">
+
+  <!-- HEADER (same structure as index.html) -->
+  <header class="site-header">
+    <div class="container header-inner">
+
+      <a class="brand" href="index.html">
+        <span>Dent</span><span>AIstudy</span>
+      </a>
+
+      <nav class="header-nav">
+        <a href="subjects.html">Subjects</a>
+        <a href="study.html">Study builder</a>
+        <a href="blogs.html">Blogs</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+
+      <div class="header-right">
+        <a href="login.html" class="btn btn-outline header-login">Log in</a>
+        <a href="signup.html" class="btn btn-primary header-signup">Sign up</a>
+        <button class="menu-toggle" aria-label="Open menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- SLIDE MENU (mobile) -->
+  <div class="slide-nav-backdrop"></div>
+  <nav class="slide-nav">
+    <div class="slide-nav-header">
+      <h3>Menu</h3>
+      <button class="slide-nav-close" aria-label="Close menu">&times;</button>
+    </div>
+
+    <div class="slide-nav-links">
+      <a href="subjects.html">Subjects</a>
+      <a href="study.html">Study builder</a>
+      <a href="blogs.html">Blogs</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="login.html" class="slide-login-link">Log in</a>
+    </div>
+  </nav>
+
+  <!-- SIGN UP CONTENT -->
+  <main class="auth-container">
+    <div class="auth-card">
+      <h1>Create your account</h1>
+      <p class="auth-subtext">Join DentAIstudy and study smarter.</p>
+
+      <button class="google-btn icon-only" aria-label="Continue with Google">
+        <img src="assets/img/google-icon.svg" alt="Sign in with Google" width="46" height="46" />
+      </button>
+
+      <div class="auth-divider"><span>OR</span></div>
+
+      <form id="signup-form" class="auth-form" novalidate>
+       <label for="signup-fullname">Full name</label>
+       <input
+       id="signup-fullname"
+       name="full_name"
+       type="text"
+       placeholder="Your name"
+       required
+       />
+
+       <label for="signup-email">Email</label>
+       <input
+       id="signup-email"
+       name="email"
+       type="email"
+       placeholder="you@example.com"
+       required
+       />
+
+       <label for="signup-password">Password</label>
+       <input
+       id="signup-password"
+       name="password"
+       type="password"
+       placeholder="••••••••"
+       minlength="6"
+       required
+       />
+
+       <button type="submit" class="auth-submit">Create account</button>
+       <p id="signup-message" class="auth-subtext" style="margin-top:8px;"></p>
+      </form>
+
+
+      <p class="auth-terms">
+        By creating an account, you agree to our
+        <a href="terms.html">Terms &amp; Conditions</a>
+        and
+        <a href="privacy.html">Privacy Policy</a>.
+      </p>
+
+      <p class="auth-switch">
+        Already have an account?
+        <a href="login.html">Log in</a>
+      </p>
+    </div>
+  </main>
+
+</div>
+
+
+</body>
+</html>

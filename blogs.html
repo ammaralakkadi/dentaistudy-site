@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blogs – DentAIstudy</title>
+  <link rel="stylesheet" href="assets/css/style-v2.5.css" />
+<link rel="icon" type="image/png" sizes="512x512" href="assets/img/favicon.png?v=2" />
+
+<!-- JS: Supabase + Auth Guard + Logout + Main + Blogs -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+<script src="assets/js/auth-client.js" defer></script>
+<script src="assets/js/auth-guard.js" defer></script>
+<script src="assets/js/auth-logout.js" defer></script>
+<script defer src="assets/js/main.js"></script>
+<script defer src="assets/js/blogs.js"></script>
+
+</head>
+
+<body>
+<div class="main-wrapper">
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html"><span>Dent</span><span>AIstudy</span></a>
+
+      <nav class="header-nav">
+        <a href="subjects.html">Subjects</a>
+        <a href="study.html">Study builder</a>
+        <a href="blogs.html" class="is-active">Blogs</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+
+      <div class="header-right">
+        <a href="login.html" class="btn btn-outline header-login">Log in</a>
+        <a href="signup.html" class="btn btn-primary header-signup">Sign up</a>
+        <button class="menu-toggle" aria-label="Open menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile nav -->
+  <div class="slide-nav-backdrop"></div>
+  <nav class="slide-nav">
+    <div class="slide-nav-header">
+      <h3>Menu</h3>
+      <button class="slide-nav-close" aria-label="Close menu">&times;</button>
+    </div>
+    <div class="slide-nav-links">
+      <a href="subjects.html">Subjects</a>
+      <a href="study.html">Study builder</a>
+      <a href="blogs.html">Blogs</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="login.html" class="slide-login-link">Log in</a>
+    </div>
+  </nav>
+
+  <!-- PAGE HERO -->
+  <section class="section" style="padding-bottom:20px;">
+    <div class="container">
+      <div class="section-header" style="text-align:left;max-width:760px;margin:0;">
+        <div class="section-kicker">DentAIstudy Blog</div>
+        <h1 class="section-title" style="margin-bottom:6px;">High-Yield Dentistry, OSCE, and Viva Clarity</h1>
+        <p class="section-subtitle" style="max-width:640px;">
+          Fast, examiner-style explanations to help you revise smarter — not longer.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED + LATEST SPLIT -->
+  <section class="section" style="padding-top:10px;">
+    <div class="container blog-grid">
+
+      <!-- Featured -->
+       <!-- Turning One Messy Chapter Into 15-Minute Sessions -->
+      <a href="blogs/blog-turn-chapter-into-sessions.html" style="color:inherit;">
+        <article class="study-answer-card" style="background:#0f172a;color:white;box-shadow:0 18px 45px rgba(15,23,42,0.28);">
+          <div class="sidebar-tag" style="background:rgba(255,255,255,0.12);color:white;margin-bottom:10px;">Featured</div>
+          <h2 style="margin:0 0 6px;font-size:1.35rem;">Turning One Messy Chapter Into 15-Minute Sessions</h2>
+          <p style="font-size:0.95rem;margin:0 0 10px;">
+            A simple framework to convert dense textbooks into micro-sessions you can revisit before every exam.
+          </p>
+          <p style="opacity:0.8;font-size:0.85rem;margin-bottom:14px;">Study skills • 8 min read</p>
+          <div style="background:rgba(255,255,255,0.12);padding:10px;border-radius:14px;font-size:0.85rem;">
+            <strong>How DentAIstudy helps:</strong> AI restructures long chapters into OSCE-ready cards, summaries and flows.
+          </div>
+        </article>
+      </a>
+
+      <!-- Latest list -->
+       <!-- How to Survive your First OSCE Rotation -->
+      <div class="blog-list-column">
+        <a href="blogs/blog-first-osce-rotation.html" style="color:inherit;">
+          <article class="study-form-card" style="cursor:pointer;">
+            <h3 style="margin:0 0 4px;">How to Survive your First OSCE Rotation</h3>
+            <p style="margin:0 0 6px;">Station checklists, opening phrases, and how to sound structured even when you're nervous.</p>
+            <div style="font-size:0.8rem;color:#6b7280;margin-bottom:6px;">6 min read • OSCE strategy</div>
+            <div style="font-size:0.8rem;color:#0f172a;">AI builds structured flows: intro → history → exam → explanation → closure.</div>
+          </article>
+        </a>
+
+       <!-- How to Structure Viva Answers in Dentistry -->
+        <a href="blogs/blog-viva-structure.html" style="color:inherit;">
+          <article class="study-form-card" style="cursor:pointer;">
+            <h3 style="margin:0 0 4px;">How to Structure Viva Answers in Dentistry</h3>
+            <p style="margin:0 0 6px;">A universal, examiner-approved framework used in ORE, ADC, MFDS, NDEB, NBDE, and undergraduate viva examinations.</p>
+            <div style="font-size:0.8rem;color:#6b7280;margin-bottom:6px;">5 min read • Viva</div>
+            <div style="font-size:0.8rem;color:#0f172a;">AI creates bullet frameworks + “examiner phrases.”</div>
+          </article>
+        </a>
+        
+        <!-- Endodontic Diagnosis Simplified (OSCE-Ready Guide) -->
+        <a href="blogs/blog-endo-diagnosis.html" style="color:inherit;">
+          <article class="study-form-card" style="cursor:pointer;">
+            <h3 style="margin:0 0 4px;">Endodontic Diagnosis Simplified (OSCE-Ready Guide)</h3>
+            <p style="margin:0 0 6px;">A structured, examiner-friendly method to distinguish reversible pulpitis, irreversible pulpitis, pulp necrosis, and apical periodontitis — exactly how boards want it.</p>
+            <div style="font-size:0.8rem;color:#6b7280;margin-bottom:6px;">7 min read • Endodontics</div>
+            <div style="font-size:0.8rem;color:#0f172a;">AI makes clean flowcharts + quick recall questions.</div>
+          </article>
+        </a>
+        
+        <!-- Using AI Responsibly in Dental School -->
+        <a href="blogs/blog-ai-responsible-dental-school.html" style="color:inherit;">
+          <article class="study-form-card" style="cursor:pointer;">
+            <h3 style="margin:0 0 4px;">Using AI Responsibly in Dental School</h3>
+            <p style="margin:0 0 6px;">AI can boost your learning, speed up your revision, and help you understand complex topics — but only when used ethically and responsibly.</p>
+            <div style="font-size:0.8rem;color:#6b7280;margin-bottom:6px;">7 min read • Ethics & AI</div>
+            <div style="font-size:0.8rem;color:#0f172a;">Verify outputs, avoid patient data, follow supervisors.</div>
+          </article>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FILTER PILL ROW -->
+  <section class="section" style="padding-top:0;padding-bottom:12px;">
+    <div class="container" style="display:flex;flex-direction:column;gap:10px;">
+      <div style="display:flex;flex-wrap:wrap;gap:8px;">
+        <button class="study-mode-pill blog-filter is-active" data-filter="all">All</button>
+        <button class="study-mode-pill blog-filter" data-filter="osce">OSCE</button>
+        <button class="study-mode-pill blog-filter" data-filter="viva">Viva</button>
+        <button class="study-mode-pill blog-filter" data-filter="theory">Theory</button>
+        <button class="study-mode-pill blog-filter" data-filter="operative">Operative</button>
+        <button class="study-mode-pill blog-filter" data-filter="endo">Endodontics</button>
+        <button class="study-mode-pill blog-filter" data-filter="prostho">Prosthodontics</button>
+        <button class="study-mode-pill blog-filter" data-filter="ortho">Orthodontics</button>
+        <button class="study-mode-pill blog-filter" data-filter="pedo">Pedo</button>
+        <button class="study-mode-pill blog-filter" data-filter="perio">Perio</button>
+        <button class="study-mode-pill blog-filter" data-filter="skills">Study skills</button>
+      </div>
+
+      <!-- tiny search (no extra CSS needed) -->
+      <input id="blog-search" type="text" placeholder="Search blogs..."
+        style="max-width:380px;border:1px solid #e5e7eb;border-radius:999px;padding:8px 12px;font-size:0.9rem;background:#f9fafb;">
+    </div>
+  </section>
+
+  <!-- BLOG LIBRARY GRID -->
+  <section class="section" style="padding-top:8px;">
+    <div class="container">
+      <div id="blog-library" class="subjects-grid" style="margin-top:0;">
+
+        <!-- 1 -->
+        <a href="blogs/blog-osce-examiner-guide.html" class="blog-card" data-category="osce skills">
+          <article class="subject-card">
+            <div class="sidebar-tag" style="width:max-content;">OSCE</div>
+            <h3>How to Answer OSCE Stations Like an Examiner</h3>
+            <p>A universal OSCE framework used in ORE, ADC, NDEB, NBDE, MFDS, and dental school exams.</p>
+            <div class="subject-ai">8 min read • OSCE strategy</div>
+          </article>
+        </a>
+
+        <!-- 2 -->
+        <a href="blogs/blog-universal-osce-checklist.html" class="blog-card" data-category="osce">
+          <article class="subject-card">
+            <div class="sidebar-tag" style="width:max-content;">OSCE</div>
+            <h3>Universal OSCE Checklist for Any Dental Case</h3>
+            <p>A simple, repeatable OSCE structure you can use for any dental case with confidence.</p>
+            <div class="subject-ai">6 min read • OSCE flow</div>
+          </article>
+        </a>
+
+        <!-- 3 -->
+        <a href="blogs/blog-top-viva-phrases.html" class="blog-card" data-category="viva">
+          <article class="subject-card">
+            <div class="sidebar-tag" style="width:max-content;">Viva</div>
+            <h3>Viva Phrases That Make You Sound Structured</h3>
+            <p>Structured phrases that help you answer any dental viva with confidence and clarity.</p>
+            <div class="subject-ai">5 min read • Viva</div>
+          </article>
+        </a>
+
+        <!-- 4 -->
+        <a href="blogs/blog-class-ii-restoration.html" class="blog-card" data-category="operative theory">
+          <article class="subject-card">
+            <div class="sidebar-tag" style="width:max-content;">Operative</div>
+            <h3>Class II Cavity Preparation Steps (Amalgam & Composite) — OSCE Style</h3>
+            <p>A structured Class II preparation flow used in OSCE, viva, and major dental board exams.</p>
+            <div class="subject-ai">9 min read • Operative</div>
+          </article>
+        </a>
+
+        <!-- 5 -->
+        <a href="blogs/blog-rpd-design-steps.html" class="blog-card" data-category="prostho theory">
+          <article class="subject-card">
+            <div class="sidebar-tag" style="width:max-content;">Prostho</div>
+            <h3>RPD Design in 6 Steps (OSCE & Viva Friendly Guide)</h3>
+            <p>A repeatable RPD design sequence that helps you think like an examiner.</p>
+            <div class="subject-ai">7 min read • Prosthodontics</div>
+          </article>
+        </a>
+
+        <!-- 6 -->
+        <a href="blogs/blog-cephalometric-landmarks.html" class="blog-card" data-category="ortho theory">
+          <article class="subject-card">
+            <div class="sidebar-tag" style="width:max-content;">Ortho</div>
+            <h3>Cephalometric Landmarks & Angles Simplified</h3>
+            <p>A simple, structured overview of key ceph landmarks and angles for exams.</p>
+            <div class="subject-ai">10 min read • Orthodontics</div>
+          </article>
+        </a>
+
+        <!-- 7 -->
+        <a href="blogs/blog-pulpotomy-vs-pulpectomy.html" class="blog-card" data-category="pedo theory">
+          <article class="subject-card">
+            <div class="sidebar-tag" style="width:max-content;">Pedo</div>
+            <h3>Pulpotomy vs Pulpectomy in Primary Teeth (Simple OSCE Guide)</h3>
+            <p>A simple OSCE guide to choosing between pulpotomy and pulpectomy in primary teeth.</p>
+            <div class="subject-ai">6 min read • Pediatric dentistry</div>
+          </article>
+        </a>
+
+        <!-- 8 -->
+        <a href="blogs/blog-perio-staging-grading.html" class="blog-card" data-category="perio theory">
+          <article class="subject-card">
+            <div class="sidebar-tag" style="width:max-content;">Perio</div>
+            <h3>Periodontitis Staging & Grading Simplified (OSCE & Viva Guide)</h3>
+            <p>A clear, examiner-friendly breakdown of staging and grading using the 2017 classification.</p>
+            <div class="subject-ai">7 min read • Periodontology</div>
+          </article>
+        </a>
+
+        <!-- 9 -->
+        <a href="blogs/blog-dental-trauma-ellis.html" class="blog-card" data-category="osce pedo">
+          <article class="subject-card">
+            <div class="sidebar-tag" style="width:max-content;">OSCE</div>
+            <h3>Dental Trauma: Ellis Classification & Simple Management Guide</h3>
+            <p>An easy, examiner-friendly breakdown of Ellis fracture classification and treatment.</p>
+            <div class="subject-ai">8 min read • Trauma</div>
+          </article>
+        </a>
+
+        <!-- 10 -->
+        <a href="blogs/blog-treatment-plan-exams.html" class="blog-card is-hidden" data-category="skills theory">
+          <article class="subject-card">
+            <div class="sidebar-tag" style="width:max-content;">Theory</div>
+            <h3>How to write a Dental Treatment Plan in Exams</h3>
+            <p>A clear, repeatable treatment-planning flow for OSCE, viva, and written exams. </p>
+            <div class="subject-ai">6 min read • Clinical reasoning</div>
+          </article>
+        </a>
+
+        <!-- 11 -->
+        <a href="blogs/blog-antibiotics-dentistry.html" class="blog-card is-hidden" data-category="theory skills">
+          <article class="subject-card">
+            <div class="sidebar-tag" style="width:max-content;">Theory</div>
+            <h3>Antibiotics in Dentistry: What Examiners Want</h3>
+            <p>A predictable, examiner-friendly method to approach antibiotic questions safely.</p>
+            <div class="subject-ai">7 min read • Pharmacology</div>
+          </article>
+        </a>
+
+        <!-- 12 -->
+        <a href="blogs/blog-ianb-guide.html" class="blog-card is-hidden" data-category="osce theory">
+          <article class="subject-card">
+            <div class="sidebar-tag" style="width:max-content;">OSCE</div>
+            <h3>Inferior Alveolar Nerve Block (IANB) — Simple OSCE & Viva Guide</h3>
+            <p>A clear, high-yield guide to IANB landmarks, steps, and troubleshooting.</p>
+            <div class="subject-ai">8 min read • Oral surgery</div>
+          </article>
+        </a>
+
+        <!-- 13 -->
+        <a href="blogs/blog-ortho-problem-lists.html" class="blog-card is-hidden" data-category="ortho skills">
+          <article class="subject-card">
+            <div class="sidebar-tag" style="width:max-content;">Ortho</div>
+            <h3>Ortho Cases: Clean Problem Lists</h3>
+            <p>A clean, repeatable framework for building orthodontic problem lists in exams.</p>
+            <div class="subject-ai">6 min read • Orthodontics</div>
+          </article>
+        </a>
+
+        <!-- 14 -->
+        <a href="blogs/blog-ai-flashcards.html" class="blog-card is-hidden" data-category="skills">
+          <article class="subject-card">
+            <div class="sidebar-tag" style="width:max-content;">Study skills</div>
+            <h3>Making High-Yield Flashcards with DentAIstudy</h3>
+            <p>A quick, structured approach to making high-yield dental flashcards.</p>
+            <div class="subject-ai">5 min read • Study builder</div>
+          </article>
+        </a>
+
+        <!-- 15 -->
+        <a href="blogs/blog-best-revision-2025.html" class="blog-card is-hidden" data-category="skills theory">
+          <article class="subject-card">
+            <div class="sidebar-tag" style="width:max-content;">Study skills</div>
+            <h3>Best Way to Revise Dentistry in 2025</h3>
+            <p>A modern, high-yield revision system built for today’s dental board exams.</p>
+            <div class="subject-ai">6 min read • Study skills</div>
+          </article>
+        </a>
+
+        <!-- 16 -->
+        <a href="blogs/blog-endo-irrigation.html" class="blog-card is-hidden" data-category="endo theory">
+          <article class="subject-card">
+            <div class="sidebar-tag" style="width:max-content;">Endo</div>
+            <h3>Irrigation Protocols Exam Summary</h3>
+            <p>A simple, high-yield guide to NaOCl, EDTA, CHX, and activation methods.</p>
+            <div class="subject-ai">7 min read • Endodontics</div>
+          </article>
+        </a>
+
+        <!-- 17 -->
+        <a href="blogs/blog-crown-prep-checklist.html" class="blog-card is-hidden" data-category="prostho osce">
+          <article class="subject-card">
+            <div class="sidebar-tag" style="width:max-content;">Prostho</div>
+            <h3>Crown Prep Checklist for OSCE</h3>
+            <p>A short, structured guide to crown-prep steps examiners expect.</p>
+            <div class="subject-ai">8 min read • Prosthodontics</div>
+          </article>
+        </a>
+
+        <!-- 18 -->
+        <a href="blogs/blog-perio-maintenance.html" class="blog-card is-hidden" data-category="perio theory">
+          <article class="subject-card">
+            <div class="sidebar-tag" style="width:max-content;">Perio</div>
+            <h3>Supportive Periodontal Therapy in One Page</h3>
+            <p>A simple, exam-focused guide to supportive periodontal therapy you can reuse in any case.</p>
+            <div class="subject-ai">5 min read • Periodontology</div>
+          </article>
+        </a>
+
+        <!-- 19 -->
+        <a href="blogs/blog-osce-mistakes.html" class="blog-card is-hidden" data-category="osce">
+          <article class="subject-card">
+            <div class="sidebar-tag" style="width:max-content;">OSCE</div>
+            <h3>Common OSCE Mistakes Dental Students Make</h3>
+            <p>Smart, exam-ready tips to prevent the OSCE mistakes students make most.</p>
+            <div class="subject-ai">6 min read • OSCE strategy</div>
+          </article>
+        </a>
+
+        <!-- 20 -->
+        <a href="blogs/blog-dentaistudy-how-to.html" class="blog-card is-hidden" data-category="skills">
+          <article class="subject-card">
+            <div class="sidebar-tag" style="width:max-content;">DentAIstudy</div>
+            <h3>How to Use Study Builder effectively</h3>
+            <p>A simple way to turn any dental topic into exam-ready notes inside DentAIstudy.</p>
+            <div class="subject-ai">5 min read • Platform guide</div>
+          </article>
+        </a>
+        
+        <!-- 21 -->
+        <a href="blogs/blog-ortho-space-analysis.html" class="blog-card is-hidden" data-category="orthodontics">
+          <article class="subject-card">
+            <div class="sidebar-tag" style="width:max-content;">Ortho</div>
+            <h3>Orthodontic Space Analysis (Bolton, Moyers & T–J) — OSCE Ready</h3>
+            <p>A clear, high-yield method to explain Bolton, Moyers, and T–J in OSCEs and vivas.</p>
+            <div class="subject-ai">8 min read • Orthodontics</div>
+          </article>
+        </a>
+        
+        <!-- 22 -->
+        <a href="blogs/blog-la-complications.html" class="blog-card is-hidden" data-category="osce theory">
+          <article class="subject-card">
+            <div class="sidebar-tag" style="width:max-content;">OSCE</div>
+            <h3>Local Anesthesia Complications — Fast OSCE Management</h3>
+            <p>Clear, high-yield management steps for the local anesthesia problems examiners love to ask.</p>
+            <div class="subject-ai">7 min read • Oral surgery</div>
+          </article>
+        </a>
+        
+        <!-- 23 -->
+        <a href="blogs/blog-anxious-patient-osce.html" class="blog-card is-hidden" data-category="osce skills">
+          <article class="subject-card">
+            <div class="sidebar-tag" style="width:max-content;">OSCE</div>
+            <h3>Managing the Anxious Dental Patient — OSCE Communication Guide</h3>
+            <p>Short, structured phrases for phobia, anxiety, and difficult communication stations.</p>
+            <div class="subject-ai">6 min read • OSCE</div>
+          </article>
+        </a>
+        
+        <!-- 24 -->
+        <a href="blogs/blog-dental-emergencies.html" class="blog-card is-hidden" data-category="operative">
+          <article class="subject-card">
+            <div class="sidebar-tag" style="width:max-content;">Operative</div>
+            <h3>Emergency Dentistry Flow: Pain, Swelling & Trauma in 10 Steps</h3>
+            <p>A fast, examiner-approved workflow to manage acute pain, swelling, infection and trauma.</p>
+            <div class="subject-ai">8 min read • Operative</div>
+          </article>
+        </a>
+        
+        <!-- 25 -->
+        <a href="blogs/blog-endo-failure.html" class="blog-card is-hidden" data-category="endodontics">
+          <article class="subject-card">
+            <div class="sidebar-tag" style="width:max-content;">Endodontics</div>
+            <h3>RCT Failure: Diagnosis, Causes & Management</h3>
+            <p>A clear exam structure to recognise failed root canal treatment and plan retreatment or extraction.</p>
+            <div class="subject-ai">7 min read • Endodontics</div>
+          </article>
+        </a>
+        
+        <!-- 26 -->
+        <a href="blogs/blog-complete-denture-steps.html" class="blog-card is-hidden" data-category="prosthodontics">
+          <article class="subject-card">
+            <div class="sidebar-tag" style="width:max-content;">Prostho</div>
+            <h3>Complete Denture Steps in OSCE Style</h3>
+            <p>Clean, structured steps to present the complete denture workflow in exams.</p>
+            <div class="subject-ai">7 min read • Prosthodontics</div>
+          </article>
+        </a>
+        
+        <!-- 27 -->
+        <a href="blogs/blog-pedo-behavior.html" class="blog-card is-hidden" data-category="pedo">
+          <article class="subject-card">
+            <div class="sidebar-tag" style="width:max-content;">Pedo</div>
+            <h3>Pediatric Behavior Management — Tell-Show-Do & OSCE Lines</h3>
+            <p>Short examiner-friendly techniques for anxious or uncooperative children.</p>
+            <div class="subject-ai">6 min read • Pediatric dentistry</div>
+          </article>
+        </a>
+        
+        <!-- 28 -->
+        <a href="blogs/blog-dental-materials.html" class="blog-card is-hidden" data-category="operative">
+          <article class="subject-card">
+            <div class="sidebar-tag" style="width:max-content;">Operative</div>
+            <h3>Dental Materials Summary: Composite, GIC & Amalgam</h3>
+            <p>A clean, exam-focused comparison of the most commonly tested restorative materials.</p>
+            <div class="subject-ai">7 min read • Operative</div>
+          </article>
+        </a>
+        
+        <!-- 29 -->
+        <a href="blogs/blog-occlusion-basics.html" class="blog-card is-hidden" data-category="prosthodontics">
+          <article class="subject-card">
+            <div class="sidebar-tag" style="width:max-content;">Prostho</div>
+            <h3>Occlusion Basics for Board Exams</h3>
+            <p>A simple breakdown of CR, ICP, lateral guidance, and occlusal concepts.</p>
+            <div class="subject-ai">7 min read • Prosthodontics</div>
+          </article>
+        </a>
+        
+        <!-- 30 -->
+        <a href="blogs/blog-full-mouth-plan.html" class="blog-card is-hidden" data-category="theory">
+          <article class="subject-card">
+            <div class="sidebar-tag" style="width:max-content;">Theory</div>
+            <h3>Full Mouth Treatment Plan: Step-by-Step Exam Blueprint</h3>
+            <p>A structured way to combine perio, endo, operative, and prostho in exam cases.</p>
+            <div class="subject-ai">8 min read • Theory</div>
+          </article>
+        </a>
+        
+
+      </div>
+
+      <!-- Load more -->
+      <div style="text-align:center;margin-top:22px;">
+        <button id="load-more" class="btn btn-outline">Load more posts</button>
+      </div>
+
+      <!-- CTA -->
+      <div style="text-align:center;margin-top:34px;">
+        <p style="font-size:0.9rem;color:#6b7280;margin-bottom:10px;">
+          Turn any blog into a high-yield study pack.
+        </p>
+        <a href="study.html" class="btn btn-primary">Open the Study builder →</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div>
+          <div class="footer-brand">DentAIstudy</div>
+          <p>AI-enhanced tools for dental students and residents.</p>
+        </div>
+
+        <div class="footer-column">
+          <h4>Product</h4>
+          <a href="subjects.html">Subjects</a>
+          <a href="study.html">Study builder</a>
+          <a href="blogs.html">Blogs</a>
+        </div>
+
+        <div class="footer-column">
+          <h4>Company</h4>
+          <a href="about.html">About</a>
+          <a href="contact.html">Contact</a>
+          <a href="faqs.html">FAQ</a>
+        </div>
+
+        <div class="footer-column">
+          <h4>Legal</h4>
+          <a href="privacy.html">Privacy Policy</a>
+          <a href="terms.html">Terms & Conditions</a>
+          <a href="cookies.html">Cookies Policy</a>
+          <a href="disclaimer.html">Disclaimer</a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">© 2025 DentAIstudy</div>
+    </div>
+  </footer>
+
+</div>
+
+<!-- Cookie -->
+<div class="cookie-banner">
+  <div class="container cookie-inner">
+    <div class="cookie-text">
+      <h3>Cookies &amp; privacy</h3>
+      <p>
+        We use essential cookies to keep DentAIstudy running and to improve your study experience.
+        By continuing, you agree to our <a href="cookies.html">Cookies Policy</a>.
+      </p>
+    </div>
+
+    <div class="cookie-actions">
+      <a href="cookies.html" class="btn btn-outline">Learn more</a>
+      <button class="btn btn-primary cookie-accept">Accept</button>
+    </div>
+  </div>
+</div>

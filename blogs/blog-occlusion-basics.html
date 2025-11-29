@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Occlusion Basics for Board Exams</title>
+
+  <link rel="stylesheet" href="../assets/css/style-v2.5.css" />
+  <link rel="icon" type="image/png" sizes="512x512" href="../assets/img/favicon.png?v=2" />
+
+  <!-- JS: Supabase + Auth Guard + Logout + Main -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+  <script src="../assets/js/auth-client.js" defer></script>
+  <script src="../assets/js/auth-guard.js" defer></script>
+  <script src="../assets/js/auth-logout.js" defer></script>
+  <script defer src="../assets/js/main.js"></script>
+</head>
+
+<body>
+<div class="main-wrapper">
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="../index.html"><span>Dent</span><span>AIstudy</span></a>
+      <nav class="header-nav">
+        <a href="../subjects.html">Subjects</a>
+        <a href="../study.html">Study builder</a>
+        <a href="../blogs.html" class="is-active">Blogs</a>
+        <a href="../about.html">About</a>
+        <a href="../contact.html">Contact</a>
+      </nav>
+      <div class="header-right">
+        <a href="../login.html" class="btn btn-outline header-login">Log in</a>
+        <a href="../signup.html" class="btn btn-primary header-signup">Sign up</a>
+        <button class="menu-toggle" aria-label="Open menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MOBILE NAV -->
+  <div class="slide-nav-backdrop"></div>
+  <nav class="slide-nav">
+    <div class="slide-nav-header">
+      <h3>Menu</h3>
+      <button class="slide-nav-close" aria-label="Close menu">&times;</button>
+    </div>
+    <div class="slide-nav-links">
+      <a href="../subjects.html">Subjects</a>
+      <a href="../study.html">Study builder</a>
+      <a href="../blogs.html">Blogs</a>
+      <a href="../about.html">About</a>
+      <a href="../contact.html">Contact</a>
+      <a href="../login.html" class="slide-login-link">Log in</a>
+    </div>
+  </nav>
+
+  <!-- BLOG -->
+  <main class="section">
+    <div class="container container-narrow">
+
+      <div class="section-header" style="text-align:left;">
+        <div class="section-kicker">Prosthodontics</div>
+        <h1 class="section-title">Occlusion Basics for Board Exams</h1>
+        <p class="section-subtitle">
+          A simple breakdown of CR, ICP, lateral guidance, and occlusal concepts.
+        </p>
+      </div>
+
+      <!-- QUICK ANSWERS -->
+      <section class="study-answer-card">
+        <h2>Quick Answers</h2>
+
+        <h3>What is intercuspal position (ICP)?</h3>
+        <p>The position of maximum intercuspation of the teeth, independent of condylar position.</p>
+
+        <h3>What is centric relation (CR)?</h3>
+        <p>A reproducible joint position where the condyles are in their most anterior-superior position in the glenoid fossa.</p>
+
+        <h3>What is mutually protected occlusion?</h3>
+        <p>An occlusal scheme where posterior teeth support vertical load and anterior teeth protect posteriors in excursions.</p>
+
+        <h3>Why does occlusion matter in prosthodontics?</h3>
+        <p>Because incorrect occlusion can cause tooth wear, fracture of restorations, and temporomandibular problems.</p>
+      </section>
+
+      <article class="blog-body">
+
+        <h2>1. Why occlusion scares students (and how to simplify it)</h2>
+        <p>
+          Occlusion looks complex in textbooks, but examiners usually test a small group of definitions
+          and patterns. If you can define ICP, CR, guidance, and one occlusal scheme clearly, you already
+          cover most board-style questions.
+        </p>
+
+        <h2>2. Core definitions you must know</h2>
+        <div class="study-form-card">
+          <h3>Key occlusion definitions</h3>
+          <p>
+            • <strong>ICP:</strong> Maximum intercuspation of opposing teeth, habitual bite.<br>
+            • <strong>CR:</strong> Joint-guided position with condyles in most anterior-superior position, independent of tooth contact.<br>
+            • <strong>CO–CR discrepancy:</strong> Difference between CR position and ICP when patient closes.<br>
+            • <strong>Guidance:</strong> How anterior teeth and condyles guide movement in excursions.
+          </p>
+        </div>
+
+        <h2>3. Anterior guidance and canine guidance</h2>
+        <p>
+          Guidance questions are common in prostho and full-mouth rehab stations.
+        </p>
+        <ul>
+          <li><strong>Anterior guidance:</strong> Contact of anterior teeth that guides mandible in protrusive and sometimes lateral movements.</li>
+          <li><strong>Canine guidance:</strong> Only the canines contact in lateral movement, discluding posterior teeth on working side.</li>
+          <li><strong>Group function:</strong> Multiple teeth on working side contact in lateral movement (canine + premolars +/- molars).</li>
+        </ul>
+
+        <h2>4. Mutually protected occlusion</h2>
+        <p>
+          A favourite term in exams, especially in fixed prosthodontics.
+        </p>
+        <div class="study-form-card">
+          <h3>Mutually protected occlusion — exam sentence</h3>
+          <p>
+            “In mutually protected occlusion, posterior teeth support vertical forces in ICP,
+            while anterior teeth disengage posteriors during excursions, protecting them from
+            lateral loads.”
+          </p>
+        </div>
+        <p>
+          This definition shows you understand the sharing of load between anterior and posterior teeth.
+        </p>
+
+        <h2>5. Occlusion when planning crowns and bridges</h2>
+        <p>
+          Whenever you prepare a crown or bridge, you must think about occlusal contacts.
+        </p>
+        <ul>
+          <li>Maintain stable contacts in ICP.</li>
+          <li>Avoid heavy contact on cantilevers or pontics.</li>
+          <li>Check guidance so the new restoration does not interfere in excursions.</li>
+        </ul>
+
+        <h2>6. How to talk about occlusion in OSCE</h2>
+        <p>
+          Use a small script instead of improvising:
+        </p>
+        <div class="study-form-card">
+          <h3>OSCE occlusion script</h3>
+          <p>
+            “I will first check the patient’s habitual bite (ICP), then assess if there is any
+            discrepancy from centric relation. I will mark contacts in ICP with articulating paper,
+            check for any interferences in lateral and protrusive movements, and adjust the restoration
+            to maintain stable support but avoid heavy contacts in excursions.”
+          </p>
+        </div>
+
+        <h2>7. Common exam traps</h2>
+        <p>
+          A few points that often appear in viva questions:
+        </p>
+        <ul>
+          <li>Do not confuse ICP with CR — CR is joint position, ICP is tooth contact position.</li>
+          <li>Do not claim all patients have CR = ICP; many have small discrepancies.</li>
+          <li>Remember TMD and parafunction can increase loading on restorations.</li>
+        </ul>
+
+        <h2>8. How DentAIstudy helps</h2>
+        <p>
+          DentAIstudy can turn the “heavy” occlusion chapter into simple exam tools:
+        </p>
+        <ul>
+          <li>Flashcards for core definitions (ICP, CR, guidance, schemes).</li>
+          <li>OSCE scripts for checking occlusion after crown or bridge cementation.</li>
+          <li>Short viva answers on mutually protected occlusion and group function.</li>
+          <li>Mini case-based questions linking occlusion to restoration failure.</li>
+        </ul>
+        <p><a href="../study.html" class="btn btn-primary">Try Study Builder →</a></p>
+
+        <h2>References</h2>
+        <ul>
+          <li>Dawson PE. <em>Functional Occlusion: From TMJ to Smile Design.</em> Mosby; 2007.</li>
+          <li>Okeson JP. <em>Management of Temporomandibular Disorders and Occlusion.</em> 8th ed. Elsevier; 2019.</li>
+          <li>GPT-9. <em>Glossary of Prosthodontic Terms.</em> J Prosthet Dent.</li>
+        </ul>
+
+      </article>
+
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div>
+          <div class="footer-brand">DentAIstudy</div>
+          <p>AI-enhanced tools for dental students and residents.</p>
+        </div>
+
+        <div class="footer-column">
+          <h4>Product</h4>
+          <a href="../subjects.html">Subjects</a>
+          <a href="../study.html">Study builder</a>
+          <a href="../blogs.html">Blogs</a>
+        </div>
+
+        <div class="footer-column">
+          <h4>Company</h4>
+          <a href="../about.html">About</a>
+          <a href="../contact.html">Contact</a>
+          <a href="../faqs.html">FAQ</a>
+        </div>
+
+        <div class="footer-column">
+          <h4>Legal</h4>
+          <a href="../privacy.html">Privacy Policy</a>
+          <a href="../terms.html">Terms &amp; Conditions</a>
+          <a href="../cookies.html">Cookies Policy</a>
+          <a href="../disclaimer.html">Disclaimer</a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        © 2025 DentAIstudy. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  
+</div>
+</body>
+</html>

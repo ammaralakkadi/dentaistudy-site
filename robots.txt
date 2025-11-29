@@ -1,0 +1,36 @@
+// DentAIstudy — Logout handler with smart redirect
+
+document.addEventListener("DOMContentLoaded", () => {
+  const logoutButtons = document.querySelectorAll("[data-das-logout]");
+
+  logoutButtons.forEach((btn) => {
+    btn.addEventListener("click", async (event) => {
+      event.preventDefault();
+
+      try {
+        // Sign out from Supabase if available
+        if (window.dasSupabase && window.dasSupabase.auth) {
+          await window.dasSupabase.auth.signOut();
+        }
+      } catch (err) {
+        console.error("Logout failed:", err);
+      }
+
+      // Decide what to do based on current page
+      const path = (window.location.pathname || "").toLowerCase();
+
+      const isAuthArea =
+        path.includes("study.html") ||
+        path.includes("profile.html") ||
+        path.includes("settings.html");
+
+      if (isAuthArea) {
+        // From study/profile/settings → go to public Study builder
+        window.location.href = "study.html";
+      } else {
+        // From blogs/legal/etc → stay on same page, just as logged-out user
+        window.location.reload();
+      }
+    });
+  });
+});

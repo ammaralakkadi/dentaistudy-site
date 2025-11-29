@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Settings – DentAIstudy</title>
+
+  <!-- Main CSS -->
+  <link rel="stylesheet" href="assets/css/style-v2.5.css" />
+  <link
+    rel="icon"
+    type="image/png"
+    sizes="512x512"
+    href="assets/img/favicon.png?v=2"
+  />
+
+  <!-- JS: Supabase + client + guard + main -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+  <script src="assets/js/auth-client.js" defer></script>
+  <script src="assets/js/auth-guard.js" defer></script>
+  <script src="assets/js/auth-logout.js" defer></script>
+  <script src="assets/js/main.js" defer></script>
+</head>
+
+<body>
+<div class="main-wrapper">
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html">
+        <span>Dent</span><span>AIstudy</span>
+      </a>
+
+      <nav class="header-nav">
+        <a href="subjects.html">Subjects</a>
+        <a href="study.html">Study builder</a>
+        <a href="blogs.html">Blogs</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+
+      <div class="header-right">
+        <button class="btn btn-outline heade-login" data-das-logout>
+          Log out
+        </button>
+        <button class="menu-toggle" aria-label="Open menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile slide nav -->
+  <div class="slide-nav-backdrop"></div>
+  <nav class="slide-nav">
+    <div class="slide-nav-header">
+      <h3>Menu</h3>
+      <button class="slide-nav-close" aria-label="Close menu">&times;</button>
+    </div>
+    <div class="slide-nav-links">
+      <a href="subjects.html">Subjects</a>
+      <a href="study.html">Study builder</a>
+      <a href="blogs.html">Blogs</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="#" class="slide-login-link" data-das-logout>Log out</a>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <main>
+    <div class="container">
+      <div class="workspace-header-row">
+        <div class="workspace-title-row">
+          <div>
+            <div class="workspace-breadcrumb">
+              <span>DentAIstudy</span>
+              <span>Account</span>
+            </div>
+            <h1>Account settings</h1>
+            <p class="workspace-subtitle">
+              Update your information and study preferences.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="workspace-shell">
+        <!-- SIDEBAR -->
+        <aside class="workspace-sidebar">
+          <div class="sidebar-card">
+            <div class="sidebar-card-header">
+              <div class="sidebar-avatar">
+                <img
+                  src="assets/img/default-avatar.png"
+                  alt="Your avatar"
+                  data-das-avatar
+                />
+              </div>
+              <div>
+                <div class="workspace-card-title">
+                  <span id="das-user-name">Your workspace</span>
+                </div>
+                <div class="sidebar-card-subtitle">Account settings</div>
+              </div>
+            </div>
+
+            <nav class="sidebar-nav">
+              <a href="study.html" class="sidebar-nav-item">Study builder</a>
+              <a href="profile.html" class="sidebar-nav-item">Profile</a>
+              <a href="settings.html" class="sidebar-nav-item is-active">
+                <span><strong>Settings</strong></span>
+              </a>
+            </nav>
+          </div>
+        </aside>
+
+        <!-- SETTINGS CONTENT -->
+        <section class="workspace-main">
+          <!-- Profile details -->
+          <section class="study-form-card">
+            <h2>Profile details</h2>
+
+            <div class="form-group">
+              <label>Full name</label>
+              <input
+                type="text"
+                id="settings-fullname"
+                placeholder="Your name"
+                disabled
+              />
+            </div>
+
+            <div class="form-group">
+              <label>Email</label>
+              <input
+                type="email"
+                id="settings-email"
+                placeholder="you@example.com"
+                disabled
+              />
+            </div>
+
+            <div class="form-group">
+              <label>Default level</label>
+              <select id="settings-default-level">
+                <option value="undergraduate">Undergraduate</option>
+                <option value="postgraduate">Postgraduate</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>New password</label>
+              <input
+                type="password"
+                id="settings-new-password"
+                placeholder="New password"
+              />
+            </div>            
+
+            <button
+              class="btn btn-primary"
+              type="button"
+              id="settings-save-btn"
+            >
+              Save changes
+            </button>
+            <p
+              id="settings-save-status"
+              style="margin-top:8px;font-size:0.85rem;color:#0f3c7d;opacity:0;transition:opacity 0.25s ease;"
+            ></p>
+
+          </section>
+
+          <!-- Study preferences -->
+          <section class="study-form-card">
+            <h2>Study preferences</h2>
+
+            <!-- Preferred output style -->
+            <div style="margin-top:12px;">
+              <label class="study-input-label">Preferred output style</label>
+              <div class="study-mode-row">
+                <!-- JS will highlight preferred styles from metadata -->
+                <button
+                  class="study-mode-pill"
+                  type="button"
+                  data-das-output-pill="bullet_points"
+                >
+                  Bullet points
+                </button>
+                <button
+                  class="study-mode-pill"
+                  type="button"
+                  data-das-output-pill="osce_checklists"
+                >
+                  OSCE checklists
+                </button>
+                <button
+                  class="study-mode-pill"
+                  type="button"
+                  data-das-output-pill="short_notes"
+                >
+                  Short notes
+                </button>
+              </div>
+            </div>
+
+            <!-- Focus areas (subjects) -->
+            <div style="margin-top:14px;">
+              <label class="study-input-label">Focus areas</label>
+              <div class="study-mode-row">
+                <!-- JS will highlight favorite subjects from metadata -->
+                <button
+                  class="study-mode-pill"
+                  type="button"
+                  data-das-subject-pill="operative"
+                >
+                  Operative
+                </button>
+                <button
+                  class="study-mode-pill"
+                  type="button"
+                  data-das-subject-pill="endodontics"
+                >
+                  Endodontics
+                </button>
+                <button
+                  class="study-mode-pill"
+                  type="button"
+                  data-das-subject-pill="orthodontics"
+                >
+                  Ortho
+                </button>
+                <button
+                  class="study-mode-pill"
+                  type="button"
+                  data-das-subject-pill="oral_surgery"
+                >
+                  Oral surgery
+                </button>
+                <button
+                  class="study-mode-pill"
+                  type="button"
+                  data-das-subject-pill="pediatric"
+                >
+                  Pedo
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <!-- Email notifications -->
+          <section class="study-form-card">
+            <h2>Email notifications</h2>
+
+            <div class="settings-checkbox-block">
+              <label class="study-input-label" for="email-tips">
+                Email notifications
+              </label>
+              <div class="settings-checkbox-row">
+                <input id="email-tips" type="checkbox" />
+                <span>Tips &amp; study reminders</span>
+              </div>
+            </div>
+          </section>
+
+          <!-- Delete Account -->
+          <section
+            class="study-form-card"
+            style="border-color:#fecaca;background:#fff1f2;"
+          >
+            <h2 style="color:#b91c1c;">Delete Account</h2>
+            <button
+              id="delete-account-btn"
+              class="btn btn-outline"
+              style="border-color:#b91c1c;color:#b91c1c;"
+            >
+              Delete my account
+            </button>
+            <p
+              id="delete-account-status"
+              style="margin-top:8px;font-size:0.85rem;color:#b91c1c;"
+            ></p>
+          </section>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div>
+          <div class="footer-brand">DentAIstudy</div>
+          <p>AI-enhanced tools for dental students and residents.</p>
+        </div>
+
+        <div class="footer-column">
+          <h4>Product</h4>
+          <a href="subjects.html">Subjects</a>
+          <a href="study.html">Study builder</a>
+          <a href="blogs.html">Blogs</a>
+        </div>
+
+        <div class="footer-column">
+          <h4>Company</h4>
+          <a href="about.html">About</a>
+          <a href="contact.html">Contact</a>
+          <a href="faqs.html">FAQ</a>
+        </div>
+
+        <div class="footer-column">
+          <h4>Legal</h4>
+          <a href="privacy.html">Privacy Policy</a>
+          <a href="terms.html">Terms &amp; Conditions</a>
+          <a href="cookies.html">Cookies Policy</a>
+          <a href="disclaimer.html">Disclaimer</a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        © 2025 DentAIstudy. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+</div>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const saveBtn = document.getElementById("settings-save-btn");
+    const statusEl = document.getElementById("settings-save-status");
+    if (!saveBtn || !statusEl) return;
+
+    function showStatus(text) {
+      statusEl.textContent = text;
+      statusEl.style.opacity = "1";
+      clearTimeout(statusEl._hideTimer);
+      statusEl._hideTimer = setTimeout(function () {
+        statusEl.style.opacity = "0";
+      }, 2600);
+    }
+
+    // Visual feedback when user clicks Save
+    saveBtn.addEventListener("click", function () {
+      // Auth save is still handled by auth-guard.js
+      showStatus("Your changes have been saved.");
+    });
+  });
+</script>
+</body>
+</html>

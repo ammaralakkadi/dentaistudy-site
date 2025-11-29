@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAQs – DentAIstudy</title>
+  <link rel="stylesheet" href="assets/css/style-v2.5.css" />
+  <link rel="icon" type="image/png" sizes="512x512" href="assets/img/favicon.png?v=2" />
+
+  <!-- JS: Supabase + Auth Guard + Logout + Main -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+  <script src="assets/js/auth-client.js" defer></script>
+  <script src="assets/js/auth-guard.js" defer></script>
+  <script src="assets/js/auth-logout.js" defer></script>
+  <script defer src="assets/js/main.js"></script>
+</head>
+
+<body>
+<div class="main-wrapper">
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="index.html"><span>Dent</span><span>AIstudy</span></a>
+
+    <nav class="header-nav">
+      <a href="subjects.html">Subjects</a>
+      <a href="study.html">Study builder</a>
+      <a href="blogs.html">Blogs</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+
+    <div class="header-right">
+  <a href="login.html" class="btn btn-outline header-login">Log in</a>
+  <a href="signup.html" class="btn btn-primary header-signup">Sign up</a>
+  <button class="menu-toggle"><span></span><span></span><span></span></button>
+</div>
+  </div>
+</header>
+
+<div class="slide-nav-backdrop"></div>
+<nav class="slide-nav">
+  <div class="slide-nav-header">
+    <h3>Menu</h3>
+    <button class="slide-nav-close">&times;</button>
+  </div>
+  <div class="slide-nav-links">
+    <a href="subjects.html">Subjects</a>
+    <a href="study.html">Study builder</a>
+    <a href="blogs.html">Blogs</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+    <a href="login.html" class="slide-login-link">Log in</a>
+  </div>
+</nav>
+
+<section class="section">
+  <div class="container">
+
+    <div class="section-header">
+      <h1 class="section-title">Frequently Asked Questions</h1>
+      <p class="section-subtitle">Clear answers to help you use DentAIstudy confidently.</p>
+    </div>
+
+    <div class="faq-list">
+
+      <div class="faq-item">
+        <button class="faq-question"><span>Is DentAIstudy free?</span><span>⌄</span></button>
+        <div class="faq-answer">
+          Yes — DentAIstudy’s core study tools are currently free to use.
+            You can generate OSCE flows, notes, and flashcards without any subscription.
+              As we grow, we may introduce optional premium features, but the essential study experience will remain accessible.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question"><span>What makes DentAIstudy different?</span><span>⌄</span></button>
+        <div class="faq-answer">
+          Unlike chat-style apps, DentAIstudy gives structured OSCE flows, concise notes,
+            and clean flashcards — in a study-focused workspace.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question"><span>Can I rely on it clinically?</span><span>⌄</span></button>
+        <div class="faq-answer">
+          No. Our tools are for studying only. Always follow supervisors and official guidelines in real patient care.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question"><span>Do I need an account?</span><span>⌄</span></button>
+        <div class="faq-answer">
+          You can explore the platform without an account.
+          Creating an account unlocks extra benefits such as saving study packs,
+          tracking your activity, and personalizing your study workspace
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question"><span>Which subjects are supported?</span><span>⌄</span></button>
+        <div class="faq-answer">
+          DentAIstudy supports all major dental subjects, including Operative, Endodontics, Prosthodontics,
+          Orthodontics, Periodontics, Oral Surgery, Oral Pathology, Radiology, and more.
+          We continuously refine and expand coverage to keep your study materials comprehensive and up to date.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question"><span>Is my data stored?</span><span>⌄</span></button>
+        <div class="faq-answer">
+          We store only the information needed to run your DentAIstudy account
+          and keep your study materials available across devices.
+          Your data is private, never sold, and protected under our Privacy Policy.
+          You’re always in control of your content.
+        </div>
+      </div>
+      
+    <div class="faq-item">
+     <button class="faq-question"><span>Who is DentAIstudy for?</span><span>⌄</span></button>
+       <div class="faq-answer">
+        DentAIstudy is designed for undergraduate dental students, interns/house officers,
+          and postgraduate trainees who want structured, examiner-style study material in a fast, distraction-free workspace.
+       </div>
+    </div>   
+
+    </div>
+
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand">DentAIstudy</div>
+        <p>AI-enhanced tools for dental students and residents.</p>
+      </div>
+
+      <div class="footer-column">
+        <h4>Product</h4>
+        <a href="subjects.html">Subjects</a>
+        <a href="study.html">Study builder</a>
+        <a href="blogs.html">Blogs</a>
+      </div>
+
+      <div class="footer-column">
+  <h4>Company</h4>
+  <a href="about.html">About</a>
+  <a href="contact.html">Contact</a>
+  <a href="faqs.html">FAQ</a>
+</div>
+
+      <div class="footer-column">
+        <h4>Legal</h4>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms & Conditions</a>
+        <a href="cookies.html">Cookies Policy</a>
+        <a href="disclaimer.html">Disclaimer</a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">© 2025 DentAIstudy. All rights reserved.</div>
+  </div>
+</footer>
+
+</div>
+<div class="cookie-banner">
+  <div class="container cookie-inner">
+    <div class="cookie-text">
+      <h3>Cookies &amp; privacy</h3>
+      <p>
+        We use essential cookies to keep DentAIstudy running and to improve your study experience.
+        By continuing, you agree to our <a href="cookies.html">Cookies Policy</a>.
+      </p>
+    </div>
+
+    <div class="cookie-actions">
+      <a href="cookies.html" class="btn btn-outline">Learn more</a>
+      <button class="btn btn-primary cookie-accept">Accept</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,92 @@
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("signup-form");
+  if (!form || !window.dasSupabase) return;
+
+  const fullNameInput = document.getElementById("signup-fullname");
+  const emailInput = document.getElementById("signup-email");
+  const passwordInput = document.getElementById("signup-password");
+  const messageEl = document.getElementById("signup-message");
+
+  function showMessage(text, type = "info") {
+    if (!messageEl) return;
+    messageEl.textContent = text;
+    messageEl.style.color =
+      type === "error" ? "#b91c1c" : type === "success" ? "#15803d" : "#4b5563";
+  }
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (!window.dasSupabase || !window.dasSupabase.auth) return;
+
+    const fullName = (fullNameInput?.value || "").trim();
+    const email = (emailInput?.value || "").trim();
+    const password = passwordInput?.value || "";
+
+    if (!fullName || !email || !password) {
+      showMessage("Please fill in all fields.", "error");
+      return;
+    }
+
+    showMessage("Creating your account...");
+
+        try {
+      const { data, error } = await window.dasSupabase.auth.signUp({
+        email,
+        password,
+        options: {
+          // 🔹 User metadata stored on signup
+          data: {
+            full_name: fullName,
+            default_level: "undergraduate", // safe default
+
+            // initial favorite subjects (can be updated later in Supabase or Settings)
+            favorite_subjects: ["operative", "endodontics", "orthodontics"],
+
+            // initial preferred output styles (can be updated later)
+            // valid slugs: "bullet_points", "osce_checklists", "short_notes"
+            preferred_output_styles: [
+              "bullet_points",
+              "osce_checklists",
+              "short_notes",
+            ],
+          },
+        },
+      });
+
+      if (error) {
+        console.error("Signup error:", error);
+        showMessage(
+          error.message || "Signup failed. Please try again.",
+          "error"
+        );
+        return;
+      }
+
+      console.log("Signup data:", data);
+
+      // Some projects require email confirmation (no active session).
+      // Others allow instant login (session is returned).
+      const hasActiveSession = !!data?.session && !!data?.user;
+
+      if (hasActiveSession) {
+        // Email confirmation is OFF → user is already logged in.
+        showMessage(
+          "Account created. Redirecting to your study workspace...",
+          "success"
+        );
+        setTimeout(() => {
+          window.location.href = "study.html";
+        }, 1200);
+      } else {
+        // Email confirmation is ON → tell user to check email.
+        showMessage(
+          "Account created. Please check your email to confirm your account.",
+          "success"
+        );
+      }
+    } catch (err) {
+      console.error("Unexpected signup error:", err);
+      showMessage("Something went wrong. Please try again.", "error");
+    }
+  });
+});

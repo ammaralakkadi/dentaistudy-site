@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Log in – DentAIstudy</title>
+
+  
+  <!-- Favicon (rounded PNG you just exported) -->
+  <link rel="icon" type="image/png" sizes="512x512" href="assets/img/favicon.png?v=2" />
+
+    <!-- Main CSS -->
+  <link rel="stylesheet" href="assets/css/style-v2.5.css" />
+
+  <!-- JS: Supabase + Auth Guard + Logout + Login + Main (all deferred) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+  <script src="assets/js/auth-client.js" defer></script>
+  <script src="assets/js/auth-guard.js" defer></script>
+  <script src="assets/js/auth-logout.js" defer></script>
+  <script src="assets/js/auth-login.js" defer></script>
+  <script defer src="assets/js/main.js"></script>
+</head>
+
+<body>
+<div class="main-wrapper">
+
+  <!-- HEADER (same structure as other pages) -->
+  <header class="site-header">
+    <div class="container header-inner">
+
+      <a class="brand" href="index.html">
+        <span>Dent</span><span>AIstudy</span>
+      </a>
+
+      <nav class="header-nav">
+        <a href="subjects.html">Subjects</a>
+        <a href="study.html">Study builder</a>
+        <a href="blogs.html">Blogs</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+
+      <div class="header-right">
+        <a href="login.html" class="btn btn-outline header-login">Log in</a>
+        <a href="signup.html" class="btn btn-primary header-signup">Sign up</a>
+        <button class="menu-toggle" aria-label="Open menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- MOBILE SLIDE NAV -->
+  <div class="slide-nav-backdrop"></div>
+  <nav class="slide-nav">
+    <div class="slide-nav-header">
+      <h3>Menu</h3>
+      <button class="slide-nav-close" aria-label="Close menu">&times;</button>
+    </div>
+    <div class="slide-nav-links">
+      <a href="subjects.html">Subjects</a>
+      <a href="study.html">Study builder</a>
+      <a href="blogs.html">Blogs</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="login.html" class="slide-login-link">Log in</a>
+    </div>
+  </nav>
+
+  <!-- AUTH CONTENT -->
+  <main class="auth-container">
+    <div class="auth-card">
+
+      <div class="auth-logo-circle">
+        <img src="assets/img/favicon.png" alt="DentAIstudy logo" />
+      </div>
+
+      <h1 class="auth-title">Log in to DentAIstudy</h1>
+      <p class="auth-subtitle">
+        Access your saved study packs, recent topics, and workspace.
+      </p>
+
+      <!-- Google button (icon already exists in assets/img/google-icon.svg) -->
+      <button type="button" class="google-btn">
+        <img src="assets/img/google-icon.svg" alt="Log in with Google">
+      </button>
+
+      <div class="auth-divider"><span>or continue with email</span></div>
+
+      <form id="login-form" class="auth-form" novalidate>
+       <label for="login-email">Email</label>
+       <input
+         id="login-email"
+         name="email"
+         type="email"
+         placeholder="you@example.com"
+         autocomplete="email"
+         required
+       />
+
+       <label for="login-password">Password</label>
+       <input
+         id="login-password"
+         name="password"
+         type="password"
+         placeholder="••••••••"
+         autocomplete="current-password"
+         required
+       />
+
+       <button type="submit" class="auth-submit btn btn-primary">
+        Log in
+       </button>
+
+       <p id="login-message" class="auth-terms" style="margin-top:8px;"></p>
+
+       <p class="auth-switch">
+         Don’t have an account yet?
+         <a href="signup.html">Sign up</a>
+       </p>
+      </form>
+
+    </div>
+  </main>
+
+</div>
+
+
+</body>
+</html>

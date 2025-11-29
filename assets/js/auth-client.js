@@ -1,0 +1,168 @@
+// auth-client.js
+// Global Supabase client for DentAIstudy
+
+const SUPABASE_URL = "https://hlvkbqpesiqjxbastxux.supabase.co";
+const SUPABASE_ANON_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhsdmticXBlc2lxanhiYXN0eHV4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxNjIwNDksImV4cCI6MjA3OTczODA0OX0.9J_wVXWo_ai2v3sXiQUMpts3k6Ak6zWNBPmU0DfB_ZE";
+
+window.dasSupabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// -----------------------------------------------------------
+// Profile Picture Upload Helper
+// -----------------------------------------------------------
+async function uploadProfilePicture(userId, file) {
+  if (!file || !window.dasSupabase) return null;
+
+  const fileExt = file.name.split(".").pop();
+  const filePath = `${userId}/avatar.${fileExt}`;
+
+  // Upload to "profile-pictures" bucket (public)
+  const { error: uploadError } = await window.dasSupabase.storage
+    .from("profile-pictures")
+    .upload(filePath, file, {
+      cacheControl: "3600",
+      upsert: true,
+    });
+
+  if (uploadError) {
+    console.error("Upload error:", uploadError);
+    return null;
+  }
+
+  // Get public URL
+  const { data: publicUrlData } = window.dasSupabase.storage
+    .from("profile-pictures")
+    .getPublicUrl(filePath);
+
+  return publicUrlData?.publicUrl || null;
+}
+
+// -----------------------------------------------------------
+// Study Preference Counters (OSCE / Packs / Flashcards / Theory / Viva)
+// -----------------------------------------------------------
+//
+// We store simple usage counts in user_metadata:
+//   osce_count, packs_count, flashcard_count, theory_count, viva_count
+// And a derived field:
+//   top_used_category: "osce" | "packs" | "flashcard" | "theory" | "viva"
+//
+// Use later from Study Builder, e.g.:
+//   incrementStudyPreference("osce");
+//   incrementStudyPreference("packs");
+//
+// UI highlighting will be done in separate steps.
+
+const DAS_STUDY_CATEGORIES = ["osce", "packs", "flashcard", "theory", "viva"];
+
+function computeTopUsedCategoryFromMeta(meta) {
+  const safeMeta = meta || {};
+  let top = safeMeta.top_used_category || null;
+  let maxCount = -1;
+
+  DAS_STUDY_CATEGORIES.forEach((cat) => {
+    const key = `${cat}_count`;
+    const value = typeof safeMeta[key] === "number" ? safeMeta[key] : 0;
+
+    if (value > maxCount) {
+      maxCount = value;
+      top = cat;
+    }
+  });
+
+  // If all are zero, keep whatever we had or default to "osce"
+  if (!top) {
+    top = "osce";
+  }
+
+  return top;
+}
+
+async function incrementStudyPreference(category) {
+  try {
+    if (!window.dasSupabase || !window.dasSupabase.auth) return;
+    if (!DAS_STUDY_CATEGORIES.includes(category)) {
+      console.warn("incrementStudyPreference: invalid category:", category);
+      return;
+    }
+
+    const { data: userData, error: userError } =
+      await window.dasSupabase.auth.getUser();
+    if (userError) {
+      console.error("incrementStudyPreference getUser error:", userError);
+      return;
+    }
+
+    const user = userData?.user;
+    if (!user) {
+      console.warn("incrementStudyPreference: no user found");
+      return;
+    }
+
+    const meta = user.user_metadata || {};
+    const updatedMeta = { ...meta };
+
+    // Normalise counts for all categories
+    DAS_STUDY_CATEGORIES.forEach((cat) => {
+      const key = `${cat}_count`;
+      const current = typeof meta[key] === "number" ? meta[key] : 0;
+      updatedMeta[key] = current;
+    });
+
+    // Increment the requested category
+    const counterKey = `${category}_count`;
+    updatedMeta[counterKey] = (updatedMeta[counterKey] || 0) + 1;
+
+    // Recompute top_used_category
+    updatedMeta.top_used_category = computeTopUsedCategoryFromMeta(updatedMeta);
+
+    // Update last active timestamp
+    updatedMeta.last_active_at = new Date().toISOString();
+
+    const { error: updateError } = await window.dasSupabase.auth.updateUser({
+      data: updatedMeta,
+    });
+
+    if (updateError) {
+      console.error(
+        "incrementStudyPreference updateUser error:",
+        updateError
+      );
+    }
+  } catch (err) {
+    console.error("incrementStudyPreference failed:", err);
+  }
+}
+
+// Optional: helper to read the current usage summary (for future UI)
+async function getStudyPreferenceSummary() {
+  if (!window.dasSupabase || !window.dasSupabase.auth) return null;
+
+  const { data: userData, error } = await window.dasSupabase.auth.getUser();
+  if (error) {
+    console.error("getStudyPreferenceSummary getUser error:", error);
+    return null;
+  }
+
+  const user = userData?.user;
+  if (!user) return null;
+
+  const meta = user.user_metadata || {};
+  const summary = {
+    osce_count: typeof meta.osce_count === "number" ? meta.osce_count : 0,
+    packs_count: typeof meta.packs_count === "number" ? meta.packs_count : 0,
+    flashcard_count:
+      typeof meta.flashcard_count === "number" ? meta.flashcard_count : 0,
+    theory_count: typeof meta.theory_count === "number" ? meta.theory_count : 0,
+    viva_count: typeof meta.viva_count === "number" ? meta.viva_count : 0,
+    top_used_category: computeTopUsedCategoryFromMeta(meta),
+    last_active_at: meta.last_active_at || null,
+  };
+
+  return summary;
+}
+
+// Expose helpers for other scripts (Study Builder, etc.)
+window.dasStudyPrefs = {
+  increment: incrementStudyPreference,
+  summary: getStudyPreferenceSummary,
+};

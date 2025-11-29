@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Study Builder – DentAIstudy</title>
+  <link rel="icon" type="image/png" sizes="512x512" href="assets/img/favicon.png?v=2" />
+    <!-- Main CSS -->
+  <link rel="stylesheet" href="assets/css/style-v2.5.css" />
+
+  <!-- JS: Supabase + Auth client + Guard + Main -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+  <script src="assets/js/auth-client.js" defer></script>
+  <script src="assets/js/auth-guard.js" defer></script>
+  <script src="assets/js/auth-logout.js" defer></script>
+  <script defer src="assets/js/main.js"></script>
+  <script defer src="assets/js/study-builder.js"></script>
+
+</head>
+
+<body>
+<div class="main-wrapper">
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html">
+        <span>Dent</span><span>AIstudy</span>
+      </a>
+
+      <nav class="header-nav">
+        <a href="subjects.html">Subjects</a>
+        <a href="study.html">Study builder</a>
+        <a href="blogs.html">Blogs</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+
+      <div class="header-right">
+       <a href="login.html" class="btn btn-outline header-login">Log in</a>
+       <a href="signup.html" class="btn btn-primary header-signup">Sign up</a>
+       <button class="menu-toggle" aria-label="Open menu">
+        <span></span><span></span><span></span>
+       </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile nav -->
+  <div class="slide-nav-backdrop"></div>
+  <nav class="slide-nav">
+    <div class="slide-nav-header">
+      <h3>Menu</h3>
+      <button class="slide-nav-close" aria-label="Close menu">&times;</button>
+    </div>
+    <div class="slide-nav-links">
+      <a href="subjects.html">Subjects</a>
+      <a href="study.html">Study builder</a>
+      <a href="blogs.html">Blogs</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="#" class="slide-login-link" data-das-logout>Log out
+      </a>
+    </div>
+  </nav>
+
+  <main>
+    <div class="container workspace-shell">
+
+      <!-- SIDEBAR -->
+      <aside class="workspace-sidebar">
+        <div class="sidebar-card">
+          <div class="sidebar-card-header">
+            <div class="sidebar-avatar">
+              <img src="assets/img/default-avatar.png" alt="Your avatar" data-das-avatar />
+            </div>
+            <div>
+              <span id="das-user-name">Your workspace</span>
+              <div class="sidebar-card-subtitle">Study tools & packs</div>
+            </div>
+          </div>
+
+          <div class="sidebar-tags">
+            <span class="sidebar-tag">Dental only</span>
+            <span class="sidebar-tag">Undergrad / Intern</span>
+            <span class="sidebar-tag">Exam-focused</span>
+          </div>
+
+          <nav class="sidebar-nav">
+            <a href="study.html" class="sidebar-nav-item is-active"><strong>Study builder</strong></a>
+            <a href="profile.html" class="sidebar-nav-item">Profile</a>
+            <a href="settings.html" class="sidebar-nav-item">Settings</a>
+          </nav>
+        </div>
+      </aside>
+
+      <!-- MAIN AREA -->
+      <section class="workspace-main">
+
+        <div class="workspace-header-row">
+          <div>
+            <div class="workspace-breadcrumb">
+              <span>DentAIstudy</span>
+              <span>Study tools</span>
+            </div>
+            <h1>Study builder</h1>
+            <p class="workspace-subtitle">
+              Generate OSCE flows, high‑yield notes or flashcards from any dental topic.
+            </p>
+          </div>
+        </div>
+
+        <div class="study-chat-shell">
+          <div class="study-chat-grid">
+
+            <!-- INPUT FORM -->
+            <div class="study-form-card">
+              <h2>Describe what you need</h2>
+
+              <form id="study-form" class="study-form-grid">
+
+                <!-- SUBJECT -->
+                <div class="study-input-row">
+                  <label class="study-input-label" for="study-subject">Subject</label>
+                  <select id="study-subject" name="subject">
+                    <option value="Endodontics">Endodontics</option>
+                    <option value="Operative dentistry">Operative dentistry</option>
+                    <option value="Prosthodontics">Prosthodontics</option>
+                    <option value="Orthodontics">Orthodontics</option>
+                    <option value="Pediatric dentistry">Pediatric dentistry</option>
+                    <option value="Periodontology">Periodontology</option>
+                    <option value="Oral surgery">Oral surgery</option>
+                    <option value="Oral anatomy">Oral anatomy</option>
+                  </select>
+                </div>
+
+                <!-- TOPIC -->
+                <div class="study-input-row">
+                  <label class="study-input-label" for="study-topic">Topic or case</label>
+                  <textarea id="study-topic" name="topic" placeholder="e.g. Class II amalgam restoration, lower first molar with proximal caries."></textarea>
+                </div>
+
+                <!-- OUTPUT STYLE -->
+                <div class="study-input-row">
+                  <span class="study-input-label">Output style</span>
+                  <div class="study-mode-row">
+                    <label class="study-mode-pill">
+                      <input type="radio" name="mode" value="General overview" checked />
+                      <span>General</span>
+                    </label>                    
+                    <label class="study-mode-pill">
+                      <input type="radio" name="mode" value="MCQs" />
+                      <span>MCQs</span>
+                    </label>
+                    <label class="study-mode-pill">
+                      <input type="radio" name="mode" value="OSCE flow" />
+                      <span>OSCE flow</span>
+                    </label>
+                    <label class="study-mode-pill">
+                      <input type="radio" name="mode" value="High-yield notes" />
+                      <span>High‑yield notes</span>
+                    </label>
+                    <label class="study-mode-pill">
+                      <input type="radio" name="mode" value="Flashcard deck" />
+                      <span>Flashcards</span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="study-form-actions">
+                  <button class="btn btn-outline" type="button" id="study-clear">Clear</button>
+                  <button class="btn btn-primary" type="submit">Generate</button>
+                </div>
+
+              </form>
+            </div>
+
+            <!-- OUTPUT AREA -->
+            <div class="study-answer-card">
+              <div class="study-answer-header">
+                <div class="study-answer-title">AI output</div>
+                <button class="copy-btn-main is-hidden" type="button" id="copy-answer">Copy</button>
+              </div>
+
+              <div class="study-answer-body-wrapper">
+                <p class="study-answer-placeholder">
+                  Your structured answer will appear here.
+                </p>
+                <pre class="study-answer-body" id="study-answer"></pre>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </section>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div>
+          <div class="footer-brand">DentAIstudy</div>
+          <p>AI-enhanced tools for dental students and residents.</p>
+        </div>
+        <div class="footer-column">
+          <h4>Product</h4>
+          <a href="subjects.html">Subjects</a>
+          <a href="study.html">Study builder</a>
+          <a href="blogs.html">Blogs</a>
+        </div>
+        <div class="footer-column">
+  <h4>Company</h4>
+  <a href="about.html">About</a>
+  <a href="contact.html">Contact</a>
+  <a href="faqs.html">FAQ</a>
+</div>
+        <div class="footer-column">
+          <h4>Legal</h4>
+          <a href="privacy.html">Privacy Policy</a>
+          <a href="terms.html">Terms & Conditions</a>
+          <a href="cookies.html">Cookies Policy</a>
+          <a href="disclaimer.html">Disclaimer</a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        © 2025 DentAIstudy. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+<!-- Cookie -->
+<div class="cookie-banner">
+  <p>DentAIstudy uses cookies to improve your experience.</p>
+  <button class="btn btn-primary cookie-accept">Got it</button>
+</div>
+
+
+</body>
+</html>

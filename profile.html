@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My profile – DentAIstudy</title>
+
+  <!-- Main CSS -->
+  <link rel="stylesheet" href="assets/css/style-v2.5.css" />
+  <link rel="icon" type="image/png" sizes="512x512" href="assets/img/favicon.png?v=2" />
+
+  <!-- JS: Supabase + client + guard + main -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+  <script src="assets/js/auth-client.js" defer></script>
+  <script src="assets/js/auth-guard.js" defer></script>
+  <script src="assets/js/auth-logout.js" defer></script>
+  <script src="assets/js/main.js" defer></script>
+</head>
+
+<body>
+<div class="main-wrapper">
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html">
+        <span>Dent</span><span>AIstudy</span>
+      </a>
+
+      <nav class="header-nav">
+        <a href="subjects.html">Subjects</a>
+        <a href="study.html">Study builder</a>
+        <a href="blogs.html">Blogs</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+
+      <div class="header-right">
+        <button class="btn btn-outline header-login" data-das-logout>
+          Log out
+        </button>
+        <button class="menu-toggle" aria-label="Open menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile slide nav -->
+  <div class="slide-nav-backdrop"></div>
+  <nav class="slide-nav">
+    <div class="slide-nav-header">
+      <h3>Menu</h3>
+      <button class="slide-nav-close" aria-label="Close menu">&times;</button>
+    </div>
+    <div class="slide-nav-links">
+      <a href="subjects.html">Subjects</a>
+      <a href="study.html">Study builder</a>
+      <a href="blogs.html">Blogs</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="#" class="slide-login-link" data-das-logout>Log out</a>
+    </div>
+  </nav>
+
+  <!-- WORKSPACE -->
+  <main>
+    <div class="container">
+      <div class="workspace-header-row">
+        <div class="workspace-title-row">
+          <div>
+            <div class="workspace-breadcrumb">
+              <span>DentAIstudy</span>
+              <span>Account</span>
+            </div>
+            <h1>My profile</h1>
+            <p class="workspace-subtitle">
+              Overview of your study identity, activity and preferences.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="workspace-shell">
+        <!-- Sidebar -->
+        <aside class="workspace-sidebar">
+          <div class="sidebar-card">
+            <div class="sidebar-card-header">
+              <div class="sidebar-avatar">
+                <img src="assets/img/default-avatar.png" alt="Your avatar" data-das-avatar />
+              </div>
+              <div>
+                <div class="sidebar-card-title" id="das-user-name">
+                  Your DentAIstudy workspace
+                </div>
+                <div class="sidebar-card-subtitle">Profile &amp; study identity</div>
+              </div>
+            </div>
+
+            <div class="sidebar-tags">
+              <span class="sidebar-tag">Dental only</span>
+              <span class="sidebar-tag">Undergrad / Intern</span>
+              <span class="sidebar-tag">Exam-focused</span>
+            </div>
+
+            <nav class="sidebar-nav">
+              <a href="study.html" class="sidebar-nav-item">
+                <span>Study builder</span>
+              </a>
+              <a href="profile.html" class="sidebar-nav-item is-active">
+                <span><strong>Profile</strong></span>
+              </a>
+              <a href="settings.html" class="sidebar-nav-item">
+                <span>Settings</span>
+              </a>
+            </nav>
+          </div>
+        </aside>
+
+        <!-- Main profile content -->
+        <section class="workspace-main">
+          <div
+            class="profile-grid"
+            style="display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:18px;align-items:flex-start;"
+          >
+
+            <!-- Overview card -->
+            <section class="study-form-card">
+              <div style="display:flex;gap:14px;align-items:center;margin-bottom:10px;">
+
+                <!-- Avatar -->
+                <div
+                  style="width:64px;height:64px;border-radius:999px;overflow:hidden;background:#e5e7eb;flex-shrink:0;"
+                >
+                  <img
+                    src="assets/img/default-avatar.png"
+                    alt="User avatar"
+                    id="das-profile-avatar-main"
+                    style="width:100%;height:100%;object-fit:cover;"
+                  />
+                </div>
+
+                <!-- Name + Email + Tag -->
+                <div>
+                  <div style="font-weight:600;">
+                    <span id="das-profile-name">Your Name</span>
+                  </div>
+
+                  <div style="font-size:0.85rem;color:#6b7280;">
+                    <span id="das-profile-email">you@example.com</span>
+                  </div>
+
+                  <div
+                    style="
+                      margin-top:4px;
+                      display:inline-flex;
+                      align-items:center;
+                      padding:2px 10px;
+                      border-radius:999px;
+                      background:#eff6ff;
+                      font-size:0.75rem;
+                      color:#1d4ed8;
+                    "
+                  >
+                    DentAIstudy free plan
+                  </div>
+                </div>
+              </div>
+
+              <!-- Upload button + text -->
+              <input
+                type="file"
+                id="avatar-input"
+                accept="image/*"
+                style="display:none;"
+              />
+
+              <button
+                class="btn btn-outline"
+                type="button"
+                style="font-size:0.85rem;padding:7px 14px;"
+                id="avatar-upload-btn"
+              >
+                Upload photo
+              </button>
+
+              <small
+                id="avatar-status"
+                style="display:block;margin-top:6px;color:#0f3c7d;"
+              ></small>
+
+              <p style="margin-top:8px;font-size:0.8rem;color:#6b7280;">
+                Profile photos are for your own workspace only – they are not visible to other users.
+              </p>
+            </section>
+
+            <!-- Stats card -->
+            <section class="study-answer-card">
+              <h2 style="margin:0 0 6px;font-size:0.9rem;">Study activity</h2>
+
+              <div style="display:flex;gap:10px;">
+                <div style="flex:1;">
+                  <strong
+                    id="das-profile-packs-count"
+                    style="display:block;font-size:0.95rem;font-weight:600;"
+                  >
+                    0
+                  </strong>
+                  <span style="font-size:0.8rem;color:#6b7280;">Study packs</span>
+                </div>
+                <div style="flex:1;">
+                  <strong
+                    id="das-profile-osce-count"
+                    style="display:block;font-size:0.95rem;font-weight:600;"
+                  >
+                    0
+                  </strong>
+                  <span style="font-size:0.8rem;color:#6b7280;">OSCE flows</span>
+                </div>
+                <div style="flex:1;">
+                  <strong
+                    id="das-profile-flashcard-count"
+                    style="display:block;font-size:0.95rem;font-weight:600;"
+                  >
+                    0
+                  </strong>
+                  <span style="font-size:0.8rem;color:#6b7280;">Flashcard decks</span>
+                </div>
+              </div>              
+
+              <div style="display:flex;gap:10px;margin-top:10px;">
+                <div style="flex:1;">
+                  <strong
+                    id="das-profile-top-mode"
+                    style="display:block;font-size:0.95rem;font-weight:600;"
+                  >
+                    —
+                  </strong>
+                  <span style="font-size:0.8rem;color:#6b7280;">Top style</span>
+                </div>
+                <div style="flex:1;">
+                  <strong
+                    id="das-profile-last-active"
+                    style="display:block;font-size:0.95rem;font-weight:600;"
+                  >
+                    —
+                  </strong>
+                  <span style="font-size:0.8rem;color:#6b7280;">Last active</span>
+                </div>
+                <div style="flex:1;">
+                  <strong
+                    id="das-profile-starred-count"
+                    style="display:block;font-size:0.95rem;font-weight:600;"
+                  >
+                    0
+                  </strong>
+                  <span style="font-size:0.8rem;color:#6b7280;">Starred packs</span>
+                </div>
+              </div>              
+            </section>
+
+            <!-- Preferences card -->
+            <section class="study-form-card" style="grid-column:1 / -1;">
+              <h2 style="margin:0 0 4px;font-size:0.9rem;">Study preferences</h2>
+
+              <div style="margin-top:4px;">
+                <div style="font-size:0.8rem;color:#4b5563;">Default level</div>
+                <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;">
+                  <span
+                    id="das-profile-default-level"
+                    style="padding:3px 10px;border-radius:999px;background:#eff6ff;font-size:0.8rem;color:#1d4ed8;"
+                  >
+                    Undergraduate
+                  </span>
+                </div>
+              </div>
+
+              <div style="margin-top:10px;">
+                <div style="font-size:0.8rem;color:#4b5563;">Favorite subjects</div>
+                <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;">
+                  <!-- All subjects; JS will highlight top 3 favorites -->
+                  <span
+                    data-das-subject-pill="operative"
+                    style="padding:3px 10px;border-radius:999px;background:#f3f4f6;font-size:0.8rem;color:#4b5563;"
+                  >
+                    Operative Dentistry
+                  </span>
+                  <span
+                    data-das-subject-pill="endodontics"
+                    style="padding:3px 10px;border-radius:999px;background:#f3f4f6;font-size:0.8rem;color:#4b5563;"
+                  >
+                    Endodontics
+                  </span>
+                  <span
+                    data-das-subject-pill="prosthodontics"
+                    style="padding:3px 10px;border-radius:999px;background:#f3f4f6;font-size:0.8rem;color:#4b5563;"
+                  >
+                    Prosthodontics
+                  </span>
+                  <span
+                    data-das-subject-pill="oral_surgery"
+                    style="padding:3px 10px;border-radius:999px;background:#f3f4f6;font-size:0.8rem;color:#4b5563;"
+                  >
+                    Oral &amp; Maxillofacial Surgery
+                  </span>
+                  <span
+                    data-das-subject-pill="orthodontics"
+                    style="padding:3px 10px;border-radius:999px;background:#f3f4f6;font-size:0.8rem;color:#4b5563;"
+                  >
+                    Orthodontics
+                  </span>
+                  <span
+                    data-das-subject-pill="pediatric"
+                    style="padding:3px 10px;border-radius:999px;background:#f3f4f6;font-size:0.8rem;color:#4b5563;"
+                  >
+                    Pediatric Dentistry
+                  </span>
+                  <span
+                    data-das-subject-pill="periodontology"
+                    style="padding:3px 10px;border-radius:999px;background:#f3f4f6;font-size:0.8rem;color:#4b5563;"
+                  >
+                    Periodontology
+                  </span>
+                  <span
+                    data-das-subject-pill="oral_anatomy"
+                    style="padding:3px 10px;border-radius:999px;background:#f3f4f6;font-size:0.8rem;color:#4b5563;"
+                  >
+                    Oral Anatomy
+                  </span>
+                </div>
+              </div>              
+
+              <div style="margin-top:10px;">
+                <div style="font-size:0.8rem;color:#4b5563;">Preferred output style</div>
+                <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;">
+                  <!-- JS will highlight preferred styles from metadata -->
+                  <span
+                    data-das-output-pill="bullet_points"
+                    style="padding:3px 10px;border-radius:999px;background:#f3f4f6;font-size:0.8rem;color:#4b5563;"
+                  >
+                    Bullet points
+                  </span>
+                  <span
+                    data-das-output-pill="osce_checklists"
+                    style="padding:3px 10px;border-radius:999px;background:#f3f4f6;font-size:0.8rem;color:#4b5563;"
+                  >
+                    OSCE checklists
+                  </span>
+                  <span
+                    data-das-output-pill="short_notes"
+                    style="padding:3px 10px;border-radius:999px;background:#f3f4f6;font-size:0.8rem;color:#4b5563;"
+                  >
+                    Short notes
+                  </span>
+                </div>
+              </div>              
+            </section>
+
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div>
+          <div class="footer-brand">DentAIstudy</div>
+          <p>AI-enhanced tools for dental students and residents.</p>
+        </div>
+        <div class="footer-column">
+          <h4>Product</h4>
+          <a href="subjects.html">Subjects</a>
+          <a href="study.html">Study builder</a>
+          <a href="blogs.html">Blogs</a>
+        </div>
+        <div class="footer-column">
+          <h4>Company</h4>
+          <a href="about.html">About</a>
+          <a href="contact.html">Contact</a>
+          <a href="faqs.html">FAQ</a>
+        </div>
+        <div class="footer-column">
+          <h4>Legal</h4>
+          <a href="privacy.html">Privacy Policy</a>
+          <a href="terms.html">Terms &amp; Conditions</a>
+          <a href="cookies.html">Cookies Policy</a>
+          <a href="disclaimer.html">Disclaimer</a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        © 2025 DentAIstudy. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>

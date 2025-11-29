@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Endodontic Diagnosis Simplified – DentAIstudy</title>
+  <link rel="stylesheet" href="../assets/css/style-v2.5.css" />
+  <link rel="icon" type="image/png" sizes="512x512" href="../assets/img/favicon.png?v=2" />
+
+  <!-- JS: Supabase + Auth Guard + Logout + Main -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+  <script src="../assets/js/auth-client.js" defer></script>
+  <script src="../assets/js/auth-guard.js" defer></script>
+  <script src="../assets/js/auth-logout.js" defer></script>
+  <script defer src="../assets/js/main.js"></script>
+</head>
+
+<body>
+<div class="main-wrapper">
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="../index.html"><span>Dent</span><span>AIstudy</span></a>
+    <nav class="header-nav">
+      <a href="../subjects.html">Subjects</a>
+      <a href="../study.html">Study builder</a>
+      <a href="../blogs.html" class="is-active">Blogs</a>
+      <a href="../about.html">About</a>
+      <a href="../contact.html">Contact</a>
+    </nav>
+    <div class="header-right">
+      <a href="../login.html" class="btn btn-outline header-login">Log in</a>
+      <a href="../signup.html" class="btn btn-primary header-signup">Sign up</a>
+      <button class="menu-toggle"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<!-- MOBILE NAV -->
+<div class="slide-nav-backdrop"></div>
+<nav class="slide-nav">
+  <div class="slide-nav-header"><h3>Menu</h3><button class="slide-nav-close">&times;</button></div>
+  <div class="slide-nav-links">
+    <a href="../subjects.html">Subjects</a>
+    <a href="../study.html">Study builder</a>
+    <a href="../blogs.html">Blogs</a>
+    <a href="../about.html">About</a>
+    <a href="../contact.html">Contact</a>
+    <a href="../login.html" class="slide-login-link">Log in</a>
+  </div>
+</nav>
+
+<!-- BLOG CONTENT -->
+<main class="section">
+  <div class="container container-narrow">
+
+    <div class="section-header" style="text-align:left;">
+      <div class="section-kicker">Endodontics</div>
+      <h1 class="section-title">Endodontic Diagnosis Simplified (OSCE-Ready Guide)</h1>
+      <p class="section-subtitle">A structured, examiner-friendly method to distinguish reversible pulpitis, irreversible pulpitis, pulp necrosis, and apical periodontitis — exactly how boards want it.</p>
+    </div>
+
+    <!-- QUICK ANSWERS (for snippet SEO) -->
+    <section class="study-answer-card">
+      <h2>Quick Answers</h2>
+
+      <h3>What is reversible pulpitis?</h3>
+      <p>Mild, sharp, stimulus-triggered pain that stops quickly once the stimulus is removed. No lingering or spontaneous pain.</p>
+
+      <h3>What is irreversible pulpitis?</h3>
+      <p>Inflammation with prolonged, lingering pain after cold/heat, often spontaneous, and not relieved by stimulus removal.</p>
+
+      <h3>What is pulp necrosis?</h3>
+      <p>Loss of pulpal vitality with no response to thermal tests; may be asymptomatic until periapical tissues become involved.</p>
+
+      <h3>What is symptomatic apical periodontitis?</h3>
+      <p>Pain on biting or percussion due to periapical inflammation, with or without radiographic widening of the PDL.</p>
+
+      <h3>What is asymptomatic apical periodontitis?</h3>
+      <p>Chronic periapical inflammation without pain, usually presenting as a periapical radiolucency.</p>
+    </section>
+
+    <!-- MAIN ARTICLE -->
+    <article class="blog-body">
+
+      <h2>1. Start with the chief complaint</h2>
+      <p>Examiners always want the patient’s narrative first. It guides test selection and diagnosis.</p>
+      <ul>
+        <li>“Sharp pain with cold.”</li>
+        <li>“Throbbing pain wakes me at night.”</li>
+        <li>“Pain when chewing.”</li>
+      </ul>
+
+      <h2>2. Thermal testing: the fastest way to classify pulpal status</h2>
+      <p>Interpret thermal response using <strong>duration</strong>:</p>
+      <ul>
+        <li><strong>Reversible pulpitis:</strong> quick, sharp pain → disappears immediately</li>
+        <li><strong>Irreversible pulpitis:</strong> lingering pain for 10–30 seconds</li>
+        <li><strong>Pulp necrosis:</strong> no response</li>
+      </ul>
+      <p>Cold testing is more diagnostic than heat, especially in early inflammation.</p>
+
+      <h2>3. Percussion and biting tests</h2>
+      <p>These reflect periapical tissue involvement:</p>
+      <ul>
+        <li><strong>Positive percussion:</strong> symptomatic apical periodontitis</li>
+        <li><strong>Pain on biting:</strong> crack, high occlusion, or apical inflammation</li>
+      </ul>
+
+      <h2>4. Radiographs: interpret with caution</h2>
+      <p>Periapical diagnosis must combine radiographs + symptoms + tests.</p>
+      <ul>
+        <li><strong>No radiographic change:</strong> reversible or irreversible pulpitis</li>
+        <li><strong>Widened PDL:</strong> early apical periodontitis</li>
+        <li><strong>Radiolucency:</strong> chronic apical periodontitis</li>
+      </ul>
+
+      <h2>5. OSCE diagnosis template</h2>
+      <p>Use the two-part diagnosis format examiners expect:</p>
+      <ul>
+        <li><strong>Pulpal diagnosis</strong> → reversible / irreversible / necrosis</li>
+        <li><strong>Periapical diagnosis</strong> → normal / symptomatic AP / asymptomatic AP / abscess</li>
+        <li><strong>Justification</strong> → tests + symptoms + radiograph</li>
+      </ul>
+
+      <div class="study-form-card">
+        <h3>Example OSCE Answer</h3>
+        <p><strong>Pulp diagnosis:</strong> Irreversible pulpitis<br>
+           <strong>Periapical diagnosis:</strong> Symptomatic apical periodontitis<br>
+           <strong>Justification:</strong> Lingering cold pain, spontaneous symptoms, positive percussion, widened PDL.</p>
+      </div>
+
+      <h2>6. Common mistakes students make</h2>
+      <ul>
+        <li>Calling every cold sensitivity “irreversible pulpitis.”</li>
+        <li>Diagnosing from radiographs alone.</li>
+        <li>Confusing biting pain with thermal pain patterns.</li>
+      </ul>
+
+      <h2>7. How DentAIstudy can help</h2>
+      <p>DentAIstudy converts this topic into structured recall tools:</p>
+      <ul>
+        <li>AI-generated OSCE flows</li>
+        <li>Flashcards for thermal response patterns</li>
+        <li>High-yield one-page notes</li>
+        <li>MCQs for exam practice</li>
+      </ul>
+      <p><a href="../study.html" class="btn btn-primary">Try Study Builder →</a></p>
+
+      <h2>References</h2>
+      <p>All sources are reputable, peer-reviewed, and used internationally by dental boards.</p>
+      <ul>
+        <li>American Association of Endodontists (AAE). <a href="https://www.aae.org/specialty/clinical-resources/diagnosis/">Endodontic Diagnosis Guidelines</a>.</li>
+        <li>Ricucci D, Siqueira JF. “Pulp Inflammation Diagnosis and Management.” <i>Journal of Endodontics</i> (JOE).</li>
+        <li>Abbott PV. “Apical periodontitis classification and diagnosis.” <i>Australian Endodontic Journal</i>.</li>
+        <li>Neville BW et al. <i>Oral & Maxillofacial Pathology</i> (reference-aligned summary).</li>
+      </ul>
+
+    </article>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand">DentAIstudy</div>
+        <p>AI-enhanced tools for dental students and residents.</p>
+      </div>
+      <div class="footer-column"><h4>Product</h4><a href="../subjects.html">Subjects</a><a href="../study.html">Study builder</a><a href="../blogs.html">Blogs</a></div>
+      <div class="footer-column"><h4>Company</h4><a href="../about.html">About</a><a href="../contact.html">Contact</a><a href="../faqs.html">FAQ</a></div>
+      <div class="footer-column"><h4>Legal</h4><a href="../privacy.html">Privacy Policy</a><a href="../terms.html">Terms & Conditions</a><a href="../cookies.html">Cookies Policy</a><a href="../disclaimer.html">Disclaimer</a></div>
+    </div>
+    <div class="footer-bottom">© 2025 DentAIstudy</div>
+  </div>
+</footer>
+
+
+</div>
+</body>
+</html>

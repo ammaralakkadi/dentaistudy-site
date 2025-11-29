@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ortho Cases: Clean Problem List – DentAIstudy</title>
+
+  <link rel="stylesheet" href="../assets/css/style-v2.5.css" />
+  <link rel="icon" type="image/png" sizes="512x512" href="../assets/img/favicon.png?v=2" />
+
+  <!-- JS: Supabase + Auth Guard + Logout + Main -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+  <script src="../assets/js/auth-client.js" defer></script>
+  <script src="../assets/js/auth-guard.js" defer></script>
+  <script src="../assets/js/auth-logout.js" defer></script>
+  <script defer src="../assets/js/main.js"></script>
+</head>
+
+<body>
+<div class="main-wrapper">
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="../index.html">
+        <span>Dent</span><span>AIstudy</span>
+      </a>
+
+      <nav class="header-nav">
+        <a href="../subjects.html">Subjects</a>
+        <a href="../study.html">Study builder</a>
+        <a href="../blogs.html" class="is-active">Blogs</a>
+        <a href="../about.html">About</a>
+        <a href="../contact.html">Contact</a>
+      </nav>
+
+      <div class="header-right">
+        <a href="../login.html" class="btn btn-outline header-login">Log in</a>
+        <a href="../signup.html" class="btn btn-primary header-signup">Sign up</a>
+        <button class="menu-toggle" aria-label="Open menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="slide-nav-backdrop"></div>
+  <nav class="slide-nav">
+    <div class="slide-nav-header">
+      <h3>Menu</h3>
+      <button class="slide-nav-close" aria-label="Close menu">&times;</button>
+    </div>
+    <div class="slide-nav-links">
+      <a href="../subjects.html">Subjects</a>
+      <a href="../study.html">Study builder</a>
+      <a href="../blogs.html">Blogs</a>
+      <a href="../about.html">About</a>
+      <a href="../contact.html">Contact</a>
+      <a href="../login.html" class="slide-login-link">Log in</a>
+    </div>
+  </nav>
+
+  <main class="section">
+    <div class="container container-narrow">
+
+      <div class="section-header" style="text-align:left;">
+        <div class="section-kicker">Orthodontics</div>
+        <h1 class="section-title">Ortho Cases: Clean Problem List</h1>
+        <p class="section-subtitle">
+          A clean, repeatable framework for building orthodontic problem lists in exams.
+        </p>
+      </div>
+
+      <section class="study-answer-card">
+        <h2>Quick Answers</h2>
+
+        <h3>What is an orthodontic problem list?</h3>
+        <p>A structured summary of all relevant skeletal, dental, soft-tissue, and functional problems in one place.</p>
+
+        <h3>Why is it important in exams?</h3>
+        <p>Examiners use it to see if you recognised the key issues before you start talking about treatment options.</p>
+
+        <h3>How many headings do I really need?</h3>
+        <p>Most exams are happy if you cover: complaint, skeletal, dental, soft tissue, functional, and other factors.</p>
+
+        <h3>How does it link to the treatment plan?</h3>
+        <p>Good plans simply address each problem list item with one or more clear treatment objectives.</p>
+      </section>
+
+      <article class="blog-body">
+
+        <h2>1. Why a clean problem list changes your ortho answers</h2>
+        <p>
+          In orthodontic cases, it is easy to jump straight into appliances or mechanics.
+          Examiners, however, first want to know if you actually see the full picture.
+        </p>
+        <p>
+          A clean problem list turns a messy ceph, crowded arch, and long story into a short, organised snapshot
+          of the whole case.
+        </p>
+
+        <h2>2. Universal structure for any ortho problem list</h2>
+        <div class="study-form-card">
+          <h3>Use these six headings every time</h3>
+          <p>
+            1. <strong>Chief complaint</strong> – what the patient actually wants changed (e.g. “protruding upper teeth”).<br>
+            2. <strong>Skeletal pattern</strong> – anteroposterior, vertical, and transverse (e.g. Class II, average FMPA, mild asymmetry).<br>
+            3. <strong>Dental relationships</strong> – molar/canine relationships, overjet, overbite, crossbites, crowding/spacing.<br>
+            4. <strong>Soft-tissue / facial</strong> – profile, lip competence, smile line, incisor display.<br>
+            5. <strong>Functional / habits</strong> – CO–CR shift, habits, mouth breathing, speech, TMD symptoms.<br>
+            6. <strong>Other factors</strong> – caries, restorations, missing teeth, periodontal status, growth potential, compliance.
+          </p>
+        </div>
+        <p>
+          For exams, just write 2–4 sharp points under each heading.
+          This alone already looks like a high-level orthodontic answer.
+        </p>
+
+        <h2>3. Example: Class II division 1 crowded case</h2>
+        <p>Here is how the same structure looks for a typical board-style case:</p>
+        <ul>
+          <li><strong>Chief complaint:</strong> “My upper teeth stick out and I don’t like my smile.”</li>
+          <li><strong>Skeletal:</strong> Skeletal Class II, average vertical pattern, mild mandibular retrusion.</li>
+          <li><strong>Dental:</strong> Half-unit Class II molars, increased overjet (8 mm), deep overbite, mild upper and lower crowding.</li>
+          <li><strong>Soft tissue:</strong> Convex profile, mild lip incompetence, increased incisor display on smiling.</li>
+          <li><strong>Functional:</strong> No CO–CR shift, no reported TMD, mouth breathing at night.</li>
+          <li><strong>Other:</strong> Good OH, no active caries, still growing, likely to cooperate with fixed appliances.</li>
+        </ul>
+        <p>
+          From this, it becomes straightforward to set objectives and choose between extraction / non-extraction mechanics.
+        </p>
+
+        <h2>4. Common mistakes with ortho problem lists</h2>
+        <p>Most candidates lose marks in the same few ways:</p>
+        <ul>
+          <li>Mixing problems with treatment (e.g. “needs extraction of premolars”).</li>
+          <li>Ignoring vertical or transverse dimension and only talking about Class I/II/III.</li>
+          <li>Forgetting soft-tissue and smile considerations completely.</li>
+          <li>Writing long paragraphs instead of short, classified points.</li>
+        </ul>
+        <p>
+          A problem list is “what is wrong now”, not “what I want to do”.
+          Keep it descriptive, not prescriptive.
+        </p>
+
+        <h2>5. Fast practice routine for problem lists</h2>
+        <div class="study-form-card">
+          <h3>5-minute drill for any exam case</h3>
+          <p>
+            1. Look at one case (photos, models, or a written vignette).<br>
+            2. Write the six headings: complaint, skeletal, dental, soft tissue, functional, other.<br>
+            3. Under each, add 2–3 bullet points only.<br>
+            4. Say the list aloud as if explaining to an examiner.<br>
+            5. Repeat with a new case tomorrow — same headings, new findings.
+          </p>
+        </div>
+        <p>
+          With repetition, you will automatically think in this structure every time you see an ortho case,
+          both in clinic and in exams.
+        </p>
+
+        <h2>6. How DentAIstudy helps</h2>
+        <p>
+          DentAIstudy can take an orthodontic scenario and convert it into a clean, exam-ready problem list in seconds.
+        </p>
+        <ul>
+          <li>Organises findings into skeletal, dental, soft-tissue, and functional headings.</li>
+          <li>Generates sample problem lists from written cases, radiographs, or typical exam vignettes.</li>
+          <li>Suggests clear objectives that link directly from each problem item.</li>
+          <li>Helps you rehearse multiple variations of similar Class I, II, and III cases quickly.</li>
+        </ul>
+        <p><a href="../study.html" class="btn btn-primary">Try Study Builder →</a></p>
+
+        <h2>References</h2>
+        <ul>
+          <li>Proffit WR, Fields HW, Larson B. <em>Contemporary Orthodontics</em>. 6th ed. Elsevier; 2018.</li>
+          <li>Graber LW, Vanarsdall RL, Vig KWL, Huang GJ. <em>Orthodontics: Current Principles and Techniques</em>. 6th ed. Elsevier; 2016.</li>
+          <li>British Orthodontic Society. Clinical guidelines for orthodontic treatment planning and assessment.</li>
+          <li>American Board of Orthodontics. Case evaluation and grading system for dental casts and radiographs.</li>
+        </ul>
+
+      </article>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div>
+          <div class="footer-brand">DentAIstudy</div>
+          <p>AI-enhanced tools for dental students and residents.</p>
+        </div>
+
+        <div class="footer-column">
+          <h4>Product</h4>
+          <a href="../subjects.html">Subjects</a>
+          <a href="../study.html">Study builder</a>
+          <a href="../blogs.html">Blogs</a>
+        </div>
+
+        <div class="footer-column">
+          <h4>Company</h4>
+          <a href="../about.html">About</a>
+          <a href="../contact.html">Contact</a>
+          <a href="../faqs.html">FAQ</a>
+        </div>
+
+        <div class="footer-column">
+          <h4>Legal</h4>
+          <a href="../privacy.html">Privacy Policy</a>
+          <a href="../terms.html">Terms &amp; Conditions</a>
+          <a href="../cookies.html">Cookies Policy</a>
+          <a href="../disclaimer.html">Disclaimer</a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        © 2025 DentAIstudy. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+
+</body>
+</html>

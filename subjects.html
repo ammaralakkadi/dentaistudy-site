@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Subjects – DentAIstudy</title>
+  <link rel="stylesheet" href="assets/css/style-v2.5.css" />
+  <link rel="icon" type="image/png" sizes="512x512" href="assets/img/favicon.png?v=2" />
+
+  <!-- JS: Supabase + Auth Guard + Logout + Main -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+  <script src="assets/js/auth-client.js" defer></script>
+  <script src="assets/js/auth-guard.js" defer></script>
+  <script src="assets/js/auth-logout.js" defer></script>
+  <script defer src="assets/js/main.js"></script>
+
+</head>
+
+<body>
+<div class="main-wrapper">
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html">
+        <span>Dent</span><span>AIstudy</span>
+      </a>
+
+      <nav class="header-nav">
+        <a href="subjects.html">Subjects</a>
+        <a href="study.html">Study builder</a>
+        <a href="blogs.html">Blogs</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+
+      <div class="header-right">
+        <a href="login.html" class="btn btn-outline header-login">Log in</a>
+        <a href="signup.html" class="btn btn-primary header-signup">Sign up</a>
+        <button class="menu-toggle" aria-label="Open menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile nav -->
+  <div class="slide-nav-backdrop"></div>
+  <nav class="slide-nav">
+    <div class="slide-nav-header">
+      <h3>Menu</h3>
+      <button class="slide-nav-close" aria-label="Close menu">&times;</button>
+    </div>
+    <div class="slide-nav-links">
+      <a href="subjects.html">Subjects</a>
+      <a href="study.html">Study builder</a>
+      <a href="blogs.html">Blogs</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="login.html" class="slide-login-link">Log in</a>
+    </div>
+  </nav>
+
+  <div class="subjects-shell">
+    <!-- Page hero -->
+    <section class="page-hero page-hero-subjects">
+      <div class="container">
+        <h1>Subjects</h1>
+        <p>
+          Every major dental specialty — summarized, structured, and powered by AI so you
+          can revise like an examiner is watching.
+        </p>
+      </div>
+    </section>
+
+    <!-- SUBJECT GRID -->
+    <section class="subjects-section">
+      <div class="container">
+        <div class="subjects-grid">
+
+          <!-- Operative Dentistry -->
+          <article class="subject-card">
+            <div class="subject-icon-frame">
+              <img src="assets/img/subjects/operative.png" alt="Operative dentistry icon" loading="lazy" />
+            </div>
+            <h3>Operative Dentistry</h3>
+            <p>Restorative principles, caries management, materials, and cavity design.</p>
+            <div class="subject-ai">
+              DentAIstudy generates: cavity classifications, step-by-step restorations, common viva points.
+            </div>
+          </article>
+
+          <!-- Endodontics -->
+          <article class="subject-card">
+            <div class="subject-icon-frame">
+              <img src="assets/img/subjects/endodontics.png" alt="Endodontics icon" loading="lazy" />
+            </div>
+            <h3>Endodontics</h3>
+            <p>Pulp biology, root canal therapy, diagnoses, and emergencies.</p>
+            <div class="subject-ai">
+              DentAIstudy helps with: irrigation protocols, obturation sequences, diagnostic flowcharts.
+            </div>
+          </article>
+
+          <!-- Prosthodontics -->
+          <article class="subject-card">
+            <div class="subject-icon-frame">
+              <img src="assets/img/subjects/prosthodontics.png" alt="Prosthodontics icon" loading="lazy" />
+            </div>
+            <h3>Prosthodontics</h3>
+            <p>Fixed, removable, implants, occlusion, and lab communication.</p>
+            <div class="subject-ai">
+              DentAIstudy builds: RPD designs, crown prep checklists, impression troubleshooting notes.
+            </div>
+          </article>
+
+          <!-- Oral Surgery -->
+          <article class="subject-card">
+            <div class="subject-icon-frame">
+              <img src="assets/img/subjects/oral%20surgery.png" alt="Oral surgery icon" loading="lazy" />
+            </div>
+            <h3>Oral &amp; Maxillofacial Surgery</h3>
+            <p>Exodontia, impactions, infections, biopsies, and medical risk assessment.</p>
+            <div class="subject-ai">
+              DentAIstudy structures: consent talking points, surgical steps, postop instructions, OSCE flows.
+            </div>
+          </article>
+
+          <!-- Orthodontics -->
+          <article class="subject-card">
+            <div class="subject-icon-frame">
+              <img src="assets/img/subjects/orthodontics.png" alt="Orthodontics icon" loading="lazy" />
+            </div>
+            <h3>Orthodontics</h3>
+            <p>Diagnosis, cephalometrics, biomechanics, appliances, and growth.</p>
+            <div class="subject-ai">
+              DentAIstudy summarizes: ceph findings, treatment plans, biomechanical reasoning.
+            </div>
+          </article>
+
+          <!-- Pediatric Dentistry -->
+          <article class="subject-card">
+            <div class="subject-icon-frame">
+              <img src="assets/img/subjects/pedodontics.png" alt="Pediatric dentistry icon" loading="lazy" />
+            </div>
+            <h3>Pediatric Dentistry</h3>
+            <p>Behavior management, pulp therapy, trauma, and preventive care.</p>
+            <div class="subject-ai">
+              DentAIstudy simplifies: trauma guidelines, pulp therapy steps, chairside behavior scripts.
+            </div>
+          </article>
+
+          <!-- Periodontology -->
+          <article class="subject-card">
+            <div class="subject-icon-frame">
+              <img src="assets/img/subjects/periodontology.png" alt="Periodontology icon" loading="lazy" />
+            </div>
+            <h3>Periodontology</h3>
+            <p>Gingival diseases, pocketing, surgery, and maintenance care.</p>
+            <div class="subject-ai">
+              DentAIstudy structures: periodontal classifications, case notes, treatment sequencing.
+            </div>
+          </article>
+
+          <!-- Oral Anatomy -->
+          <article class="subject-card">
+            <div class="subject-icon-frame">
+              <img src="assets/img/subjects/oral%20anatomy.png" alt="Oral anatomy icon" loading="lazy" />
+            </div>
+            <h3>Oral Anatomy</h3>
+            <p>Tooth morphology, craniofacial anatomy, nerves, and blood supply.</p>
+            <div class="subject-ai">
+              DentAIstudy compresses: nerve pathways, muscle tables, morphology checklists for carving and OSCE.
+            </div>
+          </article>
+
+        </div>
+
+        <div style="text-align:center; margin-top:40px;">
+          <a href="study.html" class="btn btn-primary" style="padding:12px 26px; font-size:16px;">
+            Start studying with AI →
+          </a>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+
+      <div class="footer-top">
+
+        <div>
+          <div class="footer-brand">DentAIstudy</div>
+          <p>AI-enhanced tools for dental students and residents.</p>
+        </div>
+
+        <div class="footer-column">
+          <h4>Product</h4>
+          <a href="subjects.html">Subjects</a>
+          <a href="study.html">Study builder</a>
+          <a href="blogs.html">Blogs</a>
+        </div>
+
+        <div class="footer-column">
+  <h4>Company</h4>
+  <a href="about.html">About</a>
+  <a href="contact.html">Contact</a>
+  <a href="faqs.html">FAQ</a>
+</div>
+
+        <div class="footer-column">
+          <h4>Legal</h4>
+          <a href="privacy.html">Privacy Policy</a>
+          <a href="terms.html">Terms & Conditions</a>
+          <a href="cookies.html">Cookies Policy</a>
+          <a href="disclaimer.html">Disclaimer</a>
+        </div>
+
+      </div>
+
+      <div class="footer-bottom">
+        <div>© 2025 DentAIstudy. All rights reserved.</div>
+      </div>
+
+    </div>
+  </footer>
+
+</div>
+
+<!-- Cookie -->
+<div class="cookie-banner">
+  <div class="container cookie-inner">
+    <div class="cookie-text">
+      <h3>Cookies &amp; privacy</h3>
+      <p>
+        We use essential cookies to keep DentAIstudy running and to improve your study experience.
+        By continuing, you agree to our <a href="cookies.html">Cookies Policy</a>.
+      </p>
+    </div>
+
+    <div class="cookie-actions">
+      <a href="cookies.html" class="btn btn-outline">Learn more</a>
+      <button class="btn btn-primary cookie-accept">Accept</button>
+    </div>
+  </div>
+</div>
+
+
+</body>
+</html>

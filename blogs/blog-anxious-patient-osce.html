@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Managing the Anxious Dental Patient — OSCE Communication Guide</title>
+
+  <link rel="stylesheet" href="../assets/css/style-v2.5.css" />
+  <link rel="icon" type="image/png" sizes="512x512" href="../assets/img/favicon.png?v=2" />
+
+  <!-- JS: Supabase + Auth Guard + Logout + Main -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+  <script src="../assets/js/auth-client.js" defer></script>
+  <script src="../assets/js/auth-guard.js" defer></script>
+  <script src="../assets/js/auth-logout.js" defer></script>
+  <script defer src="../assets/js/main.js"></script>
+</head>
+
+<body>
+<div class="main-wrapper">
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="../index.html"><span>Dent</span><span>AIstudy</span></a>
+      <nav class="header-nav">
+        <a href="../subjects.html">Subjects</a>
+        <a href="../study.html">Study builder</a>
+        <a href="../blogs.html" class="is-active">Blogs</a>
+        <a href="../about.html">About</a>
+        <a href="../contact.html">Contact</a>
+      </nav>
+      <div class="header-right">
+        <a href="../login.html" class="btn btn-outline header-login">Log in</a>
+        <a href="../signup.html" class="btn btn-primary header-signup">Sign up</a>
+        <button class="menu-toggle" aria-label="Open menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MOBILE NAV -->
+  <div class="slide-nav-backdrop"></div>
+  <nav class="slide-nav">
+    <div class="slide-nav-header">
+      <h3>Menu</h3>
+      <button class="slide-nav-close" aria-label="Close menu">&times;</button>
+    </div>
+    <div class="slide-nav-links">
+      <a href="../subjects.html">Subjects</a>
+      <a href="../study.html">Study builder</a>
+      <a href="../blogs.html">Blogs</a>
+      <a href="../about.html">About</a>
+      <a href="../contact.html">Contact</a>
+      <a href="../login.html" class="slide-login-link">Log in</a>
+    </div>
+  </nav>
+
+  <!-- BLOG -->
+  <main class="section">
+    <div class="container container-narrow">
+
+      <div class="section-header" style="text-align:left;">
+        <div class="section-kicker">OSCE</div>
+        <h1 class="section-title">Managing the Anxious Dental Patient — OSCE Communication Guide</h1>
+        <p class="section-subtitle">
+          Short, structured phrases for phobia, anxiety, and difficult communication stations.
+        </p>
+      </div>
+
+      <!-- QUICK ANSWERS -->
+      <section class="study-answer-card">
+        <h2>Quick Answers</h2>
+
+        <h3>What is the first thing to say to an anxious patient?</h3>
+        <p>Introduce yourself, acknowledge their worry, and reassure them that you will go step by step.</p>
+
+        <h3>What makes examiners give higher marks?</h3>
+        <p>Calm tone, empathy, checking consent, explaining options, and summarising clearly.</p>
+
+        <h3>How do you explain local anesthesia to a nervous patient?</h3>
+        <p>Use simple language: “I will make the area sleepy so you feel pressure, not sharp pain.”</p>
+
+        <h3>What is the safest way to end the station?</h3>
+        <p>Summarise the plan, check understanding, invite questions, and give clear follow-up advice.</p>
+      </section>
+
+      <article class="blog-body">
+
+        <h2>1. Why anxiety stations are exam favourites</h2>
+        <p>
+          Many real patients are nervous or phobic, so examiners love stations that test your communication.
+          The clinical treatment is simple; the main mark comes from <strong>how you speak</strong>, not what you drill.
+        </p>
+
+        <h2>2. Opening lines that instantly lower anxiety</h2>
+        <p>Start with a calm, predictable script so you do not freeze.</p>
+        <div class="study-form-card">
+          <h3>OSCE opening script</h3>
+          <p>
+            “Hello, my name is … I’m the dental student looking after you today.
+            I can see you’re a bit worried — that’s completely understandable.
+            We’ll go slowly, I’ll explain each step, and you can stop me at any time by raising your hand.”
+          </p>
+        </div>
+
+        <p>This one paragraph already shows empathy, consent, and shared control — three big things examiners want.</p>
+
+        <h2>3. Explaining procedures in simple language</h2>
+        <p>
+          Replace technical words with everyday phrases. Keep sentences short and positive.
+        </p>
+        <ul>
+          <li>“I will make the tooth sleepy so you feel pressure, not sharp pain.”</li>
+          <li>“If at any point you feel uncomfortable, raise your hand and I will stop.”</li>
+          <li>“First I will look, then we will decide together what needs to be done.”</li>
+        </ul>
+
+        <h2>4. Handling specific fears (needle, drill, pain)</h2>
+        <p>Most anxious-patient stations mention a particular fear. Address it directly.</p>
+        <div class="study-form-card">
+          <h3>Example phrases</h3>
+          <p>
+            Needle: “You may feel a small pinch for a few seconds, then the area becomes numb.”<br>
+            Drill: “You will hear a noise and feel vibration, but the area is numbed first.”<br>
+            Pain history: “I’m sorry you had a bad experience before; today we’ll work at your pace.”
+          </p>
+        </div>
+
+        <h2>5. Basic behaviour-management tools</h2>
+        <p>
+          Use simple techniques that work for both adults and children.
+        </p>
+        <ul>
+          <li><strong>Tell–show–do:</strong> briefly explain, show the instrument, then perform.</li>
+          <li><strong>Distraction:</strong> ask about work, study, or hobbies during simple steps.</li>
+          <li><strong>Control:</strong> agree on a hand signal to stop treatment.</li>
+          <li><strong>Breaks:</strong> offer short pauses during longer procedures.</li>
+        </ul>
+
+        <h2>6. Structure to follow in any anxiety OSCE</h2>
+        <div class="study-form-card">
+          <h3>4-step answer pattern</h3>
+          <p>
+            1. Acknowledge feelings: “I understand you feel nervous; many patients do.”<br>
+            2. Explain what will happen, in order.<br>
+            3. Offer control and safety (hand signal, stop at any time).<br>
+            4. Summarise and check understanding: “Does that sound okay? Do you have any questions?”
+          </p>
+        </div>
+
+        <h2>7. Ending the station safely</h2>
+        <p>
+          Never just say “That’s it.” Examiners want a professional close.
+        </p>
+        <ul>
+          <li>Summarise the main problem and agreed plan.</li>
+          <li>Explain what the patient might feel afterwards (numbness, mild soreness).</li>
+          <li>Give simple safety advice: “Do not bite your cheek while numb.”</li>
+          <li>Invite final questions and thank the patient.</li>
+        </ul>
+
+        <h2>8. How DentAIstudy helps</h2>
+        <p>
+          DentAIstudy can turn any communication topic into structured OSCE flows:
+        </p>
+        <ul>
+          <li>Ready-made opening and closing scripts for anxiety stations.</li>
+          <li>Examiner-style checklists for consent, empathy, and safety advice.</li>
+          <li>Short viva questions on behaviour management and sedation options.</li>
+          <li>Flashcards with key phrases you can reuse in different stations.</li>
+        </ul>
+        <p><a href="../study.html" class="btn btn-primary">Try Study Builder →</a></p>
+
+        <h2>References</h2>
+        <ul>
+          <li>Milgrom P, Newton JT, Boyle C, Heaton LJ, Donaldson N. The effects of dental anxiety and irregular attendance on referral for dental treatment under sedation. <em>Community Dent Oral Epidemiol.</em></li>
+          <li>Armfield JM, Heaton LJ. Management of fear and anxiety in the dental clinic: a review. <em>Aust Dent J.</em></li>
+          <li>General Dental Council and international OSCE communication skills frameworks.</li>
+        </ul>
+
+      </article>
+
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div>
+          <div class="footer-brand">DentAIstudy</div>
+          <p>AI-enhanced tools for dental students and residents.</p>
+        </div>
+
+        <div class="footer-column">
+          <h4>Product</h4>
+          <a href="../subjects.html">Subjects</a>
+          <a href="../study.html">Study builder</a>
+          <a href="../blogs.html">Blogs</a>
+        </div>
+
+        <div class="footer-column">
+          <h4>Company</h4>
+          <a href="../about.html">About</a>
+          <a href="../contact.html">Contact</a>
+          <a href="../faqs.html">FAQ</a>
+        </div>
+
+        <div class="footer-column">
+          <h4>Legal</h4>
+          <a href="../privacy.html">Privacy Policy</a>
+          <a href="../terms.html">Terms &amp; Conditions</a>
+          <a href="../cookies.html">Cookies Policy</a>
+          <a href="../disclaimer.html">Disclaimer</a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        © 2025 DentAIstudy. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+
+</div>
+</body>
+</html>
