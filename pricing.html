@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pricing – DentAIstudy</title>
+  <link rel="stylesheet" href="assets/css/style-v3.css" />
+  <link rel="icon" type="image/png" sizes="512x512" href="assets/img/favicon.png?v=2" />
+
+  <!-- JS: Supabase + Auth Guard + Logout + Main -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+  <script src="assets/js/auth-client.js" defer></script>
+  <script src="assets/js/auth-guard.js" defer></script>
+  <script src="assets/js/auth-logout.js" defer></script>
+  <script defer src="assets/js/main.js"></script>
+</head>
+
+<body>
+<div class="main-wrapper">
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="index.html"><span>Dent</span><span>AIstudy</span></a>
+    <nav class="header-nav">
+      <a href="subjects.html">Subjects</a>
+      <a href="study.html">Study builder</a>
+      <a href="blogs.html">Blogs</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div class="header-right">
+  <a href="login.html" class="btn btn-outline header-login">Log in</a>
+  <a href="signup.html" class="btn btn-primary header-signup">Sign up</a>
+  <button class="menu-toggle"><span></span><span></span><span></span></button>
+</div>
+  </div>
+</header>
+
+<div class="slide-nav-backdrop"></div>
+<nav class="slide-nav">
+  <div class="slide-nav-header"><h3>Menu</h3><button class="slide-nav-close">&times;</button></div>
+  <div class="slide-nav-links">
+    <a href="subjects.html">Subjects</a>
+    <a href="study.html">Study builder</a>
+    <a href="blogs.html">Blogs</a>
+    <a href="pricing.html">Pricing</a>
+    <a href="contact.html">Contact</a>
+    <a href="login.html" class="slide-login-link">Log in</a>
+  </div>
+</nav>
+
+<section class="section pricing-section">
+  <div class="container pricing-container">
+
+    <div class="section-header pricing-header">
+      <div class="section-kicker">Pricing</div>
+      <h1 class="section-title">Simple pricing for focused dental study</h1>
+      <p class="section-subtitle">
+        Start free, upgrade only when you’re ready. No contracts, cancel anytime.
+      </p>
+    </div>
+
+    <main class="page-content pricing-page-main">
+
+      <section class="pricing-grid">
+        <!-- Free plan -->
+        <div class="pricing-card">
+          <div class="pricing-card-header">
+            <h2>Free</h2>
+            <p class="pricing-subtitle">For trying DentAIstudy and light exam prep.</p>
+            <p class="pricing-price">$0 <span>/ forever</span></p>
+          </div>
+
+          <ul class="pricing-features">
+            <li>OSCE, Viva, and theory prompts with daily fair use limits</li>
+            <li>Access to the core Study builder modes</li>
+            <li>Save recent topics and workspace state</li>
+            <li>Works on desktop, tablet, and mobile</li>
+          </ul>
+
+          <a href="signup.html" class="btn btn-outline">Start free</a>
+          <p class="pricing-note">Free plan features may change or be limited over time.</p>
+        </div>
+
+        <!-- Pro plan -->
+        <div class="pricing-card pricing-card--highlight">
+          <div class="pricing-card-header">
+            <h2>Pro</h2>
+            <p class="pricing-subtitle">For undergrads and residents in exam mode.</p>
+            <p class="pricing-price">$4.99 <span>/ month</span></p>
+          </div>
+
+          <ul class="pricing-features">
+            <li>Higher daily Study builder limits</li>
+            <li>Priority access during peak hours</li>
+            <li>Advanced prompts for OSCE, Viva &amp; theory</li>
+            <li>Early access to new features</li>
+          </ul>
+
+          <a href="signup.html" class="btn btn-primary">Join waitlist</a>
+          <p class="pricing-note">Refunds follow our <a href="refund-policy.html">Refund Policy</a>.</p>
+        </div>
+
+        <!-- Pro Yearly plan -->
+        <div class="pricing-card pricing-card--highlight">
+          <div class="pricing-card-header">
+           <h2>Pro Yearly</h2>
+           <p class="pricing-subtitle">Best value for long-term exam preparation</p>
+           <p class="pricing-price">$49 <span>/ year</span></p>
+          </div>
+
+          <ul class="pricing-features">
+           <li>Higher daily Study builder limits</li>
+           <li>Priority access during peak hours</li>
+           <li>Advanced prompts for OSCE, Viva &amp; theory</li>
+           <li>Early access to new features</li>
+          </ul>
+
+          <a href="signup.html" class="btn btn-primary">Get yearly Pro</a>
+          <p class="pricing-note">Refunds follow our <a href="refund-policy.html">Refund Policy</a>.</p>
+        </div>
+
+      </section>
+
+    </main>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+
+    <div class="footer-top">
+
+      <div>
+        <div class="footer-brand">DentAIstudy</div>
+        <p>AI-enhanced tools for dental students and residents.</p>
+      </div>
+
+      <div class="footer-column">
+        <h4>Product</h4>
+        <a href="subjects.html">Subjects</a>
+        <a href="study.html">Study builder</a>
+        <a href="blogs.html">Blogs</a>
+        <a href="pricing.html">Pricing</a>
+      </div>
+
+      <div class="footer-column">
+        <h4>Company</h4>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="faqs.html">FAQ</a>
+      </div>
+
+      <div class="footer-column">
+        <h4>Legal</h4>
+          <a href="privacy.html">Privacy Policy</a>
+          <a href="terms.html">Terms & Conditions</a>
+          <a href="cookies.html">Cookies Policy</a>
+          <a href="disclaimer.html">Disclaimer</a>
+          <a href="billing.html">Billing</a>
+          <a href="refund-policy.html">Refunds</a>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <div>© 2025 DentAIstudy. All rights reserved.</div>
+    </div>
+
+  </div>
+</footer>
+
+</div>
+
+<div class="cookie-banner">
+  <div class="container cookie-inner">
+    <div class="cookie-text">
+      <h3>Cookies &amp; privacy</h3>
+      <p>
+        We use essential cookies to keep DentAIstudy running and to improve your study experience.
+        By continuing, you agree to our <a href="cookies.html">Cookies Policy</a>.
+      </p>
+    </div>
+
+    <div class="cookie-actions">
+      <a href="cookies.html" class="btn btn-outline">Learn more</a>
+      <button class="btn btn-primary cookie-accept">Accept</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

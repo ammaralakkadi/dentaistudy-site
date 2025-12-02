@@ -2,66 +2,66 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
   <!-- Main pages -->
-  <url><loc>https://dentAistudy.com/</loc></url>
-  <url><loc>https://dentAistudy.com/index.html</loc></url>
-  <url><loc>https://dentAistudy.com/about.html</loc></url>
-  <url><loc>https://dentAistudy.com/contact.html</loc></url>
-  <url><loc>https://dentAistudy.com/faqs.html</loc></url>
-
-  <!-- Study pages -->
-  <url><loc>https://dentAistudy.com/subjects.html</loc></url>
-  <url><loc>https://dentAistudy.com/study.html</loc></url>
+  <url><loc>https://dentaistudy.com/</loc></url>
+  <url><loc>https://dentaistudy.com/about.html</loc></url>
+  <url><loc>https://dentaistudy.com/contact.html</loc></url>
+  <url><loc>https://dentaistudy.com/faqs.html</loc></url>
+  <url><loc>https://dentaistudy.com/subjects.html</loc></url>
+  <url><loc>https://dentaistudy.com/study.html</loc></url>
+  <url><loc>https://dentaistudy.com/blogs.html</loc></url>
 
   <!-- Auth pages -->
-  <url><loc>https://dentAistudy.com/login.html</loc></url>
-  <url><loc>https://dentAistudy.com/signup.html</loc></url>
-  <url><loc>https://dentAistudy.com/profile.html</loc></url>
-  <url><loc>https://dentAistudy.com/settings.html</loc></url>
+  <url><loc>https://dentaistudy.com/login.html</loc></url>
+  <url><loc>https://dentaistudy.com/signup.html</loc></url>
+  <url><loc>https://dentaistudy.com/profile.html</loc></url>
+  <url><loc>https://dentaistudy.com/settings.html</loc></url>
 
-  <!-- Legal pages -->
-  <url><loc>https://dentAistudy.com/privacy.html</loc></url>
-  <url><loc>https://dentAistudy.com/terms.html</loc></url>
-  <url><loc>https://dentAistudy.com/cookies.html</loc></url>
-  <url><loc>https://dentAistudy.com/disclaimer.html</loc></url>
+    <!-- Legal pages -->
+  <url><loc>https://dentaistudy.com/privacy.html</loc></url>
+  <url><loc>https://dentaistudy.com/terms.html</loc></url>
+  <url><loc>https://dentaistudy.com/cookies.html</loc></url>
+  <url><loc>https://dentaistudy.com/disclaimer.html</loc></url>
+  <url><loc>https://dentaistudy.com/billing.html</loc></url>
+  <url><loc>https://dentaistudy.com/refund-policy.html</loc></url>
 
-  <!-- Blog index -->
-  <url><loc>https://dentAistudy.com/blogs.html</loc></url>
+  <!-- Pricing -->
+  <url><loc>https://dentaistudy.com/pricing.html</loc></url>
 
   <!-- Blog posts (35 items) -->
-  <url><loc>https://dentAistudy.com/blogs/blog-ai-flashcards.html</loc></url>
-  <url><loc>https://dentAistudy.com/blogs/blog-ai-responsible-dental-school.html</loc></url>
-  <url><loc>https://dentAistudy.com/blogs/blog-antibiotics-dentistry.html</loc></url>
-  <url><loc>https://dentAistudy.com/blogs/blog-anxious-patient-osce.html</loc></url>
-  <url><loc>https://dentAistudy.com/blogs/blog-best-revision-2025.html</loc></url>
-  <url><loc>https://dentAistudy.com/blogs/blog-cephalometric-landmarks.html</loc></url>
-  <url><loc>https://dentAistudy.com/blogs/blog-class-ii-restoration.html</loc></url>
-  <url><loc>https://dentAistudy.com/blogs/blog-complete-denture-steps.html</loc></url>
-  <url><loc>https://dentAistudy.com/blogs/blog-crown-prep-checklist.html</loc></url>
-  <url><loc>https://dentAistudy.com/blogs/blog-dentaistudy-how-to.html</loc></url>
-  <url><loc>https://dentAistudy.com/blogs/blog-dental-emergencies.html</loc></url>
-  <url><loc>https://dentAistudy.com/blogs/blog-dental-materials.html</loc></url>
-  <url><loc>https://dentAistudy.com/blogs/blog-dental-trauma-ellis.html</loc></url>
-  <url><loc>https://dentAistudy.com/blogs/blog-endo-diagnosis.html</loc></url>
-  <url><loc>https://dentAistudy.com/blogs/blog-endo-failure.html</loc></url>
-  <url><loc>https://dentAistudy.com/blogs/blog-endo-irrigation.html</loc></url>
-  <url><loc>https://dentAistudy.com/blogs/blog-first-osce-rotation.html</loc></url>
-  <url><loc>https://dentAistudy.com/blogs/blog-full-mouth-plan.html</loc></url>
-  <url><loc>https://dentAistudy.com/blogs/blog-ianb-guide.html</loc></url>
-  <url><loc>https://dentAistudy.com/blogs/blog-la-complications.html</loc></url>
-  <url><loc>https://dentAistudy.com/blogs/blog-occlusion-basics.html</loc></url>
-  <url><loc>https://dentAistudy.com/blogs/blog-ortho-problem-lists.html</loc></url>
-  <url><loc>https://dentAistudy.com/blogs/blog-ortho-space-analysis.html</loc></url>
-  <url><loc>https://dentAistudy.com/blogs/blog-osce-examiner-guide.html</loc></url>
-  <url><loc>https://dentAistudy.com/blogs/blog-osce-mistakes.html</loc></url>
-  <url><loc>https://dentAistudy.com/blogs/blog-pedo-behavior.html</loc></url>
-  <url><loc>https://dentAistudy.com/blogs/blog-perio-maintenance.html</loc></url>
-  <url><loc>https://dentAistudy.com/blogs/blog-perio-staging-grading.html</loc></url>
-  <url><loc>https://dentAistudy.com/blogs/blog-pulpotomy-vs-pulpectomy.html</loc></url>
-  <url><loc>https://dentAistudy.com/blogs/blog-rpd-design-steps.html</loc></url>
-  <url><loc>https://dentAistudy.com/blogs/blog-top-viva-phrases.html</loc></url>
-  <url><loc>https://dentAistudy.com/blogs/blog-treatment-plan-exams.html</loc></url>
-  <url><loc>https://dentAistudy.com/blogs/blog-turn-chapter-into-sessions.html</loc></url>
-  <url><loc>https://dentAistudy.com/blogs/blog-universal-osce-checklist.html</loc></url>
-  <url><loc>https://dentAistudy.com/blogs/blog-viva-structure.html</loc></url>
+  <url><loc>https://dentaistudy.com/blogs/blog-ai-flashcards.html</loc></url>
+  <url><loc>https://dentaistudy.com/blogs/blog-ai-responsible-dental-school.html</loc></url>
+  <url><loc>https://dentaistudy.com/blogs/blog-antibiotics-dentistry.html</loc></url>
+  <url><loc>https://dentaistudy.com/blogs/blog-anxious-patient-osce.html</loc></url>
+  <url><loc>https://dentaistudy.com/blogs/blog-best-revision-2025.html</loc></url>
+  <url><loc>https://dentaistudy.com/blogs/blog-cephalometric-landmarks.html</loc></url>
+  <url><loc>https://dentaistudy.com/blogs/blog-class-ii-restoration.html</loc></url>
+  <url><loc>https://dentaistudy.com/blogs/blog-complete-denture-steps.html</loc></url>
+  <url><loc>https://dentaistudy.com/blogs/blog-crown-prep-checklist.html</loc></url>
+  <url><loc>https://dentaistudy.com/blogs/blog-dentaistudy-how-to.html</loc></url>
+  <url><loc>https://dentaistudy.com/blogs/blog-dental-emergencies.html</loc></url>
+  <url><loc>https://dentaistudy.com/blogs/blog-dental-materials.html</loc></url>
+  <url><loc>https://dentaistudy.com/blogs/blog-dental-trauma-ellis.html</loc></url>
+  <url><loc>https://dentaistudy.com/blogs/blog-endo-diagnosis.html</loc></url>
+  <url><loc>https://dentaistudy.com/blogs/blog-endo-failure.html</loc></url>
+  <url><loc>https://dentaistudy.com/blogs/blog-endo-irrigation.html</loc></url>
+  <url><loc>https://dentaistudy.com/blogs/blog-first-osce-rotation.html</loc></url>
+  <url><loc>https://dentaistudy.com/blogs/blog-full-mouth-plan.html</loc></url>
+  <url><loc>https://dentaistudy.com/blogs/blog-ianb-guide.html</loc></url>
+  <url><loc>https://dentaistudy.com/blogs/blog-la-complications.html</loc></url>
+  <url><loc>https://dentaistudy.com/blogs/blog-occlusion-basics.html</loc></url>
+  <url><loc>https://dentaistudy.com/blogs/blog-ortho-problem-lists.html</loc></url>
+  <url><loc>https://dentaistudy.com/blogs/blog-ortho-space-analysis.html</loc></url>
+  <url><loc>https://dentaistudy.com/blogs/blog-osce-examiner-guide.html</loc></url>
+  <url><loc>https://dentaistudy.com/blogs/blog-osce-mistakes.html</loc></url>
+  <url><loc>https://dentaistudy.com/blogs/blog-pedo-behavior.html</loc></url>
+  <url><loc>https://dentaistudy.com/blogs/blog-perio-maintenance.html</loc></url>
+  <url><loc>https://dentaistudy.com/blogs/blog-perio-staging-grading.html</loc></url>
+  <url><loc>https://dentaistudy.com/blogs/blog-pulpotomy-vs-pulpectomy.html</loc></url>
+  <url><loc>https://dentaistudy.com/blogs/blog-rpd-design-steps.html</loc></url>
+  <url><loc>https://dentaistudy.com/blogs/blog-top-viva-phrases.html</loc></url>
+  <url><loc>https://dentaistudy.com/blogs/blog-treatment-plan-exams.html</loc></url>
+  <url><loc>https://dentaistudy.com/blogs/blog-turn-chapter-into-sessions.html</loc></url>
+  <url><loc>https://dentaistudy.com/blogs/blog-universal-osce-checklist.html</loc></url>
+  <url><loc>https://dentaistudy.com/blogs/blog-viva-structure.html</loc></url>
 
 </urlset>

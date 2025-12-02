@@ -541,6 +541,173 @@ a:hover { opacity: 0.7; }
 }
 
 
+/* ============================================
+   Pricing page (pricing.html)
+   Radial gradient + two-card SaaS layout
+   ============================================ */
+
+.pricing-section {
+  padding: 4rem 0 5rem;
+  background: radial-gradient(circle at top left, #f5f3ff 0, #e5f3ff 35%, #f9fafb 70%);
+}
+
+.pricing-container {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.pricing-header {
+  text-align: center;
+  margin-bottom: 2.75rem;
+}
+
+.pricing-header .section-kicker {
+  color: #0f3c7d;
+}
+
+.pricing-header .section-title {
+  margin-bottom: 0.5rem;
+}
+
+.pricing-header .section-subtitle {
+  max-width: 520px;
+  margin: 0 auto;
+  font-size: 0.98rem;
+  color: #4b5563;
+}
+
+/* Pricing grid – slimmer cards, centered */
+
+.pricing-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: center;
+}
+
+.pricing-card {
+  flex: 1 1 280px;
+  max-width: 360px;
+  background: #ffffff;
+  border-radius: 1rem;
+  border: 1px solid #e5e7eb;
+  padding: 1.6rem 1.7rem;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.pricing-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.14);
+  border-color: rgba(15, 60, 125, 0.45);
+}
+
+.pricing-card-header h2 {
+  margin: 0;
+  font-size: 1.3rem;
+}
+
+.pricing-subtitle {
+  margin: 0.25rem 0 0.9rem;
+  font-size: 0.9rem;
+  color: #4b5563;
+}
+
+.pricing-price {
+  margin: 0 0 1rem;
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.pricing-price span {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #6b7280;
+}
+
+/* Features list with dark-blue check icons */
+
+.pricing-features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.25rem;
+  font-size: 0.9rem;
+  color: #374151;
+}
+
+.pricing-features li {
+  position: relative;
+  padding-left: 1.6rem;
+  margin-bottom: 0.45rem;
+}
+
+.pricing-features li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.35rem;
+  width: 0.86rem;
+  height: 0.86rem;
+  border-radius: 999px;
+  background: #0f3c7d;
+  box-shadow: 0 0 0 2px #e5e7eb;
+}
+
+.pricing-features li::after {
+  content: "";
+  position: absolute;
+  left: 0.29rem;
+  top: 0.26rem;
+  width: 0.32rem;
+  height: 0.52rem;
+  border: 2px solid #ffffff;
+  border-top: 0;
+  border-left: 0;
+  transform: rotate(45deg);
+}
+
+/* Make buttons full-width inside cards */
+
+.pricing-card .btn {
+  width: 100%;
+  justify-content: center;
+}
+
+/* Highlighted Pro card */
+
+.pricing-card--highlight {
+  box-shadow: 0 18px 55px rgba(15, 60, 125, 0.26);
+}
+
+/* Responsive */
+
+@media (max-width: 768px) {
+  .pricing-section {
+    padding: 3rem 0 3.5rem;
+  }
+
+  .pricing-card {
+    max-width: 100%;
+  }
+}
+
+.pricing-note {
+  font-size: 0.78rem;
+  color: #4b5563;
+  margin-top: 0.6rem;
+}
+.pricing-note a {
+  color: #0f3c7d;
+  text-decoration: underline;
+}
+
 /* Cookie banner – upgraded SaaS style */
 .cookie-banner {
   position: fixed;
@@ -2085,7 +2252,7 @@ a:hover { opacity: 0.7; }
   height: 16px;
 }
 
-/* --- Settings page micro-tweaks (DentAIstudy v2.5) --- */
+/* --- Settings page micro-tweaks (DentAIstudy v3) --- */
 
 /* More space under the section title */
 .study-preferences-section h2 {

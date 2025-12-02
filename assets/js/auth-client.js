@@ -8,34 +8,48 @@ const SUPABASE_ANON_KEY =
 window.dasSupabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // -----------------------------------------------------------
-// Profile Picture Upload Helper
+// Google OAuth sign-in / sign-up (shared for login + signup)
 // -----------------------------------------------------------
-async function uploadProfilePicture(userId, file) {
-  if (!file || !window.dasSupabase) return null;
+function dasSetupGoogleAuth() {
+  const client = window.dasSupabase;
+  if (!client || !client.auth) return;
 
-  const fileExt = file.name.split(".").pop();
-  const filePath = `${userId}/avatar.${fileExt}`;
+  // Where to send users back after Google completes
+  const redirectTo = `${window.location.origin}/study.html`;
 
-  // Upload to "profile-pictures" bucket (public)
-  const { error: uploadError } = await window.dasSupabase.storage
-    .from("profile-pictures")
-    .upload(filePath, file, {
-      cacheControl: "3600",
-      upsert: true,
-    });
+  const loginBtn = document.getElementById("login-google-btn");
+  const signupBtn = document.getElementById("signup-google-btn");
 
-  if (uploadError) {
-    console.error("Upload error:", uploadError);
-    return null;
+  if (!loginBtn && !signupBtn) return;
+
+  async function handleGoogleClick(event) {
+    event.preventDefault();
+
+    try {
+      const { error } = await client.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo,
+        },
+      });
+
+      if (error) {
+        console.error("Google auth error:", error);
+        alert("Could not start Google sign-in. Please try again.");
+      }
+      // Supabase will redirect automatically on success.
+    } catch (err) {
+      console.error("Unexpected Google auth error:", err);
+      alert("Could not start Google sign-in. Please try again.");
+    }
   }
 
-  // Get public URL
-  const { data: publicUrlData } = window.dasSupabase.storage
-    .from("profile-pictures")
-    .getPublicUrl(filePath);
-
-  return publicUrlData?.publicUrl || null;
+  if (loginBtn) loginBtn.addEventListener("click", handleGoogleClick);
+  if (signupBtn) signupBtn.addEventListener("click", handleGoogleClick);
 }
+
+document.addEventListener("DOMContentLoaded", dasSetupGoogleAuth);
+
 
 // -----------------------------------------------------------
 // Study Preference Counters (OSCE / Packs / Flashcards / Theory / Viva)
