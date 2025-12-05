@@ -87,6 +87,82 @@ document.querySelectorAll(".copy-btn").forEach((btn) => {
   });
 })();
 
+// Pricing page – handle Pro / Pro Yearly buttons
+(() => {
+  const planButtons = document.querySelectorAll("[data-pricing-plan]");
+  if (!planButtons.length) return;
+
+  // Optional: put your real Paddle checkout URLs here later
+  const checkoutUrls = {
+    pro: null, // e.g. "https://checkout.paddle.com/pro"
+    pro_yearly: null, // e.g. "https://checkout.paddle.com/pro-yearly"
+  };
+
+  async function handlePlanClick(event) {
+    event.preventDefault();
+    const btn = event.currentTarget;
+    const plan = btn.getAttribute("data-pricing-plan") || "pro";
+    const isFreePlan = plan === "free";
+
+    // If Supabase client is missing, fallback to signup
+    if (!window.dasSupabase || !window.dasSupabase.auth) {
+      const url = new URL("signup.html", window.location.origin);
+      url.searchParams.set("plan", plan);
+      window.location.href = url.toString();
+      return;
+    }
+
+    let sessionRes;
+    try {
+      sessionRes = await window.dasSupabase.auth.getSession();
+    } catch (err) {
+      const url = new URL("signup.html", window.location.origin);
+      url.searchParams.set("plan", plan);
+      window.location.href = url.toString();
+      return;
+    }
+
+    const session = sessionRes && sessionRes.data && sessionRes.data.session;
+    if (!session) {
+      // Not logged in → go to signup with plan hint
+      const url = new URL("signup.html", window.location.origin);
+      url.searchParams.set("plan", plan);
+      window.location.href = url.toString();
+      return;
+    }
+
+    const user = session.user;
+    const meta = (user && user.user_metadata) || {};
+    const tier = meta.subscription_tier || "free";
+    const isPaid = tier === "pro" || tier === "pro_yearly";
+
+    // Free plan button: logged-in users go straight to Study builder
+    if (isFreePlan) {
+      window.location.href = "study.html";
+      return;
+    }
+
+    if (isPaid) {
+      // Already Pro → send to Settings (manage plan)
+      window.location.href = "settings.html";
+      return;
+    }
+
+    // Logged in Free → send to payment / billing
+    const directUrl = checkoutUrls[plan];
+    if (typeof directUrl === "string" && directUrl.length > 0) {
+      window.location.href = directUrl;
+    } else {
+      // Temporary: your generic billing page until Paddle checkout is wired
+      window.location.href = "billing.html";
+    }
+  }
+
+  planButtons.forEach((btn) => {
+    btn.addEventListener("click", handlePlanClick);
+  });
+})();
+
 // Profile image preview (UI only)
 const avatarInput = document.getElementById("avatar-input");
 const avatarImg = document.getElementById("das-profile-avatar-main");

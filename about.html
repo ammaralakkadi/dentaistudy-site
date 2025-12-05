@@ -1,231 +1,295 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>About – DentAIstudy</title>
-  <link rel="stylesheet" href="assets/css/style-v3.css" />
-  <link rel="icon" type="image/png" sizes="512x512" href="assets/img/favicon.png?v=2" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About – DentAIstudy</title>
+    <link rel="stylesheet" href="assets/css/style-v3.css" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="512x512"
+      href="assets/img/favicon.png?v=2"
+    />
 
-  <!-- JS: Supabase + Auth Guard + Logout + Main -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-  <script src="assets/js/auth-client.js" defer></script>
-  <script src="assets/js/auth-guard.js" defer></script>
-  <script src="assets/js/auth-logout.js" defer></script>
-  <script defer src="assets/js/main.js"></script>
+    <!-- JS: Supabase + Auth Guard + Logout + Main -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+      defer
+    ></script>
+    <script src="assets/js/auth-client.js" defer></script>
+    <script src="assets/js/auth-guard.js" defer></script>
+    <script src="assets/js/auth-logout.js" defer></script>
+    <script defer src="assets/js/main.js"></script>
+  </head>
 
-</head>
+  <body>
+    <div class="main-wrapper">
+      <!-- Header -->
+      <header class="site-header">
+        <div class="container header-inner">
+          <a class="brand" href="index.html">
+            <span>Dent</span><span>AIstudy</span>
+          </a>
 
-<body>
-<div class="main-wrapper">
+          <nav class="header-nav">
+            <a href="subjects.html">Subjects</a>
+            <a href="study.html">Study builder</a>
+            <a href="blogs.html">Blogs</a>
+            <a href="pricing.html">Pricing</a>
+            <a href="contact.html">Contact</a>
+          </nav>
 
-  <!-- Header -->
-  <header class="site-header">
-    <div class="container header-inner">
-      <a class="brand" href="index.html">
-        <span>Dent</span><span>AIstudy</span>
-      </a>
-
-      <nav class="header-nav">
-        <a href="subjects.html">Subjects</a>
-        <a href="study.html">Study builder</a>
-        <a href="blogs.html">Blogs</a>
-        <a href="pricing.html">Pricing</a>
-        <a href="contact.html">Contact</a>
-      </nav>
-
-      <div class="header-right">
-        <a href="login.html" class="btn btn-outline header-login">Log in</a>
-        <a href="signup.html" class="btn btn-primary header-signup">Sign up</a>
-        <button class="menu-toggle" aria-label="Open menu">
-          <span></span><span></span><span></span>
-        </button>
-      </div>
-    </div>
-  </header>
-
-  <!-- Mobile Nav -->
-  <div class="slide-nav-backdrop"></div>
-  <nav class="slide-nav">
-    <div class="slide-nav-header">
-      <h3>Menu</h3>
-      <button class="slide-nav-close" aria-label="Close menu">&times;</button>
-    </div>
-    <div class="slide-nav-links">
-      <a href="subjects.html">Subjects</a>
-      <a href="study.html">Study builder</a>
-      <a href="blogs.html">Blogs</a>
-      <a href="pricing.html">Pricing</a>
-      <a href="contact.html">Contact</a>
-      <a href="login.html" class="slide-login-link">Log in</a>
-    </div>
-  </nav>
-
-  <!-- About Hero / Intro -->
-  <section class="section">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-kicker">About</div>
-        <h1 class="section-title">Why DentAIstudy exists</h1>
-        <p class="section-subtitle">
-          Built by people who actually went through dental school, OSCE checklists, and viva anxiety.
-        </p>
-      </div>
-
-      <div class="about-grid">
-        <div>
-          <h2>Our mission</h2>
-          <p>
-            DentAIstudy was created with one clear goal: to make studying dentistry simpler, clearer, and more structured.
-            We help students transform dense topics, scattered notes, and overwhelming textbooks into organized,
-            exam-focused study flows.
-          </p>
-
-          <h2>Who we are</h2>
-          <p>
-            We are a small team of dental residents, educators, and AI‑driven learners who deeply understand academic pressure,
-            OSCE preparation, case presentations, and the complexity of dental subjects. Our tools are built from real-world
-            studying experiences—not theory.
-          </p>
-          <ul>
-            <li>We understand how demanding dental exams truly are</li>
-            <li>We write and use case notes, OSCE checklists, and structured flows daily</li>
-            <li>We’re driven by making dental education clearer and more efficient</li>
-          </ul>
-        </div>
-
-        <aside class="study-answer-card">
-          <h2 style="margin:0 0 8px;font-size:0.95rem;">What DentAIstudy helps you do</h2>
-          <ul style="padding-left:18px;font-size:0.9rem;color:#4b5563;">
-            <li>Convert heavy chapters into OSCE-style checklists and organized summaries</li>
-            <li>Simplify classifications, definitions, steps, and clinical reasoning</li>
-            <li>Generate clean, ready-to-use prompts you can copy or refine</li>
-            <li>Stay focused with a distraction‑free, minimal interface</li>
-          </ul>
-
-          <h3 style="margin:14px 0 4px;font-size:0.9rem;">What DentAIstudy is not</h3>
-          <p style="font-size:0.85rem;color:#6b7280;margin:0;">
-            DentAIstudy is a <strong>study assistant</strong>, not a clinical authority. It does not replace official textbooks,
-            curriculum guidelines, or supervision from qualified educators. Always verify generated content against trusted
-            academic sources and your institution’s references.
-          </p>
-        </aside>
-      </div>
-    </div>
-  </section>
-
-  <!-- Values section -->
-  <section class="section" style="background:#f9fafb;border-top:1px solid #e5e7eb;">
-    <div class="container">
-      <div class="section-header">
-        <h2 class="section-title">What we care about</h2>
-        <p class="section-subtitle">These values guide how we design every page and every feature.</p>
-      </div>
-
-      <div class="features-modern">
-        <div class="feature-item">
-          <div class="feature-icon">
-            <div class="icon-pill" style="width:64px;height:64px;">
-              <img
-               src="assets/img/About icons/Exam realism.png"
-               alt="Exam realism icon"
-               style="width:38px;height:38px;object-fit:contain;"
-              />
-            </div>
+          <div class="header-right">
+            <a href="login.html" class="btn btn-outline header-login">Log in</a>
+            <a href="signup.html" class="btn btn-primary header-signup"
+              >Sign up</a
+            >
+            <button class="menu-toggle" aria-label="Open menu">
+              <span></span><span></span><span></span>
+            </button>
           </div>
-          <h3>Exam realism</h3>
-          <p>We aim to mirror how examiners think: history, exam, investigations, management, classifications and viva points.</p>
         </div>
-        <div class="feature-item">
-          <div class="feature-icon">
-            <div class="icon-pill" style="width:64px;height:64px;">
-              <img
-              src="assets/img/About icons/Cognitive simplicity.png"
-              alt="Cognitive simplicity icon"
-              style="width:42px;height:42px;object-fit:contain;"
-              />
-            </div>
-          </div>
-          <h3>Cognitive simplicity</h3>
-          <p>Less scrolling, less noise. Just the structure you need when your brain is tired before a clinic or exam.</p>
-        </div>
-        <div class="feature-item">
-          <div class="feature-icon">
-            <div class="icon-pill" style="width:64px;height:64px;">
-              <img
-                src="assets/img/About icons/Clarity over hype.png"
-                alt="Clarity over hype icon"
-                style="width:55px;height:55px;object-fit:contain;"
-              />
-            </div>
-          </div>
-          <h3>Clarity over hype</h3>
-          <p>We design for precise, honest study support—not marketing buzzwords or overcomplicated dashboards.</p>
-        </div>        
-      </div>
-    </div>
-  </section>
+      </header>
 
-  <!-- Footer -->
-  <footer class="site-footer">
-    <div class="container">
-      <div class="footer-top">
-        <div>
-          <div class="footer-brand">DentAIstudy</div>
-          <p>AI-enhanced tools for dental students and residents.</p>
+      <!-- Mobile Nav -->
+      <div class="slide-nav-backdrop"></div>
+      <nav class="slide-nav">
+        <div class="slide-nav-header">
+          <h3>Menu</h3>
+          <button class="slide-nav-close" aria-label="Close menu">
+            &times;
+          </button>
         </div>
-
-        <div class="footer-column">
-          <h4>Product</h4>
+        <div class="slide-nav-links">
           <a href="subjects.html">Subjects</a>
           <a href="study.html">Study builder</a>
           <a href="blogs.html">Blogs</a>
           <a href="pricing.html">Pricing</a>
+          <a href="contact.html">Contact</a>
+          <a href="login.html" class="slide-login-link">Log in</a>
+        </div>
+      </nav>
+
+      <!-- About Hero / Intro -->
+      <section class="section">
+        <div class="container">
+          <div class="section-header">
+            <div class="section-kicker">About</div>
+            <h1 class="section-title">Why DentAIstudy exists</h1>
+            <p class="section-subtitle">
+              Built by people who actually went through dental school, OSCE
+              checklists, and viva anxiety.
+            </p>
+          </div>
+
+          <div class="about-grid">
+            <div>
+              <h2>Our mission</h2>
+              <p>
+                DentAIstudy was created with one clear goal: to make studying
+                dentistry simpler, clearer, and more structured. We help
+                students transform dense topics, scattered notes, and
+                overwhelming textbooks into organized, exam-focused study flows.
+              </p>
+
+              <h2>Who we are</h2>
+              <p>
+                We are a small team of dental residents, educators, and
+                AI‑driven learners who deeply understand academic pressure, OSCE
+                preparation, case presentations, and the complexity of dental
+                subjects. Our tools are built from real-world studying
+                experiences—not theory.
+              </p>
+              <ul>
+                <li>We understand how demanding dental exams truly are</li>
+                <li>
+                  We write and use case notes, OSCE checklists, and structured
+                  flows daily
+                </li>
+                <li>
+                  We’re driven by making dental education clearer and more
+                  efficient
+                </li>
+              </ul>
+            </div>
+
+            <aside class="study-answer-card">
+              <h2 style="margin: 0 0 8px; font-size: 0.95rem">
+                What DentAIstudy helps you do
+              </h2>
+              <ul style="padding-left: 18px; font-size: 0.9rem; color: #4b5563">
+                <li>
+                  Convert heavy chapters into OSCE-style checklists and
+                  organized summaries
+                </li>
+                <li>
+                  Simplify classifications, definitions, steps, and clinical
+                  reasoning
+                </li>
+                <li>
+                  Generate clean, ready-to-use prompts you can copy or refine
+                </li>
+                <li>Stay focused with a distraction‑free, minimal interface</li>
+              </ul>
+
+              <h3 style="margin: 14px 0 4px; font-size: 0.9rem">
+                What DentAIstudy is not
+              </h3>
+              <p style="font-size: 0.85rem; color: #6b7280; margin: 0">
+                DentAIstudy is a <strong>study assistant</strong>, not a
+                clinical authority. It does not replace official textbooks,
+                curriculum guidelines, or supervision from qualified educators.
+                Always verify generated content against trusted academic sources
+                and your institution’s references.
+              </p>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      <!-- Values section -->
+      <section
+        class="section"
+        style="background: #f9fafb; border-top: 1px solid #e5e7eb"
+      >
+        <div class="container">
+          <div class="section-header">
+            <h2 class="section-title">What we care about</h2>
+            <p class="section-subtitle">
+              These values guide how we design every page and every feature.
+            </p>
+          </div>
+
+          <div class="features-modern">
+            <div class="feature-item">
+              <div class="feature-icon">
+                <div class="icon-pill" style="width: 64px; height: 64px">
+                  <img
+                    src="assets/img/About icons/Exam realism.png"
+                    alt="Exam realism icon"
+                    style="width: 38px; height: 38px; object-fit: contain"
+                  />
+                </div>
+              </div>
+              <h3>Exam realism</h3>
+              <p>
+                We aim to mirror how examiners think: history, exam,
+                investigations, management, classifications and viva points.
+              </p>
+            </div>
+            <div class="feature-item">
+              <div class="feature-icon">
+                <div class="icon-pill" style="width: 64px; height: 64px">
+                  <img
+                    src="assets/img/About icons/Cognitive simplicity.png"
+                    alt="Cognitive simplicity icon"
+                    style="width: 42px; height: 42px; object-fit: contain"
+                  />
+                </div>
+              </div>
+              <h3>Cognitive simplicity</h3>
+              <p>
+                Less scrolling, less noise. Just the structure you need when
+                your brain is tired before a clinic or exam.
+              </p>
+            </div>
+            <div class="feature-item">
+              <div class="feature-icon">
+                <div class="icon-pill" style="width: 64px; height: 64px">
+                  <img
+                    src="assets/img/About icons/Clarity over hype.png"
+                    alt="Clarity over hype icon"
+                    style="width: 55px; height: 55px; object-fit: contain"
+                  />
+                </div>
+              </div>
+              <h3>Clarity over hype</h3>
+              <p>
+                We design for precise, honest study support—not marketing
+                buzzwords or overcomplicated dashboards.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="site-footer">
+        <div class="container">
+          <div class="footer-top">
+            <div>
+              <div class="footer-brand">DentAIstudy</div>
+              <p>AI-enhanced tools for dental students and residents.</p>
+              <div class="footer-social">
+                <a
+                  href="https://www.tiktok.com/@dentaistudy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="DentAIstudy on TikTok"
+                >
+                  <img src="assets/img/footer-icons/tiktok-icon.png" alt="TikTok" class="footer-social-img">
+                </a>
+              
+                <a
+                  href="mailto:info@dentaistudy.com"
+                  aria-label="Contact DentAIstudy by email"
+                >
+                  <img src="assets/img/footer-icons/email-icon.png" alt="Email" class="footer-social-img">
+                </a>
+              </div>              
+            </div>
+
+            <div class="footer-column">
+              <h4>Product</h4>
+              <a href="subjects.html">Subjects</a>
+              <a href="study.html">Study builder</a>
+              <a href="blogs.html">Blogs</a>
+              <a href="pricing.html">Pricing</a>
+            </div>
+
+            <div class="footer-column">
+              <h4>Company</h4>
+              <a href="about.html">About</a>
+              <a href="contact.html">Contact</a>
+              <a href="faqs.html">FAQ</a>
+            </div>
+
+            <div class="footer-column">
+              <h4>Legal</h4>
+              <a href="privacy.html">Privacy Policy</a>
+              <a href="terms.html">Terms & Conditions</a>
+              <a href="cookies.html">Cookies Policy</a>
+              <a href="disclaimer.html">Disclaimer</a>
+              <a href="billing.html">Billing</a>
+              <a href="refund-policy.html">Refunds</a>
+            </div>
+          </div>
+
+          <div class="footer-bottom">
+            <div>© 2025 DentAIstudy. All rights reserved.</div>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <!-- Cookie -->
+    <div class="cookie-banner">
+      <div class="container cookie-inner">
+        <div class="cookie-text">
+          <h3>Cookies &amp; privacy</h3>
+          <p>
+            We use essential cookies to keep DentAIstudy running and to improve
+            your study experience. By continuing, you agree to our
+            <a href="cookies.html">Cookies Policy</a>.
+          </p>
         </div>
 
-        <div class="footer-column">
-  <h4>Company</h4>
-  <a href="about.html">About</a>
-  <a href="contact.html">Contact</a>
-  <a href="faqs.html">FAQ</a>
-</div>
-
-        <div class="footer-column">
-          <h4>Legal</h4>
-          <a href="privacy.html">Privacy Policy</a>
-          <a href="terms.html">Terms & Conditions</a>
-          <a href="cookies.html">Cookies Policy</a>
-          <a href="disclaimer.html">Disclaimer</a>
-          <a href="billing.html">Billing</a>
-          <a href="refund-policy.html">Refunds</a>
+        <div class="cookie-actions">
+          <a href="cookies.html" class="btn btn-outline">Learn more</a>
+          <button class="btn btn-primary cookie-accept">Accept</button>
         </div>
       </div>
-
-      <div class="footer-bottom">
-        <div>© 2025 DentAIstudy. All rights reserved.</div>
-      </div>
     </div>
-  </footer>
-
-</div>
-
-<!-- Cookie -->
-<div class="cookie-banner">
-  <div class="container cookie-inner">
-    <div class="cookie-text">
-      <h3>Cookies &amp; privacy</h3>
-      <p>
-        We use essential cookies to keep DentAIstudy running and to improve your study experience.
-        By continuing, you agree to our <a href="cookies.html">Cookies Policy</a>.
-      </p>
-    </div>
-
-    <div class="cookie-actions">
-      <a href="cookies.html" class="btn btn-outline">Learn more</a>
-      <button class="btn btn-primary cookie-accept">Accept</button>
-    </div>
-  </div>
-</div>
-
-</body>
+  </body>
 </html>

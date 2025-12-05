@@ -1,237 +1,336 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Periodontitis Staging & Grading Simplified – DentAIstudy</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Periodontitis Staging & Grading Simplified – DentAIstudy</title>
 
-  <link rel="stylesheet" href="../assets/css/style-v3.css" />
-  <link rel="icon" type="image/png" sizes="512x512" href="../assets/img/favicon.png?v=2" />
+    <link rel="stylesheet" href="../assets/css/style-v3.css" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="512x512"
+      href="../assets/img/favicon.png?v=2"
+    />
 
-  <!-- JS: Supabase + Auth Guard + Logout + Main -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-  <script src="../assets/js/auth-client.js" defer></script>
-  <script src="../assets/js/auth-guard.js" defer></script>
-  <script src="../assets/js/auth-logout.js" defer></script>
-  <script defer src="../assets/js/main.js"></script>
-</head>
+    <!-- JS: Supabase + Auth Guard + Logout + Main -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+      defer
+    ></script>
+    <script src="../assets/js/auth-client.js" defer></script>
+    <script src="../assets/js/auth-guard.js" defer></script>
+    <script src="../assets/js/auth-logout.js" defer></script>
+    <script defer src="../assets/js/main.js"></script>
+  </head>
 
-<body>
-<div class="main-wrapper">
+  <body>
+    <div class="main-wrapper">
+      <!-- HEADER -->
+      <header class="site-header">
+        <div class="container header-inner">
+          <a class="brand" href="../index.html"
+            ><span>Dent</span><span>AIstudy</span></a
+          >
+          <nav class="header-nav">
+            <a href="../subjects.html">Subjects</a>
+            <a href="../study.html">Study builder</a>
+            <a href="../blogs.html" class="is-active">Blogs</a>
+            <a href="../pricing.html">Pricing</a>
+            <a href="../contact.html">Contact</a>
+          </nav>
+          <div class="header-right">
+            <a href="../login.html" class="btn btn-outline header-login"
+              >Log in</a
+            >
+            <a href="../signup.html" class="btn btn-primary header-signup"
+              >Sign up</a
+            >
+            <button class="menu-toggle">
+              <span></span><span></span><span></span>
+            </button>
+          </div>
+        </div>
+      </header>
 
-<!-- HEADER -->
-<header class="site-header">
-  <div class="container header-inner">
-    <a class="brand" href="../index.html"><span>Dent</span><span>AIstudy</span></a>
-    <nav class="header-nav">
-      <a href="../subjects.html">Subjects</a>
-      <a href="../study.html">Study builder</a>
-      <a href="../blogs.html" class="is-active">Blogs</a>
-      <a href="../about.html">About</a>
-      <a href="../contact.html">Contact</a>
-    </nav>
-    <div class="header-right">
-      <a href="../login.html" class="btn btn-outline header-login">Log in</a>
-      <a href="../signup.html" class="btn btn-primary header-signup">Sign up</a>
-      <button class="menu-toggle"><span></span><span></span><span></span></button>
+      <!-- MOBILE NAV -->
+      <div class="slide-nav-backdrop"></div>
+      <nav class="slide-nav">
+        <div class="slide-nav-header">
+          <h3>Menu</h3>
+          <button class="slide-nav-close">&times;</button>
+        </div>
+        <div class="slide-nav-links">
+          <a href="../subjects.html">Subjects</a>
+          <a href="../study.html">Study builder</a>
+          <a href="../blogs.html">Blogs</a>
+          <a href="../pricing.html">Pricing</a>
+          <a href="../contact.html">Contact</a>
+          <a href="../login.html" class="slide-login-link">Log in</a>
+        </div>
+      </nav>
+
+      <!-- BLOG BODY -->
+      <main class="section">
+        <div class="container container-narrow">
+          <div class="section-header" style="text-align: left">
+            <div class="section-kicker">Periodontology</div>
+            <h1 class="section-title">
+              Periodontitis Staging & Grading Simplified (OSCE & Viva Guide)
+            </h1>
+            <p class="section-subtitle">
+              A clear, examiner-friendly breakdown of staging and grading using
+              the 2017 classification.
+            </p>
+          </div>
+
+          <!-- SNIPPET BLOCK -->
+          <section class="study-answer-card">
+            <h2>Quick Answers</h2>
+
+            <h3>What is “staging” in periodontitis?</h3>
+            <p>
+              Staging describes how severe the disease is now and how complex it
+              is to manage.
+            </p>
+
+            <h3>What is “grading” in periodontitis?</h3>
+            <p>
+              Grading estimates how fast the disease is likely progressing and
+              considers risk factors.
+            </p>
+
+            <h3>What are Stage I–IV based on?</h3>
+            <p>
+              Mainly clinical attachment loss (CAL), radiographic bone loss,
+              tooth loss, and complexity factors.
+            </p>
+
+            <h3>What are Grade A–C based on?</h3>
+            <p>
+              Rate of progression (bone loss/age), plus modifiers like smoking
+              and diabetes.
+            </p>
+          </section>
+
+          <article class="blog-body">
+            <h2>1. Why examiners love staging & grading</h2>
+            <p>
+              The new classification replaced the old “chronic vs aggressive”
+              system, because it gives a clearer clinical picture and supports
+              treatment planning.
+            </p>
+            <p>In OSCE/viva you’re scored on:</p>
+            <ul>
+              <li>Choosing the right stage</li>
+              <li>Choosing the right grade</li>
+              <li>Giving a short justification</li>
+            </ul>
+
+            <h2>2. The 2-step mindset</h2>
+            <p>Always answer in this order:</p>
+
+            <div class="study-form-card">
+              <h3>Exam Approach</h3>
+              <p>
+                <strong>Step 1: Stage it (severity + complexity)</strong><br />
+                <strong>Step 2: Grade it (speed + risk)</strong>
+              </p>
+            </div>
+
+            <h2>3. How to Stage periodontitis (I → IV)</h2>
+            <p>
+              Start with the WORST affected site (your maximum CAL or
+              radiographic bone loss).
+            </p>
+
+            <div class="study-form-card">
+              <h3>Staging (very high-yield)</h3>
+              <ul>
+                <li>
+                  <strong>Stage I (initial):</strong> CAL 1–2 mm, bone loss
+                  limited to coronal third, PD ≤4 mm.
+                </li>
+                <li>
+                  <strong>Stage II (moderate):</strong> CAL 3–4 mm, bone loss
+                  coronal third, PD ≤5 mm.
+                </li>
+                <li>
+                  <strong>Stage III (severe):</strong> CAL ≥5 mm, bone loss to
+                  middle third, PD ≥6 mm, possible furcation.
+                </li>
+                <li>
+                  <strong>Stage IV (advanced):</strong> Stage III + functional
+                  problems (drifting, bite collapse, &lt;20 teeth remaining).
+                </li>
+              </ul>
+            </div>
+
+            <p>
+              After choosing I–IV, add extent:
+              <strong>Localized</strong> (&lt;30% teeth),
+              <strong>Generalized</strong> (≥30%), or molar-incisor pattern.
+            </p>
+
+            <h2>4. Complexity factors that push Stage III/IV</h2>
+            <p>
+              Even if CAL is borderline, complexity can upgrade the stage.
+              Examiners expect this line.
+            </p>
+            <ul>
+              <li>PD ≥6 mm</li>
+              <li>Vertical bone loss ≥3 mm</li>
+              <li>Furcation class II/III</li>
+              <li>Tooth loss because of periodontitis</li>
+              <li>Less than 20 remaining teeth = automatic Stage IV</li>
+            </ul>
+            <p>
+              These “upgrade clues” are emphasized in clinical decision trees.
+            </p>
+
+            <h2>5. How to Grade periodontitis (A → C)</h2>
+            <p>
+              Grading estimates progression and future risk. If you have old
+              radiographs, compare them; if not, use bone loss/age ratio.
+            </p>
+
+            <div class="study-form-card">
+              <h3>Grading (simple rules)</h3>
+              <ul>
+                <li>
+                  <strong>Grade A (slow):</strong> bone loss/age &lt;0.25, heavy
+                  plaque but little destruction.
+                </li>
+                <li>
+                  <strong>Grade B (moderate):</strong> bone loss/age 0.25–1.0,
+                  expected progression.
+                </li>
+                <li>
+                  <strong>Grade C (rapid):</strong> bone loss/age &gt;1.0,
+                  destruction out of proportion to plaque.
+                </li>
+              </ul>
+            </div>
+
+            <h2>6. Risk modifiers that upgrade Grade</h2>
+            <p>You pick a grade, then modify based on risk:</p>
+            <ul>
+              <li>
+                <strong>Smoking:</strong> &lt;10 cigarettes/day → at least Grade
+                B; ≥10/day → Grade C.
+              </li>
+              <li>
+                <strong>Diabetes:</strong> HbA1c &lt;7% → at least Grade B; ≥7%
+                → Grade C.
+              </li>
+            </ul>
+
+            <h2>7. OSCE / Viva model answer</h2>
+
+            <div class="study-form-card">
+              <h3>Example Examiner Answer</h3>
+              <p>
+                “This patient has maximum CAL of 5–6 mm with radiographic bone
+                loss into the middle third and a class II furcation, so I would
+                diagnose <strong>Stage III periodontitis</strong>. Bone loss/age
+                ratio is around 0.6 with no heavy risk modifiers, so this is
+                <strong>Grade B</strong>. Extent is generalized because more
+                than 30% of teeth are involved.”
+              </p>
+            </div>
+
+            <h2>8. Common student mistakes</h2>
+            <ul>
+              <li>Staging based on average CAL instead of maximum site</li>
+              <li>Ignoring complexity upgrades</li>
+              <li>Forgetting extent (localized vs generalized)</li>
+              <li>Grading without checking smoking/diabetes</li>
+            </ul>
+
+            <h2>9. How DentAIstudy helps</h2>
+            <p>DentAIstudy can instantly transform perio charts into:</p>
+            <ul>
+              <li>Stage + grade diagnosis</li>
+              <li>Justified OSCE summaries</li>
+              <li>Flashcards for rules and risk modifiers</li>
+              <li>MCQs for boards</li>
+            </ul>
+            <p>
+              <a href="../study.html" class="btn btn-primary"
+                >Try Study Builder →</a
+              >
+            </p>
+
+            <h2>References</h2>
+            <ul>
+              <li>
+                Tonetti MS, Greenwell H, Kornman KS. Staging and grading of
+                periodontitis: framework and proposal. <i>J Periodontol</i>.
+                2018.
+              </li>
+              <li>
+                American Academy of Periodontology / European Federation of
+                Periodontology. Staging and Grading Periodontitis guideline
+                summary. 2019.
+              </li>
+              <li>EFP Clinical decision tree for staging and grading. 2019.</li>
+              <li>ADA overview of 2017 World Workshop classification. 2022.</li>
+            </ul>
+          </article>
+        </div>
+      </main>
+
+      <!-- FOOTER -->
+      <footer class="site-footer">
+        <div class="container">
+          <div class="footer-top">
+            <div>
+              <div class="footer-brand">DentAIstudy</div>
+              <p>AI-enhanced tools for dental students and residents.</p>
+              <div class="footer-social">
+                <a
+                  href="https://www.tiktok.com/@dentaistudy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="DentAIstudy on TikTok"
+                >
+                  <img src="../assets/img/footer-icons/tiktok-icon.png" alt="TikTok" class="footer-social-img">
+                </a>
+              
+                <a
+                  href="mailto:info@dentaistudy.com"
+                  aria-label="Contact DentAIstudy by email"
+                >
+                  <img src="../assets/img/footer-icons/email-icon.png" alt="Email" class="footer-social-img">
+                </a>
+              </div>
+            </div>
+           <div class="footer-column">
+              <h4>Product</h4>
+              <a href="../subjects.html">Subjects</a>
+              <a href="../study.html">Study builder</a>
+              <a href="../blogs.html">Blogs</a>
+              <a href="../pricing.html">Pricing</a>
+            </div>
+            <div class="footer-column">
+              <h4>Company</h4>
+              <a href="../about.html">About</a>
+              <a href="../contact.html">Contact</a>
+              <a href="../faqs.html">FAQ</a>
+            </div>
+            <div class="footer-column">
+              <h4>Legal</h4>
+              <a href="../privacy.html">Privacy Policy</a>
+              <a href="../terms.html">Terms & Conditions</a>
+              <a href="../cookies.html">Cookies Policy</a>
+              <a href="../disclaimer.html">Disclaimer</a>
+              <a href="../billing.html">Billing</a>
+              <a href="../refund-policy.html">Refunds</a>
+            </div>
+          </div>
+          <div class="footer-bottom">© 2025 DentAIstudy</div>
+        </div>
+      </footer>
     </div>
-  </div>
-</header>
-
-<!-- MOBILE NAV -->
-<div class="slide-nav-backdrop"></div>
-<nav class="slide-nav">
-  <div class="slide-nav-header"><h3>Menu</h3><button class="slide-nav-close">&times;</button></div>
-  <div class="slide-nav-links">
-    <a href="../subjects.html">Subjects</a>
-    <a href="../study.html">Study builder</a>
-    <a href="../blogs.html">Blogs</a>
-    <a href="../about.html">About</a>
-    <a href="../contact.html">Contact</a>
-    <a href="../login.html" class="slide-login-link">Log in</a>
-  </div>
-</nav>
-
-<!-- BLOG BODY -->
-<main class="section">
-  <div class="container container-narrow">
-
-    <div class="section-header" style="text-align:left;">
-      <div class="section-kicker">Periodontology</div>
-      <h1 class="section-title">Periodontitis Staging & Grading Simplified (OSCE & Viva Guide)</h1>
-      <p class="section-subtitle">
-        A clear, examiner-friendly breakdown of staging and grading using the 2017 classification.
-      </p>
-    </div>
-
-    <!-- SNIPPET BLOCK -->
-    <section class="study-answer-card">
-      <h2>Quick Answers</h2>
-
-      <h3>What is “staging” in periodontitis?</h3>
-      <p>Staging describes how severe the disease is now and how complex it is to manage. </p>
-
-      <h3>What is “grading” in periodontitis?</h3>
-      <p>Grading estimates how fast the disease is likely progressing and considers risk factors. </p>
-
-      <h3>What are Stage I–IV based on?</h3>
-      <p>Mainly clinical attachment loss (CAL), radiographic bone loss, tooth loss, and complexity factors. </p>
-
-      <h3>What are Grade A–C based on?</h3>
-      <p>Rate of progression (bone loss/age), plus modifiers like smoking and diabetes. </p>
-    </section>
-
-    <article class="blog-body">
-
-      <h2>1. Why examiners love staging & grading</h2>
-      <p>
-        The new classification replaced the old “chronic vs aggressive” system,
-        because it gives a clearer clinical picture and supports treatment planning. 
-      </p>
-      <p>In OSCE/viva you’re scored on:</p>
-      <ul>
-        <li>Choosing the right stage</li>
-        <li>Choosing the right grade</li>
-        <li>Giving a short justification</li>
-      </ul>
-
-      <h2>2. The 2-step mindset</h2>
-      <p>Always answer in this order:</p>
-
-      <div class="study-form-card">
-        <h3>Exam Approach</h3>
-        <p>
-          <strong>Step 1: Stage it (severity + complexity)</strong><br>
-          <strong>Step 2: Grade it (speed + risk)</strong>
-        </p>
-      </div>
-
-      <h2>3. How to Stage periodontitis (I → IV)</h2>
-      <p>
-        Start with the WORST affected site (your maximum CAL or radiographic bone loss). 
-      </p>
-
-      <div class="study-form-card">
-        <h3>Staging (very high-yield)</h3>
-        <ul>
-          <li><strong>Stage I (initial):</strong> CAL 1–2 mm, bone loss limited to coronal third, PD ≤4 mm.</li>
-          <li><strong>Stage II (moderate):</strong> CAL 3–4 mm, bone loss coronal third, PD ≤5 mm.</li>
-          <li><strong>Stage III (severe):</strong> CAL ≥5 mm, bone loss to middle third, PD ≥6 mm, possible furcation. </li>
-          <li><strong>Stage IV (advanced):</strong> Stage III + functional problems (drifting, bite collapse, &lt;20 teeth remaining).</li>
-
-        </ul>
-      </div>
-
-      <p>
-        After choosing I–IV, add extent:
-        <strong>Localized</strong> (&lt;30% teeth), <strong>Generalized</strong> (≥30%), or molar-incisor pattern. 
-      </p>
-
-      <h2>4. Complexity factors that push Stage III/IV</h2>
-      <p>Even if CAL is borderline, complexity can upgrade the stage. Examiners expect this line.</p>
-      <ul>
-        <li>PD ≥6 mm</li>
-        <li>Vertical bone loss ≥3 mm</li>
-        <li>Furcation class II/III</li>
-        <li>Tooth loss because of periodontitis</li>
-        <li>Less than 20 remaining teeth = automatic Stage IV</li>
-      </ul>
-      <p>These “upgrade clues” are emphasized in clinical decision trees. </p>
-
-      <h2>5. How to Grade periodontitis (A → C)</h2>
-      <p>
-        Grading estimates progression and future risk.
-        If you have old radiographs, compare them; if not, use bone loss/age ratio. 
-      </p>
-
-      <div class="study-form-card">
-        <h3>Grading (simple rules)</h3>
-        <ul>
-          <li><strong>Grade A (slow):</strong> bone loss/age &lt;0.25, heavy plaque but little destruction.</li>
-          <li><strong>Grade B (moderate):</strong> bone loss/age 0.25–1.0, expected progression.</li>
-          <li><strong>Grade C (rapid):</strong> bone loss/age &gt;1.0, destruction out of proportion to plaque. </li>
-        </ul>
-      </div>
-
-      <h2>6. Risk modifiers that upgrade Grade</h2>
-      <p>You pick a grade, then modify based on risk:</p>
-      <ul>
-        <li><strong>Smoking:</strong> &lt;10 cigarettes/day → at least Grade B; ≥10/day → Grade C. </li>
-        <li><strong>Diabetes:</strong> HbA1c &lt;7% → at least Grade B; ≥7% → Grade C. </li>
-      </ul>
-
-      <h2>7. OSCE / Viva model answer</h2>
-
-      <div class="study-form-card">
-        <h3>Example Examiner Answer</h3>
-        <p>
-          “This patient has maximum CAL of 5–6 mm with radiographic bone loss into the middle third
-          and a class II furcation, so I would diagnose <strong>Stage III periodontitis</strong>.
-          Bone loss/age ratio is around 0.6 with no heavy risk modifiers, so this is <strong>Grade B</strong>.
-          Extent is generalized because more than 30% of teeth are involved.”
-        </p>
-      </div>
-
-      <h2>8. Common student mistakes</h2>
-      <ul>
-        <li>Staging based on average CAL instead of maximum site</li>
-        <li>Ignoring complexity upgrades</li>
-        <li>Forgetting extent (localized vs generalized)</li>
-        <li>Grading without checking smoking/diabetes</li>
-      </ul>
-
-      <h2>9. How DentAIstudy helps</h2>
-      <p>DentAIstudy can instantly transform perio charts into:</p>
-      <ul>
-        <li>Stage + grade diagnosis</li>
-        <li>Justified OSCE summaries</li>
-        <li>Flashcards for rules and risk modifiers</li>
-        <li>MCQs for boards</li>
-      </ul>
-      <p><a href="../study.html" class="btn btn-primary">Try Study Builder →</a></p>
-
-      <h2>References</h2>
-      <ul>
-        <li>Tonetti MS, Greenwell H, Kornman KS. Staging and grading of periodontitis: framework and proposal. <i>J Periodontol</i>. 2018. </li>
-        <li>American Academy of Periodontology / European Federation of Periodontology. Staging and Grading Periodontitis guideline summary. 2019. </li>
-        <li>EFP Clinical decision tree for staging and grading. 2019. </li>
-        <li>ADA overview of 2017 World Workshop classification. 2022. </li>
-      </ul>
-
-    </article>
-  </div>
-</main>
-
-<!-- FOOTER -->
-<footer class="site-footer">
-  <div class="container">
-    <div class="footer-top">
-      <div>
-        <div class="footer-brand">DentAIstudy</div>
-        <p>AI-enhanced tools for dental students and residents.</p>
-      </div>
-      <div class="footer-column"><h4>Product</h4>
-        <a href="../subjects.html">Subjects</a>
-        <a href="../study.html">Study builder</a>
-        <a href="../blogs.html">Blogs</a>
-      </div>
-      <div class="footer-column"><h4>Company</h4>
-        <a href="../about.html">About</a>
-        <a href="../contact.html">Contact</a>
-        <a href="../faqs.html">FAQ</a>
-      </div>
-      <div class="footer-column"><h4>Legal</h4>
-        <a href="../privacy.html">Privacy Policy</a>
-        <a href="../terms.html">Terms & Conditions</a>
-        <a href="../cookies.html">Cookies Policy</a>
-        <a href="../disclaimer.html">Disclaimer</a>
-      </div>
-    </div>
-    <div class="footer-bottom">© 2025 DentAIstudy</div>
-  </div>
-</footer>
-
-
-</div>
-</body>
+  </body>
 </html>

@@ -1,249 +1,338 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Local Anesthesia Complications — Fast OSCE Management</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Local Anesthesia Complications — Fast OSCE Management</title>
 
-  <link rel="stylesheet" href="../assets/css/style-v3.css" />
-  <link rel="icon" type="image/png" sizes="512x512" href="../assets/img/favicon.png?v=2" />
+    <link rel="stylesheet" href="../assets/css/style-v3.css" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="512x512"
+      href="../assets/img/favicon.png?v=2"
+    />
 
-  <!-- JS: Supabase + Auth Guard + Logout + Main -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-  <script src="../assets/js/auth-client.js" defer></script>
-  <script src="../assets/js/auth-guard.js" defer></script>
-  <script src="../assets/js/auth-logout.js" defer></script>
-  <script defer src="../assets/js/main.js"></script>
-</head>
+    <!-- JS: Supabase + Auth Guard + Logout + Main -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+      defer
+    ></script>
+    <script src="../assets/js/auth-client.js" defer></script>
+    <script src="../assets/js/auth-guard.js" defer></script>
+    <script src="../assets/js/auth-logout.js" defer></script>
+    <script defer src="../assets/js/main.js"></script>
+  </head>
 
-<body>
-<div class="main-wrapper">
-
-  <!-- HEADER -->
-  <header class="site-header">
-    <div class="container header-inner">
-      <a class="brand" href="../index.html"><span>Dent</span><span>AIstudy</span></a>
-      <nav class="header-nav">
-        <a href="../subjects.html">Subjects</a>
-        <a href="../study.html">Study builder</a>
-        <a href="../blogs.html" class="is-active">Blogs</a>
-        <a href="../about.html">About</a>
-        <a href="../contact.html">Contact</a>
-      </nav>
-      <div class="header-right">
-        <a href="../login.html" class="btn btn-outline header-login">Log in</a>
-        <a href="../signup.html" class="btn btn-primary header-signup">Sign up</a>
-        <button class="menu-toggle" aria-label="Open menu">
-          <span></span><span></span><span></span>
-        </button>
-      </div>
-    </div>
-  </header>
-
-  <!-- MOBILE NAV -->
-  <div class="slide-nav-backdrop"></div>
-  <nav class="slide-nav">
-    <div class="slide-nav-header">
-      <h3>Menu</h3>
-      <button class="slide-nav-close" aria-label="Close menu">&times;</button>
-    </div>
-    <div class="slide-nav-links">
-      <a href="../subjects.html">Subjects</a>
-      <a href="../study.html">Study builder</a>
-      <a href="../blogs.html">Blogs</a>
-      <a href="../about.html">About</a>
-      <a href="../contact.html">Contact</a>
-      <a href="../login.html" class="slide-login-link">Log in</a>
-    </div>
-  </nav>
-
-  <!-- BLOG -->
-  <main class="section">
-    <div class="container container-narrow">
-
-      <div class="section-header" style="text-align:left;">
-        <div class="section-kicker">Operative</div>
-        <h1 class="section-title">Local Anesthesia Complications — Fast OSCE Management</h1>
-        <p class="section-subtitle">
-          Clear, high-yield management steps for the local anesthesia problems examiners love to ask.
-        </p>
-      </div>
-
-      <!-- QUICK ANSWERS -->
-      <section class="study-answer-card">
-        <h2>Quick Answers</h2>
-
-        <h3>What is the most common local anesthesia complication?</h3>
-        <p>Vasovagal syncope triggered by anxiety, fear, or sudden pain.</p>
-
-        <h3>How do you manage local anesthetic toxicity?</h3>
-        <p>Stop injection, support airway and breathing, give oxygen, manage seizures, start lipid emulsion in severe cases, and call emergency help.</p>
-
-        <h3>What causes a post-injection hematoma?</h3>
-        <p>Accidental puncture of a blood vessel, especially during PSA or nerve blocks.</p>
-
-        <h3>What should you do if the block fails?</h3>
-        <p>Reassess landmarks and technique, deposit slowly, adjust needle position, add infiltrations, or use supplemental injections.</p>
-      </section>
-
-      <article class="blog-body">
-
-        <h2>1. Why LA complications matter in exams</h2>
-        <p>
-          Local anesthesia is used in almost every clinical session. Examiners expect you to recognise
-          complications quickly and manage them calmly. Most stations focus on a small set of predictable
-          problems rather than rare events.
-        </p>
-
-        <h2>2. Vasovagal syncope — the common one</h2>
-        <p>Usually triggered by anxiety, pain, or standing up too quickly after treatment.</p>
-        <div class="study-form-card">
-          <h3>Syncope management steps</h3>
-          <p>
-            1. Stop treatment immediately.<br>
-            2. Lay the patient flat with legs elevated.<br>
-            3. Loosen tight clothing, maintain airway, give oxygen.<br>
-            4. Cold compress on forehead; consider ammonia inhalant if used locally.<br>
-            5. Monitor vitals and reassure the patient; delay further treatment.
-          </p>
+  <body>
+    <div class="main-wrapper">
+      <!-- HEADER -->
+      <header class="site-header">
+        <div class="container header-inner">
+          <a class="brand" href="../index.html"
+            ><span>Dent</span><span>AIstudy</span></a
+          >
+          <nav class="header-nav">
+            <a href="../subjects.html">Subjects</a>
+            <a href="../study.html">Study builder</a>
+            <a href="../blogs.html" class="is-active">Blogs</a>
+            <a href="../pricing.html">Pricing</a>
+            <a href="../contact.html">Contact</a>
+          </nav>
+          <div class="header-right">
+            <a href="../login.html" class="btn btn-outline header-login"
+              >Log in</a
+            >
+            <a href="../signup.html" class="btn btn-primary header-signup"
+              >Sign up</a
+            >
+            <button class="menu-toggle" aria-label="Open menu">
+              <span></span><span></span><span></span>
+            </button>
+          </div>
         </div>
+      </header>
 
-        <h2>3. Local anesthetic systemic toxicity (LAST)</h2>
-        <p>
-          Toxicity occurs after intravascular injection or excessive dose. Early recognition is key.
-        </p>
-        <ul>
-          <li>Early signs: metallic taste, circumoral numbness, tinnitus, agitation.</li>
-          <li>Late signs: seizures, arrhythmias, cardiovascular collapse.</li>
-        </ul>
-        <div class="study-form-card">
-          <h3>LAST management (exam version)</h3>
-          <p>
-            1. Stop injection and call for help.<br>
-            2. Airway, breathing, circulation; give 100% oxygen.<br>
-            3. Control seizures with benzodiazepines if needed.<br>
-            4. Start IV lipid emulsion according to local protocol for severe cases.<br>
-            5. Transfer to emergency care and document the event.
-          </p>
+      <!-- MOBILE NAV -->
+      <div class="slide-nav-backdrop"></div>
+      <nav class="slide-nav">
+        <div class="slide-nav-header">
+          <h3>Menu</h3>
+          <button class="slide-nav-close" aria-label="Close menu">
+            &times;
+          </button>
         </div>
-
-        <h2>4. Hematoma after injection</h2>
-        <p>
-          Usually follows puncture of a vessel, especially with PSA or pterygoid plexus involvement.
-        </p>
-        <ul>
-          <li>Immediate firm pressure at the site.</li>
-          <li>Cold compression for the first 24 hours.</li>
-          <li>Warm compress after 24 hours to speed resorption.</li>
-          <li>Explain that discoloration and swelling resolve within about 1–2 weeks.</li>
-        </ul>
-
-        <h2>5. Needle breakage and trismus</h2>
-        <p>
-          Needle fracture is rare but highly stressed in viva; trismus is more common after difficult blocks.
-        </p>
-        <div class="study-form-card">
-          <h3>Needle breakage</h3>
-          <p>
-            1. Ask the patient not to move.<br>
-            2. If the needle end is visible, grasp with forceps and remove carefully.<br>
-            3. If not visible, do not probe blindly — refer for surgical retrieval and record everything.
-          </p>
-        </div>
-        <p>
-          Trismus management focuses on gentle stretching, warm compresses, soft diet, and analgesics;
-          refer if it persists or if infection is suspected.
-        </p>
-
-        <h2>6. Allergy and idiosyncratic reactions</h2>
-        <p>
-          True amide allergy is rare, but examiners still expect a structured answer.
-        </p>
-        <ul>
-          <li>Mild reaction: stop injection, antihistamine, observation.</li>
-          <li>Moderate: oxygen, IM antihistamine, closer monitoring.</li>
-          <li>Severe anaphylaxis: IM adrenaline, call emergency services, follow local anaphylaxis protocol.</li>
-        </ul>
-
-        <h2>7. Failed anesthesia — structured troubleshooting</h2>
-        <p>
-          Failure of IANB or infiltration is a favourite OSCE question. Show that you think stepwise.
-        </p>
-        <div class="study-form-card">
-          <h3>Failed block — exam checklist</h3>
-          <p>
-            1. Recheck landmarks and depth of penetration.<br>
-            2. Deposit slowly and in adequate volume.<br>
-            3. Slightly adjust needle position (higher, deeper, or more posterior for IANB).<br>
-            4. Add buccal and lingual infiltrations or PDL injections.<br>
-            5. Consider supplemental techniques (intraosseous, intrapulpal) for irreversible pulpitis cases.<br>
-            6. Manage patient anxiety and explain the plan.
-          </p>
-        </div>
-
-        <h2>8. How DentAIstudy helps</h2>
-        <p>
-          DentAIstudy can turn each complication into exam-ready material:
-        </p>
-        <ul>
-          <li>Short OSCE flows for syncope, toxicity, hematoma, and allergy.</li>
-          <li>Viva-style answers summarising causes and prevention.</li>
-          <li>Checklists for IANB troubleshooting and safe maximum doses.</li>
-          <li>Flashcards for early vs late signs of toxicity.</li>
-        </ul>
-        <p><a href="../study.html" class="btn btn-primary">Try Study Builder →</a></p>
-
-        <h2>References</h2>
-        <ul>
-          <li>Malamed SF. <em>Handbook of Local Anesthesia.</em> 7th ed. Elsevier; 2019.</li>
-          <li>Haas DA. An update on local anesthetics in dentistry. <em>J Can Dent Assoc.</em></li>
-          <li>American Dental Association. Guidelines for the Use of Sedation and General Anesthesia by Dentists.</li>
-        </ul>
-
-      </article>
-
-    </div>
-  </main>
-
-  <!-- FOOTER -->
-  <footer class="site-footer">
-    <div class="container">
-      <div class="footer-top">
-        <div>
-          <div class="footer-brand">DentAIstudy</div>
-          <p>AI-enhanced tools for dental students and residents.</p>
-        </div>
-
-        <div class="footer-column">
-          <h4>Product</h4>
+        <div class="slide-nav-links">
           <a href="../subjects.html">Subjects</a>
           <a href="../study.html">Study builder</a>
           <a href="../blogs.html">Blogs</a>
-        </div>
-
-        <div class="footer-column">
-          <h4>Company</h4>
-          <a href="../about.html">About</a>
+          <a href="../pricing.html">Pricing</a>
           <a href="../contact.html">Contact</a>
-          <a href="../faqs.html">FAQ</a>
+          <a href="../login.html" class="slide-login-link">Log in</a>
         </div>
+      </nav>
 
-        <div class="footer-column">
-          <h4>Legal</h4>
-          <a href="../privacy.html">Privacy Policy</a>
-          <a href="../terms.html">Terms &amp; Conditions</a>
-          <a href="../cookies.html">Cookies Policy</a>
-          <a href="../disclaimer.html">Disclaimer</a>
+      <!-- BLOG -->
+      <main class="section">
+        <div class="container container-narrow">
+          <div class="section-header" style="text-align: left">
+            <div class="section-kicker">Operative</div>
+            <h1 class="section-title">
+              Local Anesthesia Complications — Fast OSCE Management
+            </h1>
+            <p class="section-subtitle">
+              Clear, high-yield management steps for the local anesthesia
+              problems examiners love to ask.
+            </p>
+          </div>
+
+          <!-- QUICK ANSWERS -->
+          <section class="study-answer-card">
+            <h2>Quick Answers</h2>
+
+            <h3>What is the most common local anesthesia complication?</h3>
+            <p>Vasovagal syncope triggered by anxiety, fear, or sudden pain.</p>
+
+            <h3>How do you manage local anesthetic toxicity?</h3>
+            <p>
+              Stop injection, support airway and breathing, give oxygen, manage
+              seizures, start lipid emulsion in severe cases, and call emergency
+              help.
+            </p>
+
+            <h3>What causes a post-injection hematoma?</h3>
+            <p>
+              Accidental puncture of a blood vessel, especially during PSA or
+              nerve blocks.
+            </p>
+
+            <h3>What should you do if the block fails?</h3>
+            <p>
+              Reassess landmarks and technique, deposit slowly, adjust needle
+              position, add infiltrations, or use supplemental injections.
+            </p>
+          </section>
+
+          <article class="blog-body">
+            <h2>1. Why LA complications matter in exams</h2>
+            <p>
+              Local anesthesia is used in almost every clinical session.
+              Examiners expect you to recognise complications quickly and manage
+              them calmly. Most stations focus on a small set of predictable
+              problems rather than rare events.
+            </p>
+
+            <h2>2. Vasovagal syncope — the common one</h2>
+            <p>
+              Usually triggered by anxiety, pain, or standing up too quickly
+              after treatment.
+            </p>
+            <div class="study-form-card">
+              <h3>Syncope management steps</h3>
+              <p>
+                1. Stop treatment immediately.<br />
+                2. Lay the patient flat with legs elevated.<br />
+                3. Loosen tight clothing, maintain airway, give oxygen.<br />
+                4. Cold compress on forehead; consider ammonia inhalant if used
+                locally.<br />
+                5. Monitor vitals and reassure the patient; delay further
+                treatment.
+              </p>
+            </div>
+
+            <h2>3. Local anesthetic systemic toxicity (LAST)</h2>
+            <p>
+              Toxicity occurs after intravascular injection or excessive dose.
+              Early recognition is key.
+            </p>
+            <ul>
+              <li>
+                Early signs: metallic taste, circumoral numbness, tinnitus,
+                agitation.
+              </li>
+              <li>
+                Late signs: seizures, arrhythmias, cardiovascular collapse.
+              </li>
+            </ul>
+            <div class="study-form-card">
+              <h3>LAST management (exam version)</h3>
+              <p>
+                1. Stop injection and call for help.<br />
+                2. Airway, breathing, circulation; give 100% oxygen.<br />
+                3. Control seizures with benzodiazepines if needed.<br />
+                4. Start IV lipid emulsion according to local protocol for
+                severe cases.<br />
+                5. Transfer to emergency care and document the event.
+              </p>
+            </div>
+
+            <h2>4. Hematoma after injection</h2>
+            <p>
+              Usually follows puncture of a vessel, especially with PSA or
+              pterygoid plexus involvement.
+            </p>
+            <ul>
+              <li>Immediate firm pressure at the site.</li>
+              <li>Cold compression for the first 24 hours.</li>
+              <li>Warm compress after 24 hours to speed resorption.</li>
+              <li>
+                Explain that discoloration and swelling resolve within about 1–2
+                weeks.
+              </li>
+            </ul>
+
+            <h2>5. Needle breakage and trismus</h2>
+            <p>
+              Needle fracture is rare but highly stressed in viva; trismus is
+              more common after difficult blocks.
+            </p>
+            <div class="study-form-card">
+              <h3>Needle breakage</h3>
+              <p>
+                1. Ask the patient not to move.<br />
+                2. If the needle end is visible, grasp with forceps and remove
+                carefully.<br />
+                3. If not visible, do not probe blindly — refer for surgical
+                retrieval and record everything.
+              </p>
+            </div>
+            <p>
+              Trismus management focuses on gentle stretching, warm compresses,
+              soft diet, and analgesics; refer if it persists or if infection is
+              suspected.
+            </p>
+
+            <h2>6. Allergy and idiosyncratic reactions</h2>
+            <p>
+              True amide allergy is rare, but examiners still expect a
+              structured answer.
+            </p>
+            <ul>
+              <li>
+                Mild reaction: stop injection, antihistamine, observation.
+              </li>
+              <li>Moderate: oxygen, IM antihistamine, closer monitoring.</li>
+              <li>
+                Severe anaphylaxis: IM adrenaline, call emergency services,
+                follow local anaphylaxis protocol.
+              </li>
+            </ul>
+
+            <h2>7. Failed anesthesia — structured troubleshooting</h2>
+            <p>
+              Failure of IANB or infiltration is a favourite OSCE question. Show
+              that you think stepwise.
+            </p>
+            <div class="study-form-card">
+              <h3>Failed block — exam checklist</h3>
+              <p>
+                1. Recheck landmarks and depth of penetration.<br />
+                2. Deposit slowly and in adequate volume.<br />
+                3. Slightly adjust needle position (higher, deeper, or more
+                posterior for IANB).<br />
+                4. Add buccal and lingual infiltrations or PDL injections.<br />
+                5. Consider supplemental techniques (intraosseous, intrapulpal)
+                for irreversible pulpitis cases.<br />
+                6. Manage patient anxiety and explain the plan.
+              </p>
+            </div>
+
+            <h2>8. How DentAIstudy helps</h2>
+            <p>
+              DentAIstudy can turn each complication into exam-ready material:
+            </p>
+            <ul>
+              <li>
+                Short OSCE flows for syncope, toxicity, hematoma, and allergy.
+              </li>
+              <li>Viva-style answers summarising causes and prevention.</li>
+              <li>
+                Checklists for IANB troubleshooting and safe maximum doses.
+              </li>
+              <li>Flashcards for early vs late signs of toxicity.</li>
+            </ul>
+            <p>
+              <a href="../study.html" class="btn btn-primary"
+                >Try Study Builder →</a
+              >
+            </p>
+
+            <h2>References</h2>
+            <ul>
+              <li>
+                Malamed SF. <em>Handbook of Local Anesthesia.</em> 7th ed.
+                Elsevier; 2019.
+              </li>
+              <li>
+                Haas DA. An update on local anesthetics in dentistry.
+                <em>J Can Dent Assoc.</em>
+              </li>
+              <li>
+                American Dental Association. Guidelines for the Use of Sedation
+                and General Anesthesia by Dentists.
+              </li>
+            </ul>
+          </article>
         </div>
-      </div>
+      </main>
 
-      <div class="footer-bottom">
-        © 2025 DentAIstudy. All rights reserved.
-      </div>
+      <!-- FOOTER -->
+      <footer class="site-footer">
+        <div class="container">
+          <div class="footer-top">
+            <div>
+              <div class="footer-brand">DentAIstudy</div>
+              <p>AI-enhanced tools for dental students and residents.</p>
+              <div class="footer-social">
+                <a
+                  href="https://www.tiktok.com/@dentaistudy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="DentAIstudy on TikTok"
+                >
+                  <img src="../assets/img/footer-icons/tiktok-icon.png" alt="TikTok" class="footer-social-img">
+                </a>
+              
+                <a
+                  href="mailto:info@dentaistudy.com"
+                  aria-label="Contact DentAIstudy by email"
+                >
+                  <img src="../assets/img/footer-icons/email-icon.png" alt="Email" class="footer-social-img">
+                </a>
+              </div>
+            </div>
+
+           <div class="footer-column">
+              <h4>Product</h4>
+              <a href="../subjects.html">Subjects</a>
+              <a href="../study.html">Study builder</a>
+              <a href="../blogs.html">Blogs</a>
+              <a href="../pricing.html">Pricing</a>
+            </div>
+
+            <div class="footer-column">
+              <h4>Company</h4>
+              <a href="../about.html">About</a>
+              <a href="../contact.html">Contact</a>
+              <a href="../faqs.html">FAQ</a>
+            </div>
+
+            <div class="footer-column">
+              <h4>Legal</h4>
+              <a href="../privacy.html">Privacy Policy</a>
+              <a href="../terms.html">Terms &amp; Conditions</a>
+              <a href="../cookies.html">Cookies Policy</a>
+              <a href="../disclaimer.html">Disclaimer</a>
+              <a href="../billing.html">Billing</a>
+              <a href="../refund-policy.html">Refunds</a>
+            </div>
+          </div>
+
+          <div class="footer-bottom">
+            © 2025 DentAIstudy. All rights reserved.
+          </div>
+        </div>
+      </footer>
     </div>
-  </footer>
-
-
-</div>
-</body>
+  </body>
 </html>

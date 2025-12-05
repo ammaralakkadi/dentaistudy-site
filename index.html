@@ -1,427 +1,495 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DentAIstudy – AI-powered dental study assistant</title>
-  <link rel="stylesheet" href="assets/css/style-v3.css" />
-  <link rel="icon" type="image/png" sizes="512x512" href="assets/img/favicon.png?v=2" />
-  <!-- JS: Supabase + auth UI + logout + main -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-  <script src="assets/js/auth-client.js" defer></script>
-  <script src="assets/js/auth-guard.js" defer></script>
-  <script src="assets/js/auth-logout.js" defer></script>
-  <script defer src="assets/js/main.js"></script>
-</head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DentAIstudy – AI-powered dental study assistant</title>
+    <link rel="stylesheet" href="assets/css/style-v3.css" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="512x512"
+      href="assets/img/favicon.png?v=2"
+    />
+    <!-- JS: Supabase + auth UI + logout + main -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+      defer
+    ></script>
+    <script src="assets/js/auth-client.js" defer></script>
+    <script src="assets/js/auth-guard.js" defer></script>
+    <script src="assets/js/auth-logout.js" defer></script>
+    <script defer src="assets/js/main.js"></script>
+  </head>
 
-<body>
-<div class="main-wrapper">
+  <body>
+    <div class="main-wrapper">
+      <!-- HEADER -->
+      <header class="site-header">
+        <div class="container header-inner">
+          <a class="brand" href="index.html">
+            <span>Dent</span><span>AIstudy</span>
+          </a>
 
-  <!-- HEADER -->
-  <header class="site-header">
-    <div class="container header-inner">
+          <nav class="header-nav">
+            <a href="subjects.html">Subjects</a>
+            <a href="study.html">Study builder</a>
+            <a href="blogs.html">Blogs</a>
+            <a href="pricing.html">Pricing</a>
+            <a href="contact.html">Contact</a>
+          </nav>
 
-      <a class="brand" href="index.html">
-        <span>Dent</span><span>AIstudy</span>
-      </a>
+          <div class="header-right">
+            <a href="login.html" class="btn btn-outline header-login">Log in</a>
+            <a href="signup.html" class="btn btn-primary header-signup"
+              >Sign up</a
+            >
 
-      <nav class="header-nav">
-        <a href="subjects.html">Subjects</a>
-        <a href="study.html">Study builder</a>
-        <a href="blogs.html">Blogs</a>
-        <a href="pricing.html">Pricing</a>
-        <a href="contact.html">Contact</a>
-      </nav>
-
-      <div class="header-right">
-        <a href="login.html" class="btn btn-outline header-login">Log in</a>
-        <a href="signup.html" class="btn btn-primary header-signup">Sign up</a>
-
-        <!-- hamburger (hidden on desktop via CSS) -->
-        <button class="menu-toggle" aria-label="Open menu">
-          <span></span><span></span><span></span>
-        </button>
-      </div>
-
-    </div>
-  </header>
-
-  <!-- SLIDE MENU (mobile) -->
-  <div class="slide-nav-backdrop"></div>
-  <nav class="slide-nav">
-    <div class="slide-nav-header">
-      <h3>Menu</h3>
-      <button class="slide-nav-close" aria-label="Close menu">&times;</button>
-    </div>
-
-    <div class="slide-nav-links">
-      <a href="subjects.html">Subjects</a>
-      <a href="study.html">Study builder</a>
-      <a href="blogs.html">Blogs</a>
-      <a href="pricing.html">Pricing</a>
-      <a href="contact.html">Contact</a>
-      <a href="login.html" class="slide-login-link">Log in</a>
-    </div>
-  </nav>
-
-  <!-- HERO (gradient like signup) -->
-  <div class="hero-home-shell">
-    <section class="hero hero-home">
-      <div class="container hero-grid hero-home-grid">
-
-        <!-- Left copy -->
-        <div>
-          <div class="hero-badge-row">
-            <span>
-              <span class="hero-badge-dot"></span>
-              <span>AI Dental space for</span>
-            </span>
-            <span>OSCE • Viva • Theory</span>
-          </div>
-
-          <div class="hero-eyebrow">Dental learning, simplified</div>
-
-          <h1 class="hero-title">
-            Stay in study mode, not chat mode.
-          </h1>
-
-          <p class="hero-lead">
-            Turn any topic into OSCE flows, high-yield notes, and flashcards —
-            in a clean interface built for undergrads, interns, and residents.
-          </p>
-
-  <!-- Dashboard Preview (static image, lightweight) -->
-   <div class="hero-preview-wrap">
-    <div class="hero-preview-bar">
-     <span class="dot red"></span>
-     <span class="dot yellow"></span>
-     <span class="dot green"></span>
-     <span class="hero-preview-title">Study Builder Preview</span>
-    </div>
-
-   <img
-    class="hero-preview-img"
-    src="assets/img/dashboard-preview.webp"
-    alt="DentAIstudy Study Builder dashboard preview"
-    loading="lazy"
-   />
-  </div>
-
-          <div class="hero-actions">
-            <a href="study.html" class="btn btn-primary">Start studying</a>
-            <a href="subjects.html" class="btn btn-outline">Browse subjects</a>
-          </div>
-
-          <p class="hero-lead hero-meta-alt">Made for dental education only</p>
-
-          <div class="hero-level-chips">
-            <span class="hero-level-chip">Undergrads</span>
-            <span class="hero-level-chip">Intern / House officer</span>
-            <span class="hero-level-chip">Postgrads &amp; residents</span>
+            <!-- hamburger (hidden on desktop via CSS) -->
+            <button class="menu-toggle" aria-label="Open menu">
+              <span></span><span></span><span></span>
+            </button>
           </div>
         </div>
+      </header>
 
-        <!-- Right hero card -->
-<aside class="hero-card hero-home-card">
-  <div class="hero-card-label">
-    <span>DentAIstudy generates</span>
-    <span class="hero-card-chip">Preview</span>
-  </div>
-
-  <!-- ADD this wrapper -->
-  <div class="hero-card-items">
-
-    <div class="feature-item">
-      <div class="icon-pill">
-        <img src="assets/img/OSCE flows.png" alt="OSCE flows">
-      </div>    
-      <h3>OSCE flows</h3>
-      <p>Station-ready checklists with history, exam, investigations &amp; management.</p>
-    </div>
-
-    <div class="feature-item">
-      <div class="icon-pill">
-        <img src="assets/img/High-yield sheets.png" alt="High-yield sheets">
-      </div>
-      <h3>High-yield sheets</h3>
-      <p>One-page summaries for last-minute revision before clinics and vivas.</p>
-    </div>
-
-    <div class="feature-item">
-      <div class="icon-pill">
-        <img src="assets/img/Flashcard decks.png" alt="Flashcard decks">
-      </div>
-      <h3>Flashcard decks</h3>
-      <p>Clean Q/A cards ready to export into Anki, Quizlet, or your own system.</p>
-    </div>
-  </div>
-  <!-- END wrapper -->
-</aside>
-
-
-      </div>
-    </section>
-  </div>
-
-  <!-- FEATURES -->
-  <section class="section">
-    <div class="container">
-
-      <div class="section-header">
-        <div class="section-kicker">Why choose us</div>
-        <h2 class="section-title">Designed for dental students</h2>
-        <p class="section-subtitle">Clear, professional tools built for fast understanding.</p>
-      </div>
-
-      <div class="features-modern">
-
-        <div class="feature-item">
-          <div class="feature-icon">  <img 
-          src="assets/img/Why choose us icons/High-quality explanations.png" 
-            alt="High-quality explanations icon"
-            style="width:60px;height:60px;object-fit:contain;"
-            />
-         </div>
-          <h3>High-quality explanations</h3>
-          <p>Accurate terminology &amp; structured reasoning.</p>
+      <!-- SLIDE MENU (mobile) -->
+      <div class="slide-nav-backdrop"></div>
+      <nav class="slide-nav">
+        <div class="slide-nav-header">
+          <h3>Menu</h3>
+          <button class="slide-nav-close" aria-label="Close menu">
+            &times;
+          </button>
         </div>
 
-        <div class="feature-item">
-          <div class="feature-icon">  <img 
-          src="assets/img/Why choose us icons/Exam-focused outputs.png" 
-          alt="Exam-focused outputs icon"
-          style="width:60px;height:60px;object-fit:contain;"
-          />
-        </div>
-          <h3>Exam-focused outputs</h3>
-          <p>OSCE flows, case notes, steps &amp; classifications.</p>
-        </div>
-
-        <div class="feature-item">
-          <div class="feature-icon"><img 
-          src="assets/img/Why choose us icons/Fast & distraction-free.png" 
-          alt="Fast and distraction-free icon"
-          style="width:60px;height:60px;object-fit:contain;"
-          />
-        </div>
-          <h3>Fast &amp; distraction-free</h3>
-          <p>Clean interface — optimized for studying.</p>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- REVIEWS -->
-  <section class="section">
-    <div class="container">
-
-      <div class="section-header">
-        <div class="section-kicker">Student feedback</div>
-        <h2 class="section-title">Trusted by learners</h2>
-        <p class="section-subtitle">Short, honest comments from students who care about efficiency.</p>
-      </div>
-
-      <div class="reviews-grid">
-
-        <div class="review-card">
-          <div class="review-header">
-            <div class="review-avatar">
-              <img src="assets/img/review-1.jpg" alt="Profile picture of Aisha" />
-            </div>
-            <div>
-              <div class="review-name">Aisha</div>
-              <div class="review-role">Dental intern</div>
-            </div>
-          </div>
-          <div class="stars">★★★★★</div>
-          <div class="review-text">
-            “I use DentAIstudy before every clinic session. It turns my topics into quick OSCE flows I can skim in 2–3 minutes.”
-          </div>
-        </div>
-
-        <div class="review-card">
-          <div class="review-header">
-            <div class="review-avatar">
-              <img src="assets/img/review-2.jpg" alt="Profile picture of Marco" />
-            </div>
-            <div>
-              <div class="review-name">Marco</div>
-              <div class="review-role">Orthodontic resident</div>
-            </div>
-          </div>
-          <div class="stars">★★★★★</div>
-          <div class="review-text">
-            “The structure is what sold me. History, exam, investigations, management — exactly how examiners think.”
-          </div>
-        </div>
-
-        <div class="review-card">
-          <div class="review-header">
-            <div class="review-avatar">
-              <img src="assets/img/review-3.jpg" alt="Profile picture of Sara" />
-            </div>
-            <div>
-              <div class="review-name">Sara</div>
-              <div class="review-role">Final-year dental student</div>
-            </div>
-          </div>
-          <div class="stars">★★★★★</div>
-          <div class="review-text">
-            “Flashcards + compressed notes in one place. It feels like a small dashboard just for my exams.”
-          </div>
-        </div>
-
-      </div>
-
-    </div>
-  </section>
-
-  <!-- FAQ -->
-  <section class="section">
-    <div class="container">
-
-      <div class="section-header">
-        <h2 class="section-title">Frequently asked questions</h2>
-        <p class="section-subtitle">Short answers so you can get back to studying.</p>
-      </div>
-      
-      <div class="faq-list">
-
-  <div class="faq-item">
-    <button class="faq-question"><span>Is DentAIstudy free?</span><span>⌄</span></button>
-    <div class="faq-answer">
-      Yes — DentAIstudy’s core study tools are currently free to use.
-      You can generate OSCE flows, notes, and flashcards without any subscription.
-      As we grow, we may introduce optional premium features, but the essential study experience will remain accessible.
-    </div>
-  </div>
-
-  <div class="faq-item">
-    <button class="faq-question"><span>What makes DentAIstudy different?</span><span>⌄</span></button>
-    <div class="faq-answer">
-      DentAIstudy is built specifically for dental students — not as a general chatbot,
-      but as a structured study workspace. It focuses on exam-ready outputs such as OSCE checklists,
-      viva points, classifications, and clear clinical reasoning.
-      Instead of long paragraphs, you get clean, organized study material designed the way examiners think.
-    </div>
-  </div>
-
-  <div class="faq-item">
-    <button class="faq-question"><span>Can I rely on it clinically?</span><span>⌄</span></button>
-    <div class="faq-answer">
-      DentAIstudy is designed for studying, revision, and strengthening your understanding of dental concepts.
-      It is not a clinical decision tool and should never replace supervisors, professors, or official guidelines.
-      Always verify information during real patient care.
-    </div>
-  </div>
-
-  <div class="faq-item">
-    <button class="faq-question"><span>Do I need an account?</span><span>⌄</span></button>
-    <div class="faq-answer">
-      You can explore the platform without an account.
-      Creating an account unlocks extra benefits such as saving study packs,
-      tracking your activity, and personalizing your study workspace.
-    </div>
-  </div>
-
-  <div class="faq-item">
-    <button class="faq-question"><span>Which subjects are supported?</span><span>⌄</span></button>
-    <div class="faq-answer">
-      DentAIstudy supports all major dental subjects, including Operative, Endodontics, Prosthodontics,
-      Orthodontics, Periodontics, Oral Surgery, Oral Pathology, Radiology, and more.
-      We continuously refine and expand coverage to keep your study materials comprehensive and up to date.
-    </div>
-  </div>
-
-  <div class="faq-item">
-    <button class="faq-question"><span>Is my data stored?</span><span>⌄</span></button>
-    <div class="faq-answer">
-      We store only the information needed to run your DentAIstudy account
-      and keep your study materials available across devices.
-      Your data is private, never sold, and protected under our Privacy Policy.
-      You’re always in control of your content.
-    </div>
-  </div>
-
-  <div class="faq-item">
-    <button class="faq-question"><span>Who is DentAIstudy for?</span><span>⌄</span></button>
-    <div class="faq-answer">
-      DentAIstudy is designed for undergraduate dental students, interns/house officers,
-      and postgraduate trainees who want structured, examiner-style study material in a fast, distraction-free workspace.
-    </div>
-  </div>
-
-</div>
-
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer class="site-footer">
-    <div class="container">
-
-      <div class="footer-top">
-
-        <div>
-          <div class="footer-brand">DentAIstudy</div>
-          <p>AI-enhanced tools for dental students and residents.</p>
-        </div>
-
-        <div class="footer-column">
-          <h4>Product</h4>
+        <div class="slide-nav-links">
           <a href="subjects.html">Subjects</a>
           <a href="study.html">Study builder</a>
           <a href="blogs.html">Blogs</a>
           <a href="pricing.html">Pricing</a>
+          <a href="contact.html">Contact</a>
+          <a href="login.html" class="slide-login-link">Log in</a>
         </div>
+      </nav>
 
-        <div class="footer-column">
-  <h4>Company</h4>
-  <a href="about.html">About</a>
-  <a href="contact.html">Contact</a>
-  <a href="faqs.html">FAQ</a>
-</div>
+      <!-- HERO (gradient like signup) -->
+      <div class="hero-home-shell">
+        <section class="hero hero-home">
+          <div class="container hero-grid hero-home-grid">
+            <!-- Left copy -->
+            <div>
+              <div class="hero-badge-row">
+                <span>
+                  <span class="hero-badge-dot"></span>
+                  <span>AI Dental space for</span>
+                </span>
+                <span>OSCE • Viva • Theory</span>
+              </div>
 
-        <div class="footer-column">
-          <h4>Legal</h4>
-          <a href="privacy.html">Privacy Policy</a>
-          <a href="terms.html">Terms & Conditions</a>
-          <a href="cookies.html">Cookies Policy</a>
-          <a href="disclaimer.html">Disclaimer</a>
-          <a href="billing.html">Billing</a>
-          <a href="refund-policy.html">Refunds</a>
-        </div>
+              <div class="hero-eyebrow">Dental learning, simplified</div>
 
+              <h1 class="hero-title">Stay in study mode, not chat mode.</h1>
+
+              <p class="hero-lead">
+                Turn any topic into OSCE flows, high-yield notes, and flashcards
+                — in a clean interface built for undergrads, interns, and
+                residents.
+              </p>
+
+              <!-- Dashboard Preview (static image, lightweight) -->
+              <div class="hero-preview-wrap">
+                <div class="hero-preview-bar">
+                  <span class="dot red"></span>
+                  <span class="dot yellow"></span>
+                  <span class="dot green"></span>
+                  <span class="hero-preview-title">Study Builder Preview</span>
+                </div>
+
+                <img
+                  class="hero-preview-img"
+                  src="assets/img/dashboard-preview.webp"
+                  alt="DentAIstudy Study Builder dashboard preview"
+                  loading="lazy"
+                />
+              </div>
+
+              <div class="hero-actions">
+                <a href="study.html" class="btn btn-primary">Start studying</a>
+                <a href="subjects.html" class="btn btn-outline"
+                  >Browse subjects</a
+                >
+              </div>
+
+              <p class="hero-lead hero-meta-alt">
+                Made for dental education only
+              </p>
+
+              <div class="hero-level-chips">
+                <span class="hero-level-chip">Undergrads</span>
+                <span class="hero-level-chip">Intern / House officer</span>
+                <span class="hero-level-chip">Postgrads &amp; residents</span>
+              </div>
+            </div>
+
+            <!-- Right hero card -->
+            <aside class="hero-card hero-home-card">
+              <div class="hero-card-label">
+                <span>DentAIstudy generates</span>
+                <span class="hero-card-chip">Preview</span>
+              </div>
+
+              <!-- ADD this wrapper -->
+              <div class="hero-card-items">
+                <div class="feature-item">
+                  <div class="icon-pill">
+                    <img src="assets/img/OSCE flows.png" alt="OSCE flows" />
+                  </div>
+                  <h3>OSCE flows</h3>
+                  <p>
+                    Station-ready checklists with history, exam, investigations
+                    &amp; management.
+                  </p>
+                </div>
+
+                <div class="feature-item">
+                  <div class="icon-pill">
+                    <img
+                      src="assets/img/High-yield sheets.png"
+                      alt="High-yield sheets"
+                    />
+                  </div>
+                  <h3>High-yield sheets</h3>
+                  <p>
+                    One-page summaries for last-minute revision before clinics
+                    and vivas.
+                  </p>
+                </div>
+
+                <div class="feature-item">
+                  <div class="icon-pill">
+                    <img
+                      src="assets/img/Flashcard decks.png"
+                      alt="Flashcard decks"
+                    />
+                  </div>
+                  <h3>Flashcard decks</h3>
+                  <p>
+                    Clean Q/A cards ready to export into Anki, Quizlet, or your
+                    own system.
+                  </p>
+                </div>
+              </div>
+              <!-- END wrapper -->
+            </aside>
+          </div>
+        </section>
       </div>
 
-      <div class="footer-bottom">
-        <div>© 2025 DentAIstudy. All rights reserved.</div>
+      <!-- FEATURES -->
+      <section class="section">
+        <div class="container">
+          <div class="section-header">
+            <div class="section-kicker">Why choose us</div>
+            <h2 class="section-title">Designed for dental students</h2>
+            <p class="section-subtitle">
+              Clear, professional tools built for fast understanding.
+            </p>
+          </div>
+
+          <div class="features-modern">
+            <div class="feature-item">
+              <div class="feature-icon">
+                <img
+                  src="assets/img/Why choose us icons/High-quality explanations.png"
+                  alt="High-quality explanations icon"
+                  style="width: 60px; height: 60px; object-fit: contain"
+                />
+              </div>
+              <h3>High-quality explanations</h3>
+              <p>Accurate terminology &amp; structured reasoning.</p>
+            </div>
+
+            <div class="feature-item">
+              <div class="feature-icon">
+                <img
+                  src="assets/img/Why choose us icons/Exam-focused outputs.png"
+                  alt="Exam-focused outputs icon"
+                  style="width: 60px; height: 60px; object-fit: contain"
+                />
+              </div>
+              <h3>Exam-focused outputs</h3>
+              <p>OSCE flows, case notes, steps &amp; classifications.</p>
+            </div>
+
+            <div class="feature-item">
+              <div class="feature-icon">
+                <img
+                  src="assets/img/Why choose us icons/Fast & distraction-free.png"
+                  alt="Fast and distraction-free icon"
+                  style="width: 60px; height: 60px; object-fit: contain"
+                />
+              </div>
+              <h3>Fast &amp; distraction-free</h3>
+              <p>Clean interface — optimized for studying.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- REVIEWS -->
+      <section class="section">
+        <div class="container">
+          <div class="section-header">
+            <div class="section-kicker">Student feedback</div>
+            <h2 class="section-title">Trusted by learners</h2>
+            <p class="section-subtitle">
+              Short, honest comments from students who care about efficiency.
+            </p>
+          </div>
+
+          <div class="reviews-grid">
+            <div class="review-card">
+              <div class="review-header">
+                <div class="review-avatar">
+                  <img
+                    src="assets/img/review-1.jpg"
+                    alt="Profile picture of Aisha"
+                  />
+                </div>
+                <div>
+                  <div class="review-name">Aisha</div>
+                  <div class="review-role">Dental intern</div>
+                </div>
+              </div>
+              <div class="stars">★★★★★</div>
+              <div class="review-text">
+                “I use DentAIstudy before every clinic session. It turns my
+                topics into quick OSCE flows I can skim in 2–3 minutes.”
+              </div>
+            </div>
+
+            <div class="review-card">
+              <div class="review-header">
+                <div class="review-avatar">
+                  <img
+                    src="assets/img/review-2.jpg"
+                    alt="Profile picture of Marco"
+                  />
+                </div>
+                <div>
+                  <div class="review-name">Marco</div>
+                  <div class="review-role">Orthodontic resident</div>
+                </div>
+              </div>
+              <div class="stars">★★★★★</div>
+              <div class="review-text">
+                “The structure is what sold me. History, exam, investigations,
+                management — exactly how examiners think.”
+              </div>
+            </div>
+
+            <div class="review-card">
+              <div class="review-header">
+                <div class="review-avatar">
+                  <img
+                    src="assets/img/review-3.jpg"
+                    alt="Profile picture of Sara"
+                  />
+                </div>
+                <div>
+                  <div class="review-name">Sara</div>
+                  <div class="review-role">Final-year dental student</div>
+                </div>
+              </div>
+              <div class="stars">★★★★★</div>
+              <div class="review-text">
+                “Flashcards + compressed notes in one place. It feels like a
+                small dashboard just for my exams.”
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section class="section">
+        <div class="container">
+          <div class="section-header">
+            <h2 class="section-title">Frequently asked questions</h2>
+            <p class="section-subtitle">
+              Short answers so you can get back to studying.
+            </p>
+          </div>
+
+          <div class="faq-list">
+            <div class="faq-item">
+              <button class="faq-question">
+                <span>Is DentAIstudy free?</span><span>⌄</span>
+              </button>
+              <div class="faq-answer">
+                Yes — DentAIstudy’s core study tools are currently free to use.
+                You can generate OSCE flows, notes, and flashcards without any
+                subscription. As we grow, we may introduce optional premium
+                features, but the essential study experience will remain
+                accessible.
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-question">
+                <span>What makes DentAIstudy different?</span><span>⌄</span>
+              </button>
+              <div class="faq-answer">
+                DentAIstudy is built specifically for dental students — not as a
+                general chatbot, but as a structured study workspace. It focuses
+                on exam-ready outputs such as OSCE checklists, viva points,
+                classifications, and clear clinical reasoning. Instead of long
+                paragraphs, you get clean, organized study material designed the
+                way examiners think.
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-question">
+                <span>Can I rely on it clinically?</span><span>⌄</span>
+              </button>
+              <div class="faq-answer">
+                DentAIstudy is designed for studying, revision, and
+                strengthening your understanding of dental concepts. It is not a
+                clinical decision tool and should never replace supervisors,
+                professors, or official guidelines. Always verify information
+                during real patient care.
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-question">
+                <span>Do I need an account?</span><span>⌄</span>
+              </button>
+              <div class="faq-answer">
+                You can explore the platform without an account. Creating an
+                account unlocks extra benefits such as saving study packs,
+                tracking your activity, and personalizing your study workspace.
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-question">
+                <span>Which subjects are supported?</span><span>⌄</span>
+              </button>
+              <div class="faq-answer">
+                DentAIstudy supports all major dental subjects, including
+                Operative, Endodontics, Prosthodontics, Orthodontics,
+                Periodontics, Oral Surgery, Oral Pathology, Radiology, and more.
+                We continuously refine and expand coverage to keep your study
+                materials comprehensive and up to date.
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-question">
+                <span>Is my data stored?</span><span>⌄</span>
+              </button>
+              <div class="faq-answer">
+                We store only the information needed to run your DentAIstudy
+                account and keep your study materials available across devices.
+                Your data is private, never sold, and protected under our
+                Privacy Policy. You’re always in control of your content.
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-question">
+                <span>Who is DentAIstudy for?</span><span>⌄</span>
+              </button>
+              <div class="faq-answer">
+                DentAIstudy is designed for undergraduate dental students,
+                interns/house officers, and postgraduate trainees who want
+                structured, examiner-style study material in a fast,
+                distraction-free workspace.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FOOTER -->
+      <footer class="site-footer">
+        <div class="container">
+          <div class="footer-top">
+            <div>
+              <div class="footer-brand">DentAIstudy</div>
+              <p>AI-enhanced tools for dental students and residents.</p>
+              <div class="footer-social">
+                <a
+                  href="https://www.tiktok.com/@dentaistudy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="DentAIstudy on TikTok"
+                >
+                  <img src="assets/img/footer-icons/tiktok-icon.png" alt="TikTok" class="footer-social-img">
+                </a>
+              
+                <a
+                  href="mailto:info@dentaistudy.com"
+                  aria-label="Contact DentAIstudy by email"
+                >
+                  <img src="assets/img/footer-icons/email-icon.png" alt="Email" class="footer-social-img">
+                </a>
+              </div> 
+            </div>
+
+            <div class="footer-column">
+              <h4>Product</h4>
+              <a href="subjects.html">Subjects</a>
+              <a href="study.html">Study builder</a>
+              <a href="blogs.html">Blogs</a>
+              <a href="pricing.html">Pricing</a>
+            </div>
+
+            <div class="footer-column">
+              <h4>Company</h4>
+              <a href="about.html">About</a>
+              <a href="contact.html">Contact</a>
+              <a href="faqs.html">FAQ</a>
+            </div>
+
+            <div class="footer-column">
+              <h4>Legal</h4>
+              <a href="privacy.html">Privacy Policy</a>
+              <a href="terms.html">Terms & Conditions</a>
+              <a href="cookies.html">Cookies Policy</a>
+              <a href="disclaimer.html">Disclaimer</a>
+              <a href="billing.html">Billing</a>
+              <a href="refund-policy.html">Refunds</a>
+            </div>
+          </div>
+
+          <div class="footer-bottom">
+            <div>© 2025 DentAIstudy. All rights reserved.</div>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <!-- Cookie -->
+    <div class="cookie-banner">
+      <div class="container cookie-inner">
+        <div class="cookie-text">
+          <h3>Cookies &amp; privacy</h3>
+          <p>
+            We use essential cookies to keep DentAIstudy running and to improve
+            your study experience. By continuing, you agree to our
+            <a href="cookies.html">Cookies Policy</a>.
+          </p>
+        </div>
+
+        <div class="cookie-actions">
+          <a href="cookies.html" class="btn btn-outline">Learn more</a>
+          <button class="btn btn-primary cookie-accept">Accept</button>
+        </div>
       </div>
-
     </div>
-  </footer>
-
-</div>
-
-<!-- Cookie -->
-<div class="cookie-banner">
-  <div class="container cookie-inner">
-    <div class="cookie-text">
-      <h3>Cookies &amp; privacy</h3>
-      <p>
-        We use essential cookies to keep DentAIstudy running and to improve your study experience.
-        By continuing, you agree to our <a href="cookies.html">Cookies Policy</a>.
-      </p>
-    </div>
-
-    <div class="cookie-actions">
-      <a href="cookies.html" class="btn btn-outline">Learn more</a>
-      <button class="btn btn-primary cookie-accept">Accept</button>
-    </div>
-  </div>
-</div>
-
-
-</body>
+  </body>
 </html>

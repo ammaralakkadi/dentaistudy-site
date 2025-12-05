@@ -1,212 +1,346 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cephalometric Landmarks & Angles Simplified – DentAIstudy</title>
-  <link rel="stylesheet" href="../assets/css/style-v3.css" />
-  <link rel="icon" type="image/png" sizes="512x512" href="../assets/img/favicon.png?v=2" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cephalometric Landmarks & Angles Simplified – DentAIstudy</title>
+    <link rel="stylesheet" href="../assets/css/style-v3.css" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="512x512"
+      href="../assets/img/favicon.png?v=2"
+    />
 
-  <!-- JS: Supabase + Auth Guard + Logout + Main -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-  <script src="../assets/js/auth-client.js" defer></script>
-  <script src="../assets/js/auth-guard.js" defer></script>
-  <script src="../assets/js/auth-logout.js" defer></script>
-  <script defer src="../assets/js/main.js"></script>
-</head>
+    <!-- JS: Supabase + Auth Guard + Logout + Main -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+      defer
+    ></script>
+    <script src="../assets/js/auth-client.js" defer></script>
+    <script src="../assets/js/auth-guard.js" defer></script>
+    <script src="../assets/js/auth-logout.js" defer></script>
+    <script defer src="../assets/js/main.js"></script>
+  </head>
 
-<body>
-<div class="main-wrapper">
+  <body>
+    <div class="main-wrapper">
+      <!-- HEADER -->
+      <header class="site-header">
+        <div class="container header-inner">
+          <a class="brand" href="../index.html"
+            ><span>Dent</span><span>AIstudy</span></a
+          >
+          <nav class="header-nav">
+            <a href="../subjects.html">Subjects</a>
+            <a href="../study.html">Study builder</a>
+            <a href="../blogs.html" class="is-active">Blogs</a>
+            <a href="../pricing.html">Pricing</a>
+            <a href="../contact.html">Contact</a>
+          </nav>
+          <div class="header-right">
+            <a href="../login.html" class="btn btn-outline header-login"
+              >Log in</a
+            >
+            <a href="../signup.html" class="btn btn-primary header-signup"
+              >Sign up</a
+            >
+            <button class="menu-toggle">
+              <span></span><span></span><span></span>
+            </button>
+          </div>
+        </div>
+      </header>
 
-<!-- HEADER -->
-<header class="site-header">
-  <div class="container header-inner">
-    <a class="brand" href="../index.html"><span>Dent</span><span>AIstudy</span></a>
-    <nav class="header-nav">
-      <a href="../subjects.html">Subjects</a>
-      <a href="../study.html">Study builder</a>
-      <a href="../blogs.html" class="is-active">Blogs</a>
-      <a href="../about.html">About</a>
-      <a href="../contact.html">Contact</a>
-    </nav>
-    <div class="header-right">
-      <a href="../login.html" class="btn btn-outline header-login">Log in</a>
-      <a href="../signup.html" class="btn btn-primary header-signup">Sign up</a>
-      <button class="menu-toggle"><span></span><span></span><span></span></button>
+      <!-- MOBILE NAV -->
+      <div class="slide-nav-backdrop"></div>
+      <nav class="slide-nav">
+        <div class="slide-nav-header">
+          <h3>Menu</h3>
+          <button class="slide-nav-close">&times;</button>
+        </div>
+        <div class="slide-nav-links">
+          <a href="../subjects.html">Subjects</a>
+          <a href="../study.html">Study builder</a>
+          <a href="../blogs.html">Blogs</a>
+          <a href="../pricing.html">Pricing</a>
+          <a href="../contact.html">Contact</a>
+          <a href="../login.html" class="slide-login-link">Log in</a>
+        </div>
+      </nav>
+
+      <!-- BLOG CONTENT -->
+      <main class="section">
+        <div class="container container-narrow">
+          <div class="section-header" style="text-align: left">
+            <div class="section-kicker">Orthodontics</div>
+            <h1 class="section-title">
+              Cephalometric Landmarks & Angles Simplified
+            </h1>
+            <p class="section-subtitle">
+              A simple, structured overview of key ceph landmarks and angles for
+              exams.
+            </p>
+          </div>
+
+          <!-- SNIPPET BLOCK -->
+          <section class="study-answer-card">
+            <h2>Quick Answers</h2>
+
+            <h3>What is the most important cephalometric landmark?</h3>
+            <p>
+              Nasion, because it serves as a stable anterior cranial base
+              reference for many angular measurements.
+            </p>
+
+            <h3>What does SNA measure?</h3>
+            <p>
+              The anteroposterior position of the maxilla relative to the
+              cranial base.
+            </p>
+
+            <h3>What does SNB measure?</h3>
+            <p>
+              The anteroposterior position of the mandible relative to the
+              cranial base.
+            </p>
+
+            <h3>What does ANB indicate?</h3>
+            <p>
+              Skeletal relationship between maxilla and mandible (Class I, II,
+              or III tendency).
+            </p>
+          </section>
+
+          <!-- MAIN ARTICLE -->
+          <article class="blog-body">
+            <h2>1. Why cephalometrics matter in exams</h2>
+            <p>
+              Cephalometric interpretation shows your ability to link skeletal
+              pattern, dental compensation, and growth direction. Examiners
+              expect concise, structured reporting — not memorized numbers.
+            </p>
+
+            <ul>
+              <li>Identify key points</li>
+              <li>Measure important angles</li>
+              <li>Interpret skeletal class</li>
+              <li>Discuss vertical and dental components</li>
+            </ul>
+
+            <h2>2. Essential cephalometric landmarks (memorize these)</h2>
+
+            <div class="study-form-card">
+              <h3>Primary Skeletal Landmarks</h3>
+              <ul>
+                <li><strong>Sella (S):</strong> midpoint of sella turcica</li>
+                <li><strong>Nasion (N):</strong> frontonasal suture</li>
+                <li>
+                  <strong>A-point:</strong> deepest midline point on maxilla
+                </li>
+                <li>
+                  <strong>B-point:</strong> deepest midline point on mandible
+                </li>
+                <li>
+                  <strong>Pogonion (Pg):</strong> most anterior point on chin
+                </li>
+                <li>
+                  <strong>Menton (Me):</strong> lowest point on mandibular
+                  symphysis
+                </li>
+              </ul>
+            </div>
+
+            <h2>3. Dental landmarks you must know</h2>
+
+            <div class="study-form-card">
+              <h3>Key Dental References</h3>
+              <ul>
+                <li><strong>U1:</strong> long axis of maxillary incisor</li>
+                <li><strong>L1:</strong> long axis of mandibular incisor</li>
+                <li>
+                  <strong>U6 / L6:</strong> molar positions (when part of
+                  analysis)
+                </li>
+              </ul>
+            </div>
+
+            <h2>4. Fundamental cephalometric angles (with normal values)</h2>
+            <p>These angles are repeatedly tested in exams:</p>
+
+            <div class="study-form-card">
+              <h3>Must-Know Angles & Values</h3>
+              <ul>
+                <li><strong>SNA:</strong> 82° (maxillary position)</li>
+                <li><strong>SNB:</strong> 80° (mandibular position)</li>
+                <li><strong>ANB:</strong> 2° (skeletal class)</li>
+                <li><strong>FMA:</strong> 25° (vertical growth pattern)</li>
+                <li>
+                  <strong>U1-SN:</strong> 102° (upper incisor inclination)
+                </li>
+                <li><strong>L1-MP:</strong> 90° (lower incisor inclination)</li>
+              </ul>
+            </div>
+
+            <h2>5. How to interpret skeletal class quickly</h2>
+            <p>Use this universally accepted scheme:</p>
+
+            <ul>
+              <li><strong>Class I:</strong> ANB ≈ 2°</li>
+              <li><strong>Class II:</strong> ANB > 4°</li>
+              <li><strong>Class III:</strong> ANB < 0°</li>
+            </ul>
+
+            <p>
+              Remember: ANB alone isn't perfect — always cross-check with Wits
+              appraisal.
+            </p>
+
+            <h2>6. Vertical pattern evaluation</h2>
+            <p>Vertical dysplasia is a common exam topic. Key indicators:</p>
+
+            <ul>
+              <li>
+                <strong>FMA high:</strong> hyperdivergent, long face tendency
+              </li>
+              <li>
+                <strong>FMA low:</strong> hypodivergent, short face tendency
+              </li>
+              <li><strong>SN-MP angle:</strong> reinforces the pattern</li>
+            </ul>
+
+            <h2>7. Incisor inclination interpretation</h2>
+            <p>Incisor angle changes help compensate skeletal patterns:</p>
+
+            <ul>
+              <li><strong>U1-SN ↑:</strong> proclined incisors</li>
+              <li>
+                <strong>L1-MP ↑:</strong> proclined lower incisors (common in
+                Class III compensation)
+              </li>
+              <li>
+                <strong>L1-MP ↓:</strong> retroclined lower incisors (common in
+                Class II div 2)
+              </li>
+            </ul>
+
+            <h2>8. Example OSCE-style cephalometric summary</h2>
+
+            <div class="study-form-card">
+              <h3>Model Ceph Interpretation</h3>
+              <p>
+                <strong>Skeletal:</strong> SNA 80°, SNB 78°, ANB 2° → Skeletal
+                Class I.<br /><br />
+                <strong>Vertical:</strong> FMA 29° → mild hyperdivergent
+                pattern.<br /><br />
+                <strong>Dental:</strong> U1-SN 104° (proclined), L1-MP 92°
+                (slightly proclined).<br /><br />
+                <strong>Summary:</strong> Class I skeletal base with mild
+                vertical excess and compensatory incisor proclination.
+              </p>
+            </div>
+
+            <h2>9. How DentAIstudy helps</h2>
+            <p>DentAIstudy can instantly convert cephalometric numbers into:</p>
+            <ul>
+              <li>OSCE-style summaries</li>
+              <li>Diagnosis + interpretation templates</li>
+              <li>Flashcards for key angles</li>
+              <li>One-page orthodontic notes</li>
+            </ul>
+            <p>
+              <a href="../study.html" class="btn btn-primary"
+                >Try Study Builder →</a
+              >
+            </p>
+
+            <h2>References</h2>
+            <ul>
+              <li>
+                Proffit WR, Fields HW. <i>Contemporary Orthodontics</i>.
+                (Reference-aligned summary)
+              </li>
+              <li>
+                Jarabak JR. Cephalometric analysis fundamentals.
+                <i>Am J Orthod</i>.
+              </li>
+              <li>
+                Steiner CC. “Cephalometrics for you and me.” <i>Am J Orthod</i>.
+              </li>
+              <li>McNamara JA. Cephalometric evaluation essentials.</li>
+              <li>
+                Jacobson A. “Wits appraisal revisited.” <i>Am J Orthod</i>.
+              </li>
+            </ul>
+          </article>
+        </div>
+      </main>
+
+      <!-- FOOTER -->
+      <footer class="site-footer">
+        <div class="container">
+          <div class="footer-top">
+            <div>
+              <div class="footer-brand">DentAIstudy</div>
+              <p>AI-enhanced tools for dental students and residents.</p>
+              <div class="footer-social">
+                <a
+                  href="https://www.tiktok.com/@dentaistudy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="DentAIstudy on TikTok"
+                >
+                  <img
+                    src="../assets/img/footer-icons/tiktok-icon.png"
+                    alt="TikTok"
+                    class="footer-social-img"
+                  />
+                </a>
+
+                <a
+                  href="mailto:info@dentaistudy.com"
+                  aria-label="Contact DentAIstudy by email"
+                >
+                  <img
+                    src="../assets/img/footer-icons/email-icon.png"
+                    alt="Email"
+                    class="footer-social-img"
+                  />
+                </a>
+              </div>
+            </div>
+
+           <div class="footer-column">
+              <h4>Product</h4>
+              <a href="../subjects.html">Subjects</a>
+              <a href="../study.html">Study builder</a>
+              <a href="../blogs.html">Blogs</a>
+              <a href="../pricing.html">Pricing</a>
+            </div>
+
+            <div class="footer-column">
+              <h4>Company</h4>
+              <a href="../about.html">About</a>
+              <a href="../contact.html">Contact</a>
+              <a href="../faqs.html">FAQ</a>
+            </div>
+
+            <div class="footer-column">
+              <h4>Legal</h4>
+              <a href="../privacy.html">Privacy Policy</a>
+              <a href="../terms.html">Terms &amp; Conditions</a>
+              <a href="../cookies.html">Cookies Policy</a>
+              <a href="../disclaimer.html">Disclaimer</a>
+              <a href="../billing.html">Billing</a>
+              <a href="../refund-policy.html">Refunds</a>
+            </div>
+          </div>
+
+          <div class="footer-bottom">
+            © 2025 DentAIstudy. All rights reserved.
+          </div>
+        </div>
+      </footer>
     </div>
-  </div>
-</header>
-
-<!-- MOBILE NAV -->
-<div class="slide-nav-backdrop"></div>
-<nav class="slide-nav">
-  <div class="slide-nav-header"><h3>Menu</h3><button class="slide-nav-close">&times;</button></div>
-  <div class="slide-nav-links">
-    <a href="../subjects.html">Subjects</a>
-    <a href="../study.html">Study builder</a>
-    <a href="../blogs.html">Blogs</a>
-    <a href="../about.html">About</a>
-    <a href="../contact.html">Contact</a>
-    <a href="../login.html" class="slide-login-link">Log in</a>
-  </div>
-</nav>
-
-<!-- BLOG CONTENT -->
-<main class="section">
-  <div class="container container-narrow">
-
-    <div class="section-header" style="text-align:left;">
-      <div class="section-kicker">Orthodontics</div>
-      <h1 class="section-title">Cephalometric Landmarks & Angles Simplified</h1>
-      <p class="section-subtitle">
-        A simple, structured overview of key ceph landmarks and angles for exams.
-      </p>
-    </div>
-
-    <!-- SNIPPET BLOCK -->
-    <section class="study-answer-card">
-      <h2>Quick Answers</h2>
-
-      <h3>What is the most important cephalometric landmark?</h3>
-      <p>Nasion, because it serves as a stable anterior cranial base reference for many angular measurements.</p>
-
-      <h3>What does SNA measure?</h3>
-      <p>The anteroposterior position of the maxilla relative to the cranial base.</p>
-
-      <h3>What does SNB measure?</h3>
-      <p>The anteroposterior position of the mandible relative to the cranial base.</p>
-
-      <h3>What does ANB indicate?</h3>
-      <p>Skeletal relationship between maxilla and mandible (Class I, II, or III tendency).</p>
-    </section>
-
-    <!-- MAIN ARTICLE -->
-    <article class="blog-body">
-
-      <h2>1. Why cephalometrics matter in exams</h2>
-      <p>Cephalometric interpretation shows your ability to link skeletal pattern, dental compensation, and growth direction. Examiners expect concise, structured reporting — not memorized numbers.</p>
-
-      <ul>
-        <li>Identify key points</li>
-        <li>Measure important angles</li>
-        <li>Interpret skeletal class</li>
-        <li>Discuss vertical and dental components</li>
-      </ul>
-
-      <h2>2. Essential cephalometric landmarks (memorize these)</h2>
-
-      <div class="study-form-card">
-        <h3>Primary Skeletal Landmarks</h3>
-        <ul>
-          <li><strong>Sella (S):</strong> midpoint of sella turcica</li>
-          <li><strong>Nasion (N):</strong> frontonasal suture</li>
-          <li><strong>A-point:</strong> deepest midline point on maxilla</li>
-          <li><strong>B-point:</strong> deepest midline point on mandible</li>
-          <li><strong>Pogonion (Pg):</strong> most anterior point on chin</li>
-          <li><strong>Menton (Me):</strong> lowest point on mandibular symphysis</li>
-        </ul>
-      </div>
-
-      <h2>3. Dental landmarks you must know</h2>
-
-      <div class="study-form-card">
-        <h3>Key Dental References</h3>
-        <ul>
-          <li><strong>U1:</strong> long axis of maxillary incisor</li>
-          <li><strong>L1:</strong> long axis of mandibular incisor</li>
-          <li><strong>U6 / L6:</strong> molar positions (when part of analysis)</li>
-        </ul>
-      </div>
-
-      <h2>4. Fundamental cephalometric angles (with normal values)</h2>
-      <p>These angles are repeatedly tested in exams:</p>
-
-      <div class="study-form-card">
-        <h3>Must-Know Angles & Values</h3>
-        <ul>
-          <li><strong>SNA:</strong> 82° (maxillary position)</li>
-          <li><strong>SNB:</strong> 80° (mandibular position)</li>
-          <li><strong>ANB:</strong> 2° (skeletal class)</li>
-          <li><strong>FMA:</strong> 25° (vertical growth pattern)</li>
-          <li><strong>U1-SN:</strong> 102° (upper incisor inclination)</li>
-          <li><strong>L1-MP:</strong> 90° (lower incisor inclination)</li>
-        </ul>
-      </div>
-
-      <h2>5. How to interpret skeletal class quickly</h2>
-      <p>Use this universally accepted scheme:</p>
-
-      <ul>
-        <li><strong>Class I:</strong> ANB ≈ 2°</li>
-        <li><strong>Class II:</strong> ANB > 4°</li>
-        <li><strong>Class III:</strong> ANB < 0°</li>
-      </ul>
-
-      <p>Remember: ANB alone isn't perfect — always cross-check with Wits appraisal.</p>
-
-      <h2>6. Vertical pattern evaluation</h2>
-      <p>Vertical dysplasia is a common exam topic. Key indicators:</p>
-
-      <ul>
-        <li><strong>FMA high:</strong> hyperdivergent, long face tendency</li>
-        <li><strong>FMA low:</strong> hypodivergent, short face tendency</li>
-        <li><strong>SN-MP angle:</strong> reinforces the pattern</li>
-      </ul>
-
-      <h2>7. Incisor inclination interpretation</h2>
-      <p>Incisor angle changes help compensate skeletal patterns:</p>
-
-      <ul>
-        <li><strong>U1-SN ↑:</strong> proclined incisors</li>
-        <li><strong>L1-MP ↑:</strong> proclined lower incisors (common in Class III compensation)</li>
-        <li><strong>L1-MP ↓:</strong> retroclined lower incisors (common in Class II div 2)</li>
-      </ul>
-
-      <h2>8. Example OSCE-style cephalometric summary</h2>
-
-      <div class="study-form-card">
-        <h3>Model Ceph Interpretation</h3>
-        <p>
-          <strong>Skeletal:</strong> SNA 80°, SNB 78°, ANB 2° → Skeletal Class I.<br><br>
-          <strong>Vertical:</strong> FMA 29° → mild hyperdivergent pattern.<br><br>
-          <strong>Dental:</strong> U1-SN 104° (proclined), L1-MP 92° (slightly proclined).<br><br>
-          <strong>Summary:</strong> Class I skeletal base with mild vertical excess and compensatory incisor proclination.
-        </p>
-      </div>
-
-      <h2>9. How DentAIstudy helps</h2>
-      <p>DentAIstudy can instantly convert cephalometric numbers into:</p>
-      <ul>
-        <li>OSCE-style summaries</li>
-        <li>Diagnosis + interpretation templates</li>
-        <li>Flashcards for key angles</li>
-        <li>One-page orthodontic notes</li>
-      </ul>
-      <p><a href="../study.html" class="btn btn-primary">Try Study Builder →</a></p>
-
-      <h2>References</h2>
-      <ul>
-        <li>Proffit WR, Fields HW. <i>Contemporary Orthodontics</i>. (Reference-aligned summary)</li>
-        <li>Jarabak JR. Cephalometric analysis fundamentals. <i>Am J Orthod</i>.</li>
-        <li>Steiner CC. “Cephalometrics for you and me.” <i>Am J Orthod</i>.</li>
-        <li>McNamara JA. Cephalometric evaluation essentials.</li>
-        <li>Jacobson A. “Wits appraisal revisited.” <i>Am J Orthod</i>.</li>
-      </ul>
-
-    </article>
-  </div>
-</main>
-
-<!-- FOOTER -->
-<footer class="site-footer">
-  <div class="container">
-    <div class="footer-top">
-      <div>
-        <div class="footer-brand">DentAIstudy</div>
-        <p>AI-enhanced tools for dental students and residents.</p>
-      </div>
-      <div class="footer-column"><h4>Product</h4><a href="../subjects.html">Subjects</a><a href="../study.html">Study builder</a><a href="../blogs.html">Blogs</a></div>
-      <div class="footer-column"><h4>Company</h4><a href="../about.html">About</a><a href="../contact.html">Contact</a><a href="../faqs.html">FAQ</a></div>
-      <div class="footer-column"><h4>Legal</h4><a href="../privacy.html">Privacy Policy</a><a href="../terms.html">Terms & Conditions</a><a href="../cookies.html">Cookies Policy</a><a href="../disclaimer.html">Disclaimer</a></div>
-    </div>
-    <div class
+  </body>
+</html>

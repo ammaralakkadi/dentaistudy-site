@@ -1,9 +1,20 @@
+console.log("[auth-guard] LOADED FILE v3.1 on", window.location.href);
+
 // DentAIstudy - Auth guard + header/menu UI + user metadata
-// - Protects profile/settings
-// - Fills profile + settings with user info
-// - Handles default level, email tips, delete account
-// - Handles avatar display + upload
-// - Shows study activity counters + favorites + preferred output style
+// ---------------------------------------------------------------------
+// Responsibilities
+// ---------------------------------------------------------------------
+// - Read Supabase session + fresh user (handles stale JWT / Google re-login)
+// - Derive subscription_tier from app_metadata (then user_metadata)
+// - Protect profile/settings pages (redirect to login if not authenticated)
+// - Fill profile + settings UI with user information
+// - Lock / unlock Study Preferences cards based on plan
+// - Keep header + slide menu login/logout labels in sync
+// - Hook into existing logout handler via [data-das-logout]
+// - Handle avatar display + upload (profile photo)
+//
+// This file is written to be easy to read & debug. All important steps
+// have a small comment above them so you can follow what is happening.
 
 document.addEventListener("DOMContentLoaded", async () => {
   const path = window.location.pathname || "";
@@ -13,8 +24,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   const isProtected = isProfile || isSettings;
 
   try {
-    // If Supabase isn't loaded on this page, just show logged-out UI
+    // -------------------------------------------------------------
+    // 0) Ensure Supabase client exists
+    // -------------------------------------------------------------
     if (!window.dasSupabase || !window.dasSupabase.auth) {
+      console.warn("[auth-guard] Supabase client not found on this page");
       updateAuthUI(null);
       if (isProtected) {
         window.location.href = "login.html";
@@ -22,34 +36,85 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    const { data, error } = await window.dasSupabase.auth.getSession();
-    if (error) {
-      console.error("Session error:", error);
+    const supabase = window.dasSupabase;
+
+    // -------------------------------------------------------------
+    // 1) Get current session (may be slightly stale)
+    // -------------------------------------------------------------
+    const { data: sessionData, error: sessionError } =
+      await supabase.auth.getSession();
+    if (sessionError) {
+      console.error("[auth-guard] getSession error:", sessionError);
     }
+    const session = sessionData?.session || null;
 
-    const session = data?.session || null;
-
-    // Keep header + slide menu in sync
+    // Keep header + slide menu in sync with current auth state
     updateAuthUI(session);
 
-    // No active session → redirect protected pages
-    if (!session) {
+    // -------------------------------------------------------------
+    // 2) Get a FRESH user from Supabase
+    //    This makes sure we see updated metadata after SQL changes,
+    //    Google sign-in, etc.
+    // -------------------------------------------------------------
+    let freshUserData = null;
+    try {
+      const { data: userData, error: userError } =
+        await supabase.auth.getUser();
+      if (userError) {
+        console.warn("[auth-guard] getUser error:", userError);
+      } else {
+        freshUserData = userData;
+      }
+    } catch (e) {
+      console.warn("[auth-guard] getUser threw:", e);
+    }
+
+    // -------------------------------------------------------------
+    // 3) Choose which user object to trust
+    //    Prefer fresh user → fall back to session.user
+    // -------------------------------------------------------------
+    const effectiveUser = freshUserData?.user || session?.user || null;
+
+    console.log("[auth-guard] getSession result:", {
+      fileName,
+      sessionUser: session?.user,
+      sessionUserMeta: session?.user?.user_metadata,
+      sessionUserAppMeta: session?.user?.app_metadata,
+    });
+
+    console.log("[auth-guard] getUser result:", {
+      fileName,
+      freshUser: freshUserData?.user,
+      freshUserMeta: freshUserData?.user?.user_metadata,
+      freshUserAppMeta: freshUserData?.user?.app_metadata,
+    });
+
+    // If there is no user and this is a protected page → go to login
+    if (!effectiveUser) {
       if (isProtected) {
         window.location.href = "login.html";
       }
       return;
     }
 
-    // We have a session → user + metadata
-    const user = session.user;
-    const meta = user?.user_metadata || {};
+    // -------------------------------------------------------------
+    // 4) Derive metadata + plan information
+    // -------------------------------------------------------------
+    const user = effectiveUser;
+    const meta = user.user_metadata || {};
+    const appMeta = user.app_metadata || {};
 
-    const fullName = meta.full_name || "";
-    const email = user?.email || "";
-    const avatarUrl = meta.avatar_url || "";
+    const fullName =
+      meta.full_name ||
+      meta.name ||
+      (user.email ? user.email.split("@")[0] : "") ||
+      "";
+    const email = user.email || "";
+    const avatarUrl = meta.avatar_url || meta.picture || "";
+
     const defaultLevel = meta.default_level || "undergraduate";
 
-    // Study usage counters from metadata
+    // Study activity / usage
     const packsCount =
       typeof meta.packs_count === "number" ? meta.packs_count : 0;
     const osceCount =
@@ -57,9 +122,29 @@ document.addEventListener("DOMContentLoaded", async () => {
     const flashcardCount =
       typeof meta.flashcard_count === "number" ? meta.flashcard_count : 0;
     const starredCount =
-      typeof meta.starred_count === "number" ? meta.starred_count : 0;
+      typeof meta.starred_packs_count === "number"
+        ? meta.starred_packs_count
+        : typeof meta.starred_count === "number"
+        ? meta.starred_count
+        : 0;
     const lastActive = meta.last_active_at || null;
     const topMode = meta.top_used_category || null;
+
+    // ⚡ Plan / subscription tier
+    const subscriptionTier =
+      appMeta.subscription_tier || meta.subscription_tier || "free";
+
+    const isPaidPlan =
+      subscriptionTier === "pro" || subscriptionTier === "pro_yearly";
+
+    console.log("[auth-guard] derived plan from metadata:", {
+      fileName,
+      email,
+      subscriptionTier,
+      fromAppMeta: appMeta.subscription_tier,
+      fromUserMeta: meta.subscription_tier,
+      isPaidPlan,
+    });
 
     // Favorites and preferred output styles (arrays of slugs)
     const favoriteSubjects = Array.isArray(meta.favorite_subjects)
@@ -69,90 +154,205 @@ document.addEventListener("DOMContentLoaded", async () => {
       ? meta.preferred_output_styles
       : [];
 
-    // -------------
-    // Workspace header name (sidebar top)
-    // -------------
+    // -------------------------------------------------------------
+    // 5) Fill common workspace header name (top left)
+    // -------------------------------------------------------------
     const workspaceNameEl = document.getElementById("das-user-name");
     if (workspaceNameEl && fullName) {
       workspaceNameEl.textContent = fullName;
     }
 
-    // -------------
-    // Profile page basic info
-    // -------------
-    const profileNameEl = document.getElementById("das-profile-name");
-    const profileEmailEl = document.getElementById("das-profile-email");
+    // -------------------------------------------------------------
+    // 6) Profile page: basic info + counters + preferences card
+    // -------------------------------------------------------------
+    if (isProfile) {
+      // Basic identity
+      const profileNameEl = document.getElementById("das-profile-name");
+      const profileEmailEl = document.getElementById("das-profile-email");
+      const profilePlanBadge = document.getElementById(
+        "das-profile-plan-badge"
+      );
 
-    if (profileNameEl && fullName) {
-      profileNameEl.textContent = fullName;
-    }
-    if (profileEmailEl && email) {
-      profileEmailEl.textContent = email;
-    }
-
-    // Profile default level chip
-    const profileDefaultLevelEl = document.getElementById(
-      "das-profile-default-level"
-    );
-    if (profileDefaultLevelEl) {
-      profileDefaultLevelEl.textContent =
-        defaultLevel === "postgraduate" ? "Postgraduate" : "Undergraduate";
-    }
-
-    // Profile study activity counters
-    const packsEl = document.getElementById("das-profile-packs-count");
-    const osceEl = document.getElementById("das-profile-osce-count");
-    const flashcardEl = document.getElementById("das-profile-flashcard-count");
-    const topModeEl = document.getElementById("das-profile-top-mode");
-    const lastActiveEl = document.getElementById("das-profile-last-active");
-    const starredEl = document.getElementById("das-profile-starred-count");
-
-    if (packsEl) {
-      packsEl.textContent = packsCount;
-    }
-    if (osceEl) {
-      osceEl.textContent = osceCount;
-    }
-    if (flashcardEl) {
-      flashcardEl.textContent = flashcardCount;
-    }
-    if (starredEl) {
-      starredEl.textContent = starredCount;
-    }
-
-    if (topModeEl) {
-      const map = {
-        osce: "OSCE flows",
-        packs: "Study packs",
-        flashcard: "Flashcard decks",
-        theory: "Theory / notes",
-        viva: "Viva prep",
-      };
-      topModeEl.textContent = topMode ? map[topMode] || "—" : "—";
-    }
-
-    if (lastActiveEl) {
-      if (lastActive) {
-        const d = new Date(lastActive);
-        if (!Number.isNaN(d.getTime())) {
-          lastActiveEl.textContent = d.toLocaleDateString(undefined, {
-            year: "numeric",
-            month: "short",
-            day: "numeric",
-          });
+      if (profileNameEl && fullName) {
+        profileNameEl.textContent = fullName;
+      }
+      if (profileEmailEl && email) {
+        profileEmailEl.textContent = email;
+      }
+      if (profilePlanBadge) {
+        if (subscriptionTier === "pro_yearly") {
+          profilePlanBadge.textContent = "DentAIstudy Pro yearly plan";
+        } else if (subscriptionTier === "pro") {
+          profilePlanBadge.textContent = "DentAIstudy Pro plan";
         } else {
-          lastActiveEl.textContent = "—";
+          profilePlanBadge.textContent = "DentAIstudy free plan";
         }
-      } else {
-        lastActiveEl.textContent = "—";
+      }
+
+      // Study activity numbers
+      const packsEl = document.getElementById("das-profile-packs-count");
+      const osceEl = document.getElementById("das-profile-osce-count");
+      const flashcardEl = document.getElementById("das-profile-flashcard-count");
+      const topModeEl = document.getElementById("das-profile-top-mode");
+      const lastActiveEl = document.getElementById("das-profile-last-active");
+      const starredEl = document.getElementById("das-profile-starred-count");
+
+      if (packsEl) packsEl.textContent = packsCount;
+      if (osceEl) osceEl.textContent = osceCount;
+      if (flashcardEl) flashcardEl.textContent = flashcardCount;
+      if (starredEl) starredEl.textContent = starredCount;
+
+      if (topModeEl) {
+        let label = "";
+        switch (topMode) {
+          case "osce":
+            label = "OSCE flows";
+            break;
+          case "viva":
+            label = "Viva questions";
+            break;
+          case "theory":
+            label = "Theory questions";
+            break;
+          case "packs":
+            label = "Study packs";
+            break;
+          case "flashcard":
+          case "flashcards":
+            label = "Flashcard decks";
+            break;
+          default:
+            label = "–";
+        }
+        topModeEl.textContent = label || "–";
+      }
+
+      if (lastActiveEl) {
+        if (lastActive) {
+          const d = new Date(lastActive);
+          if (!Number.isNaN(d.getTime())) {
+            lastActiveEl.textContent = d.toLocaleDateString(undefined, {
+              year: "numeric",
+              month: "short",
+              day: "numeric",
+            });
+          } else {
+            lastActiveEl.textContent = "–";
+          }
+        } else {
+          lastActiveEl.textContent = "–";
+        }
+      }
+
+      // Default level text
+      const defaultLevelEl = document.getElementById(
+        "das-profile-default-level"
+      );
+      if (defaultLevelEl) {
+        if (defaultLevel === "postgraduate") {
+          defaultLevelEl.textContent = "Postgraduate";
+        } else if (defaultLevel === "undergraduate") {
+          defaultLevelEl.textContent = "Undergrad / Intern";
+        } else {
+          defaultLevelEl.textContent = defaultLevel;
+        }
+      }
+
+      // Profile study preferences card (lock/ unlock)
+      const profilePrefsCard = document.querySelector(
+        "[data-das-profile-preferences-card]"
+      );
+      const profilePrefsNote = document.getElementById(
+        "das-profile-preferences-note"
+      );
+
+      if (profilePrefsCard) {
+        if (isPaidPlan) {
+          profilePrefsCard.style.opacity = "1";
+          profilePrefsCard.style.background = "#ffffff";
+          profilePrefsCard.style.pointerEvents = "auto";
+        } else {
+          profilePrefsCard.style.opacity = "0.8";
+          profilePrefsCard.style.background = "#f3f4f6";
+          profilePrefsCard.style.pointerEvents = "none";
+        }
+      }
+      if (profilePrefsNote) {
+        profilePrefsNote.style.display = isPaidPlan ? "none" : "block";
       }
     }
 
-    // Favorite subjects pills (top 3 favorites highlighted)
+    // -------------------------------------------------------------
+    // 7) Settings page: plan label + preferences card
+    // -------------------------------------------------------------
+    if (isSettings) {
+      const settingsPlanLabel = document.getElementById(
+        "das-settings-plan-label"
+      );
+      const settingsPlanNote = document.getElementById(
+        "das-settings-plan-note"
+      );
+      const settingsPlanUpgrade = document.getElementById(
+        "das-settings-plan-upgrade-actions"
+      );
+      const settingsPlanManage = document.getElementById(
+        "das-settings-plan-manage-actions"
+      );
+
+      if (settingsPlanLabel) {
+        if (subscriptionTier === "pro_yearly") {
+          settingsPlanLabel.textContent = "DentAIstudy Pro yearly plan";
+        } else if (subscriptionTier === "pro") {
+          settingsPlanLabel.textContent = "DentAIstudy Pro plan";
+        } else {
+          settingsPlanLabel.textContent = "DentAIstudy free plan";
+        }
+      }
+
+      if (settingsPlanNote && settingsPlanUpgrade && settingsPlanManage) {
+        if (isPaidPlan) {
+          settingsPlanNote.textContent =
+            "Your Pro access renews automatically until you cancel.";
+          settingsPlanUpgrade.style.display = "none";
+          settingsPlanManage.style.display = "flex";
+        } else {
+          settingsPlanNote.textContent =
+            "Upgrade to Pro for higher daily limits and more focused OSCE / Viva study flows.";
+          settingsPlanUpgrade.style.display = "flex";
+          settingsPlanManage.style.display = "none";
+        }
+      }
+
+      // Settings Study preferences card (lock / unlock)
+      const settingsPrefsCard = document.querySelector(
+        "[data-das-settings-preferences-card]"
+      );
+      const settingsPrefsNote = document.getElementById(
+        "das-settings-preferences-note"
+      );
+
+      if (settingsPrefsCard) {
+        if (isPaidPlan) {
+          settingsPrefsCard.style.opacity = "1";
+          settingsPrefsCard.style.background = "#ffffff";
+          settingsPrefsCard.style.pointerEvents = "auto";
+        } else {
+          settingsPrefsCard.style.opacity = "0.8";
+          settingsPrefsCard.style.background = "#f3f4f6";
+          settingsPrefsCard.style.pointerEvents = "none";
+        }
+      }
+      if (settingsPrefsNote) {
+        settingsPrefsNote.style.display = isPaidPlan ? "none" : "block";
+      }
+    }
+
+    // -------------------------------------------------------------
+    // 8) Favorite subjects + preferred output style pills
+    // -------------------------------------------------------------
     const subjectPills = document.querySelectorAll("[data-das-subject-pill]");
     if (subjectPills.length) {
       const topFavorites = favoriteSubjects.slice(0, 3);
-
       subjectPills.forEach((pill) => {
         const slug = pill.getAttribute("data-das-subject-pill");
 
@@ -168,190 +368,32 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
     }
 
-    // Preferred output style pills (top preferences highlighted)
     const outputPills = document.querySelectorAll("[data-das-output-pill]");
     if (outputPills.length) {
-      const topOutputs = preferredOutputStyles.slice(0, 3);
-
       outputPills.forEach((pill) => {
         const slug = pill.getAttribute("data-das-output-pill");
 
-        // base style: neutral pill
+        // base style
         pill.style.background = "#f3f4f6";
         pill.style.color = "#4b5563";
 
-        // highlight preferred styles
-        if (topOutputs.includes(slug)) {
-          pill.style.background = "#ecfdf3";
-          pill.style.color = "#15803d";
+        if (preferredOutputStyles.includes(slug)) {
+          pill.style.background = "#eef2ff";
+          pill.style.color = "#4338ca";
         }
       });
     }
 
-    // -------------
-    // Settings page fields
-    // -------------
-    const settingsFullNameInput = document.getElementById("settings-fullname");
-    if (settingsFullNameInput && fullName) {
-      settingsFullNameInput.value = fullName;
-    }
-
-    const settingsEmailInput = document.getElementById("settings-email");
-    if (settingsEmailInput && email) {
-      settingsEmailInput.value = email;
-    }
-
-    // Settings-specific logic
-    if (isSettings) {
-      // Default level select + Save button
-      const defaultLevelSelect = document.getElementById(
-        "settings-default-level"
-      );
-      const saveBtn = document.getElementById("settings-save-btn");
-      const newPasswordInput = document.getElementById(
-        "settings-new-password"
-      );
-
-      if (defaultLevelSelect) {
-        defaultLevelSelect.value = defaultLevel;
-      }
-
-      if (defaultLevelSelect && saveBtn) {
-        saveBtn.addEventListener("click", async () => {
-          const selectedLevel = defaultLevelSelect.value || "undergraduate";
-          const newPassword =
-            newPasswordInput && newPasswordInput.value
-              ? newPasswordInput.value.trim()
-              : "";
-
-          try {
-            const currentMeta = user.user_metadata || {};
-            const updatePayload = {
-              data: {
-                ...currentMeta,
-                default_level: selectedLevel,
-              },
-            };
-
-            // If user entered a new password, include it in the update
-            if (newPassword) {
-              updatePayload.password = newPassword;
-            }
-
-            const { error: updateError } =
-              await window.dasSupabase.auth.updateUser(updatePayload);
-
-            if (updateError) {
-              console.error("Failed to update settings:", updateError);
-            } else if (newPasswordInput) {
-              // Clear the password field after successful update
-              newPasswordInput.value = "";
-            }
-          } catch (e) {
-            console.error("Settings update failed:", e);
-          }
-        });
-      }
-
-      // Email tips toggle
-      const emailTipsCheckbox = document.getElementById("email-tips");
-      if (emailTipsCheckbox) {
-        const wantsTips = !!meta.email_tips;
-        emailTipsCheckbox.checked = wantsTips;
-
-        emailTipsCheckbox.addEventListener("change", async () => {
-          try {
-            const currentMeta = user.user_metadata || {};
-            const { error: updateError } =
-              await window.dasSupabase.auth.updateUser({
-                data: {
-                  ...currentMeta,
-                  email_tips: emailTipsCheckbox.checked,
-                },
-              });
-
-            if (updateError) {
-              console.error(
-                "Failed to update email tips setting:",
-                updateError
-              );
-            }
-          } catch (e) {
-            console.error("Email tips toggle failed:", e);
-          }
-        });
-      }
-
-      // Soft delete account
-      const deleteBtn = document.getElementById("delete-account-btn");
-      const deleteStatus = document.getElementById("delete-account-status");
-
-      if (deleteBtn) {
-        deleteBtn.addEventListener("click", async () => {
-          const confirmed = window.confirm(
-            "Are you sure you want to delete your DentAIstudy account? This will sign you out and mark your account as deleted."
-          );
-          if (!confirmed) return;
-
-          if (deleteStatus) {
-            deleteStatus.textContent = "Deleting account...";
-          }
-
-          try {
-            const currentMeta = user.user_metadata || {};
-            const { error: updateError } =
-              await window.dasSupabase.auth.updateUser({
-                data: {
-                  ...currentMeta,
-                  deleted_at: new Date().toISOString(),
-                },
-              });
-
-            if (updateError) {
-              console.error(
-                "Failed to mark account as deleted:",
-                updateError
-              );
-              if (deleteStatus) {
-                deleteStatus.textContent =
-                  "Delete failed. Please try again.";
-              }
-              return;
-            }
-
-            await window.dasSupabase.auth.signOut();
-
-            if (deleteStatus) {
-              deleteStatus.textContent =
-                "Account deleted. Redirecting...";
-            }
-
-            window.location.href = "index.html";
-          } catch (e) {
-            console.error("Delete account failed:", e);
-            if (deleteStatus) {
-              deleteStatus.textContent =
-                "Delete failed. Please try again.";
-            }
-          }
-        });
-      }
-    }
-
-    // -------------
-    // Avatar display (profile + sidebar)
-    // -------------
+    // -------------------------------------------------------------
+    // 9) Avatar display (profile + sidebar)
+    // -------------------------------------------------------------
     const profileAvatarEl = document.getElementById("das-profile-avatar-main");
-    const sidebarAvatarEl = document.querySelector(".sidebar-avatar img");
+    const sidebarAvatarImg = document.querySelector(".sidebar-avatar img");
     const avatarTargets = document.querySelectorAll("[data-das-avatar]");
 
     if (avatarUrl) {
-      if (profileAvatarEl) {
-        profileAvatarEl.src = avatarUrl;
-      }
-      if (sidebarAvatarEl) {
-        sidebarAvatarEl.src = avatarUrl;
-      }
+      if (profileAvatarEl) profileAvatarEl.src = avatarUrl;
+      if (sidebarAvatarImg) sidebarAvatarImg.src = avatarUrl;
       if (avatarTargets.length) {
         avatarTargets.forEach((el) => {
           el.src = avatarUrl;
@@ -359,9 +401,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     }
 
-    // -------------
-    // Avatar upload on profile page
-    // -------------
+    // -------------------------------------------------------------
+    // 10) Avatar upload (profile page only)
+    //     Uses helper uploadProfilePicture(userId, file) from supabase.js
+    // -------------------------------------------------------------
     const avatarUploadBtn = document.getElementById("avatar-upload-btn");
     const avatarFileInput = document.getElementById("avatar-input");
     const avatarStatusEl = document.getElementById("avatar-status");
@@ -384,56 +427,30 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         try {
           if (typeof uploadProfilePicture !== "function") {
-            console.error("uploadProfilePicture helper is missing");
+            console.error("[auth-guard] uploadProfilePicture helper is missing");
             if (avatarStatusEl) {
               avatarStatusEl.textContent = "Upload helper missing.";
             }
             return;
           }
 
-          const publicUrl = await uploadProfilePicture(user.id, file);
-          if (!publicUrl) {
-            if (avatarStatusEl) {
-              avatarStatusEl.textContent =
-                "Upload failed. Please try again.";
+          const newUrl = await uploadProfilePicture(user.id, file);
+
+          if (newUrl) {
+            if (profileAvatarEl) profileAvatarEl.src = newUrl;
+            if (sidebarAvatarImg) sidebarAvatarImg.src = newUrl;
+            if (avatarTargets.length) {
+              avatarTargets.forEach((el) => {
+                el.src = newUrl;
+              });
             }
-            return;
-          }
-
-          const { error: updateError } =
-            await window.dasSupabase.auth.updateUser({
-              data: {
-                ...(user.user_metadata || {}),
-                avatar_url: publicUrl,
-              },
-            });
-
-          if (updateError) {
-            console.error("Error saving avatar URL:", updateError);
-            if (avatarStatusEl) {
-              avatarStatusEl.textContent =
-                "Save failed. Please try again.";
-            }
-            return;
-          }
-
-          if (profileAvatarEl) {
-            profileAvatarEl.src = publicUrl;
-          }
-          if (sidebarAvatarEl) {
-            sidebarAvatarEl.src = publicUrl;
-          }
-          if (avatarTargets.length) {
-            avatarTargets.forEach((el) => {
-              el.src = publicUrl;
-            });
           }
 
           if (avatarStatusEl) {
             avatarStatusEl.textContent = "Photo updated.";
           }
         } catch (e) {
-          console.error("Avatar upload error:", e);
+          console.error("[auth-guard] Avatar upload error:", e);
           if (avatarStatusEl) {
             avatarStatusEl.textContent = "Something went wrong.";
           }
@@ -443,7 +460,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
     }
   } catch (err) {
-    console.error("Auth guard failed:", err);
+    console.error("[auth-guard] Auth guard failed:", err);
 
     updateAuthUI(null);
 
@@ -453,7 +470,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 });
 
+// ---------------------------------------------------------------------
 // Toggle header + slide menu between Log in / Log out
+// ---------------------------------------------------------------------
 function updateAuthUI(session) {
   const isLoggedIn = !!session;
 
@@ -482,7 +501,12 @@ function updateAuthUI(session) {
   }
 
   if (headerSignup) {
-    headerSignup.style.display = isLoggedIn ? "none" : "";
+    if (isLoggedIn) {
+      headerSignup.style.display = "none";
+    } else {
+      headerSignup.style.display = "";
+      headerSignup.setAttribute("href", "signup.html");
+    }
   }
 
   // Slide menu (mobile)

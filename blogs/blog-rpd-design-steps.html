@@ -1,204 +1,309 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RPD Design in 6 Steps (Prosthodontics Guide) – DentAIstudy</title>
-  <link rel="stylesheet" href="../assets/css/style-v3.css" />
-  <link rel="icon" type="image/png" sizes="512x512" href="../assets/img/favicon.png?v=2" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RPD Design in 6 Steps (Prosthodontics Guide) – DentAIstudy</title>
+    <link rel="stylesheet" href="../assets/css/style-v3.css" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="512x512"
+      href="../assets/img/favicon.png?v=2"
+    />
 
-  <!-- JS: Supabase + Auth Guard + Logout + Main -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-  <script src="../assets/js/auth-client.js" defer></script>
-  <script src="../assets/js/auth-guard.js" defer></script>
-  <script src="../assets/js/auth-logout.js" defer></script>
-  <script defer src="../assets/js/main.js"></script>
-</head>
+    <!-- JS: Supabase + Auth Guard + Logout + Main -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+      defer
+    ></script>
+    <script src="../assets/js/auth-client.js" defer></script>
+    <script src="../assets/js/auth-guard.js" defer></script>
+    <script src="../assets/js/auth-logout.js" defer></script>
+    <script defer src="../assets/js/main.js"></script>
+  </head>
 
-<body>
-<div class="main-wrapper">
+  <body>
+    <div class="main-wrapper">
+      <!-- HEADER -->
+      <header class="site-header">
+        <div class="container header-inner">
+          <a class="brand" href="../index.html"
+            ><span>Dent</span><span>AIstudy</span></a
+          >
+          <nav class="header-nav">
+            <a href="../subjects.html">Subjects</a>
+            <a href="../study.html">Study builder</a>
+            <a href="../blogs.html" class="is-active">Blogs</a>
+            <a href="../pricing.html">Pricing</a>
+            <a href="../contact.html">Contact</a>
+          </nav>
+          <div class="header-right">
+            <a href="../login.html" class="btn btn-outline header-login"
+              >Log in</a
+            >
+            <a href="../signup.html" class="btn btn-primary header-signup"
+              >Sign up</a
+            >
+            <button class="menu-toggle">
+              <span></span><span></span><span></span>
+            </button>
+          </div>
+        </div>
+      </header>
 
-<!-- HEADER -->
-<header class="site-header">
-  <div class="container header-inner">
-    <a class="brand" href="../index.html"><span>Dent</span><span>AIstudy</span></a>
-    <nav class="header-nav">
-      <a href="../subjects.html">Subjects</a>
-      <a href="../study.html">Study builder</a>
-      <a href="../blogs.html" class="is-active">Blogs</a>
-      <a href="../about.html">About</a>
-      <a href="../contact.html">Contact</a>
-    </nav>
-    <div class="header-right">
-      <a href="../login.html" class="btn btn-outline header-login">Log in</a>
-      <a href="../signup.html" class="btn btn-primary header-signup">Sign up</a>
-      <button class="menu-toggle"><span></span><span></span><span></span></button>
+      <!-- MOBILE NAV -->
+      <div class="slide-nav-backdrop"></div>
+      <nav class="slide-nav">
+        <div class="slide-nav-header">
+          <h3>Menu</h3>
+          <button class="slide-nav-close">&times;</button>
+        </div>
+        <div class="slide-nav-links">
+          <a href="../subjects.html">Subjects</a>
+          <a href="../study.html">Study builder</a>
+          <a href="../blogs.html">Blogs</a>
+          <a href="../pricing.html">Pricing</a>
+          <a href="../contact.html">Contact</a>
+          <a href="../login.html" class="slide-login-link">Log in</a>
+        </div>
+      </nav>
+
+      <!-- BLOG BODY -->
+      <main class="section">
+        <div class="container container-narrow">
+          <div class="section-header" style="text-align: left">
+            <div class="section-kicker">Prosthodontics</div>
+            <h1 class="section-title">
+              RPD Design in 6 Steps (OSCE & Viva Friendly Guide)
+            </h1>
+            <p class="section-subtitle">
+              A repeatable RPD design sequence that helps you think like an
+              examiner.
+            </p>
+          </div>
+
+          <!-- SNIPPET BLOCK -->
+          <section class="study-answer-card">
+            <h2>Quick Answers</h2>
+
+            <h3>What is the first step in RPD design?</h3>
+            <p>
+              Determine the support: teeth, mucosa, or both. It decides the
+              entire framework.
+            </p>
+
+            <h3>Which component provides retention?</h3>
+            <p>Retentive clasps engaging undercuts on abutment teeth.</p>
+
+            <h3>Which component provides stability?</h3>
+            <p>
+              Proximal plates, minor connectors, guide planes, and rigid
+              components.
+            </p>
+
+            <h3>What is the major connector for the maxilla?</h3>
+            <p>
+              Commonly palatal strap, AP palatal strap, or complete palatal
+              plate.
+            </p>
+          </section>
+
+          <!-- MAIN CONTENT -->
+          <article class="blog-body">
+            <h2>1. Assess the case and define support</h2>
+            <p>Support = what resists vertical forces. It comes from:</p>
+            <ul>
+              <li>Teeth (occlusal rests)</li>
+              <li>Mucosa (distal extension cases)</li>
+              <li>Combination of both</li>
+            </ul>
+            <p>This FIRST decision directs the rest of your RPD design.</p>
+
+            <h2>2. Choose the major connector</h2>
+            <p>
+              The major connector unites the entire framework. Examiners expect
+              you to pick it based on arch & mouth conditions.
+            </p>
+
+            <div class="study-form-card">
+              <h3>Common Major Connectors</h3>
+              <ul>
+                <li>
+                  <strong>Maxilla:</strong> palatal strap, AP palatal strap,
+                  complete palate
+                </li>
+                <li>
+                  <strong>Mandible:</strong> lingual bar, lingual plate,
+                  sublingual bar
+                </li>
+              </ul>
+            </div>
+
+            <p>
+              Selection depends on tori, soft tissue depth, and number of
+              missing teeth.
+            </p>
+
+            <h2>3. Plan retention (clasp assembly)</h2>
+            <p>
+              Retention comes from clasps that engage tooth undercuts (0.25 mm
+              or 0.5 mm depending on alloy).
+            </p>
+
+            <div class="study-form-card">
+              <h3>Clasp System Components</h3>
+              <ul>
+                <li>Retentive arm (engages the undercut)</li>
+                <li>Reciprocal arm (opposes horizontal forces)</li>
+                <li>Rest (provides support)</li>
+                <li>Minor connectors (connect rests to major connector)</li>
+              </ul>
+            </div>
+
+            <p>
+              Examiners want you to mention that retention must be
+              <strong>balanced bilaterally</strong>.
+            </p>
+
+            <h2>4. Plan stability & guidance</h2>
+            <p>Stability is resistance to horizontal displacement.</p>
+            <ul>
+              <li>Guide planes</li>
+              <li>Proximal plates</li>
+              <li>Rigid minor connectors</li>
+              <li>Base contacts</li>
+            </ul>
+            <p>
+              Guide planes should be smooth, 2–3 mm height, placed on prepared
+              surfaces.
+            </p>
+
+            <h2>5. Tooth replacement & saddle design</h2>
+            <p>
+              Design the bases and saddle areas based on Kennedy classification.
+            </p>
+
+            <div class="study-form-card">
+              <h3>Saddle Design Notes</h3>
+              <ul>
+                <li>Kennedy I & II → require careful stress distribution</li>
+                <li>Acrylic vs metal base depends on long-term plan</li>
+                <li>Avoid over-extending distal extension saddles</li>
+              </ul>
+            </div>
+
+            <h2>6. Connect everything with a logical design sequence</h2>
+            <p>RPD design is not random. Examiners score your sequence:</p>
+            <ul>
+              <li>Support</li>
+              <li>Major connector</li>
+              <li>Retention</li>
+              <li>Stability</li>
+              <li>Saddles</li>
+              <li>Finishing touches (indirect retention, occlusal scheme)</li>
+            </ul>
+
+            <h2>7. Common OSCE / viva mistakes</h2>
+            <ul>
+              <li>Choosing major connector without considering tori</li>
+              <li>Ignoring indirect retention for Kennedy I / II</li>
+              <li>Unbalanced clasp distribution</li>
+              <li>No guide planes mentioned</li>
+            </ul>
+
+            <h2>8. How DentAIstudy helps</h2>
+            <p>DentAIstudy instantly generates:</p>
+            <ul>
+              <li>RPD design templates</li>
+              <li>OSCE scripts for design justification</li>
+              <li>Prostho flashcards</li>
+              <li>One-page RPD summaries</li>
+            </ul>
+            <p>
+              <a href="../study.html" class="btn btn-primary"
+                >Try Study Builder →</a
+              >
+            </p>
+
+            <h2>References</h2>
+            <ul>
+              <li>
+                McGivney GP, Carr AB.
+                <i>McCracken’s Removable Partial Prosthodontics</i>.
+                (Reference-aligned summary)
+              </li>
+              <li>
+                Frank RP. “RPD Design Principles.” <i>J Prosthet Dent</i>.
+              </li>
+              <li>
+                Jacobson TE, Krol AJ. “RPD Design Philosophies.”
+                <i>J Prosthet Dent</i>.
+              </li>
+              <li>
+                Fenlon MR. “Teaching Removable Prosthodontics: Best Practices.”
+                <i>BDJ</i>.
+              </li>
+              <li>
+                Clark RKF. “Guide Planes & Proximal Plates Review.”
+                <i>Prosthodontic Research</i>.
+              </li>
+            </ul>
+          </article>
+        </div>
+      </main>
+
+      <!-- FOOTER -->
+      <footer class="site-footer">
+        <div class="container">
+          <div class="footer-top">
+            <div>
+              <div class="footer-brand">DentAIstudy</div>
+              <p>AI-enhanced tools for dental students and residents.</p>
+              <div class="footer-social">
+                <a
+                  href="https://www.tiktok.com/@dentaistudy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="DentAIstudy on TikTok"
+                >
+                  <img src="../assets/img/footer-icons/tiktok-icon.png" alt="TikTok" class="footer-social-img">
+                </a>
+              
+                <a
+                  href="mailto:info@dentaistudy.com"
+                  aria-label="Contact DentAIstudy by email"
+                >
+                  <img src="../assets/img/footer-icons/email-icon.png" alt="Email" class="footer-social-img">
+                </a>
+              </div>
+            </div>
+            <div class="footer-column">
+              <h4>Product</h4>
+              <a href="../subjects.html">Subjects</a
+              ><a href="../study.html">Study builder</a
+              ><a href="../blogs.html">Blogs</a>
+              <a href="../pricing.html">Pricing</a>
+            </div>
+            <div class="footer-column">
+              <h4>Company</h4>
+              <a href="../about.html">About</a
+              ><a href="../contact.html">Contact</a
+              ><a href="../faqs.html">FAQ</a>
+            </div>
+            <div class="footer-column">
+              <h4>Legal</h4>
+              <a href="../privacy.html">Privacy Policy</a
+              ><a href="../terms.html">Terms</a
+              ><a href="../cookies.html">Cookies</a
+              ><a href="../disclaimer.html">Disclaimer</a>
+              <a href="../billing.html">Billing</a>
+              <a href="../refund-policy.html">Refunds</a>
+            </div>
+          </div>
+          <div class="footer-bottom">© 2025 DentAIstudy</div>
+        </div>
+      </footer>
     </div>
-  </div>
-</header>
-
-<!-- MOBILE NAV -->
-<div class="slide-nav-backdrop"></div>
-<nav class="slide-nav">
-  <div class="slide-nav-header"><h3>Menu</h3><button class="slide-nav-close">&times;</button></div>
-  <div class="slide-nav-links">
-    <a href="../subjects.html">Subjects</a>
-    <a href="../study.html">Study builder</a>
-    <a href="../blogs.html">Blogs</a>
-    <a href="../about.html">About</a>
-    <a href="../contact.html">Contact</a>
-    <a href="../login.html" class="slide-login-link">Log in</a>
-  </div>
-</nav>
-
-<!-- BLOG BODY -->
-<main class="section">
-  <div class="container container-narrow">
-
-    <div class="section-header" style="text-align:left;">
-      <div class="section-kicker">Prosthodontics</div>
-      <h1 class="section-title">RPD Design in 6 Steps (OSCE & Viva Friendly Guide)</h1>
-      <p class="section-subtitle">A repeatable RPD design sequence that helps you think like an examiner.</p>
-    </div>
-
-    <!-- SNIPPET BLOCK -->
-    <section class="study-answer-card">
-      <h2>Quick Answers</h2>
-
-      <h3>What is the first step in RPD design?</h3>
-      <p>Determine the support: teeth, mucosa, or both. It decides the entire framework.</p>
-
-      <h3>Which component provides retention?</h3>
-      <p>Retentive clasps engaging undercuts on abutment teeth.</p>
-
-      <h3>Which component provides stability?</h3>
-      <p>Proximal plates, minor connectors, guide planes, and rigid components.</p>
-
-      <h3>What is the major connector for the maxilla?</h3>
-      <p>Commonly palatal strap, AP palatal strap, or complete palatal plate.</p>
-    </section>
-
-    <!-- MAIN CONTENT -->
-    <article class="blog-body">
-
-      <h2>1. Assess the case and define support</h2>
-      <p>Support = what resists vertical forces. It comes from:</p>
-      <ul>
-        <li>Teeth (occlusal rests)</li>
-        <li>Mucosa (distal extension cases)</li>
-        <li>Combination of both</li>
-      </ul>
-      <p>This FIRST decision directs the rest of your RPD design.</p>
-
-      <h2>2. Choose the major connector</h2>
-      <p>The major connector unites the entire framework. Examiners expect you to pick it based on arch & mouth conditions.</p>
-
-      <div class="study-form-card">
-        <h3>Common Major Connectors</h3>
-        <ul>
-          <li><strong>Maxilla:</strong> palatal strap, AP palatal strap, complete palate</li>
-          <li><strong>Mandible:</strong> lingual bar, lingual plate, sublingual bar</li>
-        </ul>
-      </div>
-
-      <p>Selection depends on tori, soft tissue depth, and number of missing teeth.</p>
-
-      <h2>3. Plan retention (clasp assembly)</h2>
-      <p>Retention comes from clasps that engage tooth undercuts (0.25 mm or 0.5 mm depending on alloy).</p>
-
-      <div class="study-form-card">
-        <h3>Clasp System Components</h3>
-        <ul>
-          <li>Retentive arm (engages the undercut)</li>
-          <li>Reciprocal arm (opposes horizontal forces)</li>
-          <li>Rest (provides support)</li>
-          <li>Minor connectors (connect rests to major connector)</li>
-        </ul>
-      </div>
-
-      <p>Examiners want you to mention that retention must be <strong>balanced bilaterally</strong>.</p>
-
-      <h2>4. Plan stability & guidance</h2>
-      <p>Stability is resistance to horizontal displacement.</p>
-      <ul>
-        <li>Guide planes</li>
-        <li>Proximal plates</li>
-        <li>Rigid minor connectors</li>
-        <li>Base contacts</li>
-      </ul>
-      <p>Guide planes should be smooth, 2–3 mm height, placed on prepared surfaces.</p>
-
-      <h2>5. Tooth replacement & saddle design</h2>
-      <p>Design the bases and saddle areas based on Kennedy classification.</p>
-
-      <div class="study-form-card">
-        <h3>Saddle Design Notes</h3>
-        <ul>
-          <li>Kennedy I & II → require careful stress distribution</li>
-          <li>Acrylic vs metal base depends on long-term plan</li>
-          <li>Avoid over-extending distal extension saddles</li>
-        </ul>
-      </div>
-
-      <h2>6. Connect everything with a logical design sequence</h2>
-      <p>RPD design is not random. Examiners score your sequence:</p>
-      <ul>
-        <li>Support</li>
-        <li>Major connector</li>
-        <li>Retention</li>
-        <li>Stability</li>
-        <li>Saddles</li>
-        <li>Finishing touches (indirect retention, occlusal scheme)</li>
-      </ul>
-
-      <h2>7. Common OSCE / viva mistakes</h2>
-      <ul>
-        <li>Choosing major connector without considering tori</li>
-        <li>Ignoring indirect retention for Kennedy I / II</li>
-        <li>Unbalanced clasp distribution</li>
-        <li>No guide planes mentioned</li>
-      </ul>
-
-      <h2>8. How DentAIstudy helps</h2>
-      <p>DentAIstudy instantly generates:</p>
-      <ul>
-        <li>RPD design templates</li>
-        <li>OSCE scripts for design justification</li>
-        <li>Prostho flashcards</li>
-        <li>One-page RPD summaries</li>
-      </ul>
-      <p><a href="../study.html" class="btn btn-primary">Try Study Builder →</a></p>
-
-      <h2>References</h2>
-      <ul>
-        <li>McGivney GP, Carr AB. <i>McCracken’s Removable Partial Prosthodontics</i>. (Reference-aligned summary)</li>
-        <li>Frank RP. “RPD Design Principles.” <i>J Prosthet Dent</i>.</li>
-        <li>Jacobson TE, Krol AJ. “RPD Design Philosophies.” <i>J Prosthet Dent</i>.</li>
-        <li>Fenlon MR. “Teaching Removable Prosthodontics: Best Practices.” <i>BDJ</i>.</li>
-        <li>Clark RKF. “Guide Planes & Proximal Plates Review.” <i>Prosthodontic Research</i>.</li>
-      </ul>
-
-    </article>
-  </div>
-</main>
-
-<!-- FOOTER -->
-<footer class="site-footer">
-  <div class="container">
-    <div class="footer-top">
-      <div>
-        <div class="footer-brand">DentAIstudy</div>
-        <p>AI-enhanced tools for dental students and residents.</p>
-      </div>
-      <div class="footer-column"><h4>Product</h4><a href="../subjects.html">Subjects</a><a href="../study.html">Study builder</a><a href="../blogs.html">Blogs</a></div>
-      <div class="footer-column"><h4>Company</h4><a href="../about.html">About</a><a href="../contact.html">Contact</a><a href="../faqs.html">FAQ</a></div>
-      <div class="footer-column"><h4>Legal</h4><a href="../privacy.html">Privacy Policy</a><a href="../terms.html">Terms</a><a href="../cookies.html">Cookies</a><a href="../disclaimer.html">Disclaimer</a></div>
-    </div>
-    <div class="footer-bottom">© 2025 DentAIstudy</div>
-  </div>
-</footer>
-
-
-</div>
-</body>
+  </body>
 </html>

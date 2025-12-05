@@ -1,233 +1,301 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Crown Prep Checklist for OSCE – DentAIstudy</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Crown Prep Checklist for OSCE – DentAIstudy</title>
 
-  <link rel="stylesheet" href="../assets/css/style-v3.css" />
-  <link rel="icon" type="image/png" sizes="512x512" href="../assets/img/favicon.png?v=2" />
+    <link rel="stylesheet" href="../assets/css/style-v3.css" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="512x512"
+      href="../assets/img/favicon.png?v=2"
+    />
 
-  <!-- JS: Supabase + Auth Guard + Logout + Main -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-  <script src="../assets/js/auth-client.js" defer></script>
-  <script src="../assets/js/auth-guard.js" defer></script>
-  <script src="../assets/js/auth-logout.js" defer></script>
-  <script defer src="../assets/js/main.js"></script>
-</head>
+    <!-- JS: Supabase + Auth Guard + Logout + Main -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+      defer
+    ></script>
+    <script src="../assets/js/auth-client.js" defer></script>
+    <script src="../assets/js/auth-guard.js" defer></script>
+    <script src="../assets/js/auth-logout.js" defer></script>
+    <script defer src="../assets/js/main.js"></script>
+  </head>
 
-<body>
-<div class="main-wrapper">
+  <body>
+    <div class="main-wrapper">
+      <!-- HEADER -->
+      <header class="site-header">
+        <div class="container header-inner">
+          <a class="brand" href="../index.html">
+            <span>Dent</span><span>AIstudy</span>
+          </a>
 
-  <!-- HEADER -->
-  <header class="site-header">
-    <div class="container header-inner">
-      <a class="brand" href="../index.html">
-        <span>Dent</span><span>AIstudy</span>
-      </a>
+          <nav class="header-nav">
+            <a href="../subjects.html">Subjects</a>
+            <a href="../study.html">Study builder</a>
+            <a href="../blogs.html" class="is-active">Blogs</a>
+            <a href="../pricing.html">Pricing</a>
+            <a href="../contact.html">Contact</a>
+          </nav>
 
-      <nav class="header-nav">
-        <a href="../subjects.html">Subjects</a>
-        <a href="../study.html">Study builder</a>
-        <a href="../blogs.html" class="is-active">Blogs</a>
-        <a href="../about.html">About</a>
-        <a href="../contact.html">Contact</a>
-      </nav>
-
-      <div class="header-right">
-        <a href="../login.html" class="btn btn-outline header-login">Log in</a>
-        <a href="../signup.html" class="btn btn-primary header-signup">Sign up</a>
-        <button class="menu-toggle" aria-label="Open menu">
-          <span></span><span></span><span></span>
-        </button>
-      </div>
-    </div>
-  </header>
-
-  <!-- MOBILE NAV -->
-  <div class="slide-nav-backdrop"></div>
-  <nav class="slide-nav">
-    <div class="slide-nav-header">
-      <h3>Menu</h3>
-      <button class="slide-nav-close" aria-label="Close menu">&times;</button>
-    </div>
-    <div class="slide-nav-links">
-      <a href="../subjects.html">Subjects</a>
-      <a href="../study.html">Study builder</a>
-      <a href="../blogs.html">Blogs</a>
-      <a href="../about.html">About</a>
-      <a href="../contact.html">Contact</a>
-      <a href="../login.html" class="slide-login-link">Log in</a>
-    </div>
-  </nav>
-
-  <!-- BLOG -->
-  <main class="section">
-    <div class="container container-narrow">
-
-      <div class="section-header" style="text-align:left;">
-        <div class="section-kicker">Prosthodontics</div>
-        <h1 class="section-title">Crown Prep Checklist for OSCE</h1>
-        <p class="section-subtitle">
-          A short, structured guide to crown-prep steps examiners expect.
-        </p>
-      </div>
-
-      <!-- SNIPPETS -->
-      <section class="study-answer-card">
-        <h2>Quick Answers</h2>
-
-        <h3>What do examiners look for in crown prep?</h3>
-        <p>Clear occlusal reduction, correct taper, smooth margins, and protection of adjacent tissues.</p>
-
-        <h3>What is the ideal taper?</h3>
-        <p>6–10° total convergence, with smooth continuous walls.</p>
-
-        <h3>How much occlusal reduction?</h3>
-        <p>Around 1.5–2.0 mm depending on crown type (PFM/zirconia/metal).</p>
-
-        <h3>What margin should I choose?</h3>
-        <p>Chamfer for metal/zirconia; shoulder or deep chamfer for PFM.</p>
-      </section>
-
-      <article class="blog-body">
-
-        <h2>1. Why crown prep stations feel stressful</h2>
-        <p>
-          Crown preparations demand control, consistency, and awareness of anatomy—under time pressure.
-          Examiners judge your <strong>process</strong> as much as the final prep.
-        </p>
-        <p>
-          A clean checklist keeps your actions organised and reduces mistakes like over-tapering or under-reduction.
-        </p>
-
-        <h2>2. Universal crown prep checklist</h2>
-        <div class="study-form-card">
-          <h3>Use this for every OSCE station</h3>
-          <p>
-            1. <strong>Assess</strong> – occlusion, contacts, existing restorations, opposing arch.<br>
-            2. <strong>Protect</strong> – rubber dam or soft tissue protection; guard adjacent teeth.<br>
-            3. <strong>Occlusal reduction</strong> – depth grooves → uniform 1.5–2.0 mm reduction.<br>
-            4. <strong>Functional cusp bevel</strong> – correct bevel on functional cusp for PFM/zirconia.<br>
-            5. <strong>Axial reduction</strong> – smooth walls, 6–10° taper, maintain path of insertion.<br>
-            6. <strong>Margin design</strong> – chamfer/shoulder depending on crown type.<br>
-            7. <strong>Finishing</strong> – smooth surfaces, rounded line angles, no ledges.<br>
-            8. <strong>Final checks</strong> – clearance, undercuts, margin continuity.
-          </p>
+          <div class="header-right">
+            <a href="../login.html" class="btn btn-outline header-login"
+              >Log in</a
+            >
+            <a href="../signup.html" class="btn btn-primary header-signup"
+              >Sign up</a
+            >
+            <button class="menu-toggle" aria-label="Open menu">
+              <span></span><span></span><span></span>
+            </button>
+          </div>
         </div>
-        <p>
-          These eight steps cover every crown type: metal, PFM, lithium disilicate, and zirconia.
-        </p>
+      </header>
 
-        <h2>3. Margin choices explained</h2>
-        <p>Margin selection is a high-yield OSCE point:</p>
-        <ul>
-          <li><strong>Chamfer:</strong> metal, zirconia.</li>
-          <li><strong>Deep chamfer:</strong> lithium disilicate.</li>
-          <li><strong>Shoulder:</strong> PFM with porcelain butt margin.</li>
-        </ul>
-        <p>
-          Examiners want to hear that your margin choice matches the crown material and aesthetic zone.
-        </p>
-
-        <h2>4. Occlusal reduction by crown type</h2>
-        <p>Use these numbers in OSCE answers:</p>
-        <ul>
-          <li><strong>Metal:</strong> 1.0–1.5 mm</li>
-          <li><strong>PFM:</strong> 1.5–2.0 mm</li>
-          <li><strong>Zirconia:</strong> 1.0–1.5 mm</li>
-          <li><strong>Lithium disilicate:</strong> 1.5–2.0 mm</li>
-        </ul>
-
-        <h2>5. Top mistakes candidates make</h2>
-        <p>Avoid these common OSCE errors:</p>
-        <ul>
-          <li>Over-tapered axial walls.</li>
-          <li>Flat occlusal table (loss of anatomy).</li>
-          <li>Violating pulp or over-reducing a cusp.</li>
-          <li>Unsupported enamel at the margins.</li>
-          <li>Not protecting adjacent teeth during reduction.</li>
-        </ul>
-
-        <h2>6. Fast practice workflow</h2>
-        <div class="study-form-card">
-          <h3>10-minute crown practice drill</h3>
-          <p>
-            1. 2 minutes – review required clearance for the crown type.<br>
-            2. 3 minutes – depth grooves + occlusal reduction.<br>
-            3. 3 minutes – axial reduction + margin formation.<br>
-            4. 2 minutes – finishing, smoothing, and checking path of insertion.
-          </p>
+      <!-- MOBILE NAV -->
+      <div class="slide-nav-backdrop"></div>
+      <nav class="slide-nav">
+        <div class="slide-nav-header">
+          <h3>Menu</h3>
+          <button class="slide-nav-close" aria-label="Close menu">
+            &times;
+          </button>
         </div>
-        <p>
-          Repeat this drill daily with one tooth and one crown type until the sequence becomes automatic.
-        </p>
-
-        <h2>7. How DentAIstudy helps</h2>
-        <p>
-          DentAIstudy can build crown-prep OSCE checklists and short viva answers for prosthodontic stations in seconds.
-        </p>
-        <ul>
-          <li>Generates crown prep sequences based on material type.</li>
-          <li>Creates OSCE-style practice stems (e.g. “Prepare #36 for PFM”).</li>
-          <li>Provides reduction guidelines and stepwise instructions.</li>
-          <li>Helps you rehearse clean, structured OSCE answers daily.</li>
-        </ul>
-        <p><a href="../study.html" class="btn btn-primary">Try Study Builder →</a></p>
-
-        <h2>References</h2>
-        <ul>
-          <li>Rosenstiel SF, Land MF, Fujimoto J. <em>Contemporary Fixed Prosthodontics</em>. 5th ed. Elsevier.</li>
-          <li>Shillingburg HT, Hobo S, Whitsett LD. <em>Fundamentals of Fixed Prosthodontics</em>. 3rd ed. Quintessence.</li>
-          <li>Goodacre CJ, Campagni WV, Aquilino SA. Tooth preparations for complete crowns. <em>J Prosthet Dent</em>. 2001;85(4):363–376.</li>
-          <li>Güth JF, Zuch T, et al. Tooth preparation guidelines for modern all-ceramic crowns. <em>Int J Esthet Dent</em>. 2017;12(2):168–181.</li>
-        </ul>
-
-      </article>
-
-    </div>
-  </main>
-
-  <!-- FOOTER -->
-  <footer class="site-footer">
-    <div class="container">
-      <div class="footer-top">
-        <div>
-          <div class="footer-brand">DentAIstudy</div>
-          <p>AI-enhanced tools for dental students and residents.</p>
-        </div>
-
-        <div class="footer-column">
-          <h4>Product</h4>
+        <div class="slide-nav-links">
           <a href="../subjects.html">Subjects</a>
           <a href="../study.html">Study builder</a>
           <a href="../blogs.html">Blogs</a>
-        </div>
-
-        <div class="footer-column">
-          <h4>Company</h4>
-          <a href="../about.html">About</a>
+          <a href="../pricing.html">Pricing</a>
           <a href="../contact.html">Contact</a>
-          <a href="../faqs.html">FAQ</a>
+          <a href="../login.html" class="slide-login-link">Log in</a>
         </div>
+      </nav>
 
-        <div class="footer-column">
-          <h4>Legal</h4>
-          <a href="../privacy.html">Privacy Policy</a>
-          <a href="../terms.html">Terms &amp; Conditions</a>
-          <a href="../cookies.html">Cookies Policy</a>
-          <a href="../disclaimer.html">Disclaimer</a>
+      <!-- BLOG -->
+      <main class="section">
+        <div class="container container-narrow">
+          <div class="section-header" style="text-align: left">
+            <div class="section-kicker">Prosthodontics</div>
+            <h1 class="section-title">Crown Prep Checklist for OSCE</h1>
+            <p class="section-subtitle">
+              A short, structured guide to crown-prep steps examiners expect.
+            </p>
+          </div>
+
+          <!-- SNIPPETS -->
+          <section class="study-answer-card">
+            <h2>Quick Answers</h2>
+
+            <h3>What do examiners look for in crown prep?</h3>
+            <p>
+              Clear occlusal reduction, correct taper, smooth margins, and
+              protection of adjacent tissues.
+            </p>
+
+            <h3>What is the ideal taper?</h3>
+            <p>6–10° total convergence, with smooth continuous walls.</p>
+
+            <h3>How much occlusal reduction?</h3>
+            <p>
+              Around 1.5–2.0 mm depending on crown type (PFM/zirconia/metal).
+            </p>
+
+            <h3>What margin should I choose?</h3>
+            <p>Chamfer for metal/zirconia; shoulder or deep chamfer for PFM.</p>
+          </section>
+
+          <article class="blog-body">
+            <h2>1. Why crown prep stations feel stressful</h2>
+            <p>
+              Crown preparations demand control, consistency, and awareness of
+              anatomy—under time pressure. Examiners judge your
+              <strong>process</strong> as much as the final prep.
+            </p>
+            <p>
+              A clean checklist keeps your actions organised and reduces
+              mistakes like over-tapering or under-reduction.
+            </p>
+
+            <h2>2. Universal crown prep checklist</h2>
+            <div class="study-form-card">
+              <h3>Use this for every OSCE station</h3>
+              <p>
+                1. <strong>Assess</strong> – occlusion, contacts, existing
+                restorations, opposing arch.<br />
+                2. <strong>Protect</strong> – rubber dam or soft tissue
+                protection; guard adjacent teeth.<br />
+                3. <strong>Occlusal reduction</strong> – depth grooves → uniform
+                1.5–2.0 mm reduction.<br />
+                4. <strong>Functional cusp bevel</strong> – correct bevel on
+                functional cusp for PFM/zirconia.<br />
+                5. <strong>Axial reduction</strong> – smooth walls, 6–10° taper,
+                maintain path of insertion.<br />
+                6. <strong>Margin design</strong> – chamfer/shoulder depending
+                on crown type.<br />
+                7. <strong>Finishing</strong> – smooth surfaces, rounded line
+                angles, no ledges.<br />
+                8. <strong>Final checks</strong> – clearance, undercuts, margin
+                continuity.
+              </p>
+            </div>
+            <p>
+              These eight steps cover every crown type: metal, PFM, lithium
+              disilicate, and zirconia.
+            </p>
+
+            <h2>3. Margin choices explained</h2>
+            <p>Margin selection is a high-yield OSCE point:</p>
+            <ul>
+              <li><strong>Chamfer:</strong> metal, zirconia.</li>
+              <li><strong>Deep chamfer:</strong> lithium disilicate.</li>
+              <li>
+                <strong>Shoulder:</strong> PFM with porcelain butt margin.
+              </li>
+            </ul>
+            <p>
+              Examiners want to hear that your margin choice matches the crown
+              material and aesthetic zone.
+            </p>
+
+            <h2>4. Occlusal reduction by crown type</h2>
+            <p>Use these numbers in OSCE answers:</p>
+            <ul>
+              <li><strong>Metal:</strong> 1.0–1.5 mm</li>
+              <li><strong>PFM:</strong> 1.5–2.0 mm</li>
+              <li><strong>Zirconia:</strong> 1.0–1.5 mm</li>
+              <li><strong>Lithium disilicate:</strong> 1.5–2.0 mm</li>
+            </ul>
+
+            <h2>5. Top mistakes candidates make</h2>
+            <p>Avoid these common OSCE errors:</p>
+            <ul>
+              <li>Over-tapered axial walls.</li>
+              <li>Flat occlusal table (loss of anatomy).</li>
+              <li>Violating pulp or over-reducing a cusp.</li>
+              <li>Unsupported enamel at the margins.</li>
+              <li>Not protecting adjacent teeth during reduction.</li>
+            </ul>
+
+            <h2>6. Fast practice workflow</h2>
+            <div class="study-form-card">
+              <h3>10-minute crown practice drill</h3>
+              <p>
+                1. 2 minutes – review required clearance for the crown type.<br />
+                2. 3 minutes – depth grooves + occlusal reduction.<br />
+                3. 3 minutes – axial reduction + margin formation.<br />
+                4. 2 minutes – finishing, smoothing, and checking path of
+                insertion.
+              </p>
+            </div>
+            <p>
+              Repeat this drill daily with one tooth and one crown type until
+              the sequence becomes automatic.
+            </p>
+
+            <h2>7. How DentAIstudy helps</h2>
+            <p>
+              DentAIstudy can build crown-prep OSCE checklists and short viva
+              answers for prosthodontic stations in seconds.
+            </p>
+            <ul>
+              <li>Generates crown prep sequences based on material type.</li>
+              <li>
+                Creates OSCE-style practice stems (e.g. “Prepare #36 for PFM”).
+              </li>
+              <li>Provides reduction guidelines and stepwise instructions.</li>
+              <li>Helps you rehearse clean, structured OSCE answers daily.</li>
+            </ul>
+            <p>
+              <a href="../study.html" class="btn btn-primary"
+                >Try Study Builder →</a
+              >
+            </p>
+
+            <h2>References</h2>
+            <ul>
+              <li>
+                Rosenstiel SF, Land MF, Fujimoto J.
+                <em>Contemporary Fixed Prosthodontics</em>. 5th ed. Elsevier.
+              </li>
+              <li>
+                Shillingburg HT, Hobo S, Whitsett LD.
+                <em>Fundamentals of Fixed Prosthodontics</em>. 3rd ed.
+                Quintessence.
+              </li>
+              <li>
+                Goodacre CJ, Campagni WV, Aquilino SA. Tooth preparations for
+                complete crowns. <em>J Prosthet Dent</em>. 2001;85(4):363–376.
+              </li>
+              <li>
+                Güth JF, Zuch T, et al. Tooth preparation guidelines for modern
+                all-ceramic crowns. <em>Int J Esthet Dent</em>.
+                2017;12(2):168–181.
+              </li>
+            </ul>
+          </article>
         </div>
-      </div>
+      </main>
 
-      <div class="footer-bottom">
-        © 2025 DentAIstudy. All rights reserved.
-      </div>
+      <!-- FOOTER -->
+      <footer class="site-footer">
+        <div class="container">
+          <div class="footer-top">
+            <div>
+              <div class="footer-brand">DentAIstudy</div>
+              <p>AI-enhanced tools for dental students and residents.</p>
+              <div class="footer-social">
+                <a
+                  href="https://www.tiktok.com/@dentaistudy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="DentAIstudy on TikTok"
+                >
+                  <img src="../assets/img/footer-icons/tiktok-icon.png" alt="TikTok" class="footer-social-img">
+                </a>
+              
+                <a
+                  href="mailto:info@dentaistudy.com"
+                  aria-label="Contact DentAIstudy by email"
+                >
+                  <img src="../assets/img/footer-icons/email-icon.png" alt="Email" class="footer-social-img">
+                </a>
+              </div>
+            </div>
+
+           <div class="footer-column">
+              <h4>Product</h4>
+              <a href="../subjects.html">Subjects</a>
+              <a href="../study.html">Study builder</a>
+              <a href="../blogs.html">Blogs</a>
+              <a href="../pricing.html">Pricing</a>
+            </div>
+
+            <div class="footer-column">
+              <h4>Company</h4>
+              <a href="../about.html">About</a>
+              <a href="../contact.html">Contact</a>
+              <a href="../faqs.html">FAQ</a>
+            </div>
+
+            <div class="footer-column">
+              <h4>Legal</h4>
+              <a href="../privacy.html">Privacy Policy</a>
+              <a href="../terms.html">Terms &amp; Conditions</a>
+              <a href="../cookies.html">Cookies Policy</a>
+              <a href="../disclaimer.html">Disclaimer</a>
+              <a href="../billing.html">Billing</a>
+              <a href="../refund-policy.html">Refunds</a>
+            </div>
+          </div>
+
+          <div class="footer-bottom">
+            © 2025 DentAIstudy. All rights reserved.
+          </div>
+        </div>
+      </footer>
     </div>
-  </footer>
-
-</div>
-
-
-</body>
+  </body>
 </html>

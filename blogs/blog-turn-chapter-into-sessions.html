@@ -1,238 +1,330 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Turning One Messy Chapter Into 15-Minute Sessions – DentAIstudy</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Turning One Messy Chapter Into 15-Minute Sessions – DentAIstudy
+    </title>
 
-  <link rel="stylesheet" href="../assets/css/style-v3.css" />
-  <link rel="icon" type="image/png" sizes="512x512" href="../assets/img/favicon.png?v=2" />
+    <link rel="stylesheet" href="../assets/css/style-v3.css" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="512x512"
+      href="../assets/img/favicon.png?v=2"
+    />
 
-  <!-- JS: Supabase + Auth Guard + Logout + Main -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-  <script src="../assets/js/auth-client.js" defer></script>
-  <script src="../assets/js/auth-guard.js" defer></script>
-  <script src="../assets/js/auth-logout.js" defer></script>
-  <script defer src="../assets/js/main.js"></script>
-</head>
+    <!-- JS: Supabase + Auth Guard + Logout + Main -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+      defer
+    ></script>
+    <script src="../assets/js/auth-client.js" defer></script>
+    <script src="../assets/js/auth-guard.js" defer></script>
+    <script src="../assets/js/auth-logout.js" defer></script>
+    <script defer src="../assets/js/main.js"></script>
+  </head>
 
-<body>
-<div class="main-wrapper">
+  <body>
+    <div class="main-wrapper">
+      <!-- HEADER -->
+      <header class="site-header">
+        <div class="container header-inner">
+          <a class="brand" href="../index.html">
+            <span>Dent</span><span>AIstudy</span>
+          </a>
 
-  <!-- HEADER -->
-  <header class="site-header">
-    <div class="container header-inner">
-      <a class="brand" href="../index.html">
-        <span>Dent</span><span>AIstudy</span>
-      </a>
+          <nav class="header-nav">
+            <a href="../subjects.html">Subjects</a>
+            <a href="../study.html">Study builder</a>
+            <a href="../blogs.html" class="is-active">Blogs</a>
+            <a href="../pricing.html">Pricing</a>
+            <a href="../contact.html">Contact</a>
+          </nav>
 
-      <nav class="header-nav">
-        <a href="../subjects.html">Subjects</a>
-        <a href="../study.html">Study builder</a>
-        <a href="../blogs.html" class="is-active">Blogs</a>
-        <a href="../about.html">About</a>
-        <a href="../contact.html">Contact</a>
-      </nav>
-
-      <div class="header-right">
-        <a href="../login.html" class="btn btn-outline header-login">Log in</a>
-        <a href="../signup.html" class="btn btn-primary header-signup">Sign up</a>
-        <button class="menu-toggle" aria-label="Open menu">
-          <span></span><span></span><span></span>
-        </button>
-      </div>
-    </div>
-  </header>
-
-  <!-- MOBILE NAV -->
-  <div class="slide-nav-backdrop"></div>
-  <nav class="slide-nav">
-    <div class="slide-nav-header">
-      <h3>Menu</h3>
-      <button class="slide-nav-close" aria-label="Close menu">&times;</button>
-    </div>
-    <div class="slide-nav-links">
-      <a href="../subjects.html">Subjects</a>
-      <a href="../study.html">Study builder</a>
-      <a href="../blogs.html">Blogs</a>
-      <a href="../about.html">About</a>
-      <a href="../contact.html">Contact</a>
-      <a href="../login.html" class="slide-login-link">Log in</a>
-    </div>
-  </nav>
-
-  <!-- BLOG BODY -->
-  <main class="section">
-    <div class="container container-narrow">
-
-      <div class="section-header" style="text-align:left;">
-        <div class="section-kicker">Featured</div>
-        <h1 class="section-title">Turning One Messy Chapter Into 15-Minute Sessions</h1>
-        <p class="section-subtitle">
-          A simple framework to convert dense textbooks into micro-sessions you can revisit before every exam.
-        </p>
-      </div>
-
-      <!-- QUICK ANSWERS SNIPPET -->
-      <section class="study-answer-card">
-        <h2>Quick Answers</h2>
-
-        <h3>How do I break a long dental chapter quickly?</h3>
-        <p>Split it into micro-tasks: definitions, classifications, steps, clinical notes, and viva points.</p>
-
-        <h3>What is the fastest way to revise big topics?</h3>
-        <p>Convert the chapter into small 15-minute sessions instead of reading it line-by-line.</p>
-
-        <h3>How do I avoid feeling overwhelmed?</h3>
-        <p>Study only one micro-section at a time and stop as soon as the 15 minutes end.</p>
-
-        <h3>Why does this work for board exams?</h3>
-        <p>Because most examiners test structure and recall of key lists, not long story-style reading.</p>
-      </section>
-
-      <article class="blog-body">
-
-        <h2>1. Why long chapters feel impossible to start</h2>
-        <p>
-          Dental textbooks are heavy. Some chapters feel like they were written to test your patience, not your knowledge.
-          When everything is on one huge page, your brain sees “hours of work” and delays starting.
-        </p>
-        <p>
-          The solution is not more motivation. The solution is smaller, cleaner units that you can finish in one sitting.
-        </p>
-
-        <h2>2. The 15-minute rule</h2>
-        <p>
-          Instead of trying to “finish the chapter”, you only commit to 15 minutes per micro-task. Each 15-minute block has one job:
-        </p>
-        <ul>
-          <li>Only definitions</li>
-          <li>Only classifications</li>
-          <li>Only steps of a procedure</li>
-          <li>Only indications and contraindications</li>
-          <li>Only complications or failures</li>
-          <li>Only examiner-style questions</li>
-        </ul>
-        <p>
-          This turns an unstructured chapter into a small checklist of tasks you can clear one by one.
-        </p>
-
-        <h2>3. How to apply it instantly</h2>
-        <div class="study-form-card">
-          <h3>15-minute extraction plan</h3>
-          <p>
-            1. Write the chapter name at the top of the page.<br>
-            2. Divide the sheet into 6 small boxes.<br>
-            3. Label the boxes: Definition, Classification, Steps, Key points, Clinical notes, Viva.<br>
-            4. Spend 15 minutes per box — stop when the 15 minutes end.<br>
-            5. Come back later and add or clean points instead of re-reading paragraphs.
-          </p>
+          <div class="header-right">
+            <a href="../login.html" class="btn btn-outline header-login"
+              >Log in</a
+            >
+            <a href="../signup.html" class="btn btn-primary header-signup"
+              >Sign up</a
+            >
+            <button class="menu-toggle" aria-label="Open menu">
+              <span></span><span></span><span></span>
+            </button>
+          </div>
         </div>
+      </header>
 
-        <h2>4. Why 15 minutes works for your brain</h2>
-        <p>
-          Your attention naturally drops after short intervals. A 15-minute limit reduces pressure and removes the feeling of
-          “this will take forever”. You feel progress after every block, and progress is what keeps you coming back.
-        </p>
-        <p>
-          For board exams like ORE, ADC, NBDE/INBDE, MFDS, or NDEB, this style also matches how questions are written:
-          short stems testing clean, structured recall.
-        </p>
-
-        <h2>5. Example topic: “Endodontic mishaps”</h2>
-        <p>Imagine you only have 1–1.5 hours before clinic. Your 15-minute blocks might look like:</p>
-        <ul>
-          <li>Block 1: Definitions and classification of mishaps</li>
-          <li>Block 2: Instrument separation – causes, prevention, management</li>
-          <li>Block 3: Perforations – types, diagnosis, management steps</li>
-          <li>Block 4: Over- and under-filling – reasons and consequences</li>
-          <li>Block 5: Viva-style questions from each box</li>
-        </ul>
-        <p>
-          You don’t “finish the chapter”; you finish the key lists and flows that examiners actually ask.
-        </p>
-
-        <h2>6. Use AI to speed up the structure</h2>
-        <p>
-          You can do this manually, but it is even faster if you let AI generate the first draft of the structure.
-          Give it the topic, then edit the output using your textbook.
-        </p>
-
-        <div class="study-form-card">
-          <h3>Try it with one topic</h3>
-          <p class="text-sm">
-            Example: “Biomechanics of space closure” → DentAIstudy can organise it into definitions, principles,
-            force systems, anchorage, methods, complications, and examiner-style questions that you refine in 15-minute blocks.
-          </p>
+      <!-- MOBILE NAV -->
+      <div class="slide-nav-backdrop"></div>
+      <nav class="slide-nav">
+        <div class="slide-nav-header">
+          <h3>Menu</h3>
+          <button class="slide-nav-close" aria-label="Close menu">
+            &times;
+          </button>
         </div>
-
-        <h2>7. How DentAIstudy helps</h2>
-        <p>DentAIstudy is designed to turn heavy dental content into structured study pieces you can finish fast.</p>
-        <ul>
-          <li>Instant OSCE-style flows from long chapters</li>
-          <li>High-yield notes arranged by definitions, lists, and steps</li>
-          <li>Flashcards auto-generated from your own prompts</li>
-          <li>Short, examiner-style questions to test each 15-minute block</li>
-        </ul>
-        <p>
-          Instead of spending your energy building the structure, you start from a clean layout and use your time to understand,
-          connect, and recall.
-        </p>
-        <p><a href="../study.html" class="btn btn-primary">Try Study Builder →</a></p>
-
-        <h2>References</h2>
-        <ul>
-          <li>Proffit WR, Fields HW, Larson B. <em>Contemporary Orthodontics</em>. 6th ed. Elsevier; 2018.</li>
-          <li>Ingle JI, Bakland LK, Baumgartner JC. <em>Ingle’s Endodontics</em>. 6th ed. BC Decker; 2008.</li>
-          <li>Carranza FA, Newman MG. <em>Carranza’s Clinical Periodontology</em>. 13th ed. Elsevier; 2019.</li>
-          <li>Rosenstiel SF, Land MF, Fujimoto J. <em>Contemporary Fixed Prosthodontics</em>. 5th ed. Elsevier; 2015.</li>
-        </ul>
-
-      </article>
-
-    </div>
-  </main>
-
-  <!-- FOOTER -->
-  <footer class="site-footer">
-    <div class="container">
-      <div class="footer-top">
-        <div>
-          <div class="footer-brand">DentAIstudy</div>
-          <p>AI-enhanced tools for dental students and residents.</p>
-        </div>
-
-        <div class="footer-column">
-          <h4>Product</h4>
+        <div class="slide-nav-links">
           <a href="../subjects.html">Subjects</a>
           <a href="../study.html">Study builder</a>
           <a href="../blogs.html">Blogs</a>
-        </div>
-
-        <div class="footer-column">
-          <h4>Company</h4>
-          <a href="../about.html">About</a>
+          <a href="../pricing.html">Pricing</a>
           <a href="../contact.html">Contact</a>
-          <a href="../faqs.html">FAQ</a>
+          <a href="../login.html" class="slide-login-link">Log in</a>
         </div>
+      </nav>
 
-        <div class="footer-column">
-          <h4>Legal</h4>
-          <a href="../privacy.html">Privacy Policy</a>
-          <a href="../terms.html">Terms &amp; Conditions</a>
-          <a href="../cookies.html">Cookies Policy</a>
-          <a href="../disclaimer.html">Disclaimer</a>
+      <!-- BLOG BODY -->
+      <main class="section">
+        <div class="container container-narrow">
+          <div class="section-header" style="text-align: left">
+            <div class="section-kicker">Featured</div>
+            <h1 class="section-title">
+              Turning One Messy Chapter Into 15-Minute Sessions
+            </h1>
+            <p class="section-subtitle">
+              A simple framework to convert dense textbooks into micro-sessions
+              you can revisit before every exam.
+            </p>
+          </div>
+
+          <!-- QUICK ANSWERS SNIPPET -->
+          <section class="study-answer-card">
+            <h2>Quick Answers</h2>
+
+            <h3>How do I break a long dental chapter quickly?</h3>
+            <p>
+              Split it into micro-tasks: definitions, classifications, steps,
+              clinical notes, and viva points.
+            </p>
+
+            <h3>What is the fastest way to revise big topics?</h3>
+            <p>
+              Convert the chapter into small 15-minute sessions instead of
+              reading it line-by-line.
+            </p>
+
+            <h3>How do I avoid feeling overwhelmed?</h3>
+            <p>
+              Study only one micro-section at a time and stop as soon as the 15
+              minutes end.
+            </p>
+
+            <h3>Why does this work for board exams?</h3>
+            <p>
+              Because most examiners test structure and recall of key lists, not
+              long story-style reading.
+            </p>
+          </section>
+
+          <article class="blog-body">
+            <h2>1. Why long chapters feel impossible to start</h2>
+            <p>
+              Dental textbooks are heavy. Some chapters feel like they were
+              written to test your patience, not your knowledge. When everything
+              is on one huge page, your brain sees “hours of work” and delays
+              starting.
+            </p>
+            <p>
+              The solution is not more motivation. The solution is smaller,
+              cleaner units that you can finish in one sitting.
+            </p>
+
+            <h2>2. The 15-minute rule</h2>
+            <p>
+              Instead of trying to “finish the chapter”, you only commit to 15
+              minutes per micro-task. Each 15-minute block has one job:
+            </p>
+            <ul>
+              <li>Only definitions</li>
+              <li>Only classifications</li>
+              <li>Only steps of a procedure</li>
+              <li>Only indications and contraindications</li>
+              <li>Only complications or failures</li>
+              <li>Only examiner-style questions</li>
+            </ul>
+            <p>
+              This turns an unstructured chapter into a small checklist of tasks
+              you can clear one by one.
+            </p>
+
+            <h2>3. How to apply it instantly</h2>
+            <div class="study-form-card">
+              <h3>15-minute extraction plan</h3>
+              <p>
+                1. Write the chapter name at the top of the page.<br />
+                2. Divide the sheet into 6 small boxes.<br />
+                3. Label the boxes: Definition, Classification, Steps, Key
+                points, Clinical notes, Viva.<br />
+                4. Spend 15 minutes per box — stop when the 15 minutes end.<br />
+                5. Come back later and add or clean points instead of re-reading
+                paragraphs.
+              </p>
+            </div>
+
+            <h2>4. Why 15 minutes works for your brain</h2>
+            <p>
+              Your attention naturally drops after short intervals. A 15-minute
+              limit reduces pressure and removes the feeling of “this will take
+              forever”. You feel progress after every block, and progress is
+              what keeps you coming back.
+            </p>
+            <p>
+              For board exams like ORE, ADC, NBDE/INBDE, MFDS, or NDEB, this
+              style also matches how questions are written: short stems testing
+              clean, structured recall.
+            </p>
+
+            <h2>5. Example topic: “Endodontic mishaps”</h2>
+            <p>
+              Imagine you only have 1–1.5 hours before clinic. Your 15-minute
+              blocks might look like:
+            </p>
+            <ul>
+              <li>Block 1: Definitions and classification of mishaps</li>
+              <li>
+                Block 2: Instrument separation – causes, prevention, management
+              </li>
+              <li>
+                Block 3: Perforations – types, diagnosis, management steps
+              </li>
+              <li>
+                Block 4: Over- and under-filling – reasons and consequences
+              </li>
+              <li>Block 5: Viva-style questions from each box</li>
+            </ul>
+            <p>
+              You don’t “finish the chapter”; you finish the key lists and flows
+              that examiners actually ask.
+            </p>
+
+            <h2>6. Use AI to speed up the structure</h2>
+            <p>
+              You can do this manually, but it is even faster if you let AI
+              generate the first draft of the structure. Give it the topic, then
+              edit the output using your textbook.
+            </p>
+
+            <div class="study-form-card">
+              <h3>Try it with one topic</h3>
+              <p class="text-sm">
+                Example: “Biomechanics of space closure” → DentAIstudy can
+                organise it into definitions, principles, force systems,
+                anchorage, methods, complications, and examiner-style questions
+                that you refine in 15-minute blocks.
+              </p>
+            </div>
+
+            <h2>7. How DentAIstudy helps</h2>
+            <p>
+              DentAIstudy is designed to turn heavy dental content into
+              structured study pieces you can finish fast.
+            </p>
+            <ul>
+              <li>Instant OSCE-style flows from long chapters</li>
+              <li>
+                High-yield notes arranged by definitions, lists, and steps
+              </li>
+              <li>Flashcards auto-generated from your own prompts</li>
+              <li>
+                Short, examiner-style questions to test each 15-minute block
+              </li>
+            </ul>
+            <p>
+              Instead of spending your energy building the structure, you start
+              from a clean layout and use your time to understand, connect, and
+              recall.
+            </p>
+            <p>
+              <a href="../study.html" class="btn btn-primary"
+                >Try Study Builder →</a
+              >
+            </p>
+
+            <h2>References</h2>
+            <ul>
+              <li>
+                Proffit WR, Fields HW, Larson B.
+                <em>Contemporary Orthodontics</em>. 6th ed. Elsevier; 2018.
+              </li>
+              <li>
+                Ingle JI, Bakland LK, Baumgartner JC.
+                <em>Ingle’s Endodontics</em>. 6th ed. BC Decker; 2008.
+              </li>
+              <li>
+                Carranza FA, Newman MG.
+                <em>Carranza’s Clinical Periodontology</em>. 13th ed. Elsevier;
+                2019.
+              </li>
+              <li>
+                Rosenstiel SF, Land MF, Fujimoto J.
+                <em>Contemporary Fixed Prosthodontics</em>. 5th ed. Elsevier;
+                2015.
+              </li>
+            </ul>
+          </article>
         </div>
-      </div>
+      </main>
 
-      <div class="footer-bottom">
-        © 2025 DentAIstudy. All rights reserved.
-      </div>
+      <!-- FOOTER -->
+      <footer class="site-footer">
+        <div class="container">
+          <div class="footer-top">
+            <div>
+              <div class="footer-brand">DentAIstudy</div>
+              <p>AI-enhanced tools for dental students and residents.</p>
+              <div class="footer-social">
+                <a
+                  href="https://www.tiktok.com/@dentaistudy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="DentAIstudy on TikTok"
+                >
+                  <img src="../assets/img/footer-icons/tiktok-icon.png" alt="TikTok" class="footer-social-img">
+                </a>
+              
+                <a
+                  href="mailto:info@dentaistudy.com"
+                  aria-label="Contact DentAIstudy by email"
+                >
+                  <img src="../assets/img/footer-icons/email-icon.png" alt="Email" class="footer-social-img">
+                </a>
+              </div>
+            </div>
+
+           <div class="footer-column">
+              <h4>Product</h4>
+              <a href="../subjects.html">Subjects</a>
+              <a href="../study.html">Study builder</a>
+              <a href="../blogs.html">Blogs</a>
+              <a href="../pricing.html">Pricing</a>
+            </div>
+
+            <div class="footer-column">
+              <h4>Company</h4>
+              <a href="../about.html">About</a>
+              <a href="../contact.html">Contact</a>
+              <a href="../faqs.html">FAQ</a>
+            </div>
+
+            <div class="footer-column">
+              <h4>Legal</h4>
+              <a href="../privacy.html">Privacy Policy</a>
+              <a href="../terms.html">Terms &amp; Conditions</a>
+              <a href="../cookies.html">Cookies Policy</a>
+              <a href="../disclaimer.html">Disclaimer</a>
+              <a href="../billing.html">Billing</a>
+              <a href="../refund-policy.html">Refunds</a>
+            </div>
+          </div>
+
+          <div class="footer-bottom">
+            © 2025 DentAIstudy. All rights reserved.
+          </div>
+        </div>
+      </footer>
     </div>
-  </footer>
-
-</div>
-
-
-</body>
+  </body>
 </html>

@@ -1,200 +1,295 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>How to Answer OSCE Stations Like an Examiner – DentAIstudy</title>
-  <link rel="stylesheet" href="../assets/css/style-v3.css" />
-  <link rel="icon" type="image/png" sizes="512x512" href="../assets/img/favicon.png?v=2" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>How to Answer OSCE Stations Like an Examiner – DentAIstudy</title>
+    <link rel="stylesheet" href="../assets/css/style-v3.css" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="512x512"
+      href="../assets/img/favicon.png?v=2"
+    />
 
-  <!-- JS: Supabase + Auth Guard + Logout + Main -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-  <script src="../assets/js/auth-client.js" defer></script>
-  <script src="../assets/js/auth-guard.js" defer></script>
-  <script src="../assets/js/auth-logout.js" defer></script>
-  <script defer src="../assets/js/main.js"></script>
-</head>
+    <!-- JS: Supabase + Auth Guard + Logout + Main -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+      defer
+    ></script>
+    <script src="../assets/js/auth-client.js" defer></script>
+    <script src="../assets/js/auth-guard.js" defer></script>
+    <script src="../assets/js/auth-logout.js" defer></script>
+    <script defer src="../assets/js/main.js"></script>
+  </head>
 
-<body>
-<div class="main-wrapper">
+  <body>
+    <div class="main-wrapper">
+      <!-- HEADER -->
+      <header class="site-header">
+        <div class="container header-inner">
+          <a class="brand" href="../index.html"
+            ><span>Dent</span><span>AIstudy</span></a
+          >
+          <nav class="header-nav">
+            <a href="../subjects.html">Subjects</a>
+            <a href="../study.html">Study builder</a>
+            <a href="../blogs.html" class="is-active">Blogs</a>
+            <a href="../pricing.html">Pricing</a>
+            <a href="../contact.html">Contact</a>
+          </nav>
+          <div class="header-right">
+            <a href="../login.html" class="btn btn-outline header-login"
+              >Log in</a
+            >
+            <a href="../signup.html" class="btn btn-primary header-signup"
+              >Sign up</a
+            >
+            <button class="menu-toggle">
+              <span></span><span></span><span></span>
+            </button>
+          </div>
+        </div>
+      </header>
 
-<!-- HEADER -->
-<header class="site-header">
-  <div class="container header-inner">
-    <a class="brand" href="../index.html"><span>Dent</span><span>AIstudy</span></a>
-    <nav class="header-nav">
-      <a href="../subjects.html">Subjects</a>
-      <a href="../study.html">Study builder</a>
-      <a href="../blogs.html" class="is-active">Blogs</a>
-      <a href="../about.html">About</a>
-      <a href="../contact.html">Contact</a>
-    </nav>
-    <div class="header-right">
-      <a href="../login.html" class="btn btn-outline header-login">Log in</a>
-      <a href="../signup.html" class="btn btn-primary header-signup">Sign up</a>
-      <button class="menu-toggle"><span></span><span></span><span></span></button>
+      <!-- MOBILE NAV -->
+      <div class="slide-nav-backdrop"></div>
+      <nav class="slide-nav">
+        <div class="slide-nav-header">
+          <h3>Menu</h3>
+          <button class="slide-nav-close">&times;</button>
+        </div>
+        <div class="slide-nav-links">
+          <a href="../subjects.html">Subjects</a>
+          <a href="../study.html">Study builder</a>
+          <a href="../blogs.html">Blogs</a>
+          <a href="../pricing.html">Pricing</a>
+          <a href="../contact.html">Contact</a>
+          <a href="../login.html" class="slide-login-link">Log in</a>
+        </div>
+      </nav>
+
+      <!-- BLOG BODY -->
+      <main class="section">
+        <div class="container container-narrow">
+          <div class="section-header" style="text-align: left">
+            <div class="section-kicker">OSCE Strategy</div>
+            <h1 class="section-title">
+              How to Answer OSCE Stations Like an Examiner
+            </h1>
+            <p class="section-subtitle">
+              A universal OSCE framework used in ORE, ADC, NDEB, NBDE, MFDS, and
+              dental school exams.
+            </p>
+          </div>
+
+          <!-- SNIPPET BLOCK -->
+          <section class="study-answer-card">
+            <h2>Quick Answers</h2>
+
+            <h3>What is the best OSCE structure?</h3>
+            <p>
+              Introduce yourself → confirm patient identity → open the station →
+              gather key findings → explain diagnosis → outline management →
+              close safely.
+            </p>
+
+            <h3>What do examiners look for?</h3>
+            <p>
+              Clarity, confidence, structured thinking, patient safety, and
+              correct prioritisation of steps rather than memorised scripts.
+            </p>
+
+            <h3>How do you avoid freezing in a station?</h3>
+            <p>
+              Use a repeatable framework: Opening → History/Assessment →
+              Explanation → Plan → Closure.
+            </p>
+
+            <h3>What is the biggest OSCE mistake?</h3>
+            <p>
+              Jumping straight to treatment without confirming the basics:
+              identity, pain level, red flags, and consent.
+            </p>
+          </section>
+
+          <!-- MAIN CONTENT -->
+          <article class="blog-body">
+            <h2>1. Start like a professional every time</h2>
+            <p>
+              Examiners judge the first 10 seconds heavily. A clean opening
+              instantly shows confidence:
+            </p>
+            <ul>
+              <li>“Hello, my name is _____. I am the dental student today.”</li>
+              <li>“Can I confirm your name and age?”</li>
+              <li>“How can I help you today?”</li>
+            </ul>
+            <p>
+              Simple. Calm. No drama. This already scores ‘communication’ marks.
+            </p>
+
+            <h2>2. Use the “Golden OSCE Framework”</h2>
+            <p>This framework works for almost any dental station:</p>
+
+            <div class="study-form-card">
+              <h3>Golden OSCE Framework</h3>
+              <p>
+                1. Opening & identity check<br />
+                2. Chief complaint<br />
+                3. Focused history (pain, duration, triggers, medical
+                history)<br />
+                4. Examination / findings<br />
+                5. Explain the problem<br />
+                6. Management plan (steps, safety, alternatives)<br />
+                7. Check understanding & close
+              </p>
+            </div>
+
+            <h2>3. High-yield phrases examiners love</h2>
+            <p>Here are verbal shortcuts that make you sound structured:</p>
+            <ul>
+              <li>“From your symptoms, the most likely diagnosis is…”</li>
+              <li>“The reason this is happening is because…”</li>
+              <li>“The safest next step is…”</li>
+              <li>“Let me summarise to make sure I understood correctly.”</li>
+            </ul>
+
+            <h2>4. How to think like an examiner</h2>
+            <p>
+              Examiners don’t care if you memorised the textbook. They care
+              about:
+            </p>
+            <ul>
+              <li>
+                <strong>Patient safety</strong> (red flags, allergies, consent)
+              </li>
+              <li>
+                <strong>Logical sequencing</strong> (why → how → what next)
+              </li>
+              <li><strong>Communication</strong> (clear, structured, calm)</li>
+            </ul>
+
+            <h2>5. OSCE do’s and don’ts</h2>
+            <p>A fast checklist that applies globally:</p>
+
+            <div class="study-form-card">
+              <h3>OSCE Do’s</h3>
+              <ul>
+                <li>Speak slowly</li>
+                <li>Summarise often</li>
+                <li>Prioritise safety steps</li>
+                <li>Explain options</li>
+              </ul>
+            </div>
+
+            <div class="study-form-card">
+              <h3>OSCE Don’ts</h3>
+              <ul>
+                <li>Never guess diagnoses loudly</li>
+                <li>Never skip medical history</li>
+                <li>Never jump straight to treatment</li>
+                <li>Never ignore patient anxiety</li>
+              </ul>
+            </div>
+
+            <h2>6. Common mistakes students make</h2>
+            <ul>
+              <li>Speaking too fast due to nerves</li>
+              <li>Over-explaining irrelevant theory</li>
+              <li>Not summarising findings</li>
+              <li>Ignoring pain scoring and red flags</li>
+            </ul>
+
+            <h2>7. How DentAIstudy can help</h2>
+            <p>DentAIstudy helps you build OSCE-ready outputs instantly:</p>
+            <ul>
+              <li>AI-generated OSCE flows</li>
+              <li>Communication phrases tailored to the station</li>
+              <li>High-yield one-page summaries</li>
+              <li>MCQs for rapid consolidation</li>
+            </ul>
+            <p>
+              <a href="../study.html" class="btn btn-primary"
+                >Try Study Builder →</a
+              >
+            </p>
+
+            <h2>References</h2>
+            <p>
+              All sources are reputable, widely used across international dental
+              exams.
+            </p>
+            <ul>
+              <li>General Dental Council (UK). ORE Examination Handbook.</li>
+              <li>
+                Australian Dental Council. Clinical Examination Guidelines.
+              </li>
+              <li>NDEB Canada. OSCE Candidate Manual.</li>
+              <li>
+                American Dental Education Association (ADEA). Competency
+                frameworks.
+              </li>
+              <li>
+                Furness J. “Communication and clinical reasoning in OSCEs.”
+                <i>Medical Education Review</i>.
+              </li>
+            </ul>
+          </article>
+        </div>
+      </main>
+
+      <!-- FOOTER -->
+      <footer class="site-footer">
+        <div class="container">
+          <div class="footer-top">
+            <div>
+              <div class="footer-brand">DentAIstudy</div>
+              <p>AI-enhanced tools for dental students and residents.</p>
+              <div class="footer-social">
+                <a
+                  href="https://www.tiktok.com/@dentaistudy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="DentAIstudy on TikTok"
+                >
+                  <img src="../assets/img/footer-icons/tiktok-icon.png" alt="TikTok" class="footer-social-img">
+                </a>
+              
+                <a
+                  href="mailto:info@dentaistudy.com"
+                  aria-label="Contact DentAIstudy by email"
+                >
+                  <img src="../assets/img/footer-icons/email-icon.png" alt="Email" class="footer-social-img">
+                </a>
+              </div>
+            </div>
+            <div class="footer-column">
+              <h4>Product</h4>
+              <a href="../subjects.html">Subjects</a
+              ><a href="../study.html">Study builder</a
+              ><a href="../blogs.html">Blogs</a>
+              <a href="../pricing.html">Pricing</a>
+            </div>
+            <div class="footer-column">
+              <h4>Company</h4>
+              <a href="../about.html">About</a
+              ><a href="../contact.html">Contact</a
+              ><a href="../faqs.html">FAQ</a>
+            </div>
+            <div class="footer-column">
+              <h4>Legal</h4>
+              <a href="../privacy.html">Privacy Policy</a
+              ><a href="../terms.html">Terms & Conditions</a
+              ><a href="../cookies.html">Cookies Policy</a
+              ><a href="../disclaimer.html">Disclaimer</a>
+              <a href="../billing.html">Billing</a>
+              <a href="../refund-policy.html">Refunds</a>
+            </div>
+          </div>
+          <div class="footer-bottom">© 2025 DentAIstudy</div>
+        </div>
+      </footer>
     </div>
-  </div>
-</header>
-
-<!-- MOBILE NAV -->
-<div class="slide-nav-backdrop"></div>
-<nav class="slide-nav">
-  <div class="slide-nav-header"><h3>Menu</h3><button class="slide-nav-close">&times;</button></div>
-  <div class="slide-nav-links">
-    <a href="../subjects.html">Subjects</a>
-    <a href="../study.html">Study builder</a>
-    <a href="../blogs.html">Blogs</a>
-    <a href="../about.html">About</a>
-    <a href="../contact.html">Contact</a>
-    <a href="../login.html" class="slide-login-link">Log in</a>
-  </div>
-</nav>
-
-<!-- BLOG BODY -->
-<main class="section">
-  <div class="container container-narrow">
-
-    <div class="section-header" style="text-align:left;">
-      <div class="section-kicker">OSCE Strategy</div>
-      <h1 class="section-title">How to Answer OSCE Stations Like an Examiner</h1>
-      <p class="section-subtitle">A universal OSCE framework used in ORE, ADC, NDEB, NBDE, MFDS, and dental school exams.</p>
-    </div>
-
-    <!-- SNIPPET BLOCK -->
-    <section class="study-answer-card">
-      <h2>Quick Answers</h2>
-
-      <h3>What is the best OSCE structure?</h3>
-      <p>Introduce yourself → confirm patient identity → open the station → gather key findings → explain diagnosis → outline management → close safely.</p>
-
-      <h3>What do examiners look for?</h3>
-      <p>Clarity, confidence, structured thinking, patient safety, and correct prioritisation of steps rather than memorised scripts.</p>
-
-      <h3>How do you avoid freezing in a station?</h3>
-      <p>Use a repeatable framework: Opening → History/Assessment → Explanation → Plan → Closure.</p>
-
-      <h3>What is the biggest OSCE mistake?</h3>
-      <p>Jumping straight to treatment without confirming the basics: identity, pain level, red flags, and consent.</p>
-    </section>
-
-    <!-- MAIN CONTENT -->
-    <article class="blog-body">
-
-      <h2>1. Start like a professional every time</h2>
-      <p>Examiners judge the first 10 seconds heavily. A clean opening instantly shows confidence:</p>
-      <ul>
-        <li>“Hello, my name is _____. I am the dental student today.”</li>
-        <li>“Can I confirm your name and age?”</li>
-        <li>“How can I help you today?”</li>
-      </ul>
-      <p>Simple. Calm. No drama. This already scores ‘communication’ marks.</p>
-
-      <h2>2. Use the “Golden OSCE Framework”</h2>
-      <p>This framework works for almost any dental station:</p>
-
-      <div class="study-form-card">
-        <h3>Golden OSCE Framework</h3>
-        <p>
-          1. Opening & identity check<br>
-          2. Chief complaint<br>
-          3. Focused history (pain, duration, triggers, medical history)<br>
-          4. Examination / findings<br>
-          5. Explain the problem<br>
-          6. Management plan (steps, safety, alternatives)<br>
-          7. Check understanding & close
-        </p>
-      </div>
-
-      <h2>3. High-yield phrases examiners love</h2>
-      <p>Here are verbal shortcuts that make you sound structured:</p>
-      <ul>
-        <li>“From your symptoms, the most likely diagnosis is…”</li>
-        <li>“The reason this is happening is because…”</li>
-        <li>“The safest next step is…”</li>
-        <li>“Let me summarise to make sure I understood correctly.”</li>
-      </ul>
-
-      <h2>4. How to think like an examiner</h2>
-      <p>Examiners don’t care if you memorised the textbook. They care about:</p>
-      <ul>
-        <li><strong>Patient safety</strong> (red flags, allergies, consent)</li>
-        <li><strong>Logical sequencing</strong> (why → how → what next)</li>
-        <li><strong>Communication</strong> (clear, structured, calm)</li>
-      </ul>
-
-      <h2>5. OSCE do’s and don’ts</h2>
-      <p>A fast checklist that applies globally:</p>
-
-      <div class="study-form-card">
-        <h3>OSCE Do’s</h3>
-        <ul>
-          <li>Speak slowly</li>
-          <li>Summarise often</li>
-          <li>Prioritise safety steps</li>
-          <li>Explain options</li>
-        </ul>
-      </div>
-
-      <div class="study-form-card">
-        <h3>OSCE Don’ts</h3>
-        <ul>
-          <li>Never guess diagnoses loudly</li>
-          <li>Never skip medical history</li>
-          <li>Never jump straight to treatment</li>
-          <li>Never ignore patient anxiety</li>
-        </ul>
-      </div>
-
-      <h2>6. Common mistakes students make</h2>
-      <ul>
-        <li>Speaking too fast due to nerves</li>
-        <li>Over-explaining irrelevant theory</li>
-        <li>Not summarising findings</li>
-        <li>Ignoring pain scoring and red flags</li>
-      </ul>
-
-      <h2>7. How DentAIstudy can help</h2>
-      <p>DentAIstudy helps you build OSCE-ready outputs instantly:</p>
-      <ul>
-        <li>AI-generated OSCE flows</li>
-        <li>Communication phrases tailored to the station</li>
-        <li>High-yield one-page summaries</li>
-        <li>MCQs for rapid consolidation</li>
-      </ul>
-      <p><a href="../study.html" class="btn btn-primary">Try Study Builder →</a></p>
-
-      <h2>References</h2>
-      <p>All sources are reputable, widely used across international dental exams.</p>
-      <ul>
-        <li>General Dental Council (UK). ORE Examination Handbook.</li>
-        <li>Australian Dental Council. Clinical Examination Guidelines.</li>
-        <li>NDEB Canada. OSCE Candidate Manual.</li>
-        <li>American Dental Education Association (ADEA). Competency frameworks.</li>
-        <li>Furness J. “Communication and clinical reasoning in OSCEs.” <i>Medical Education Review</i>.</li>
-      </ul>
-
-    </article>
-  </div>
-</main>
-
-<!-- FOOTER -->
-<footer class="site-footer">
-  <div class="container">
-    <div class="footer-top">
-      <div>
-        <div class="footer-brand">DentAIstudy</div>
-        <p>AI-enhanced tools for dental students and residents.</p>
-      </div>
-      <div class="footer-column"><h4>Product</h4><a href="../subjects.html">Subjects</a><a href="../study.html">Study builder</a><a href="../blogs.html">Blogs</a></div>
-      <div class="footer-column"><h4>Company</h4><a href="../about.html">About</a><a href="../contact.html">Contact</a><a href="../faqs.html">FAQ</a></div>
-      <div class="footer-column"><h4>Legal</h4><a href="../privacy.html">Privacy Policy</a><a href="../terms.html">Terms & Conditions</a><a href="../cookies.html">Cookies Policy</a><a href="../disclaimer.html">Disclaimer</a></div>
-    </div>
-    <div class="footer-bottom">© 2025 DentAIstudy</div>
-  </div>
-</footer>
-
-
-</div>
-</body>
+  </body>
 </html>

@@ -1,259 +1,348 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Antibiotics in Dentistry: What Examiners Want – DentAIstudy</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Antibiotics in Dentistry: What Examiners Want – DentAIstudy</title>
 
-  <link rel="stylesheet" href="../assets/css/style-v3.css" />
-  <link rel="icon" type="image/png" sizes="512x512" href="../assets/img/favicon.png?v=2" />
+    <link rel="stylesheet" href="../assets/css/style-v3.css" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="512x512"
+      href="../assets/img/favicon.png?v=2"
+    />
 
-  <!-- JS: Supabase + Auth Guard + Logout + Main -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-  <script src="../assets/js/auth-client.js" defer></script>
-  <script src="../assets/js/auth-guard.js" defer></script>
-  <script src="../assets/js/auth-logout.js" defer></script>
-  <script defer src="../assets/js/main.js"></script>
-</head>
+    <!-- JS: Supabase + Auth Guard + Logout + Main -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+      defer
+    ></script>
+    <script src="../assets/js/auth-client.js" defer></script>
+    <script src="../assets/js/auth-guard.js" defer></script>
+    <script src="../assets/js/auth-logout.js" defer></script>
+    <script defer src="../assets/js/main.js"></script>
+  </head>
 
-<body>
-<div class="main-wrapper">
+  <body>
+    <div class="main-wrapper">
+      <!-- HEADER -->
+      <header class="site-header">
+        <div class="container header-inner">
+          <a class="brand" href="../index.html">
+            <span>Dent</span><span>AIstudy</span>
+          </a>
 
-  <!-- HEADER -->
-  <header class="site-header">
-    <div class="container header-inner">
-      <a class="brand" href="../index.html">
-        <span>Dent</span><span>AIstudy</span>
-      </a>
+          <nav class="header-nav">
+            <a href="../subjects.html">Subjects</a>
+            <a href="../study.html">Study builder</a>
+            <a href="../blogs.html" class="is-active">Blogs</a>
+            <a href="../pricing.html">Pricing</a>
+            <a href="../contact.html">Contact</a>
+          </nav>
 
-      <nav class="header-nav">
-        <a href="../subjects.html">Subjects</a>
-        <a href="../study.html">Study builder</a>
-        <a href="../blogs.html" class="is-active">Blogs</a>
-        <a href="../about.html">About</a>
-        <a href="../contact.html">Contact</a>
-      </nav>
-
-      <div class="header-right">
-        <a href="../login.html" class="btn btn-outline header-login">Log in</a>
-        <a href="../signup.html" class="btn btn-primary header-signup">Sign up</a>
-        <button class="menu-toggle" aria-label="Open menu">
-          <span></span><span></span><span></span>
-        </button>
-      </div>
-    </div>
-  </header>
-
-  <!-- MOBILE NAV -->
-  <div class="slide-nav-backdrop"></div>
-  <nav class="slide-nav">
-    <div class="slide-nav-header">
-      <h3>Menu</h3>
-      <button class="slide-nav-close" aria-label="Close menu">&times;</button>
-    </div>
-    <div class="slide-nav-links">
-      <a href="../subjects.html">Subjects</a>
-      <a href="../study.html">Study builder</a>
-      <a href="../blogs.html">Blogs</a>
-      <a href="../about.html">About</a>
-      <a href="../contact.html">Contact</a>
-      <a href="../login.html" class="slide-login-link">Log in</a>
-    </div>
-  </nav>
-
-  <!-- BLOG CONTENT -->
-  <main class="section">
-    <div class="container container-narrow">
-
-      <div class="section-header" style="text-align:left;">
-        <div class="section-kicker">Antibiotics</div>
-        <h1 class="section-title">Antibiotics in Dentistry: What Examiners Want</h1>
-        <p class="section-subtitle">
-          A predictable, examiner-friendly method to approach antibiotic questions safely.
-        </p>
-      </div>
-
-      <!-- QUICK ANSWERS -->
-      <section class="study-answer-card">
-        <h2>Quick Answers</h2>
-
-        <h3>When should antibiotics be prescribed?</h3>
-        <p>Only when there is infection with systemic involvement, spreading infection, or when drainage is not possible.</p>
-
-        <h3>What are the first-line antibiotics?</h3>
-        <p>Amoxicillin or Penicillin V; metronidazole for anaerobic coverage or penicillin allergy alternatives.</p>
-
-        <h3>Do you prescribe for pulpitis?</h3>
-        <p>No. Irreversible pulpitis and most dental pain do NOT require antibiotics.</p>
-
-        <h3>What do examiners want to hear?</h3>
-        <p>Clear indications, correct drug choice, correct dose, safety advice, and when NOT to prescribe.</p>
-      </section>
-
-      <article class="blog-body">
-
-        <h2>1. Why antibiotics matter in exams</h2>
-        <p>
-          Antibiotic misuse is a major global issue. Examiners across ORE, ADC, NDEB, NBDE/INBDE, and MFDS focus heavily on 
-          correct indications and confident refusal of unnecessary antibiotics.
-        </p>
-        <p>
-          Your goal is not to list every antibiotic—it’s to show safe, guideline-based clinical judgment.
-        </p>
-
-        <h2>2. The only three true indications in dentistry</h2>
-        <div class="study-form-card">
-          <h3>Examiners love this list</h3>
-          <p>
-            1. <strong>Systemic involvement</strong> – fever, malaise, lymphadenopathy.<br>
-            2. <strong>Spreading infection</strong> – cellulitis, fascial space involvement, trismus.<br>
-            3. <strong>When local drainage is impossible</strong> – no access for I&amp;D, difficulty accessing the source.
-          </p>
+          <div class="header-right">
+            <a href="../login.html" class="btn btn-outline header-login"
+              >Log in</a
+            >
+            <a href="../signup.html" class="btn btn-primary header-signup"
+              >Sign up</a
+            >
+            <button class="menu-toggle" aria-label="Open menu">
+              <span></span><span></span><span></span>
+            </button>
+          </div>
         </div>
-        <p>
-          If your answer fits one of these, you’re safe. If not, the correct exam answer is usually: “No antibiotics indicated; treat the cause.”
-        </p>
+      </header>
 
-        <h2>3. First-line antibiotics and common doses</h2>
-        <p>Know the key drugs and keep your answers short:</p>
-        <ul>
-          <li><strong>Amoxicillin:</strong> 500 mg TID for 5 days.</li>
-          <li><strong>Penicillin V:</strong> 500 mg QID for 5 days.</li>
-          <li><strong>Metronidazole:</strong> 400 mg TID for 5 days (anaerobes / penicillin allergy).</li>
-          <li><strong>Severe infections:</strong> combine amoxicillin + metronidazole when clinically appropriate.</li>
-        </ul>
-        <p>
-          Avoid listing unnecessary antibiotics—examiners want clarity, not a pharmacy catalogue.
-        </p>
-
-        <h2>4. When NOT to prescribe (high-yield exam points)</h2>
-        <p>Most questions award marks for knowing when antibiotics are NOT needed:</p>
-        <ul>
-          <li>Irreversible pulpitis (no swelling, no fever).</li>
-          <li>Symptomatic apical periodontitis without systemic signs.</li>
-          <li>Localised acute abscess that can be drained.</li>
-          <li>Dry socket.</li>
-          <li>Pericoronitis without systemic involvement.</li>
-          <li>Routine extractions or clean surgical procedures.</li>
-        </ul>
-        <p>
-          Say this clearly: “Antibiotics are not indicated; I would manage with local measures and analgesics.”
-        </p>
-
-        <h2>5. Red-flag scenarios examiners expect you to mention</h2>
-        <p>These phrases score marks because they show safety awareness:</p>
-        <ul>
-          <li>“I would assess airway, breathing, and swallowing difficulty.”</li>
-          <li>“If there is trismus or floor-of-mouth elevation, urgent referral is indicated.”</li>
-          <li>“Failure to respond to antibiotics within 48 hours requires review.”</li>
-        </ul>
-
-        <h2>6. Sample exam-style answers</h2>
-        <div class="study-form-card">
-          <h3>Example: Localised acute abscess</h3>
-          <p>
-            1. Drain via tooth or soft tissue.<br>
-            2. Analgesics and address cause (RCT/extraction).<br>
-            3. <strong>No antibiotics</strong> unless systemic symptoms or spreading infection.<br>
-            4. Review within 48 hours if symptoms worsen.
-          </p>
+      <!-- MOBILE NAV -->
+      <div class="slide-nav-backdrop"></div>
+      <nav class="slide-nav">
+        <div class="slide-nav-header">
+          <h3>Menu</h3>
+          <button class="slide-nav-close" aria-label="Close menu">
+            &times;
+          </button>
         </div>
-
-        <div class="study-form-card" style="margin-top:18px;">
-          <h3>Example: Cellulitis with fever</h3>
-          <p>
-            1. Assess airway + facial space involvement.<br>
-            2. Start amoxicillin ± metronidazole.<br>
-            3. Arrange urgent drainage.<br>
-            4. Red-flag education and follow-up.
-          </p>
-        </div>
-
-        <h2>7. Phrases examiners want to hear</h2>
-        <ul>
-          <li>“Antibiotics are an adjunct, not the primary treatment.”</li>
-          <li>“I will prioritise drainage and removal of the cause.”</li>
-          <li>“I will review in 48 hours to assess response.”</li>
-          <li>“I would check medical history, allergies, and drug interactions.”</li>
-        </ul>
-
-        <h2>8. How to study antibiotics fast</h2>
-        <div class="study-form-card">
-          <h3>5-minute exam routine</h3>
-          <p>
-            1. Memorise the three indications.<br>
-            2. Memorise first-line drugs + doses.<br>
-            3. Memorise top “no antibiotic” scenarios.<br>
-            4. Practise one case per day (endo, perio, swelling, trauma).<br>
-            5. Repeat until automatic.
-          </p>
-        </div>
-
-        <h2>9. How DentAIstudy helps</h2>
-        <p>
-          DentAIstudy makes antibiotic revision simple by generating short, examiner-style points for any scenario.
-        </p>
-        <ul>
-          <li>Instant summaries of indications, contraindications, and doses.</li>
-          <li>Clear “no antibiotic” explanations for common OSCE traps.</li>
-          <li>Red-flag identification for swelling and infection cases.</li>
-          <li>Sample structured answers you can rehearse for viva exams.</li>
-        </ul>
-        <p><a href="../study.html" class="btn btn-primary">Try Study Builder →</a></p>
-
-        <h2>References</h2>
-        <ul>
-          <li>Faculty of General Dental Practice (UK). <em>FGDP Antimicrobial Prescribing Guidelines</em>.</li>
-          <li>Scottish Dental Clinical Effectiveness Programme (SDCEP). <em>Drug Prescribing for Dentistry</em>.</li>
-          <li>American Association of Endodontists. <em>Guidelines for Antibiotic Use in Endodontics</em>.</li>
-          <li>British National Formulary (BNF). Latest edition.</li>
-        </ul>
-
-      </article>
-
-    </div>
-  </main>
-
-  <!-- FOOTER -->
-  <footer class="site-footer">
-    <div class="container">
-      <div class="footer-top">
-        <div>
-          <div class="footer-brand">DentAIstudy</div>
-          <p>AI-enhanced tools for dental students and residents.</p>
-        </div>
-
-        <div class="footer-column">
-          <h4>Product</h4>
+        <div class="slide-nav-links">
           <a href="../subjects.html">Subjects</a>
           <a href="../study.html">Study builder</a>
           <a href="../blogs.html">Blogs</a>
-        </div>
-
-        <div class="footer-column">
-          <h4>Company</h4>
-          <a href="../about.html">About</a>
+          <a href="../pricing.html">Pricing</a>
           <a href="../contact.html">Contact</a>
-          <a href="../faqs.html">FAQ</a>
+          <a href="../login.html" class="slide-login-link">Log in</a>
         </div>
+      </nav>
 
-        <div class="footer-column">
-          <h4>Legal</h4>
-          <a href="../privacy.html">Privacy Policy</a>
-          <a href="../terms.html">Terms &amp; Conditions</a>
-          <a href="../cookies.html">Cookies Policy</a>
-          <a href="../disclaimer.html">Disclaimer</a>
+      <!-- BLOG CONTENT -->
+      <main class="section">
+        <div class="container container-narrow">
+          <div class="section-header" style="text-align: left">
+            <div class="section-kicker">Antibiotics</div>
+            <h1 class="section-title">
+              Antibiotics in Dentistry: What Examiners Want
+            </h1>
+            <p class="section-subtitle">
+              A predictable, examiner-friendly method to approach antibiotic
+              questions safely.
+            </p>
+          </div>
+
+          <!-- QUICK ANSWERS -->
+          <section class="study-answer-card">
+            <h2>Quick Answers</h2>
+
+            <h3>When should antibiotics be prescribed?</h3>
+            <p>
+              Only when there is infection with systemic involvement, spreading
+              infection, or when drainage is not possible.
+            </p>
+
+            <h3>What are the first-line antibiotics?</h3>
+            <p>
+              Amoxicillin or Penicillin V; metronidazole for anaerobic coverage
+              or penicillin allergy alternatives.
+            </p>
+
+            <h3>Do you prescribe for pulpitis?</h3>
+            <p>
+              No. Irreversible pulpitis and most dental pain do NOT require
+              antibiotics.
+            </p>
+
+            <h3>What do examiners want to hear?</h3>
+            <p>
+              Clear indications, correct drug choice, correct dose, safety
+              advice, and when NOT to prescribe.
+            </p>
+          </section>
+
+          <article class="blog-body">
+            <h2>1. Why antibiotics matter in exams</h2>
+            <p>
+              Antibiotic misuse is a major global issue. Examiners across ORE,
+              ADC, NDEB, NBDE/INBDE, and MFDS focus heavily on correct
+              indications and confident refusal of unnecessary antibiotics.
+            </p>
+            <p>
+              Your goal is not to list every antibiotic—it’s to show safe,
+              guideline-based clinical judgment.
+            </p>
+
+            <h2>2. The only three true indications in dentistry</h2>
+            <div class="study-form-card">
+              <h3>Examiners love this list</h3>
+              <p>
+                1. <strong>Systemic involvement</strong> – fever, malaise,
+                lymphadenopathy.<br />
+                2. <strong>Spreading infection</strong> – cellulitis, fascial
+                space involvement, trismus.<br />
+                3. <strong>When local drainage is impossible</strong> – no
+                access for I&amp;D, difficulty accessing the source.
+              </p>
+            </div>
+            <p>
+              If your answer fits one of these, you’re safe. If not, the correct
+              exam answer is usually: “No antibiotics indicated; treat the
+              cause.”
+            </p>
+
+            <h2>3. First-line antibiotics and common doses</h2>
+            <p>Know the key drugs and keep your answers short:</p>
+            <ul>
+              <li><strong>Amoxicillin:</strong> 500 mg TID for 5 days.</li>
+              <li><strong>Penicillin V:</strong> 500 mg QID for 5 days.</li>
+              <li>
+                <strong>Metronidazole:</strong> 400 mg TID for 5 days (anaerobes
+                / penicillin allergy).
+              </li>
+              <li>
+                <strong>Severe infections:</strong> combine amoxicillin +
+                metronidazole when clinically appropriate.
+              </li>
+            </ul>
+            <p>
+              Avoid listing unnecessary antibiotics—examiners want clarity, not
+              a pharmacy catalogue.
+            </p>
+
+            <h2>4. When NOT to prescribe (high-yield exam points)</h2>
+            <p>
+              Most questions award marks for knowing when antibiotics are NOT
+              needed:
+            </p>
+            <ul>
+              <li>Irreversible pulpitis (no swelling, no fever).</li>
+              <li>Symptomatic apical periodontitis without systemic signs.</li>
+              <li>Localised acute abscess that can be drained.</li>
+              <li>Dry socket.</li>
+              <li>Pericoronitis without systemic involvement.</li>
+              <li>Routine extractions or clean surgical procedures.</li>
+            </ul>
+            <p>
+              Say this clearly: “Antibiotics are not indicated; I would manage
+              with local measures and analgesics.”
+            </p>
+
+            <h2>5. Red-flag scenarios examiners expect you to mention</h2>
+            <p>These phrases score marks because they show safety awareness:</p>
+            <ul>
+              <li>
+                “I would assess airway, breathing, and swallowing difficulty.”
+              </li>
+              <li>
+                “If there is trismus or floor-of-mouth elevation, urgent
+                referral is indicated.”
+              </li>
+              <li>
+                “Failure to respond to antibiotics within 48 hours requires
+                review.”
+              </li>
+            </ul>
+
+            <h2>6. Sample exam-style answers</h2>
+            <div class="study-form-card">
+              <h3>Example: Localised acute abscess</h3>
+              <p>
+                1. Drain via tooth or soft tissue.<br />
+                2. Analgesics and address cause (RCT/extraction).<br />
+                3. <strong>No antibiotics</strong> unless systemic symptoms or
+                spreading infection.<br />
+                4. Review within 48 hours if symptoms worsen.
+              </p>
+            </div>
+
+            <div class="study-form-card" style="margin-top: 18px">
+              <h3>Example: Cellulitis with fever</h3>
+              <p>
+                1. Assess airway + facial space involvement.<br />
+                2. Start amoxicillin ± metronidazole.<br />
+                3. Arrange urgent drainage.<br />
+                4. Red-flag education and follow-up.
+              </p>
+            </div>
+
+            <h2>7. Phrases examiners want to hear</h2>
+            <ul>
+              <li>“Antibiotics are an adjunct, not the primary treatment.”</li>
+              <li>“I will prioritise drainage and removal of the cause.”</li>
+              <li>“I will review in 48 hours to assess response.”</li>
+              <li>
+                “I would check medical history, allergies, and drug
+                interactions.”
+              </li>
+            </ul>
+
+            <h2>8. How to study antibiotics fast</h2>
+            <div class="study-form-card">
+              <h3>5-minute exam routine</h3>
+              <p>
+                1. Memorise the three indications.<br />
+                2. Memorise first-line drugs + doses.<br />
+                3. Memorise top “no antibiotic” scenarios.<br />
+                4. Practise one case per day (endo, perio, swelling, trauma).<br />
+                5. Repeat until automatic.
+              </p>
+            </div>
+
+            <h2>9. How DentAIstudy helps</h2>
+            <p>
+              DentAIstudy makes antibiotic revision simple by generating short,
+              examiner-style points for any scenario.
+            </p>
+            <ul>
+              <li>
+                Instant summaries of indications, contraindications, and doses.
+              </li>
+              <li>Clear “no antibiotic” explanations for common OSCE traps.</li>
+              <li>Red-flag identification for swelling and infection cases.</li>
+              <li>
+                Sample structured answers you can rehearse for viva exams.
+              </li>
+            </ul>
+            <p>
+              <a href="../study.html" class="btn btn-primary"
+                >Try Study Builder →</a
+              >
+            </p>
+
+            <h2>References</h2>
+            <ul>
+              <li>
+                Faculty of General Dental Practice (UK).
+                <em>FGDP Antimicrobial Prescribing Guidelines</em>.
+              </li>
+              <li>
+                Scottish Dental Clinical Effectiveness Programme (SDCEP).
+                <em>Drug Prescribing for Dentistry</em>.
+              </li>
+              <li>
+                American Association of Endodontists.
+                <em>Guidelines for Antibiotic Use in Endodontics</em>.
+              </li>
+              <li>British National Formulary (BNF). Latest edition.</li>
+            </ul>
+          </article>
         </div>
-      </div>
+      </main>
 
-      <div class="footer-bottom">
-        © 2025 DentAIstudy. All rights reserved.
-      </div>
+      <!-- FOOTER -->
+      <footer class="site-footer">
+        <div class="container">
+          <div class="footer-top">
+            <div>
+              <div class="footer-brand">DentAIstudy</div>
+              <p>AI-enhanced tools for dental students and residents.</p>
+              <div class="footer-social">
+                <a
+                  href="https://www.tiktok.com/@dentaistudy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="DentAIstudy on TikTok"
+                >
+                  <img src="../assets/img/footer-icons/tiktok-icon.png" alt="TikTok" class="footer-social-img">
+                </a>
+              
+                <a
+                  href="mailto:info@dentaistudy.com"
+                  aria-label="Contact DentAIstudy by email"
+                >
+                  <img src="../assets/img/footer-icons/email-icon.png" alt="Email" class="footer-social-img">
+                </a>
+              </div> 
+            </div>
+
+           <div class="footer-column">
+              <h4>Product</h4>
+              <a href="../subjects.html">Subjects</a>
+              <a href="../study.html">Study builder</a>
+              <a href="../blogs.html">Blogs</a>
+              <a href="../pricing.html">Pricing</a>
+            </div>
+
+            <div class="footer-column">
+              <h4>Company</h4>
+              <a href="../about.html">About</a>
+              <a href="../contact.html">Contact</a>
+              <a href="../faqs.html">FAQ</a>
+            </div>
+
+            <div class="footer-column">
+              <h4>Legal</h4>
+              <a href="../privacy.html">Privacy Policy</a>
+              <a href="../terms.html">Terms &amp; Conditions</a>
+              <a href="../cookies.html">Cookies Policy</a>
+              <a href="../disclaimer.html">Disclaimer</a>
+              <a href="../billing.html">Billing</a>
+              <a href="../refund-policy.html">Refunds</a>
+            </div>
+          </div>
+
+          <div class="footer-bottom">
+            © 2025 DentAIstudy. All rights reserved.
+          </div>
+        </div>
+      </footer>
     </div>
-  </footer>
-
-</div>
-
-
-</body>
+  </body>
 </html>

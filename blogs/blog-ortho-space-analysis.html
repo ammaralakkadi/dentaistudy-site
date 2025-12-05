@@ -1,219 +1,350 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Orthodontic Space Analysis (Bolton, Moyers & Tanaka-Johnston) – DentAIstudy</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Orthodontic Space Analysis (Bolton, Moyers & Tanaka-Johnston) –
+      DentAIstudy
+    </title>
 
-  <link rel="stylesheet" href="../assets/css/style-v3.css" />
-  <link rel="icon" type="image/png" sizes="512x512" href="../assets/img/favicon.png?v=2" />
+    <link rel="stylesheet" href="../assets/css/style-v3.css" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="512x512"
+      href="../assets/img/favicon.png?v=2"
+    />
 
-  <!-- JS: Supabase + Auth Guard + Logout + Main -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-  <script src="../assets/js/auth-client.js" defer></script>
-  <script src="../assets/js/auth-guard.js" defer></script>
-  <script src="../assets/js/auth-logout.js" defer></script>
-  <script defer src="../assets/js/main.js"></script>
-</head>
+    <!-- JS: Supabase + Auth Guard + Logout + Main -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+      defer
+    ></script>
+    <script src="../assets/js/auth-client.js" defer></script>
+    <script src="../assets/js/auth-guard.js" defer></script>
+    <script src="../assets/js/auth-logout.js" defer></script>
+    <script defer src="../assets/js/main.js"></script>
+  </head>
 
-<body>
-<div class="main-wrapper">
+  <body>
+    <div class="main-wrapper">
+      <!-- HEADER -->
+      <header class="site-header">
+        <div class="container header-inner">
+          <a class="brand" href="../index.html"
+            ><span>Dent</span><span>AIstudy</span></a
+          >
+          <nav class="header-nav">
+            <a href="../subjects.html">Subjects</a>
+            <a href="../study.html">Study builder</a>
+            <a href="../blogs.html" class="is-active">Blogs</a>
+            <a href="../pricing.html">Pricing</a>
+            <a href="../contact.html">Contact</a>
+          </nav>
+          <div class="header-right">
+            <a href="../login.html" class="btn btn-outline header-login"
+              >Log in</a
+            >
+            <a href="../signup.html" class="btn btn-primary header-signup"
+              >Sign up</a
+            >
+            <button class="menu-toggle">
+              <span></span><span></span><span></span>
+            </button>
+          </div>
+        </div>
+      </header>
 
-<!-- HEADER -->
-<header class="site-header">
-  <div class="container header-inner">
-    <a class="brand" href="../index.html"><span>Dent</span><span>AIstudy</span></a>
-    <nav class="header-nav">
-      <a href="../subjects.html">Subjects</a>
-      <a href="../study.html">Study builder</a>
-      <a href="../blogs.html" class="is-active">Blogs</a>
-      <a href="../about.html">About</a>
-      <a href="../contact.html">Contact</a>
-    </nav>
-    <div class="header-right">
-      <a href="../login.html" class="btn btn-outline header-login">Log in</a>
-      <a href="../signup.html" class="btn btn-primary header-signup">Sign up</a>
-      <button class="menu-toggle"><span></span><span></span><span></span></button>
+      <!-- MOBILE NAV -->
+      <div class="slide-nav-backdrop"></div>
+      <nav class="slide-nav">
+        <div class="slide-nav-header">
+          <h3>Menu</h3>
+          <button class="slide-nav-close">&times;</button>
+        </div>
+        <div class="slide-nav-links">
+          <a href="../subjects.html">Subjects</a>
+          <a href="../study.html">Study builder</a>
+          <a href="../blogs.html">Blogs</a>
+          <a href="../pricing.html">Pricing</a>
+          <a href="../contact.html">Contact</a>
+          <a href="../login.html" class="slide-login-link">Log in</a>
+        </div>
+      </nav>
+
+      <!-- BLOG BODY -->
+      <main class="section">
+        <div class="container container-narrow">
+          <div class="section-header" style="text-align: left">
+            <div class="section-kicker">Orthodontics</div>
+            <h1 class="section-title">
+              Orthodontic Space Analysis (Bolton, Moyers &amp; T–J) — OSCE Ready
+            </h1>
+            <p class="section-subtitle">
+              A clear, high-yield method to explain Bolton, Moyers, and T–J in
+              OSCEs and vivas.
+            </p>
+          </div>
+
+          <!-- SNIPPET -->
+          <section class="study-answer-card">
+            <h2>Quick Answers</h2>
+
+            <h3>What does space analysis measure?</h3>
+            <p>
+              The difference between space available and space required for
+              ideal alignment in an arch.
+            </p>
+
+            <h3>Which analysis is fastest for OSCE?</h3>
+            <p>
+              Tanaka–Johnston — simple mental formulas without charts, perfect
+              for viva answers.
+            </p>
+
+            <h3>When do you use Bolton analysis?</h3>
+            <p>
+              When you suspect tooth-size discrepancy between upper and lower
+              arches (e.g. spacing in one arch, crowding in the other).
+            </p>
+
+            <h3>Why is Moyers analysis useful?</h3>
+            <p>
+              It predicts unerupted canine and premolar width using probability
+              charts based on lower incisors.
+            </p>
+          </section>
+
+          <article class="blog-body">
+            <h2>1. Why examiners love space analysis</h2>
+            <p>
+              Space analysis appears often in orthodontic OSCEs and written
+              exams because it links
+              <strong>measurement</strong> to a
+              <strong>clear treatment decision</strong>. Examiners want you to:
+            </p>
+            <ul>
+              <li>State the arch length discrepancy (crowding or spacing).</li>
+              <li>Choose the right method for the clinical situation.</li>
+              <li>
+                Explain how the result affects extraction or non-extraction
+                planning.
+              </li>
+            </ul>
+            <p>
+              You do not need every detail from the textbook — you need a clean
+              explanation of each method.
+            </p>
+
+            <h2>2. Bolton analysis in three exam steps</h2>
+            <p>
+              Use Bolton when you suspect mismatch between upper and lower tooth
+              sizes (e.g. excess lower anterior width).
+            </p>
+            <div class="study-form-card">
+              <h3>Bolton analysis — OSCE flow</h3>
+              <p>
+                1. Measure mesiodistal widths of teeth 6–6 (overall) or 3–3
+                (anterior) in each arch.<br />
+                2. Calculate the ratio = (mandibular sum / maxillary sum) ×
+                100.<br />
+                3. Compare with Bolton’s ideal ratios: overall ≈ 91.3%, anterior
+                ≈ 77.2%.<br />
+                Excess in one arch &rarr; add or remove space by IPR, build-ups,
+                or extractions.
+              </p>
+            </div>
+            <p>
+              In viva, always finish with a sentence linking the ratio to
+              treatment choice, e.g. “A lower anterior excess suggests need for
+              stripping or build-ups.”
+            </p>
+
+            <h2>3. Moyers mixed dentition analysis — chart based</h2>
+            <p>
+              Moyers is mainly tested in mixed-dentition cases (eruption of
+              incisors, canines and premolars unerupted).
+            </p>
+            <ul>
+              <li>
+                Measure the sum of
+                <strong>mandibular permanent incisors</strong>.
+              </li>
+              <li>
+                Use Moyers probability chart (commonly 75% level) to read
+                predicted width of canine + premolars per quadrant.
+              </li>
+              <li>
+                Measure space available from mesial of first molar to midline.
+              </li>
+              <li>
+                Compare predicted space required vs space available to decide if
+                crowding or spacing is present.
+              </li>
+            </ul>
+            <p>
+              Exam phrase: “In Moyers analysis, we use lower incisors plus a
+              probability chart to estimate unerupted canine and premolar size.”
+            </p>
+
+            <h2>4. Tanaka–Johnston formulas you can say without a chart</h2>
+            <p>
+              Tanaka–Johnston is an easy mental shortcut derived from Moyers,
+              used widely in exams.
+            </p>
+            <div class="study-form-card">
+              <h3>Tanaka–Johnston — remember these numbers</h3>
+              <p>
+                1. Add the mesiodistal widths of the four lower incisors.<br />
+                2. For <strong>mandibular</strong> canine + premolars in one
+                quadrant:<br />
+                &nbsp;&nbsp;Predicted width = (sum of lower incisors / 2) + 10.5
+                mm.<br />
+                3. For <strong>maxillary</strong> canine + premolars in one
+                quadrant:<br />
+                &nbsp;&nbsp;Predicted width = (sum of lower incisors / 2) + 11.0
+                mm.<br />
+                4. Compare with space available in each quadrant to decide if
+                there is crowding or spacing.
+              </p>
+            </div>
+            <p>
+              Because there is no chart, this method is perfect when an examiner
+              asks you to “estimate space analysis at the chair.”
+            </p>
+
+            <h2>5. How to present space analysis in OSCE or viva</h2>
+            <p>Keep your answer predictable and structured:</p>
+            <ul>
+              <li>
+                <strong>Introduce</strong> the method (Bolton, Moyers, or
+                Tanaka–Johnston) and when you use it.
+              </li>
+              <li>
+                <strong>Explain the measurements</strong> you take (which teeth,
+                which arch, chart or formula used).
+              </li>
+              <li>
+                <strong>State the result</strong> as crowding or spacing in
+                millimetres.
+              </li>
+              <li>
+                <strong>Link to treatment</strong> — non-extraction vs
+                extraction, stripping, build-ups, or space maintenance.
+              </li>
+            </ul>
+            <p>
+              This is exactly the structure examiners score: method →
+              measurement → result → decision.
+            </p>
+
+            <h2>6. Example examiner-style answer</h2>
+            <div class="study-form-card">
+              <h3>Sample viva line</h3>
+              <p>
+                “For this case I would start with a space analysis. Using
+                Tanaka–Johnston, I add the four lower incisors, divide by two
+                and add 11 millimetres for the upper canine and premolars in
+                each quadrant. When I compare this to the space available, I
+                find approximately 4&nbsp;mm crowding per side, which supports
+                an extraction-based treatment plan.”
+              </p>
+            </div>
+
+            <h2>7. How DentAIstudy helps</h2>
+            <p>
+              DentAIstudy can instantly convert any orthodontic case description
+              into exam-ready notes:
+            </p>
+            <ul>
+              <li>Step-by-step Bolton, Moyers, and Tanaka–Johnston flows.</li>
+              <li>Ready-made viva lines explaining each method.</li>
+              <li>
+                Problem lists linking space analysis to extraction decisions.
+              </li>
+              <li>Flashcards for key ratios and formulas.</li>
+            </ul>
+            <p>
+              <a href="../study.html" class="btn btn-primary"
+                >Try Study Builder →</a
+              >
+            </p>
+
+            <h2>References</h2>
+            <ul>
+              <li>
+                Proffit WR, Fields HW, Larson BE.
+                <em>Contemporary Orthodontics.</em> 6th ed. Elsevier; 2018.
+              </li>
+              <li>
+                Moyers RE. <em>Handbook of Orthodontics.</em> 4th ed. Year Book
+                Medical Publishers; 1988.
+              </li>
+              <li>
+                Tanaka MM, Johnston LE. The prediction of the size of unerupted
+                canines and premolars in a contemporary orthodontic population.
+                <em>J Am Dent Assoc.</em> 1974;88(4):798-801.
+              </li>
+            </ul>
+          </article>
+        </div>
+      </main>
+
+      <!-- FOOTER -->
+      <footer class="site-footer">
+        <div class="container">
+          <div class="footer-top">
+            <div>
+              <div class="footer-brand">DentAIstudy</div>
+              <p>AI-enhanced tools for dental students and residents.</p>
+              <div class="footer-social">
+                <a
+                  href="https://www.tiktok.com/@dentaistudy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="DentAIstudy on TikTok"
+                >
+                  <img src="../assets/img/footer-icons/tiktok-icon.png" alt="TikTok" class="footer-social-img">
+                </a>
+              
+                <a
+                  href="mailto:info@dentaistudy.com"
+                  aria-label="Contact DentAIstudy by email"
+                >
+                  <img src="../assets/img/footer-icons/email-icon.png" alt="Email" class="footer-social-img">
+                </a>
+              </div>
+            </div>
+
+           <div class="footer-column">
+              <h4>Product</h4>
+              <a href="../subjects.html">Subjects</a>
+              <a href="../study.html">Study builder</a>
+              <a href="../blogs.html">Blogs</a>
+              <a href="../pricing.html">Pricing</a>
+            </div>
+
+            <div class="footer-column">
+              <h4>Company</h4>
+              <a href="../about.html">About</a>
+              <a href="../contact.html">Contact</a>
+              <a href="../faqs.html">FAQ</a>
+            </div>
+
+            <div class="footer-column">
+              <h4>Legal</h4>
+              <a href="../privacy.html">Privacy Policy</a>
+              <a href="../terms.html">Terms & Conditions</a>
+              <a href="../cookies.html">Cookies Policy</a>
+              <a href="../disclaimer.html">Disclaimer</a>
+              <a href="../billing.html">Billing</a>
+              <a href="../refund-policy.html">Refunds</a>
+            </div>
+          </div>
+          <div class="footer-bottom">© 2025 DentAIstudy</div>
+        </div>
+      </footer>
     </div>
-  </div>
-</header>
-
-<!-- MOBILE NAV -->
-<div class="slide-nav-backdrop"></div>
-<nav class="slide-nav">
-  <div class="slide-nav-header"><h3>Menu</h3><button class="slide-nav-close">&times;</button></div>
-  <div class="slide-nav-links">
-    <a href="../subjects.html">Subjects</a>
-    <a href="../study.html">Study builder</a>
-    <a href="../blogs.html">Blogs</a>
-    <a href="../about.html">About</a>
-    <a href="../contact.html">Contact</a>
-    <a href="../login.html" class="slide-login-link">Log in</a>
-  </div>
-</nav>
-
-<!-- BLOG BODY -->
-<main class="section">
-  <div class="container container-narrow">
-
-    <div class="section-header" style="text-align:left;">
-      <div class="section-kicker">Orthodontics</div>
-      <h1 class="section-title">Orthodontic Space Analysis (Bolton, Moyers &amp; T–J) — OSCE Ready</h1>
-      <p class="section-subtitle">
-        A clear, high-yield method to explain Bolton, Moyers, and T–J in OSCEs and vivas.
-      </p>
-    </div>
-
-    <!-- SNIPPET -->
-    <section class="study-answer-card">
-      <h2>Quick Answers</h2>
-
-      <h3>What does space analysis measure?</h3>
-      <p>The difference between space available and space required for ideal alignment in an arch.</p>
-
-      <h3>Which analysis is fastest for OSCE?</h3>
-      <p>Tanaka–Johnston — simple mental formulas without charts, perfect for viva answers.</p>
-
-      <h3>When do you use Bolton analysis?</h3>
-      <p>When you suspect tooth-size discrepancy between upper and lower arches (e.g. spacing in one arch, crowding in the other).</p>
-
-      <h3>Why is Moyers analysis useful?</h3>
-      <p>It predicts unerupted canine and premolar width using probability charts based on lower incisors.</p>
-    </section>
-
-    <article class="blog-body">
-
-      <h2>1. Why examiners love space analysis</h2>
-      <p>
-        Space analysis appears often in orthodontic OSCEs and written exams because it links
-        <strong>measurement</strong> to a <strong>clear treatment decision</strong>. Examiners want you to:
-      </p>
-      <ul>
-        <li>State the arch length discrepancy (crowding or spacing).</li>
-        <li>Choose the right method for the clinical situation.</li>
-        <li>Explain how the result affects extraction or non-extraction planning.</li>
-      </ul>
-      <p>You do not need every detail from the textbook — you need a clean explanation of each method.</p>
-
-      <h2>2. Bolton analysis in three exam steps</h2>
-      <p>Use Bolton when you suspect mismatch between upper and lower tooth sizes (e.g. excess lower anterior width).</p>
-      <div class="study-form-card">
-        <h3>Bolton analysis — OSCE flow</h3>
-        <p>
-          1. Measure mesiodistal widths of teeth 6–6 (overall) or 3–3 (anterior) in each arch.<br>
-          2. Calculate the ratio = (mandibular sum / maxillary sum) × 100.<br>
-          3. Compare with Bolton’s ideal ratios:
-          overall ≈ 91.3%, anterior ≈ 77.2%.<br>
-          Excess in one arch &rarr; add or remove space by IPR, build-ups, or extractions.
-        </p>
-      </div>
-      <p>In viva, always finish with a sentence linking the ratio to treatment choice, e.g. “A lower anterior excess suggests need for stripping or build-ups.”</p>
-
-      <h2>3. Moyers mixed dentition analysis — chart based</h2>
-      <p>Moyers is mainly tested in mixed-dentition cases (eruption of incisors, canines and premolars unerupted).</p>
-      <ul>
-        <li>Measure the sum of <strong>mandibular permanent incisors</strong>.</li>
-        <li>Use Moyers probability chart (commonly 75% level) to read predicted width of canine + premolars per quadrant.</li>
-        <li>Measure space available from mesial of first molar to midline.</li>
-        <li>Compare predicted space required vs space available to decide if crowding or spacing is present.</li>
-      </ul>
-      <p>Exam phrase: “In Moyers analysis, we use lower incisors plus a probability chart to estimate unerupted canine and premolar size.”</p>
-
-      <h2>4. Tanaka–Johnston formulas you can say without a chart</h2>
-      <p>Tanaka–Johnston is an easy mental shortcut derived from Moyers, used widely in exams.</p>
-      <div class="study-form-card">
-        <h3>Tanaka–Johnston — remember these numbers</h3>
-        <p>
-          1. Add the mesiodistal widths of the four lower incisors.<br>
-          2. For <strong>mandibular</strong> canine + premolars in one quadrant:<br>
-          &nbsp;&nbsp;Predicted width = (sum of lower incisors / 2) + 10.5 mm.<br>
-          3. For <strong>maxillary</strong> canine + premolars in one quadrant:<br>
-          &nbsp;&nbsp;Predicted width = (sum of lower incisors / 2) + 11.0 mm.<br>
-          4. Compare with space available in each quadrant to decide if there is crowding or spacing.
-        </p>
-      </div>
-      <p>Because there is no chart, this method is perfect when an examiner asks you to “estimate space analysis at the chair.”</p>
-
-      <h2>5. How to present space analysis in OSCE or viva</h2>
-      <p>Keep your answer predictable and structured:</p>
-      <ul>
-        <li><strong>Introduce</strong> the method (Bolton, Moyers, or Tanaka–Johnston) and when you use it.</li>
-        <li><strong>Explain the measurements</strong> you take (which teeth, which arch, chart or formula used).</li>
-        <li><strong>State the result</strong> as crowding or spacing in millimetres.</li>
-        <li><strong>Link to treatment</strong> — non-extraction vs extraction, stripping, build-ups, or space maintenance.</li>
-      </ul>
-      <p>This is exactly the structure examiners score: method → measurement → result → decision.</p>
-
-      <h2>6. Example examiner-style answer</h2>
-      <div class="study-form-card">
-        <h3>Sample viva line</h3>
-        <p>
-          “For this case I would start with a space analysis. Using Tanaka–Johnston,
-          I add the four lower incisors, divide by two and add 11 millimetres for the
-          upper canine and premolars in each quadrant. When I compare this to the space
-          available, I find approximately 4&nbsp;mm crowding per side, which supports an
-          extraction-based treatment plan.”
-        </p>
-      </div>
-
-      <h2>7. How DentAIstudy helps</h2>
-      <p>DentAIstudy can instantly convert any orthodontic case description into exam-ready notes:</p>
-      <ul>
-        <li>Step-by-step Bolton, Moyers, and Tanaka–Johnston flows.</li>
-        <li>Ready-made viva lines explaining each method.</li>
-        <li>Problem lists linking space analysis to extraction decisions.</li>
-        <li>Flashcards for key ratios and formulas.</li>
-      </ul>
-      <p><a href="../study.html" class="btn btn-primary">Try Study Builder →</a></p>
-
-      <h2>References</h2>
-      <ul>
-        <li>Proffit WR, Fields HW, Larson BE. <em>Contemporary Orthodontics.</em> 6th ed. Elsevier; 2018.</li>
-        <li>Moyers RE. <em>Handbook of Orthodontics.</em> 4th ed. Year Book Medical Publishers; 1988.</li>
-        <li>Tanaka MM, Johnston LE. The prediction of the size of unerupted canines and premolars in a contemporary orthodontic population. <em>J Am Dent Assoc.</em> 1974;88(4):798-801.</li>
-      </ul>
-
-    </article>
-
-  </div>
-</main>
-
-<!-- FOOTER -->
-<footer class="site-footer">
-  <div class="container">
-    <div class="footer-top">
-      <div>
-        <div class="footer-brand">DentAIstudy</div>
-        <p>AI-enhanced tools for dental students and residents.</p>
-      </div>
-
-      <div class="footer-column">
-        <h4>Product</h4>
-        <a href="../subjects.html">Subjects</a>
-        <a href="../study.html">Study builder</a>
-        <a href="../blogs.html">Blogs</a>
-      </div>
-
-      <div class="footer-column">
-        <h4>Company</h4>
-        <a href="../about.html">About</a>
-        <a href="../contact.html">Contact</a>
-        <a href="../faqs.html">FAQ</a>
-      </div>
-
-      <div class="footer-column">
-        <h4>Legal</h4>
-        <a href="../privacy.html">Privacy Policy</a>
-        <a href="../terms.html">Terms & Conditions</a>
-        <a href="../cookies.html">Cookies Policy</a>
-        <a href="../disclaimer.html">Disclaimer</a>
-      </div>
-    </div>
-    <div class="footer-bottom">© 2025 DentAIstudy</div>
-  </div>
-</footer>
-
-
-</div>
-</body>
+  </body>
 </html>

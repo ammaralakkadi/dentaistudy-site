@@ -1,218 +1,318 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Inferior Alveolar Nerve Block (IANB) – OSCE Guide – DentAIstudy</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Inferior Alveolar Nerve Block (IANB) – OSCE Guide – DentAIstudy
+    </title>
 
-  <link rel="stylesheet" href="../assets/css/style-v3.css" />
-  <link rel="icon" type="image/png" sizes="512x512" href="../assets/img/favicon.png?v=2" />
+    <link rel="stylesheet" href="../assets/css/style-v3.css" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="512x512"
+      href="../assets/img/favicon.png?v=2"
+    />
 
-  <!-- JS: Supabase + Auth Guard + Logout + Main -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-  <script src="../assets/js/auth-client.js" defer></script>
-  <script src="../assets/js/auth-guard.js" defer></script>
-  <script src="../assets/js/auth-logout.js" defer></script>
-  <script defer src="../assets/js/main.js"></script>
-</head>
+    <!-- JS: Supabase + Auth Guard + Logout + Main -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+      defer
+    ></script>
+    <script src="../assets/js/auth-client.js" defer></script>
+    <script src="../assets/js/auth-guard.js" defer></script>
+    <script src="../assets/js/auth-logout.js" defer></script>
+    <script defer src="../assets/js/main.js"></script>
+  </head>
 
-<body>
-<div class="main-wrapper">
+  <body>
+    <div class="main-wrapper">
+      <!-- HEADER -->
+      <header class="site-header">
+        <div class="container header-inner">
+          <a class="brand" href="../index.html"
+            ><span>Dent</span><span>AIstudy</span></a
+          >
+          <nav class="header-nav">
+            <a href="../subjects.html">Subjects</a>
+            <a href="../study.html">Study builder</a>
+            <a href="../blogs.html" class="is-active">Blogs</a>
+            <a href="../pricing.html">Pricing</a>
+            <a href="../contact.html">Contact</a>
+          </nav>
+          <div class="header-right">
+            <a href="../login.html" class="btn btn-outline header-login"
+              >Log in</a
+            >
+            <a href="../signup.html" class="btn btn-primary header-signup"
+              >Sign up</a
+            >
+            <button class="menu-toggle">
+              <span></span><span></span><span></span>
+            </button>
+          </div>
+        </div>
+      </header>
 
-<!-- HEADER -->
-<header class="site-header">
-  <div class="container header-inner">
-    <a class="brand" href="../index.html"><span>Dent</span><span>AIstudy</span></a>
-    <nav class="header-nav">
-      <a href="../subjects.html">Subjects</a>
-      <a href="../study.html">Study builder</a>
-      <a href="../blogs.html" class="is-active">Blogs</a>
-      <a href="../about.html">About</a>
-      <a href="../contact.html">Contact</a>
-    </nav>
-    <div class="header-right">
-      <a href="../login.html" class="btn btn-outline header-login">Log in</a>
-      <a href="../signup.html" class="btn btn-primary header-signup">Sign up</a>
-      <button class="menu-toggle"><span></span><span></span><span></span></button>
+      <!-- MOBILE NAV -->
+      <div class="slide-nav-backdrop"></div>
+      <nav class="slide-nav">
+        <div class="slide-nav-header">
+          <h3>Menu</h3>
+          <button class="slide-nav-close">&times;</button>
+        </div>
+        <div class="slide-nav-links">
+          <a href="../subjects.html">Subjects</a>
+          <a href="../study.html">Study builder</a>
+          <a href="../blogs.html">Blogs</a>
+          <a href="../pricing.html">Pricing</a>
+          <a href="../contact.html">Contact</a>
+          <a href="../login.html" class="slide-login-link">Log in</a>
+        </div>
+      </nav>
+
+      <!-- BLOG BODY -->
+      <main class="section">
+        <div class="container container-narrow">
+          <div class="section-header" style="text-align: left">
+            <div class="section-kicker">Local Anesthesia</div>
+            <h1 class="section-title">
+              Inferior Alveolar Nerve Block (IANB) — Simple OSCE & Viva Guide
+            </h1>
+            <p class="section-subtitle">
+              A clear, high-yield guide to IANB landmarks, steps, and
+              troubleshooting.
+            </p>
+          </div>
+
+          <!-- SNIPPET BLOCK -->
+          <section class="study-answer-card">
+            <h2>Quick Answers</h2>
+
+            <h3>What is an inferior alveolar nerve block?</h3>
+            <p>
+              Injection of local anesthetic near the mandibular foramen to
+              anesthetize the inferior alveolar nerve before it enters the
+              mandibular canal.
+            </p>
+
+            <h3>Which teeth are anesthetized?</h3>
+            <p>
+              All mandibular teeth on that side plus buccal soft tissues
+              anterior to the mental foramen; lingual soft tissues via lingual
+              nerve anesthesia.
+            </p>
+
+            <h3>Key landmarks?</h3>
+            <p>
+              Coronoid notch, pterygomandibular raphe, and mandibular occlusal
+              plane. 2
+            </p>
+
+            <h3>Typical failure rate?</h3>
+            <p>
+              Commonly reported around 15–20% or higher, mostly from
+              landmark/needle positioning issues or anatomic variation.
+            </p>
+          </section>
+
+          <article class="blog-body">
+            <h2>1. Why IANB is a “board exam favorite”</h2>
+            <p>
+              It is the standard block for mandibular restorative, surgical, and
+              endodontic procedures, and is used globally in OSCE/viva stations.
+            </p>
+            <ul>
+              <li>High clinical relevance</li>
+              <li>Easy to assess in a station</li>
+              <li>Clear complications and troubleshooting points</li>
+            </ul>
+
+            <h2>2. Identify the landmarks (say them out loud)</h2>
+            <p>Examiners want to hear your landmarks before you inject.</p>
+
+            <div class="study-form-card">
+              <h3>Landmarks</h3>
+              <ul>
+                <li>
+                  <strong>Coronoid notch:</strong> deepest concavity on anterior
+                  ramus
+                </li>
+                <li>
+                  <strong>Pterygomandibular raphe:</strong> soft tissue fold
+                  between buccinator & superior constrictor
+                </li>
+                <li>
+                  <strong>Occlusal plane:</strong> needle height reference
+                  (usually slightly above)
+                </li>
+              </ul>
+            </div>
+
+            <h2>3. Step-by-step technique (classic OSCE order)</h2>
+            <p>This is the sequence that scores best in stations:</p>
+
+            <div class="study-form-card">
+              <h3>IANB Steps</h3>
+              <p>
+                1. Patient open wide, mandible slightly to injected side<br />
+                2. Palpate coronoid notch, visualize raphe<br />
+                3. Insert needle lateral to raphe, ~6–10 mm above occlusal
+                plane<br />
+                4. Advance toward medial ramus until bone contact (~20–25 mm
+                depth)<br />
+                5. Withdraw 1 mm, aspirate, inject slowly<br />
+                6. Withdraw halfway, deposit a small amount for lingual nerve<br />
+                7. Wait 3–5 minutes, confirm anesthesia
+              </p>
+            </div>
+            <p>Bone contact helps confirm correct depth and direction.</p>
+
+            <h2>4. How to know it worked</h2>
+            <ul>
+              <li>Numb lower lip (mental nerve)</li>
+              <li>Loss of lingual sensation</li>
+              <li>No pain to EPT/cold on mandibular teeth</li>
+            </ul>
+            <p>If lip isn’t numb after 5–7 minutes, the block likely missed.</p>
+
+            <h2>5. Fast troubleshooting for failures</h2>
+            <p>Most IANB failures are positional. Fix them like this:</p>
+            <ul>
+              <li>
+                <strong>No bone contact:</strong> needle too posterior; withdraw
+                slightly and redirect medially.
+              </li>
+              <li>
+                <strong>Bone contact too early (shallow):</strong> needle too
+                anterior; redirect posteriorly.
+              </li>
+              <li>
+                <strong>Partial anesthesia:</strong> supplement with
+                buccal/lingual infiltration or intra-ligamentary.
+              </li>
+            </ul>
+            <p>
+              Success varies with technique, solution, and inflammation (lower
+              success in pulpitis).
+            </p>
+
+            <h2>6. Complications (high-yield viva list)</h2>
+            <p>Be ready to list these calmly in any viva.</p>
+            <ul>
+              <li>Hematoma (intravascular injury)</li>
+              <li>Transient facial nerve palsy (too posterior into parotid)</li>
+              <li>Trismus / muscle soreness</li>
+              <li>Needle breakage (rare)</li>
+              <li>Systemic toxicity if overdosed</li>
+            </ul>
+            <p>
+              Rare unusual complications exist but are not common OSCE targets.
+            </p>
+
+            <h2>7. OSCE model answer</h2>
+            <div class="study-form-card">
+              <h3>What to say in a station</h3>
+              <p>
+                “I will perform an inferior alveolar nerve block to anesthetize
+                mandibular teeth. My landmarks are the coronoid notch,
+                pterygomandibular raphe, and occlusal plane. I insert the needle
+                lateral to raphe slightly above occlusal plane, advance until
+                bone contact, aspirate, and inject slowly. I then check lip
+                numbness and tooth vitality after a few minutes.”
+              </p>
+            </div>
+
+            <h2>8. How DentAIstudy helps</h2>
+            <p>DentAIstudy can generate:</p>
+            <ul>
+              <li>Full OSCE scripts for injections</li>
+              <li>Viva one-page anesthesia summaries</li>
+              <li>Troubleshooting decision trees</li>
+              <li>MCQs on LA complications</li>
+            </ul>
+            <p>
+              <a href="../study.html" class="btn btn-primary"
+                >Try Study Builder →</a
+              >
+            </p>
+
+            <h2>References</h2>
+            <ul>
+              <li>
+                Rathee M, et al. “Inferior Alveolar Nerve Block.”
+                <i>StatPearls</i>. 2023. 
+              </li>
+              <li>
+                Khalil H. “A basic review on inferior alveolar nerve block
+                techniques.” <i>J Dent Anesth Pain Med</i>. 2014.
+              </li>
+              <li>
+                Nagendrababu V, et al. Local anesthetic solutions and IANB
+                success in irreversible pulpitis. <i>Int Endod J</i>. 2019.
+              </li>
+              <li>MSD Manual. “How to do an Inferior Alveolar Nerve Block.”</li>
+              <li>
+                Aquilanti L, et al. Nerve-related adverse effects and failure
+                rates of IANB. <i>Int J Environ Res Public Health</i>. 2022.
+              </li>
+            </ul>
+          </article>
+        </div>
+      </main>
+
+      <!-- FOOTER -->
+      <footer class="site-footer">
+        <div class="container">
+          <div class="footer-top">
+            <div>
+              <div class="footer-brand">DentAIstudy</div>
+              <p>AI-enhanced tools for dental students and residents.</p>
+              <div class="footer-social">
+                <a
+                  href="https://www.tiktok.com/@dentaistudy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="DentAIstudy on TikTok"
+                >
+                  <img src="../assets/img/footer-icons/tiktok-icon.png" alt="TikTok" class="footer-social-img">
+                </a>
+              
+                <a
+                  href="mailto:info@dentaistudy.com"
+                  aria-label="Contact DentAIstudy by email"
+                >
+                  <img src="../assets/img/footer-icons/email-icon.png" alt="Email" class="footer-social-img">
+                </a>
+              </div>
+            </div>
+           <div class="footer-column">
+              <h4>Product</h4>
+              <a href="../subjects.html">Subjects</a>
+              <a href="../study.html">Study builder</a>
+              <a href="../blogs.html">Blogs</a>
+              <a href="../pricing.html">Pricing</a>
+            </div>
+            <div class="footer-column">
+              <h4>Company</h4>
+              <a href="../about.html">About</a>
+              <a href="../contact.html">Contact</a>
+              <a href="../faqs.html">FAQ</a>
+            </div>
+            <div class="footer-column">
+              <h4>Legal</h4>
+              <a href="../privacy.html">Privacy Policy</a>
+              <a href="../terms.html">Terms & Conditions</a>
+              <a href="../cookies.html">Cookies Policy</a>
+              <a href="../disclaimer.html">Disclaimer</a>
+              <a href="../billing.html">Billing</a>
+              <a href="../refund-policy.html">Refunds</a>
+            </div>
+          </div>
+          <div class="footer-bottom">© 2025 DentAIstudy</div>
+        </div>
+      </footer>
     </div>
-  </div>
-</header>
-
-<!-- MOBILE NAV -->
-<div class="slide-nav-backdrop"></div>
-<nav class="slide-nav">
-  <div class="slide-nav-header"><h3>Menu</h3><button class="slide-nav-close">&times;</button></div>
-  <div class="slide-nav-links">
-    <a href="../subjects.html">Subjects</a>
-    <a href="../study.html">Study builder</a>
-    <a href="../blogs.html">Blogs</a>
-    <a href="../about.html">About</a>
-    <a href="../contact.html">Contact</a>
-    <a href="../login.html" class="slide-login-link">Log in</a>
-  </div>
-</nav>
-
-<!-- BLOG BODY -->
-<main class="section">
-  <div class="container container-narrow">
-
-    <div class="section-header" style="text-align:left;">
-      <div class="section-kicker">Local Anesthesia</div>
-      <h1 class="section-title">Inferior Alveolar Nerve Block (IANB) — Simple OSCE & Viva Guide</h1>
-      <p class="section-subtitle">
-        A clear, high-yield guide to IANB landmarks, steps, and troubleshooting.
-      </p>
-    </div>
-
-    <!-- SNIPPET BLOCK -->
-    <section class="study-answer-card">
-      <h2>Quick Answers</h2>
-
-      <h3>What is an inferior alveolar nerve block?</h3>
-      <p>Injection of local anesthetic near the mandibular foramen to anesthetize the inferior alveolar nerve before it enters the mandibular canal. </p>
-
-      <h3>Which teeth are anesthetized?</h3>
-      <p>All mandibular teeth on that side plus buccal soft tissues anterior to the mental foramen; lingual soft tissues via lingual nerve anesthesia. </p>
-
-      <h3>Key landmarks?</h3>
-      <p>Coronoid notch, pterygomandibular raphe, and mandibular occlusal plane. 2</p>
-
-      <h3>Typical failure rate?</h3>
-      <p>Commonly reported around 15–20% or higher, mostly from landmark/needle positioning issues or anatomic variation. </p>
-    </section>
-
-    <article class="blog-body">
-
-      <h2>1. Why IANB is a “board exam favorite”</h2>
-      <p>It is the standard block for mandibular restorative, surgical, and endodontic procedures, and is used globally in OSCE/viva stations. </p>
-      <ul>
-        <li>High clinical relevance</li>
-        <li>Easy to assess in a station</li>
-        <li>Clear complications and troubleshooting points</li>
-      </ul>
-
-      <h2>2. Identify the landmarks (say them out loud)</h2>
-      <p>Examiners want to hear your landmarks before you inject. </p>
-
-      <div class="study-form-card">
-        <h3>Landmarks</h3>
-        <ul>
-          <li><strong>Coronoid notch:</strong> deepest concavity on anterior ramus</li>
-          <li><strong>Pterygomandibular raphe:</strong> soft tissue fold between buccinator & superior constrictor</li>
-          <li><strong>Occlusal plane:</strong> needle height reference (usually slightly above)</li>
-        </ul>
-      </div>
-
-      <h2>3. Step-by-step technique (classic OSCE order)</h2>
-      <p>This is the sequence that scores best in stations:</p>
-
-      <div class="study-form-card">
-        <h3>IANB Steps</h3>
-        <p>
-          1. Patient open wide, mandible slightly to injected side<br>
-          2. Palpate coronoid notch, visualize raphe<br>
-          3. Insert needle lateral to raphe, ~6–10 mm above occlusal plane<br>
-          4. Advance toward medial ramus until bone contact (~20–25 mm depth)<br>
-          5. Withdraw 1 mm, aspirate, inject slowly<br>
-          6. Withdraw halfway, deposit a small amount for lingual nerve<br>
-          7. Wait 3–5 minutes, confirm anesthesia
-        </p>
-      </div>
-      <p>Bone contact helps confirm correct depth and direction. </p>
-
-      <h2>4. How to know it worked</h2>
-      <ul>
-        <li>Numb lower lip (mental nerve)</li>
-        <li>Loss of lingual sensation</li>
-        <li>No pain to EPT/cold on mandibular teeth</li>
-      </ul>
-      <p>If lip isn’t numb after 5–7 minutes, the block likely missed. </p>
-
-      <h2>5. Fast troubleshooting for failures</h2>
-      <p>Most IANB failures are positional. Fix them like this:</p>
-      <ul>
-        <li><strong>No bone contact:</strong> needle too posterior; withdraw slightly and redirect medially.</li>
-        <li><strong>Bone contact too early (shallow):</strong> needle too anterior; redirect posteriorly.</li>
-        <li><strong>Partial anesthesia:</strong> supplement with buccal/lingual infiltration or intra-ligamentary.</li>
-      </ul>
-      <p>Success varies with technique, solution, and inflammation (lower success in pulpitis). </p>
-
-      <h2>6. Complications (high-yield viva list)</h2>
-      <p>Be ready to list these calmly in any viva. </p>
-      <ul>
-        <li>Hematoma (intravascular injury)</li>
-        <li>Transient facial nerve palsy (too posterior into parotid)</li>
-        <li>Trismus / muscle soreness</li>
-        <li>Needle breakage (rare)</li>
-        <li>Systemic toxicity if overdosed</li>
-      </ul>
-      <p>Rare unusual complications exist but are not common OSCE targets. </p>
-
-      <h2>7. OSCE model answer</h2>
-      <div class="study-form-card">
-        <h3>What to say in a station</h3>
-        <p>
-          “I will perform an inferior alveolar nerve block to anesthetize mandibular teeth.
-          My landmarks are the coronoid notch, pterygomandibular raphe, and occlusal plane.
-          I insert the needle lateral to raphe slightly above occlusal plane,
-          advance until bone contact, aspirate, and inject slowly.
-          I then check lip numbness and tooth vitality after a few minutes.”
-        </p>
-      </div>
-
-      <h2>8. How DentAIstudy helps</h2>
-      <p>DentAIstudy can generate:</p>
-      <ul>
-        <li>Full OSCE scripts for injections</li>
-        <li>Viva one-page anesthesia summaries</li>
-        <li>Troubleshooting decision trees</li>
-        <li>MCQs on LA complications</li>
-      </ul>
-      <p><a href="../study.html" class="btn btn-primary">Try Study Builder →</a></p>
-
-      <h2>References</h2>
-      <ul>
-        <li>Rathee M, et al. “Inferior Alveolar Nerve Block.” <i>StatPearls</i>. 2023. </li>
-        <li>Khalil H. “A basic review on inferior alveolar nerve block techniques.” <i>J Dent Anesth Pain Med</i>. 2014. </li>
-        <li>Nagendrababu V, et al. Local anesthetic solutions and IANB success in irreversible pulpitis. <i>Int Endod J</i>. 2019. </li>
-        <li>MSD Manual. “How to do an Inferior Alveolar Nerve Block.” </li>
-        <li>Aquilanti L, et al. Nerve-related adverse effects and failure rates of IANB. <i>Int J Environ Res Public Health</i>. 2022. </li>
-      </ul>
-
-    </article>
-  </div>
-</main>
-
-<!-- FOOTER -->
-<footer class="site-footer">
-  <div class="container">
-    <div class="footer-top">
-      <div>
-        <div class="footer-brand">DentAIstudy</div>
-        <p>AI-enhanced tools for dental students and residents.</p>
-      </div>
-      <div class="footer-column"><h4>Product</h4>
-        <a href="../subjects.html">Subjects</a>
-        <a href="../study.html">Study builder</a>
-        <a href="../blogs.html">Blogs</a>
-      </div>
-      <div class="footer-column"><h4>Company</h4>
-        <a href="../about.html">About</a>
-        <a href="../contact.html">Contact</a>
-        <a href="../faqs.html">FAQ</a>
-      </div>
-      <div class="footer-column"><h4>Legal</h4>
-        <a href="../privacy.html">Privacy Policy</a>
-        <a href="../terms.html">Terms & Conditions</a>
-        <a href="../cookies.html">Cookies Policy</a>
-        <a href="../disclaimer.html">Disclaimer</a>
-      </div>
-    </div>
-    <div class="footer-bottom">© 2025 DentAIstudy</div>
-  </div>
-</footer>
-
-
-</div>
-</body>
+  </body>
 </html>

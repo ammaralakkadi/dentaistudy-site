@@ -1,249 +1,307 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dental Materials Summary: Composite, GIC &amp; Amalgam</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dental Materials Summary: Composite, GIC &amp; Amalgam</title>
 
-  <link rel="stylesheet" href="../assets/css/style-v3.css" />
-  <link rel="icon" type="image/png" sizes="512x512" href="../assets/img/favicon.png?v=2" />
+    <link rel="stylesheet" href="../assets/css/style-v3.css" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="512x512"
+      href="../assets/img/favicon.png?v=2"
+    />
 
-  <!-- JS: Supabase + Auth Guard + Logout + Main -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-  <script src="../assets/js/auth-client.js" defer></script>
-  <script src="../assets/js/auth-guard.js" defer></script>
-  <script src="../assets/js/auth-logout.js" defer></script>
-  <script defer src="../assets/js/main.js"></script>
-</head>
+    <!-- JS: Supabase + Auth Guard + Logout + Main -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+      defer
+    ></script>
+    <script src="../assets/js/auth-client.js" defer></script>
+    <script src="../assets/js/auth-guard.js" defer></script>
+    <script src="../assets/js/auth-logout.js" defer></script>
+    <script defer src="../assets/js/main.js"></script>
+  </head>
 
-<body>
-<div class="main-wrapper">
-
-  <!-- HEADER -->
-  <header class="site-header">
-    <div class="container header-inner">
-      <a class="brand" href="../index.html"><span>Dent</span><span>AIstudy</span></a>
-      <nav class="header-nav">
-        <a href="../subjects.html">Subjects</a>
-        <a href="../study.html">Study builder</a>
-        <a href="../blogs.html" class="is-active">Blogs</a>
-        <a href="../about.html">About</a>
-        <a href="../contact.html">Contact</a>
-      </nav>
-      <div class="header-right">
-        <a href="../login.html" class="btn btn-outline header-login">Log in</a>
-        <a href="../signup.html" class="btn btn-primary header-signup">Sign up</a>
-        <button class="menu-toggle" aria-label="Open menu">
-          <span></span><span></span><span></span>
-        </button>
-      </div>
-    </div>
-  </header>
-
-  <!-- MOBILE NAV -->
-  <div class="slide-nav-backdrop"></div>
-  <nav class="slide-nav">
-    <div class="slide-nav-header">
-      <h3>Menu</h3>
-      <button class="slide-nav-close" aria-label="Close menu">&times;</button>
-    </div>
-    <div class="slide-nav-links">
-      <a href="../subjects.html">Subjects</a>
-      <a href="../study.html">Study builder</a>
-      <a href="../blogs.html">Blogs</a>
-      <a href="../about.html">About</    a>
-      <a href="../contact.html">Contact</a>
-      <a href="../login.html" class="slide-login-link">Log in</a>
-    </div>
-  </nav>
-
-  <!-- BLOG -->
-  <main class="section">
-    <div class="container container-narrow">
-
-      <div class="section-header" style="text-align:left;">
-        <div class="section-kicker">Operative</div>
-        <h1 class="section-title">Dental Materials Summary: Composite, GIC &amp; Amalgam</h1>
-        <p class="section-subtitle">
-          A clean, exam-focused comparison of the most commonly tested restorative materials.
-        </p>
-      </div>
-
-      <!-- QUICK ANSWERS -->
-      <section class="study-answer-card">
-        <h2>Quick Answers</h2>
-
-        <h3>Which posterior material has the best longevity?</h3>
-        <p>High-copper amalgam still shows the highest long-term survival in high-load areas.</p>
-
-        <h3>Which material bonds chemically to tooth structure?</h3>
-        <p>Glass ionomer cement (GIC) through ionic bonding with calcium.</p>
-
-        <h3>Which material provides the best esthetics?</h3>
-        <p>Composite resin — excellent color match and polishability.</p>
-
-        <h3>Which material releases fluoride?</h3>
-        <p>GIC and resin-modified GIC (RMGIC).</p>
-      </section>
-
-      <article class="blog-body">
-
-        <h2>1. Why dental materials appear so often in exams</h2>
-        <p>
-          Examiners love materials questions because they test understanding,
-          not memorisation. If you can explain <strong>when and why</strong> you
-          choose a material, you already earn high marks.
-        </p>
-
-        <h2>2. Composite resin — key points</h2>
-        <p>
-          Composite is the most common restorative material in modern clinical dentistry.
-        </p>
-        <div class="study-form-card">
-          <h3>Composite (exam summary)</h3>
-          <p>
-            • Excellent esthetics<br>
-            • Micromechanical bonding (etch + adhesive)<br>
-            • Polymerisation shrinkage → post-op sensitivity<br>
-            • Technique sensitive — dry field required<br>
-            • Layering reduces shrinkage stress
-          </p>
+  <body>
+    <div class="main-wrapper">
+      <!-- HEADER -->
+      <header class="site-header">
+        <div class="container header-inner">
+          <a class="brand" href="../index.html"
+            ><span>Dent</span><span>AIstudy</span></a
+          >
+          <nav class="header-nav">
+            <a href="../subjects.html">Subjects</a>
+            <a href="../study.html">Study builder</a>
+            <a href="../blogs.html" class="is-active">Blogs</a>
+            <a href="../pricing.html">Pricing</a>
+            <a href="../contact.html">Contact</a>
+          </nav>
+          <div class="header-right">
+            <a href="../login.html" class="btn btn-outline header-login"
+              >Log in</a
+            >
+            <a href="../signup.html" class="btn btn-primary header-signup"
+              >Sign up</a
+            >
+            <button class="menu-toggle" aria-label="Open menu">
+              <span></span><span></span><span></span>
+            </button>
+          </div>
         </div>
-        <p>
-          Avoid composite in uncontrollable moisture, heavy occlusion, or patients
-          with poor compliance.
-        </p>
+      </header>
 
-        <h2>3. Glass Ionomer Cement (GIC)</h2>
-        <p>
-          GIC is valued for its chemical bond and fluoride release.
-        </p>
-        <ul>
-          <li>Chemical adhesion to tooth (ionic bond)</li>
-          <li>Fluoride release — anti-caries effect</li>
-          <li>Biocompatible</li>
-          <li>Poor wear resistance compared to composite</li>
-          <li>Sensitive to early moisture contamination</li>
-        </ul>
-
-        <div class="study-form-card">
-          <h3>Where GIC is ideal</h3>
-          <p>
-            • ART (Atraumatic Restorative Treatment)<br>
-            • High-caries risk patients<br>
-            • Temporary restorations<br>
-            • Cervical lesions<br>
-            • Bases/liners under composite
-          </p>
+      <!-- MOBILE NAV -->
+      <div class="slide-nav-backdrop"></div>
+      <nav class="slide-nav">
+        <div class="slide-nav-header">
+          <h3>Menu</h3>
+          <button class="slide-nav-close" aria-label="Close menu">
+            &times;
+          </button>
         </div>
-
-        <h2>4. Resin-Modified GIC (RMGIC)</h2>
-        <p>
-          RMGIC improves strength and working time by adding resin components.
-        </p>
-        <ul>
-          <li>Better physical properties than pure GIC</li>
-          <li>Still releases fluoride</li>
-          <li>Less moisture sensitivity</li>
-          <li>Not as esthetic or strong as composite</li>
-        </ul>
-
-        <h2>5. Amalgam — high durability</h2>
-        <p>
-          Despite reduced use, amalgam retains excellent long-term performance.
-        </p>
-        <div class="study-form-card">
-          <h3>Amalgam (exam summary)</h3>
-          <p>
-            • Very strong and wear resistant<br>
-            • Best for high-load posterior sites<br>
-            • No bonding — requires mechanical retention<br>
-            • Marginal breakdown if moisture contamination<br>
-            • Esthetics poor; mercury controversy
-          </p>
-        </div>
-
-        <h2>6. High-yield comparison table</h2>
-        <ul>
-          <li><strong>Esthetics:</strong> Composite &gt; RMGIC &gt; GIC &gt; Amalgam</li>
-          <li><strong>Strength:</strong> Amalgam &gt; Composite &gt; RMGIC &gt; GIC</li>
-          <li><strong>Fluoride:</strong> GIC/RMGIC</li>
-          <li><strong>Bonding:</strong> Composite (micromechanical), GIC (chemical), Amalgam (none)</li>
-        </ul>
-
-        <h2>7. Clinical decision summary</h2>
-        <div class="study-form-card">
-          <h3>Best material per scenario</h3>
-          <p>
-            • <strong>Posterior load:</strong> Amalgam or composite<br>
-            • <strong>High-caries risk:</strong> GIC/RMGIC<br>
-            • <strong>Cervical lesions:</strong> GIC<br>
-            • <strong>Moisture issues:</strong> GIC/RMGIC<br>
-            • <strong>Esthetics required:</strong> Composite
-          </p>
-        </div>
-
-        <h2>8. How DentAIstudy helps</h2>
-        <p>DentAIstudy can transform this topic into:</p>
-        <ul>
-          <li>Flashcards for quick revision</li>
-          <li>OSCE-style comparisons</li>
-          <li>Material selection scenarios</li>
-          <li>Viva-style structured answers</li>
-        </ul>
-        <p><a href="../study.html" class="btn btn-primary">Try Study Builder →</a></p>
-
-        <h2>References</h2>
-        <ul>
-          <li>Craig’s <em>Restorative Dental Materials</em>, 13th ed.</li>
-          <li>Mount GJ. Glass ionomer cements: clinical applications. <em>J Appl Oral Sci.</em></li>
-          <li>Ferracane JL. Resin-based composite performance. <em>J Dent Res.</em></li>
-        </ul>
-
-      </article>
-
-    </div>
-  </main>
-
-  <!-- FOOTER -->
-  <footer class="site-footer">
-    <div class="container">
-      <div class="footer-top">
-        <div>
-          <div class="footer-brand">DentAIstudy</div>
-          <p>AI-enhanced tools for dental students and residents.</p>
-        </div>
-
-        <div class="footer-column">
-          <h4>Product</h41>
+        <div class="slide-nav-links">
           <a href="../subjects.html">Subjects</a>
           <a href="../study.html">Study builder</a>
           <a href="../blogs.html">Blogs</a>
-        </div>
-
-        <div class="footer-column">
-          <h4>Company</h4>
-          <a href="../about.html">About</a>
+          <a href="../pricing.html">Pricing</a>
           <a href="../contact.html">Contact</a>
-          <a href="../faqs.html">FAQ</a>
+          <a href="../login.html" class="slide-login-link">Log in</a>
         </div>
+      </nav>
 
-        <div class="footer-column">
-          <h4>Legal</h4>
-          <a href="../privacy.html">Privacy Policy</a>
-          <a href="../terms.html">Terms &amp; Conditions</a>
-          <a href="../cookies.html">Cookies Policy</a>
-          <a href="../disclaimer.html">Disclaimer</a>
+      <!-- BLOG -->
+      <main class="section">
+        <div class="container container-narrow">
+          <div class="section-header" style="text-align: left">
+            <div class="section-kicker">Operative</div>
+            <h1 class="section-title">
+              Dental Materials Summary: Composite, GIC &amp; Amalgam
+            </h1>
+            <p class="section-subtitle">
+              A clean, exam-focused comparison of the most commonly tested
+              restorative materials.
+            </p>
+          </div>
+
+          <!-- QUICK ANSWERS -->
+          <section class="study-answer-card">
+            <h2>Quick Answers</h2>
+
+            <h3>Which posterior material has the best longevity?</h3>
+            <p>
+              High-copper amalgam still shows the highest long-term survival in
+              high-load areas.
+            </p>
+
+            <h3>Which material bonds chemically to tooth structure?</h3>
+            <p>
+              Glass ionomer cement (GIC) through ionic bonding with calcium.
+            </p>
+
+            <h3>Which material provides the best esthetics?</h3>
+            <p>Composite resin — excellent color match and polishability.</p>
+
+            <h3>Which material releases fluoride?</h3>
+            <p>GIC and resin-modified GIC (RMGIC).</p>
+          </section>
+
+          <article class="blog-body">
+            <h2>1. Why dental materials appear so often in exams</h2>
+            <p>
+              Examiners love materials questions because they test
+              understanding, not memorisation. If you can explain
+              <strong>when and why</strong> you choose a material, you already
+              earn high marks.
+            </p>
+
+            <h2>2. Composite resin — key points</h2>
+            <p>
+              Composite is the most common restorative material in modern
+              clinical dentistry.
+            </p>
+            <div class="study-form-card">
+              <h3>Composite (exam summary)</h3>
+              <p>
+                • Excellent esthetics<br />
+                • Micromechanical bonding (etch + adhesive)<br />
+                • Polymerisation shrinkage → post-op sensitivity<br />
+                • Technique sensitive — dry field required<br />
+                • Layering reduces shrinkage stress
+              </p>
+            </div>
+            <p>
+              Avoid composite in uncontrollable moisture, heavy occlusion, or
+              patients with poor compliance.
+            </p>
+
+            <h2>3. Glass Ionomer Cement (GIC)</h2>
+            <p>GIC is valued for its chemical bond and fluoride release.</p>
+            <ul>
+              <li>Chemical adhesion to tooth (ionic bond)</li>
+              <li>Fluoride release — anti-caries effect</li>
+              <li>Biocompatible</li>
+              <li>Poor wear resistance compared to composite</li>
+              <li>Sensitive to early moisture contamination</li>
+            </ul>
+
+            <div class="study-form-card">
+              <h3>Where GIC is ideal</h3>
+              <p>
+                • ART (Atraumatic Restorative Treatment)<br />
+                • High-caries risk patients<br />
+                • Temporary restorations<br />
+                • Cervical lesions<br />
+                • Bases/liners under composite
+              </p>
+            </div>
+
+            <h2>4. Resin-Modified GIC (RMGIC)</h2>
+            <p>
+              RMGIC improves strength and working time by adding resin
+              components.
+            </p>
+            <ul>
+              <li>Better physical properties than pure GIC</li>
+              <li>Still releases fluoride</li>
+              <li>Less moisture sensitivity</li>
+              <li>Not as esthetic or strong as composite</li>
+            </ul>
+
+            <h2>5. Amalgam — high durability</h2>
+            <p>
+              Despite reduced use, amalgam retains excellent long-term
+              performance.
+            </p>
+            <div class="study-form-card">
+              <h3>Amalgam (exam summary)</h3>
+              <p>
+                • Very strong and wear resistant<br />
+                • Best for high-load posterior sites<br />
+                • No bonding — requires mechanical retention<br />
+                • Marginal breakdown if moisture contamination<br />
+                • Esthetics poor; mercury controversy
+              </p>
+            </div>
+
+            <h2>6. High-yield comparison table</h2>
+            <ul>
+              <li>
+                <strong>Esthetics:</strong> Composite &gt; RMGIC &gt; GIC &gt;
+                Amalgam
+              </li>
+              <li>
+                <strong>Strength:</strong> Amalgam &gt; Composite &gt; RMGIC
+                &gt; GIC
+              </li>
+              <li><strong>Fluoride:</strong> GIC/RMGIC</li>
+              <li>
+                <strong>Bonding:</strong> Composite (micromechanical), GIC
+                (chemical), Amalgam (none)
+              </li>
+            </ul>
+
+            <h2>7. Clinical decision summary</h2>
+            <div class="study-form-card">
+              <h3>Best material per scenario</h3>
+              <p>
+                • <strong>Posterior load:</strong> Amalgam or composite<br />
+                • <strong>High-caries risk:</strong> GIC/RMGIC<br />
+                • <strong>Cervical lesions:</strong> GIC<br />
+                • <strong>Moisture issues:</strong> GIC/RMGIC<br />
+                • <strong>Esthetics required:</strong> Composite
+              </p>
+            </div>
+
+            <h2>8. How DentAIstudy helps</h2>
+            <p>DentAIstudy can transform this topic into:</p>
+            <ul>
+              <li>Flashcards for quick revision</li>
+              <li>OSCE-style comparisons</li>
+              <li>Material selection scenarios</li>
+              <li>Viva-style structured answers</li>
+            </ul>
+            <p>
+              <a href="../study.html" class="btn btn-primary"
+                >Try Study Builder →</a
+              >
+            </p>
+
+            <h2>References</h2>
+            <ul>
+              <li>Craig’s <em>Restorative Dental Materials</em>, 13th ed.</li>
+              <li>
+                Mount GJ. Glass ionomer cements: clinical applications.
+                <em>J Appl Oral Sci.</em>
+              </li>
+              <li>
+                Ferracane JL. Resin-based composite performance.
+                <em>J Dent Res.</em>
+              </li>
+            </ul>
+          </article>
         </div>
-      </div>
+      </main>
 
-      <div class="footer-bottom">
-        © 2025 DentAIstudy. All rights reserved.
-      </div>
+      <!-- FOOTER -->
+      <footer class="site-footer">
+        <div class="container">
+          <div class="footer-top">
+            <div>
+              <div class="footer-brand">DentAIstudy</div>
+              <p>AI-enhanced tools for dental students and residents.</p>
+              <div class="footer-social">
+                <a
+                  href="https://www.tiktok.com/@dentaistudy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="DentAIstudy on TikTok"
+                >
+                  <img src="../assets/img/footer-icons/tiktok-icon.png" alt="TikTok" class="footer-social-img">
+                </a>
+              
+                <a
+                  href="mailto:info@dentaistudy.com"
+                  aria-label="Contact DentAIstudy by email"
+                >
+                  <img src="../assets/img/footer-icons/email-icon.png" alt="Email" class="footer-social-img">
+                </a>
+              </div>
+            </div>
+
+           <div class="footer-column">
+              <h4>Product</h4>
+              <a href="../subjects.html">Subjects</a>
+              <a href="../study.html">Study builder</a>
+              <a href="../blogs.html">Blogs</a>
+              <a href="../pricing.html">Pricing</a>
+            </div>
+
+            <div class="footer-column">
+              <h4>Company</h4>
+              <a href="../about.html">About</a>
+              <a href="../contact.html">Contact</a>
+              <a href="../faqs.html">FAQ</a>
+            </div>
+
+            <div class="footer-column">
+              <h4>Legal</h4>
+              <a href="../privacy.html">Privacy Policy</a>
+              <a href="../terms.html">Terms &amp; Conditions</a>
+              <a href="../cookies.html">Cookies Policy</a>
+              <a href="../disclaimer.html">Disclaimer</a>
+              <a href="../billing.html">Billing</a>
+              <a href="../refund-policy.html">Refunds</a>
+            </div>
+          </div>
+
+          <div class="footer-bottom">
+            © 2025 DentAIstudy. All rights reserved.
+          </div>
+        </div>
+      </footer>
     </div>
-  </footer>
-
-
-</div>
-</body>
+  </body>
 </html>

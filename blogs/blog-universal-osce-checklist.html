@@ -1,248 +1,380 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Universal OSCE Checklist for Any Dental Case – DentAIstudy</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Universal OSCE Checklist for Any Dental Case – DentAIstudy</title>
 
-  <link rel="stylesheet" href="../assets/css/style-v3.css" />
-  <link rel="icon" type="image/png" sizes="512x512" href="../assets/img/favicon.png?v=2" />
+    <link rel="stylesheet" href="../assets/css/style-v3.css" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="512x512"
+      href="../assets/img/favicon.png?v=2"
+    />
 
-  <!-- JS: Supabase + Auth Guard + Logout + Main -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-  <script src="../assets/js/auth-client.js" defer></script>
-  <script src="../assets/js/auth-guard.js" defer></script>
-  <script src="../assets/js/auth-logout.js" defer></script>
-  <script defer src="../assets/js/main.js"></script>
-</head>
+    <!-- JS: Supabase + Auth Guard + Logout + Main -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+      defer
+    ></script>
+    <script src="../assets/js/auth-client.js" defer></script>
+    <script src="../assets/js/auth-guard.js" defer></script>
+    <script src="../assets/js/auth-logout.js" defer></script>
+    <script defer src="../assets/js/main.js"></script>
+  </head>
 
-<body>
-<div class="main-wrapper">
+  <body>
+    <div class="main-wrapper">
+      <header class="site-header">
+        <div class="container header-inner">
+          <a class="brand" href="../index.html">
+            <span>Dent</span><span>AIstudy</span>
+          </a>
 
-  <header class="site-header">
-    <div class="container header-inner">
-      <a class="brand" href="../index.html">
-        <span>Dent</span><span>AIstudy</span>
-      </a>
+          <nav class="header-nav">
+            <a href="../subjects.html">Subjects</a>
+            <a href="../study.html">Study builder</a>
+            <a href="../blogs.html" class="is-active">Blogs</a>
+            <a href="../pricing.html">Pricing</a>
+            <a href="../contact.html">Contact</a>
+          </nav>
 
-      <nav class="header-nav">
-        <a href="../subjects.html">Subjects</a>
-        <a href="../study.html">Study builder</a>
-        <a href="../blogs.html" class="is-active">Blogs</a>
-        <a href="../about.html">About</a>
-        <a href="../contact.html">Contact</a>
-      </nav>
-
-      <div class="header-right">
-        <a href="../login.html" class="btn btn-outline header-login">Log in</a>
-        <a href="../signup.html" class="btn btn-primary header-signup">Sign up</a>
-        <button class="menu-toggle" aria-label="Open menu">
-          <span></span><span></span><span></span>
-        </button>
-      </div>
-    </div>
-  </header>
-
-  <div class="slide-nav-backdrop"></div>
-  <nav class="slide-nav">
-    <div class="slide-nav-header">
-      <h3>Menu</h3>
-      <button class="slide-nav-close" aria-label="Close menu">&times;</button>
-    </div>
-    <div class="slide-nav-links">
-      <a href="../subjects.html">Subjects</a>
-      <a href="../study.html">Study builder</a>
-      <a href="../blogs.html">Blogs</a>
-      <a href="../about.html">About</a>
-      <a href="../contact.html">Contact</a>
-      <a href="../login.html" class="slide-login-link">Log in</a>
-    </div>
-  </nav>
-
-  <main class="section">
-    <div class="container container-narrow">
-
-      <div class="section-header" style="text-align:left;">
-        <div class="section-kicker">OSCE checklist</div>
-        <h1 class="section-title">Universal OSCE Checklist for Any Dental Case</h1>
-        <p class="section-subtitle">
-          A simple, repeatable OSCE structure you can use for any dental case with confidence.
-        </p>
-      </div>
-
-      <section class="study-answer-card">
-        <h2>Quick Answers</h2>
-
-        <h3>What is a universal OSCE checklist?</h3>
-        <p>A fixed sequence you repeat in every station: identity, history, exam, diagnosis, and safe plan.</p>
-
-        <h3>Does it work for all dental cases?</h3>
-        <p>Yes — pain, swelling, trauma, prosthodontic planning, perio, and counselling can all follow the same skeleton.</p>
-
-        <h3>Why is it useful for board exams?</h3>
-        <p>Exams like ORE, ADC, NBDE/INBDE, MFDS, and NDEB reward structure, safety, and clear reasoning more than rare details.</p>
-
-        <h3>How do I remember it under pressure?</h3>
-        <p>Use one short phrase per step and practice it on different mock cases until it becomes automatic.</p>
-      </section>
-
-      <article class="blog-body">
-
-        <h2>1. Why you need a universal checklist</h2>
-        <p>
-          In OSCEs you change stations, topics, and examiners quickly. What should stay the same is <strong>your process</strong>.
-          A universal checklist means you never start from zero; you always know what the next step is.
-        </p>
-        <p>
-          Instead of thinking, “What do I ask now?” you just follow your routine and adapt the details to the case in front of you.
-        </p>
-
-        <h2>2. The core universal OSCE checklist</h2>
-        <div class="study-form-card">
-          <h3>Universal OSCE flow (remember: I–H–E–D–P–S)</h3>
-          <p>
-            1. <strong>I</strong>ntroduce &amp; identify – greet, confirm name, age, and consent to talk.<br>
-            2. <strong>H</strong>istory – chief complaint, duration, pain features, medical and dental history, red flags.<br>
-            3. <strong>E</strong>xamination / explanation – focused extraoral and intraoral exam, or explain options if it is a counselling station.<br>
-            4. <strong>D</strong>iagnosis / differentials – state the most likely diagnosis and reasonable alternatives.<br>
-            5. <strong>P</strong>lan – investigations, immediate management, definitive treatment, and follow-up.<br>
-            6. <strong>S</strong>afety-net &amp; summary – recap, check understanding, mention red-flag symptoms, and thank the patient.
-          </p>
+          <div class="header-right">
+            <a href="../login.html" class="btn btn-outline header-login"
+              >Log in</a
+            >
+            <a href="../signup.html" class="btn btn-primary header-signup"
+              >Sign up</a
+            >
+            <button class="menu-toggle" aria-label="Open menu">
+              <span></span><span></span><span></span>
+            </button>
+          </div>
         </div>
-        <p>
-          Whether the station is acute pain, postoperative swelling, denture complaints, or periodontal review,
-          this skeleton stays the same.
-        </p>
+      </header>
 
-        <h2>3. How to adapt it to any dental case</h2>
-        <p>Think of the checklist as a template you fill with case-specific details:</p>
-        <ul>
-          <li><strong>Pain station:</strong> emphasize SOCRATES pain questions, analgesia, and pulpal tests.</li>
-          <li><strong>Swelling or infection:</strong> add systemic review, airway and dysphagia questions, and emergency red flags.</li>
-          <li><strong>Prosthodontic planning:</strong> focus history on function, aesthetics, expectations, and previous prostheses.</li>
-          <li><strong>Trauma:</strong> ask about mechanism, time since injury, loss of consciousness, tetanus, and safeguarding if needed.</li>
-          <li><strong>Perio or maintenance:</strong> highlight habits (brushing, flossing, smoking), risk factors, and motivation.</li>
-        </ul>
-        <p>
-          The topics change, but the order does not. This is what keeps you calm and consistent across OSCE circuits.
-        </p>
-
-        <h2>4. Micro phrases that carry you through the station</h2>
-        <p>Use short sentences to signpost each stage of the checklist for the examiner:</p>
-        <ul>
-          <li>“To start, I’d like to confirm your details and why you came today.”</li>
-          <li>“I’ll now ask a few questions about the pain and your general health.”</li>
-          <li>“Next, I’d like to examine inside and around your mouth.”</li>
-          <li>“From what you’ve told me and what I see, the most likely diagnosis is…”</li>
-          <li>“The plan I suggest is … and I’ll also explain what to watch out for at home.”</li>
-          <li>“Before we finish, let me summarise and check if you have any questions.”</li>
-        </ul>
-        <p>
-          These phrases make your structure visible, which helps examiners follow your reasoning and award marks quickly.
-        </p>
-
-        <h2>5. Using the checklist in common dental OSCEs</h2>
-        <p>Here is how the same flow fits three typical stations:</p>
-        <ul>
-          <li>
-            <strong>Acute irreversible pulpitis:</strong> Introduce → pain history → cold test explanation →
-            diagnosis → discuss emergency RCT or extraction → safety-net if pain worsens.
-          </li>
-          <li>
-            <strong>Extraction consent:</strong> Introduce → reason for extraction → relevant medical history
-            (bleeding, anticoagulants, allergies) → explain procedure, risks, alternatives → confirm understanding.
-          </li>
-          <li>
-            <strong>Postoperative instructions:</strong> Introduce → check how patient feels → clarify what was done →
-            give stepwise instructions (bite on gauze, avoid rinsing, no smoking) → red flags and follow-up.
-          </li>
-        </ul>
-        <p>
-          Once you practice a few of these, your brain starts to automatically fill the checklist every time you see a new case.
-        </p>
-
-        <h2>6. Practice plan: turn it into muscle memory</h2>
-        <div class="study-form-card">
-          <h3>10-minute drill you can repeat daily</h3>
-          <p>
-            1. Pick one topic (e.g. periapical abscess, failed RCT, complete denture review).<br>
-            2. Set a 10-minute timer.<br>
-            3. Talk through the I–H–E–D–P–S checklist out loud, as if you are in an OSCE station.<br>
-            4. After the timer, write down what you missed and add 2–3 better phrases for next time.<br>
-            5. Repeat with a new topic tomorrow — same checklist, different content.
-          </p>
+      <div class="slide-nav-backdrop"></div>
+      <nav class="slide-nav">
+        <div class="slide-nav-header">
+          <h3>Menu</h3>
+          <button class="slide-nav-close" aria-label="Close menu">
+            &times;
+          </button>
         </div>
-        <p>
-          In less than two weeks, you can rehearse dozens of cases with one stable structure instead of memorising hundreds of scripts.
-        </p>
-
-        <h2>7. How DentAIstudy helps</h2>
-        <p>
-          DentAIstudy is built to generate structured flows that match how examiners think, not how textbooks are printed.
-        </p>
-        <ul>
-          <li>Converts any written case into a clear I–H–E–D–P–S OSCE flow.</li>
-          <li>Highlights red-flag history questions and safety-net advice for each topic.</li>
-          <li>Creates examiner-style prompts you can rehearse in 10–15 minutes.</li>
-          <li>Builds short checklists you can skim right before entering the exam hall.</li>
-        </ul>
-        <p>
-          You bring your clinical knowledge; DentAIstudy organises it into a repeatable, exam-ready routine.
-        </p>
-        <p><a href="../study.html" class="btn btn-primary">Try Study Builder →</a></p>
-
-        <h2>References</h2>
-        <ul>
-          <li>General Dental Council. <em>Preparing for Dental OSCE and Clinical Assessments</em>. GDC guidance documents.</li>
-          <li>Harden RM, Stevenson M, Downie WW, Wilson GM. Assessment of clinical competence using objective structured examination. <em>Br Med J</em>. 1975;1(5955):447-451.</li>
-          <li>Khan K, Ramachandran S. Conceptual framework for performance assessment: competency, OSCE and portfolio. <em>Clin Teach</em>. 2012;9(1):27-31.</li>
-          <li>Clinical communication skills literature for dental and healthcare professional examinations.</li>
-        </ul>
-
-      </article>
-
-    </div>
-  </main>
-
-  <footer class="site-footer">
-    <div class="container">
-      <div class="footer-top">
-        <div>
-          <div class="footer-brand">DentAIstudy</div>
-          <p>AI-enhanced tools for dental students and residents.</p>
-        </div>
-
-        <div class="footer-column">
-          <h4>Product</h4>
+        <div class="slide-nav-links">
           <a href="../subjects.html">Subjects</a>
           <a href="../study.html">Study builder</a>
           <a href="../blogs.html">Blogs</a>
-        </div>
-
-        <div class="footer-column">
-          <h4>Company</h4>
-          <a href="../about.html">About</a>
+          <a href="../pricing.html">Pricing</a>
           <a href="../contact.html">Contact</a>
-          <a href="../faqs.html">FAQ</a>
+          <a href="../login.html" class="slide-login-link">Log in</a>
         </div>
+      </nav>
 
-        <div class="footer-column">
-          <h4>Legal</h4>
-          <a href="../privacy.html">Privacy Policy</a>
-          <a href="../terms.html">Terms &amp; Conditions</a>
-          <a href="../cookies.html">Cookies Policy</a>
-          <a href="../disclaimer.html">Disclaimer</a>
+      <main class="section">
+        <div class="container container-narrow">
+          <div class="section-header" style="text-align: left">
+            <div class="section-kicker">OSCE checklist</div>
+            <h1 class="section-title">
+              Universal OSCE Checklist for Any Dental Case
+            </h1>
+            <p class="section-subtitle">
+              A simple, repeatable OSCE structure you can use for any dental
+              case with confidence.
+            </p>
+          </div>
+
+          <section class="study-answer-card">
+            <h2>Quick Answers</h2>
+
+            <h3>What is a universal OSCE checklist?</h3>
+            <p>
+              A fixed sequence you repeat in every station: identity, history,
+              exam, diagnosis, and safe plan.
+            </p>
+
+            <h3>Does it work for all dental cases?</h3>
+            <p>
+              Yes — pain, swelling, trauma, prosthodontic planning, perio, and
+              counselling can all follow the same skeleton.
+            </p>
+
+            <h3>Why is it useful for board exams?</h3>
+            <p>
+              Exams like ORE, ADC, NBDE/INBDE, MFDS, and NDEB reward structure,
+              safety, and clear reasoning more than rare details.
+            </p>
+
+            <h3>How do I remember it under pressure?</h3>
+            <p>
+              Use one short phrase per step and practice it on different mock
+              cases until it becomes automatic.
+            </p>
+          </section>
+
+          <article class="blog-body">
+            <h2>1. Why you need a universal checklist</h2>
+            <p>
+              In OSCEs you change stations, topics, and examiners quickly. What
+              should stay the same is <strong>your process</strong>. A universal
+              checklist means you never start from zero; you always know what
+              the next step is.
+            </p>
+            <p>
+              Instead of thinking, “What do I ask now?” you just follow your
+              routine and adapt the details to the case in front of you.
+            </p>
+
+            <h2>2. The core universal OSCE checklist</h2>
+            <div class="study-form-card">
+              <h3>Universal OSCE flow (remember: I–H–E–D–P–S)</h3>
+              <p>
+                1. <strong>I</strong>ntroduce &amp; identify – greet, confirm
+                name, age, and consent to talk.<br />
+                2. <strong>H</strong>istory – chief complaint, duration, pain
+                features, medical and dental history, red flags.<br />
+                3. <strong>E</strong>xamination / explanation – focused
+                extraoral and intraoral exam, or explain options if it is a
+                counselling station.<br />
+                4. <strong>D</strong>iagnosis / differentials – state the most
+                likely diagnosis and reasonable alternatives.<br />
+                5. <strong>P</strong>lan – investigations, immediate management,
+                definitive treatment, and follow-up.<br />
+                6. <strong>S</strong>afety-net &amp; summary – recap, check
+                understanding, mention red-flag symptoms, and thank the patient.
+              </p>
+            </div>
+            <p>
+              Whether the station is acute pain, postoperative swelling, denture
+              complaints, or periodontal review, this skeleton stays the same.
+            </p>
+
+            <h2>3. How to adapt it to any dental case</h2>
+            <p>
+              Think of the checklist as a template you fill with case-specific
+              details:
+            </p>
+            <ul>
+              <li>
+                <strong>Pain station:</strong> emphasize SOCRATES pain
+                questions, analgesia, and pulpal tests.
+              </li>
+              <li>
+                <strong>Swelling or infection:</strong> add systemic review,
+                airway and dysphagia questions, and emergency red flags.
+              </li>
+              <li>
+                <strong>Prosthodontic planning:</strong> focus history on
+                function, aesthetics, expectations, and previous prostheses.
+              </li>
+              <li>
+                <strong>Trauma:</strong> ask about mechanism, time since injury,
+                loss of consciousness, tetanus, and safeguarding if needed.
+              </li>
+              <li>
+                <strong>Perio or maintenance:</strong> highlight habits
+                (brushing, flossing, smoking), risk factors, and motivation.
+              </li>
+            </ul>
+            <p>
+              The topics change, but the order does not. This is what keeps you
+              calm and consistent across OSCE circuits.
+            </p>
+
+            <h2>4. Micro phrases that carry you through the station</h2>
+            <p>
+              Use short sentences to signpost each stage of the checklist for
+              the examiner:
+            </p>
+            <ul>
+              <li>
+                “To start, I’d like to confirm your details and why you came
+                today.”
+              </li>
+              <li>
+                “I’ll now ask a few questions about the pain and your general
+                health.”
+              </li>
+              <li>“Next, I’d like to examine inside and around your mouth.”</li>
+              <li>
+                “From what you’ve told me and what I see, the most likely
+                diagnosis is…”
+              </li>
+              <li>
+                “The plan I suggest is … and I’ll also explain what to watch out
+                for at home.”
+              </li>
+              <li>
+                “Before we finish, let me summarise and check if you have any
+                questions.”
+              </li>
+            </ul>
+            <p>
+              These phrases make your structure visible, which helps examiners
+              follow your reasoning and award marks quickly.
+            </p>
+
+            <h2>5. Using the checklist in common dental OSCEs</h2>
+            <p>Here is how the same flow fits three typical stations:</p>
+            <ul>
+              <li>
+                <strong>Acute irreversible pulpitis:</strong> Introduce → pain
+                history → cold test explanation → diagnosis → discuss emergency
+                RCT or extraction → safety-net if pain worsens.
+              </li>
+              <li>
+                <strong>Extraction consent:</strong> Introduce → reason for
+                extraction → relevant medical history (bleeding, anticoagulants,
+                allergies) → explain procedure, risks, alternatives → confirm
+                understanding.
+              </li>
+              <li>
+                <strong>Postoperative instructions:</strong> Introduce → check
+                how patient feels → clarify what was done → give stepwise
+                instructions (bite on gauze, avoid rinsing, no smoking) → red
+                flags and follow-up.
+              </li>
+            </ul>
+            <p>
+              Once you practice a few of these, your brain starts to
+              automatically fill the checklist every time you see a new case.
+            </p>
+
+            <h2>6. Practice plan: turn it into muscle memory</h2>
+            <div class="study-form-card">
+              <h3>10-minute drill you can repeat daily</h3>
+              <p>
+                1. Pick one topic (e.g. periapical abscess, failed RCT, complete
+                denture review).<br />
+                2. Set a 10-minute timer.<br />
+                3. Talk through the I–H–E–D–P–S checklist out loud, as if you
+                are in an OSCE station.<br />
+                4. After the timer, write down what you missed and add 2–3
+                better phrases for next time.<br />
+                5. Repeat with a new topic tomorrow — same checklist, different
+                content.
+              </p>
+            </div>
+            <p>
+              In less than two weeks, you can rehearse dozens of cases with one
+              stable structure instead of memorising hundreds of scripts.
+            </p>
+
+            <h2>7. How DentAIstudy helps</h2>
+            <p>
+              DentAIstudy is built to generate structured flows that match how
+              examiners think, not how textbooks are printed.
+            </p>
+            <ul>
+              <li>
+                Converts any written case into a clear I–H–E–D–P–S OSCE flow.
+              </li>
+              <li>
+                Highlights red-flag history questions and safety-net advice for
+                each topic.
+              </li>
+              <li>
+                Creates examiner-style prompts you can rehearse in 10–15
+                minutes.
+              </li>
+              <li>
+                Builds short checklists you can skim right before entering the
+                exam hall.
+              </li>
+            </ul>
+            <p>
+              You bring your clinical knowledge; DentAIstudy organises it into a
+              repeatable, exam-ready routine.
+            </p>
+            <p>
+              <a href="../study.html" class="btn btn-primary"
+                >Try Study Builder →</a
+              >
+            </p>
+
+            <h2>References</h2>
+            <ul>
+              <li>
+                General Dental Council.
+                <em>Preparing for Dental OSCE and Clinical Assessments</em>. GDC
+                guidance documents.
+              </li>
+              <li>
+                Harden RM, Stevenson M, Downie WW, Wilson GM. Assessment of
+                clinical competence using objective structured examination.
+                <em>Br Med J</em>. 1975;1(5955):447-451.
+              </li>
+              <li>
+                Khan K, Ramachandran S. Conceptual framework for performance
+                assessment: competency, OSCE and portfolio. <em>Clin Teach</em>.
+                2012;9(1):27-31.
+              </li>
+              <li>
+                Clinical communication skills literature for dental and
+                healthcare professional examinations.
+              </li>
+            </ul>
+          </article>
         </div>
-      </div>
+      </main>
 
-      <div class="footer-bottom">
-        © 2025 DentAIstudy. All rights reserved.
-      </div>
+      <footer class="site-footer">
+        <div class="container">
+          <div class="footer-top">
+            <div>
+              <div class="footer-brand">DentAIstudy</div>
+              <p>AI-enhanced tools for dental students and residents.</p>
+              <div class="footer-social">
+                <a
+                  href="https://www.tiktok.com/@dentaistudy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="DentAIstudy on TikTok"
+                >
+                  <img src="../assets/img/footer-icons/tiktok-icon.png" alt="TikTok" class="footer-social-img">
+                </a>
+              
+                <a
+                  href="mailto:info@dentaistudy.com"
+                  aria-label="Contact DentAIstudy by email"
+                >
+                  <img src="../assets/img/footer-icons/email-icon.png" alt="Email" class="footer-social-img">
+                </a>
+              </div>
+            </div>
+
+           <div class="footer-column">
+              <h4>Product</h4>
+              <a href="../subjects.html">Subjects</a>
+              <a href="../study.html">Study builder</a>
+              <a href="../blogs.html">Blogs</a>
+              <a href="../pricing.html">Pricing</a>
+            </div>
+
+            <div class="footer-column">
+              <h4>Company</h4>
+              <a href="../about.html">About</a>
+              <a href="../contact.html">Contact</a>
+              <a href="../faqs.html">FAQ</a>
+            </div>
+
+            <div class="footer-column">
+              <h4>Legal</h4>
+              <a href="../privacy.html">Privacy Policy</a>
+              <a href="../terms.html">Terms &amp; Conditions</a>
+              <a href="../cookies.html">Cookies Policy</a>
+              <a href="../disclaimer.html">Disclaimer</a>
+              <a href="../billing.html">Billing</a>
+              <a href="../refund-policy.html">Refunds</a>
+            </div>
+          </div>
+
+          <div class="footer-bottom">
+            © 2025 DentAIstudy. All rights reserved.
+          </div>
+        </div>
+      </footer>
     </div>
-  </footer>
-
-</div>
-
-
-</body>
+  </body>
 </html>

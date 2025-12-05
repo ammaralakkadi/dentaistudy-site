@@ -1,216 +1,326 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pulpotomy vs Pulpectomy in Primary Teeth – DentAIstudy</title>
-  <link rel="stylesheet" href="../assets/css/style-v3.css" />
-  <link rel="icon" type="image/png" sizes="512x512" href="../assets/img/favicon.png?v=2" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pulpotomy vs Pulpectomy in Primary Teeth – DentAIstudy</title>
+    <link rel="stylesheet" href="../assets/css/style-v3.css" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="512x512"
+      href="../assets/img/favicon.png?v=2"
+    />
 
-  <!-- JS: Supabase + Auth Guard + Logout + Main -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-  <script src="../assets/js/auth-client.js" defer></script>
-  <script src="../assets/js/auth-guard.js" defer></script>
-  <script src="../assets/js/auth-logout.js" defer></script>
-  <script defer src="../assets/js/main.js"></script>
-</head>
+    <!-- JS: Supabase + Auth Guard + Logout + Main -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+      defer
+    ></script>
+    <script src="../assets/js/auth-client.js" defer></script>
+    <script src="../assets/js/auth-guard.js" defer></script>
+    <script src="../assets/js/auth-logout.js" defer></script>
+    <script defer src="../assets/js/main.js"></script>
+  </head>
 
-<body>
-<div class="main-wrapper">
+  <body>
+    <div class="main-wrapper">
+      <!-- HEADER -->
+      <header class="site-header">
+        <div class="container header-inner">
+          <a class="brand" href="../index.html"
+            ><span>Dent</span><span>AIstudy</span></a
+          >
+          <nav class="header-nav">
+            <a href="../subjects.html">Subjects</a>
+            <a href="../study.html">Study builder</a>
+            <a href="../blogs.html" class="is-active">Blogs</a>
+            <a href="../pricing.html">Pricing</a>
+            <a href="../contact.html">Contact</a>
+          </nav>
+          <div class="header-right">
+            <a href="../login.html" class="btn btn-outline header-login"
+              >Log in</a
+            >
+            <a href="../signup.html" class="btn btn-primary header-signup"
+              >Sign up</a
+            >
+            <button class="menu-toggle">
+              <span></span><span></span><span></span>
+            </button>
+          </div>
+        </div>
+      </header>
 
-<!-- HEADER -->
-<header class="site-header">
-  <div class="container header-inner">
-    <a class="brand" href="../index.html"><span>Dent</span><span>AIstudy</span></a>
-    <nav class="header-nav">
-      <a href="../subjects.html">Subjects</a>
-      <a href="../study.html">Study builder</a>
-      <a href="../blogs.html" class="is-active">Blogs</a>
-      <a href="../about.html">About</a>
-      <a href="../contact.html">Contact</a>
-    </nav>
-    <div class="header-right">
-      <a href="../login.html" class="btn btn-outline header-login">Log in</a>
-      <a href="../signup.html" class="btn btn-primary header-signup">Sign up</a>
-      <button class="menu-toggle"><span></span><span></span><span></span></button>
+      <!-- MOBILE NAV -->
+      <div class="slide-nav-backdrop"></div>
+      <nav class="slide-nav">
+        <div class="slide-nav-header">
+          <h3>Menu</h3>
+          <button class="slide-nav-close">&times;</button>
+        </div>
+        <div class="slide-nav-links">
+          <a href="../subjects.html">Subjects</a>
+          <a href="../study.html">Study builder</a>
+          <a href="../blogs.html">Blogs</a>
+          <a href="../pricing.html">Pricing</a>
+          <a href="../contact.html">Contact</a>
+          <a href="../login.html" class="slide-login-link">Log in</a>
+        </div>
+      </nav>
+
+      <!-- BLOG BODY -->
+      <main class="section">
+        <div class="container container-narrow">
+          <div class="section-header" style="text-align: left">
+            <div class="section-kicker">Pediatric Dentistry</div>
+            <h1 class="section-title">
+              Pulpotomy vs Pulpectomy in Primary Teeth (Simple OSCE Guide)
+            </h1>
+            <p class="section-subtitle">
+              A simple OSCE guide to choosing between pulpotomy and pulpectomy
+              in primary teeth.
+            </p>
+          </div>
+
+          <!-- SNIPPET BLOCK -->
+          <section class="study-answer-card">
+            <h2>Quick Answers</h2>
+
+            <h3>What is pulpotomy?</h3>
+            <p>
+              Removal of the coronal pulp only, keeping the radicular pulp vital
+              and protected with a medicament.
+            </p>
+
+            <h3>What is pulpectomy?</h3>
+            <p>
+              Complete removal of coronal and radicular pulp, cleaning canals
+              and filling them with a resorbable material.
+            </p>
+
+            <h3>When do you choose pulpotomy?</h3>
+            <p>
+              Vital pulp with normal/reversible pulpitis and no signs of
+              radicular infection.
+            </p>
+
+            <h3>When do you choose pulpectomy?</h3>
+            <p>
+              Non-vital pulp or irreversible pulpitis with infection signs but
+              the tooth is still restorable.
+            </p>
+          </section>
+
+          <!-- MAIN ARTICLE -->
+          <article class="blog-body">
+            <h2>1. Why this topic is always tested</h2>
+            <p>
+              In OSCE and viva stations, examiners want to see that you can:
+            </p>
+            <ul>
+              <li>diagnose pulp status correctly,</li>
+              <li>choose the right procedure,</li>
+              <li>justify the choice using guidelines.</li>
+            </ul>
+            <p>
+              Most failures happen because students treat based on radiographs
+              alone.
+            </p>
+
+            <h2>2. The simplest way to decide</h2>
+            <p>Think like this:</p>
+
+            <div class="study-form-card">
+              <h3>Decision Rule</h3>
+              <p>
+                <strong>Vital radicular pulp → Pulpotomy</strong><br />
+                <strong
+                  >Non-vital / infected radicular pulp → Pulpectomy</strong
+                >
+              </p>
+            </div>
+
+            <h2>3. Indications for pulpotomy (primary teeth)</h2>
+            <p>
+              AAPD guidelines support pulpotomy when the pulp is still vital.
+            </p>
+            <ul>
+              <li>Carious or traumatic exposure in a restorable tooth</li>
+              <li>Normal pulp or reversible pulpitis</li>
+              <li>No swelling, sinus tract, or pathological mobility</li>
+              <li>No radiographic furcation/periapical lesion</li>
+              <li>Hemostasis is achievable after coronal pulp removal</li>
+            </ul>
+
+            <h2>4. Indications for pulpectomy (primary teeth)</h2>
+            <p>
+              Pulpectomy is for infected or necrotic radicular pulp in a tooth
+              worth saving.
+            </p>
+            <ul>
+              <li>Irreversible pulpitis or pulp necrosis</li>
+              <li>Spontaneous pain or night pain history</li>
+              <li>Sinus tract / swelling or tenderness to percussion</li>
+              <li>Radiolucency at furcation or apex</li>
+              <li>Tooth is restorable and root resorption is not excessive</li>
+            </ul>
+
+            <h2>5. Key clinical clues examiners expect you to mention</h2>
+            <ul>
+              <li>
+                <strong>Pulpotomy clue:</strong> bright red bleeding that stops
+                within a few minutes
+              </li>
+              <li>
+                <strong>Pulpectomy clue:</strong> little/no bleeding or dark,
+                purulent bleeding
+              </li>
+            </ul>
+            <p>
+              Bleeding quality tells you the radicular pulp status more than any
+              radiograph.
+            </p>
+
+            <h2>6. Materials commonly used</h2>
+
+            <div class="study-form-card">
+              <h3>Pulpotomy Medicaments</h3>
+              <ul>
+                <li>MTA / Biodentine (high success, biocompatible)</li>
+                <li>Ferric sulfate</li>
+                <li>Formocresol (still taught but less favored now)</li>
+              </ul>
+            </div>
+
+            <div class="study-form-card">
+              <h3>Pulpectomy Fillings</h3>
+              <ul>
+                <li>Resorbable paste (iodoform-based)</li>
+                <li>ZOE-based materials</li>
+              </ul>
+            </div>
+
+            <p>
+              Recent evidence supports pulpotomy using modern calcium-silicate
+              materials as a strong option in many vital cases.
+            </p>
+
+            <h2>7. OSCE-style model answer</h2>
+
+            <div class="study-form-card">
+              <h3>Example Viva / OSCE Answer</h3>
+              <p>
+                “This primary molar is restorable and shows vital pulp signs
+                with no radiographic furcation lesion. I would perform a
+                <strong>pulpotomy</strong>. My justification is: symptoms
+                suggest reversible pulpitis, bleeding should be controllable,
+                and AAPD guidelines recommend pulpotomy for vital primary teeth
+                with carious exposure.”
+              </p>
+            </div>
+
+            <h2>8. Common student mistakes</h2>
+            <ul>
+              <li>Doing pulpotomy despite furcation radiolucency</li>
+              <li>
+                Ignoring clinical signs because the radiograph looks “light”
+              </li>
+              <li>Skipping hemostasis check</li>
+              <li>Choosing pulpectomy for a non-restorable tooth</li>
+            </ul>
+
+            <h2>9. How DentAIstudy helps</h2>
+            <p>DentAIstudy converts pediatric cases into:</p>
+            <ul>
+              <li>OSCE flow answers</li>
+              <li>Viva-ready justification scripts</li>
+              <li>Flashcards on indications & materials</li>
+              <li>High-yield pediatric notes</li>
+            </ul>
+            <p>
+              <a href="../study.html" class="btn btn-primary"
+                >Try Study Builder →</a
+              >
+            </p>
+
+            <h2>References</h2>
+            <ul>
+              <li>
+                American Academy of Pediatric Dentistry (AAPD).
+                <i>Vital Pulp Therapies in Primary Teeth</i>, 2024.
+              </li>
+              <li>
+                AAPD. <i>Use of Non-Vital Pulp Therapies in Primary Teeth</i>.
+              </li>
+              <li>
+                Maldupa I, et al. Guideline comparison for pulpectomy
+                indications. <i>BDJ Open</i>, 2024.
+              </li>
+              <li>
+                Philip N, et al. Pulpotomy vs pulpectomy outcomes in vital
+                primary molars. <i>BMC Oral Health</i>, 2024.
+              </li>
+              <li>
+                Coll JA, et al. Evidence-based decision tree for VPT in primary
+                teeth. 2024.
+              </li>
+            </ul>
+          </article>
+        </div>
+      </main>
+
+      <!-- FOOTER -->
+      <footer class="site-footer">
+        <div class="container">
+          <div class="footer-top">
+            <div>
+              <div class="footer-brand">DentAIstudy</div>
+              <p>AI-enhanced tools for dental students and residents.</p>
+              <div class="footer-social">
+                <a
+                  href="https://www.tiktok.com/@dentaistudy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="DentAIstudy on TikTok"
+                >
+                  <img src="../assets/img/footer-icons/tiktok-icon.png" alt="TikTok" class="footer-social-img">
+                </a>
+              
+                <a
+                  href="mailto:info@dentaistudy.com"
+                  aria-label="Contact DentAIstudy by email"
+                >
+                  <img src="../assets/img/footer-icons/email-icon.png" alt="Email" class="footer-social-img">
+                </a>
+              </div>
+            </div>
+            <div class="footer-column">
+              <h4>Product</h4>
+              <a href="../subjects.html">Subjects</a
+              ><a href="../study.html">Study builder</a
+              ><a href="../blogs.html">Blogs</a>
+              <a href="../pricing.html">Pricing</a>
+            </div>
+            <div class="footer-column">
+              <h4>Company</h4>
+              <a href="../about.html">About</a
+              ><a href="../contact.html">Contact</a
+              ><a href="../faqs.html">FAQ</a>
+            </div>
+            <div class="footer-column">
+              <h4>Legal</h4>
+              <a href="../privacy.html">Privacy Policy</a
+              ><a href="../terms.html">Terms & Conditions</a
+              ><a href="../cookies.html">Cookies Policy</a
+              ><a href="../disclaimer.html">Disclaimer</a>
+              <a href="../billing.html">Billing</a>
+              <a href="../refund-policy.html">Refunds</a>
+            </div>
+          </div>
+          <div class="footer-bottom">© 2025 DentAIstudy</div>
+        </div>
+      </footer>
     </div>
-  </div>
-</header>
-
-<!-- MOBILE NAV -->
-<div class="slide-nav-backdrop"></div>
-<nav class="slide-nav">
-  <div class="slide-nav-header"><h3>Menu</h3><button class="slide-nav-close">&times;</button></div>
-  <div class="slide-nav-links">
-    <a href="../subjects.html">Subjects</a>
-    <a href="../study.html">Study builder</a>
-    <a href="../blogs.html">Blogs</a>
-    <a href="../about.html">About</a>
-    <a href="../contact.html">Contact</a>
-    <a href="../login.html" class="slide-login-link">Log in</a>
-  </div>
-</nav>
-
-<!-- BLOG BODY -->
-<main class="section">
-  <div class="container container-narrow">
-
-    <div class="section-header" style="text-align:left;">
-      <div class="section-kicker">Pediatric Dentistry</div>
-      <h1 class="section-title">Pulpotomy vs Pulpectomy in Primary Teeth (Simple OSCE Guide)</h1>
-      <p class="section-subtitle">
-        A simple OSCE guide to choosing between pulpotomy and pulpectomy in primary teeth.
-      </p>
-    </div>
-
-    <!-- SNIPPET BLOCK -->
-    <section class="study-answer-card">
-      <h2>Quick Answers</h2>
-
-      <h3>What is pulpotomy?</h3>
-      <p>Removal of the coronal pulp only, keeping the radicular pulp vital and protected with a medicament. </p>
-
-      <h3>What is pulpectomy?</h3>
-      <p>Complete removal of coronal and radicular pulp, cleaning canals and filling them with a resorbable material. </p>
-
-      <h3>When do you choose pulpotomy?</h3>
-      <p>Vital pulp with normal/reversible pulpitis and no signs of radicular infection. </p>
-
-      <h3>When do you choose pulpectomy?</h3>
-      <p>Non-vital pulp or irreversible pulpitis with infection signs but the tooth is still restorable. </p>
-    </section>
-
-    <!-- MAIN ARTICLE -->
-    <article class="blog-body">
-
-      <h2>1. Why this topic is always tested</h2>
-      <p>In OSCE and viva stations, examiners want to see that you can:</p>
-      <ul>
-        <li>diagnose pulp status correctly,</li>
-        <li>choose the right procedure,</li>
-        <li>justify the choice using guidelines.</li>
-      </ul>
-      <p>Most failures happen because students treat based on radiographs alone.</p>
-
-      <h2>2. The simplest way to decide</h2>
-      <p>Think like this:</p>
-
-      <div class="study-form-card">
-        <h3>Decision Rule</h3>
-        <p>
-          <strong>Vital radicular pulp → Pulpotomy</strong><br>
-          <strong>Non-vital / infected radicular pulp → Pulpectomy</strong>
-        </p>
-      </div>
-
-      <h2>3. Indications for pulpotomy (primary teeth)</h2>
-      <p>AAPD guidelines support pulpotomy when the pulp is still vital. </p>
-      <ul>
-        <li>Carious or traumatic exposure in a restorable tooth</li>
-        <li>Normal pulp or reversible pulpitis</li>
-        <li>No swelling, sinus tract, or pathological mobility</li>
-        <li>No radiographic furcation/periapical lesion</li>
-        <li>Hemostasis is achievable after coronal pulp removal</li>
-      </ul>
-
-      <h2>4. Indications for pulpectomy (primary teeth)</h2>
-      <p>Pulpectomy is for infected or necrotic radicular pulp in a tooth worth saving. </p>
-      <ul>
-        <li>Irreversible pulpitis or pulp necrosis</li>
-        <li>Spontaneous pain or night pain history</li>
-        <li>Sinus tract / swelling or tenderness to percussion</li>
-        <li>Radiolucency at furcation or apex</li>
-        <li>Tooth is restorable and root resorption is not excessive</li>
-      </ul>
-
-      <h2>5. Key clinical clues examiners expect you to mention</h2>
-      <ul>
-        <li><strong>Pulpotomy clue:</strong> bright red bleeding that stops within a few minutes</li>
-        <li><strong>Pulpectomy clue:</strong> little/no bleeding or dark, purulent bleeding</li>
-      </ul>
-      <p>Bleeding quality tells you the radicular pulp status more than any radiograph.</p>
-
-      <h2>6. Materials commonly used</h2>
-
-      <div class="study-form-card">
-        <h3>Pulpotomy Medicaments</h3>
-        <ul>
-          <li>MTA / Biodentine (high success, biocompatible)</li>
-          <li>Ferric sulfate</li>
-          <li>Formocresol (still taught but less favored now)</li>
-        </ul>
-      </div>
-
-      <div class="study-form-card">
-        <h3>Pulpectomy Fillings</h3>
-        <ul>
-          <li>Resorbable paste (iodoform-based)</li>
-          <li>ZOE-based materials</li>
-        </ul>
-      </div>
-
-      <p>Recent evidence supports pulpotomy using modern calcium-silicate materials as a strong option in many vital cases. </p>
-
-      <h2>7. OSCE-style model answer</h2>
-
-      <div class="study-form-card">
-        <h3>Example Viva / OSCE Answer</h3>
-        <p>
-          “This primary molar is restorable and shows vital pulp signs with no radiographic furcation lesion.
-          I would perform a <strong>pulpotomy</strong>.
-          My justification is: symptoms suggest reversible pulpitis, bleeding should be controllable,
-          and AAPD guidelines recommend pulpotomy for vital primary teeth with carious exposure.”
-        </p>
-      </div>
-
-      <h2>8. Common student mistakes</h2>
-      <ul>
-        <li>Doing pulpotomy despite furcation radiolucency</li>
-        <li>Ignoring clinical signs because the radiograph looks “light”</li>
-        <li>Skipping hemostasis check</li>
-        <li>Choosing pulpectomy for a non-restorable tooth</li>
-      </ul>
-
-      <h2>9. How DentAIstudy helps</h2>
-      <p>DentAIstudy converts pediatric cases into:</p>
-      <ul>
-        <li>OSCE flow answers</li>
-        <li>Viva-ready justification scripts</li>
-        <li>Flashcards on indications & materials</li>
-        <li>High-yield pediatric notes</li>
-      </ul>
-      <p><a href="../study.html" class="btn btn-primary">Try Study Builder →</a></p>
-
-      <h2>References</h2>
-      <ul>
-        <li>American Academy of Pediatric Dentistry (AAPD). <i>Vital Pulp Therapies in Primary Teeth</i>, 2024. </li>
-        <li>AAPD. <i>Use of Non-Vital Pulp Therapies in Primary Teeth</i>. </li>
-        <li>Maldupa I, et al. Guideline comparison for pulpectomy indications. <i>BDJ Open</i>, 2024. </li>
-        <li>Philip N, et al. Pulpotomy vs pulpectomy outcomes in vital primary molars. <i>BMC Oral Health</i>, 2024. </li>
-        <li>Coll JA, et al. Evidence-based decision tree for VPT in primary teeth. 2024. </li>
-      </ul>
-
-    </article>
-  </div>
-</main>
-
-<!-- FOOTER -->
-<footer class="site-footer">
-  <div class="container">
-    <div class="footer-top">
-      <div>
-        <div class="footer-brand">DentAIstudy</div>
-        <p>AI-enhanced tools for dental students and residents.</p>
-      </div>
-      <div class="footer-column"><h4>Product</h4><a href="../subjects.html">Subjects</a><a href="../study.html">Study builder</a><a href="../blogs.html">Blogs</a></div>
-      <div class="footer-column"><h4>Company</h4><a href="../about.html">About</a><a href="../contact.html">Contact</a><a href="../faqs.html">FAQ</a></div>
-      <div class="footer-column"><h4>Legal</h4><a href="../privacy.html">Privacy Policy</a><a href="../terms.html">Terms & Conditions</a><a href="../cookies.html">Cookies Policy</a><a href="../disclaimer.html">Disclaimer</a></div>
-    </div>
-    <div class="footer-bottom">© 2025 DentAIstudy</div>
-  </div>
-</footer>
-
-
-</div>
-</body>
+  </body>
 </html>

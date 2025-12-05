@@ -1,223 +1,267 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Contact – DentAIstudy</title>
-  <link rel="stylesheet" href="assets/css/style-v3.css" />
-  <link rel="icon" type="image/png" sizes="512x512" href="assets/img/favicon.png?v=2" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact – DentAIstudy</title>
+    <link rel="stylesheet" href="assets/css/style-v3.css" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="512x512"
+      href="assets/img/favicon.png?v=2"
+    />
 
-  <!-- JS: Supabase + Auth Guard + Logout + Main -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-  <script src="assets/js/auth-client.js" defer></script>
-  <script src="assets/js/auth-guard.js" defer></script>
-  <script src="assets/js/auth-logout.js" defer></script>
-  <script defer src="assets/js/main.js"></script>
-  <script src="assets/js/contact.js" defer></script>
+    <!-- JS: Supabase + Auth Guard + Logout + Main -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+      defer
+    ></script>
+    <script src="assets/js/auth-client.js" defer></script>
+    <script src="assets/js/auth-guard.js" defer></script>
+    <script src="assets/js/auth-logout.js" defer></script>
+    <script defer src="assets/js/main.js"></script>
+    <script src="assets/js/contact.js" defer></script>
+  </head>
 
-</head>
+  <body>
+    <div class="main-wrapper">
+      <!-- HEADER -->
+      <header class="site-header">
+        <div class="container header-inner">
+          <a class="brand" href="index.html">
+            <span>Dent</span><span>AIstudy</span>
+          </a>
 
-<body>
-<div class="main-wrapper">
+          <nav class="header-nav">
+            <a href="subjects.html">Subjects</a>
+            <a href="study.html">Study builder</a>
+            <a href="blogs.html">Blogs</a>
+            <a href="pricing.html">Pricing</a>
+            <a href="contact.html">Contact</a>
+          </nav>
 
-  <!-- HEADER -->
-  <header class="site-header">
-    <div class="container header-inner">
-      <a class="brand" href="index.html">
-        <span>Dent</span><span>AIstudy</span>
-      </a>
-
-      <nav class="header-nav">
-        <a href="subjects.html">Subjects</a>
-        <a href="study.html">Study builder</a>
-        <a href="blogs.html">Blogs</a>
-        <a href="pricing.html">Pricing</a>
-        <a href="contact.html">Contact</a>
-      </nav>
-
-      <div class="header-right">
-        <a href="login.html" class="btn btn-outline header-login">Log in</a>
-        <a href="signup.html" class="btn btn-primary header-signup">Sign up</a>
-        <button class="menu-toggle" aria-label="Open menu">
-          <span></span><span></span><span></span>
-        </button>
-      </div>
-    </div>
-  </header>
-
-  <!-- MOBILE NAV -->
-  <div class="slide-nav-backdrop"></div>
-  <nav class="slide-nav">
-    <div class="slide-nav-header">
-      <h3>Menu</h3>
-      <button class="slide-nav-close" aria-label="Close menu">&times;</button>
-    </div>
-    <div class="slide-nav-links">
-      <a href="subjects.html">Subjects</a>
-      <a href="study.html">Study builder</a>
-      <a href="blogs.html">Blogs</a>
-      <a href="pricing.html">Pricing</a>
-      <a href="contact.html">Contact</a>
-      <a href="login.html" class="slide-login-link">Log in</a>
-    </div>
-  </nav>
-
-  <!-- CONTACT HERO -->
-  <section class="section">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-kicker">Contact</div>
-        <h1 class="section-title">Get in touch with the team</h1>
-        <p class="section-subtitle">
-          We’re a small team focused on building better study tools. If you have questions, ideas, or feedback, we’d like to hear them.
-        </p>
-      </div>
-
-      <div class="contact-grid">
-
-        <!-- FORM -->
-        <section class="study-form-card">
-          <h2 style="margin:0 0 6px;font-size:0.98rem;">Send a message</h2>
-          <p style="font-size:0.88rem;color:#6b7280;margin:0 0 12px;">
-            Have a question about DentAIstudy, your account, or a feature idea? Use this form and we’ll get back to you.
-          </p>
-
-          <form
-          class="auth-form"
-          id="contact-form"
-          style="margin-top:6px;"
-        >
-          <div class="form-group">
-            <label>Name</label>
-            <input
-              id="contact-name"
-              type="text"
-              placeholder="Your name"
-            />
+          <div class="header-right">
+            <a href="login.html" class="btn btn-outline header-login">Log in</a>
+            <a href="signup.html" class="btn btn-primary header-signup"
+              >Sign up</a
+            >
+            <button class="menu-toggle" aria-label="Open menu">
+              <span></span><span></span><span></span>
+            </button>
           </div>
-
-          <div class="form-group">
-            <label>Email</label>
-            <input
-              id="contact-email"
-              type="email"
-              placeholder="you@example.com"
-            />
-          </div>
-
-          <div class="form-group">
-            <label>Topic</label>
-            <input
-              id="contact-topic"
-              type="text"
-              placeholder="Subject of your message"
-            />
-          </div>
-
-          <div class="form-group">
-            <label>Message</label>
-            <textarea
-              id="contact-message"
-              rows="5"
-              placeholder="Write your message here..."
-            ></textarea>
-          </div>
-
-          <button class="btn btn-primary" type="submit">Send message</button>
-
-          <p
-            id="contact-status"
-            style="margin-top:8px;font-size:0.85rem;color:#6b7280;"
-          ></p>
-        </form>
-        </section>
-
-        <!-- INFO / NOTES -->
-        <aside class="study-answer-card">
-          <h2 style="margin:0 0 8px;font-size:0.95rem;">Before you write</h2>
-          <ul style="padding-left:18px;font-size:0.88rem;color:#4b5563;margin:0 0 10px;">
-            <li>DentAIstudy is for study and exam preparation only.</li>
-            <li>We don’t provide clinical advice or treatment plans.</li>
-            <li>We’re not affiliated with any university or hospital.</li>
-            <li>You can ask about data &amp; account deletion at any time.</li>
-          </ul>
-
-          <div style="margin-top:10px;">
-            <h3 style="margin:0 0 4px;font-size:0.9rem;">Response time</h3>
-            <p style="margin:0;font-size:0.85rem;color:#6b7280;">
-              We usually reply within 1–2 business days. Because we’re a small team, we may need a bit longer during exam seasons.
-            </p>
-          </div>
-
-          <div style="margin-top:12px;">
-            <h3 style="margin:0 0 4px;font-size:0.9rem;">For urgent academic issues</h3>
-            <p style="margin:0;font-size:0.85rem;color:#6b7280;">
-              Always contact your course coordinator, supervisor, or university department. DentAIstudy cannot replace official guidance.
-            </p>
-          </div>
-        </aside>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer class="site-footer">
-    <div class="container">
-      <div class="footer-top">
-        <div>
-          <div class="footer-brand">DentAIstudy</div>
-          <p>AI-enhanced tools for dental students and residents.</p>
         </div>
-        <div class="footer-column">
-          <h4>Product</h4>
+      </header>
+
+      <!-- MOBILE NAV -->
+      <div class="slide-nav-backdrop"></div>
+      <nav class="slide-nav">
+        <div class="slide-nav-header">
+          <h3>Menu</h3>
+          <button class="slide-nav-close" aria-label="Close menu">
+            &times;
+          </button>
+        </div>
+        <div class="slide-nav-links">
           <a href="subjects.html">Subjects</a>
           <a href="study.html">Study builder</a>
           <a href="blogs.html">Blogs</a>
           <a href="pricing.html">Pricing</a>
+          <a href="contact.html">Contact</a>
+          <a href="login.html" class="slide-login-link">Log in</a>
         </div>
-        <div class="footer-column">
-  <h4>Company</h4>
-  <a href="about.html">About</a>
-  <a href="contact.html">Contact</a>
-  <a href="faqs.html">FAQ</a>
-</div>
-        <div class="footer-column">
-          <h4>Legal</h4>
-          <a href="privacy.html">Privacy Policy</a>
-          <a href="terms.html">Terms & Conditions</a>
-          <a href="cookies.html">Cookies Policy</a>
-          <a href="disclaimer.html">Disclaimer</a>
-          <a href="billing.html">Billing</a>
-          <a href="refund-policy.html">Refunds</a>
+      </nav>
+
+      <!-- CONTACT HERO -->
+      <section class="section">
+        <div class="container">
+          <div class="section-header">
+            <div class="section-kicker">Contact</div>
+            <h1 class="section-title">Get in touch with the team</h1>
+            <p class="section-subtitle">
+              We’re a small team focused on building better study tools. If you
+              have questions, ideas, or feedback, we’d like to hear them.
+            </p>
+          </div>
+
+          <div class="contact-grid">
+            <!-- FORM -->
+            <section class="study-form-card">
+              <h2 style="margin: 0 0 6px; font-size: 0.98rem">
+                Send a message
+              </h2>
+              <p style="font-size: 0.88rem; color: #6b7280; margin: 0 0 12px">
+                Have a question about DentAIstudy, your account, or a feature
+                idea? Use this form and we’ll get back to you.
+              </p>
+
+              <form class="auth-form" id="contact-form" style="margin-top: 6px">
+                <div class="form-group">
+                  <label>Name</label>
+                  <input
+                    id="contact-name"
+                    type="text"
+                    placeholder="Your name"
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label>Email</label>
+                  <input
+                    id="contact-email"
+                    type="email"
+                    placeholder="you@example.com"
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label>Topic</label>
+                  <input
+                    id="contact-topic"
+                    type="text"
+                    placeholder="Subject of your message"
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label>Message</label>
+                  <textarea
+                    id="contact-message"
+                    rows="5"
+                    placeholder="Write your message here..."
+                  ></textarea>
+                </div>
+
+                <button class="btn btn-primary" type="submit">
+                  Send message
+                </button>
+
+                <p
+                  id="contact-status"
+                  style="margin-top: 8px; font-size: 0.85rem; color: #6b7280"
+                ></p>
+              </form>
+            </section>
+
+            <!-- INFO / NOTES -->
+            <aside class="study-answer-card">
+              <h2 style="margin: 0 0 8px; font-size: 0.95rem">
+                Before you write
+              </h2>
+              <ul
+                style="
+                  padding-left: 18px;
+                  font-size: 0.88rem;
+                  color: #4b5563;
+                  margin: 0 0 10px;
+                "
+              >
+                <li>DentAIstudy is for study and exam preparation only.</li>
+                <li>We don’t provide clinical advice or treatment plans.</li>
+                <li>We’re not affiliated with any university or hospital.</li>
+                <li>
+                  You can ask about data &amp; account deletion at any time.
+                </li>
+              </ul>
+
+              <div style="margin-top: 10px">
+                <h3 style="margin: 0 0 4px; font-size: 0.9rem">
+                  Response time
+                </h3>
+                <p style="margin: 0; font-size: 0.85rem; color: #6b7280">
+                  We usually reply within 1–2 business days. Because we’re a
+                  small team, we may need a bit longer during exam seasons.
+                </p>
+              </div>
+
+              <div style="margin-top: 12px">
+                <h3 style="margin: 0 0 4px; font-size: 0.9rem">
+                  For urgent academic issues
+                </h3>
+                <p style="margin: 0; font-size: 0.85rem; color: #6b7280">
+                  Always contact your course coordinator, supervisor, or
+                  university department. DentAIstudy cannot replace official
+                  guidance.
+                </p>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      <!-- FOOTER -->
+      <footer class="site-footer">
+        <div class="container">
+          <div class="footer-top">
+            <div>
+              <div class="footer-brand">DentAIstudy</div>
+              <p>AI-enhanced tools for dental students and residents.</p>
+              <div class="footer-social">
+                <a
+                  href="https://www.tiktok.com/@dentaistudy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="DentAIstudy on TikTok"
+                >
+                  <img src="assets/img/footer-icons/tiktok-icon.png" alt="TikTok" class="footer-social-img">
+                </a>
+              
+                <a
+                  href="mailto:info@dentaistudy.com"
+                  aria-label="Contact DentAIstudy by email"
+                >
+                  <img src="assets/img/footer-icons/email-icon.png" alt="Email" class="footer-social-img">
+                </a>
+              </div> 
+            </div>
+            <div class="footer-column">
+              <h4>Product</h4>
+              <a href="subjects.html">Subjects</a>
+              <a href="study.html">Study builder</a>
+              <a href="blogs.html">Blogs</a>
+              <a href="pricing.html">Pricing</a>
+            </div>
+            <div class="footer-column">
+              <h4>Company</h4>
+              <a href="about.html">About</a>
+              <a href="contact.html">Contact</a>
+              <a href="faqs.html">FAQ</a>
+            </div>
+            <div class="footer-column">
+              <h4>Legal</h4>
+              <a href="privacy.html">Privacy Policy</a>
+              <a href="terms.html">Terms & Conditions</a>
+              <a href="cookies.html">Cookies Policy</a>
+              <a href="disclaimer.html">Disclaimer</a>
+              <a href="billing.html">Billing</a>
+              <a href="refund-policy.html">Refunds</a>
+            </div>
+          </div>
+
+          <div class="footer-bottom">
+            <div>© 2025 DentAIstudy. All rights reserved.</div>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <!-- COOKIE -->
+    <div class="cookie-banner">
+      <div class="container cookie-inner">
+        <div class="cookie-text">
+          <h3>Cookies &amp; privacy</h3>
+          <p>
+            We use essential cookies to keep DentAIstudy running and to improve
+            your study experience. By continuing, you agree to our
+            <a href="cookies.html">Cookies Policy</a>.
+          </p>
+        </div>
+
+        <div class="cookie-actions">
+          <a href="cookies.html" class="btn btn-outline">Learn more</a>
+          <button class="btn btn-primary cookie-accept">Accept</button>
         </div>
       </div>
-
-      <div class="footer-bottom">
-        <div>© 2025 DentAIstudy. All rights reserved.</div>
-      </div>
     </div>
-  </footer>
-
-</div>
-
-<!-- COOKIE -->
-<div class="cookie-banner">
-  <div class="container cookie-inner">
-    <div class="cookie-text">
-      <h3>Cookies &amp; privacy</h3>
-      <p>
-        We use essential cookies to keep DentAIstudy running and to improve your study experience.
-        By continuing, you agree to our <a href="cookies.html">Cookies Policy</a>.
-      </p>
-    </div>
-
-    <div class="cookie-actions">
-      <a href="cookies.html" class="btn btn-outline">Learn more</a>
-      <button class="btn btn-primary cookie-accept">Accept</button>
-    </div>
-  </div>
-</div>
-
-</body>
+  </body>
 </html>

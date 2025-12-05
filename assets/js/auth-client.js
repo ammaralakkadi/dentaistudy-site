@@ -15,7 +15,9 @@ function dasSetupGoogleAuth() {
   if (!client || !client.auth) return;
 
   // Where to send users back after Google completes
-  const redirectTo = `https://dentaistudy.com/study.html`;
+  // Use current origin so it works on localhost / LAN IP and production domain
+  const origin = window.location.origin.replace(/\/$/, "");
+  const redirectTo = `${origin}/study.html`;
 
   const loginBtn = document.getElementById("login-google-btn");
   const signupBtn = document.getElementById("signup-google-btn");
@@ -180,4 +182,3 @@ window.dasStudyPrefs = {
   increment: incrementStudyPreference,
   summary: getStudyPreferenceSummary,
 };
-
