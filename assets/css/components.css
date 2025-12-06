@@ -65,6 +65,32 @@ a:hover { opacity: 0.7; }
 }
 .btn-outline:hover { background: #f3f4f7; }
 
+.btn-files {
+  background: #f3f4f7;
+  color: #102a43;
+  border: 1px dashed #c3cedf;
+  border-radius: 10px;
+  padding: 8px 14px;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.btn-files::before {
+  content: "+";
+  font-weight: 600;
+}
+
+.btn-files:hover {
+  background: #e5ecf7;
+}
+
+.study-input-row .btn-files {
+  align-self: flex-start;
+  display: inline-flex;
+}
 /* ------------------------------
    HEADER (dribbble-like)
 --------------------------------*/
@@ -2170,7 +2196,7 @@ a:hover { opacity: 0.7; }
 
 .study-chat-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.1fr);
+  grid-template-columns: minmax(0, 1fr);
   gap: 18px;
 }
 
@@ -2209,6 +2235,26 @@ a:hover { opacity: 0.7; }
 .study-input-help {
   font-size: 0.75rem;
   color: #6b7280;
+}
+
+.study-file-summary {
+  margin-top: 2px;
+  font-size: 0.75rem;
+  color: #6b7280;
+  display: none;
+}
+
+.study-file-summary.is-visible {
+  display: inline-block;
+}
+
+.study-file-summary.is-warning {
+  color: #b45309;
+  /* soft amber tone for warnings */
+}
+
+.study-file-input {
+  display: none;
 }
 
 .study-input-row textarea {

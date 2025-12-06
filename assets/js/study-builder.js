@@ -12,6 +12,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const copyBtn = document.getElementById("copy-answer");
   const topicInput = document.getElementById("study-topic");
   const subjectSelect = document.getElementById("study-subject");
+  const addFilesBtn = document.getElementById("study-add-file");
+  const fileInput = document.getElementById("study-file-input");
+  const fileSummary = document.getElementById("study-file-summary");
+  const MAX_FILE_COUNT = 5; // easy to tweak later
+  const MAX_FILE_SIZE_MB = 10;
+  const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
+  let attachedFiles = [];
+  const ACCESS_TIER_UNKNOWN = "unknown";
+  let userTier = ACCESS_TIER_UNKNOWN; // "guest" | "free" | "pro" | "pro_yearly"
+  let isProTier = false;
   const submitBtn =
     form && (form.querySelector('button[type="submit"]') ||
       document.getElementById("study-generate"));
@@ -38,6 +48,37 @@ document.addEventListener("DOMContentLoaded", () => {
   const ANON_DAILY_LIMIT = 2; // guest sessions per day (client-side guard)
 
   // -----------------------------
+// USER TIER RESOLUTION (Pro gating)
+// -----------------------------
+async function initUserTier() {
+  try {
+    if (!window.dasSupabase || !window.dasSupabase.auth) {
+      userTier = "guest";
+      isProTier = false;
+      return;
+    }
+
+    const { data, error } = await window.dasSupabase.auth.getSession();
+    if (error || !data || !data.session) {
+      userTier = "guest";
+      isProTier = false;
+      return;
+    }
+
+    const user = data.session.user;
+    const meta = user?.user_metadata || {};
+    const tier = meta.subscription_tier || "free";
+
+    userTier = tier;
+    isProTier = tier === "pro" || tier === "pro_yearly";
+
+  } catch (err) {
+    userTier = "guest";
+    isProTier = false;
+  }
+}
+
+// -----------------------------
   // UI HELPERS
   // -----------------------------
   function setLoading(isLoading) {
@@ -112,9 +153,14 @@ document.addEventListener("DOMContentLoaded", () => {
       ) {
         const headerLine = line.trim();
         const headerCells = headerLine
-          .slice(1, -1)
-          .split("|")
-          .map((c) => escapeHtml(c.trim()));
+        .slice(1, -1)
+        .split("|")
+        .map((c) => {
+          let h = escapeHtml(c.trim());
+          // bold inside tables: **text** -> <strong>text</strong>
+          h = h.replace(/\*\*\s*(.+?)\s*\*\*/g, "<strong>$1</strong>");
+          return h;
+        });
 
         i += 2; // skip header + separator row
 
@@ -192,6 +238,88 @@ document.addEventListener("DOMContentLoaded", () => {
   function getSelectedSubject() {
     if (!subjectSelect) return "";
     return subjectSelect.value || "";
+  }
+
+  // -----------------------------
+  // PDF FILE TEXT EXTRACTION (pdf.js)
+  // -----------------------------
+  const PDFJS_WORKER_URL =
+    "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+  const MAX_PAGES_PER_FILE = 5;
+  const MAX_FILE_TEXT_LENGTH = 12000; // characters across all PDFs
+
+  if (window.pdfjsLib && window.pdfjsLib.GlobalWorkerOptions) {
+    window.pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS_WORKER_URL;
+  }
+
+  async function extractTextFromPdfFiles(files) {
+    if (!files || files.length === 0) return "";
+
+    const pdfjsLib = window.pdfjsLib;
+    if (!pdfjsLib || !pdfjsLib.getDocument) {
+      console.warn(
+        "[study-builder] pdf.js not available; skipping file extraction."
+      );
+      return "";
+    }
+
+    let combinedText = "";
+
+    for (const file of files) {
+      if (!file) continue;
+
+      const isPdfType =
+        (file.type && file.type.toLowerCase() === "application/pdf") ||
+        (file.name && file.name.toLowerCase().endsWith(".pdf"));
+
+      if (!isPdfType) continue;
+
+      try {
+        const arrayBuffer = await file.arrayBuffer();
+        const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
+        const pdfDoc = await loadingTask.promise;
+
+        const totalPages = pdfDoc.numPages;
+        const pagesToRead = Math.min(totalPages, MAX_PAGES_PER_FILE);
+
+        for (let pageNum = 1; pageNum <= pagesToRead; pageNum++) {
+          const page = await pdfDoc.getPage(pageNum);
+          const textContent = await page.getTextContent();
+          const pageText = textContent.items
+            .map((item) => (item.str || "").trim())
+            .join(" ");
+
+          if (pageText) {
+            combinedText += "\n\n" + pageText;
+          }
+
+          if (combinedText.length >= MAX_FILE_TEXT_LENGTH) break;
+        }
+      } catch (err) {
+        console.warn(
+          "[study-builder] Failed to read PDF file",
+          file.name,
+          err
+        );
+      }
+
+      if (combinedText.length >= MAX_FILE_TEXT_LENGTH) break;
+    }
+
+    return combinedText.trim();
+  }
+
+  function buildTopicWithFiles(baseTopic, fileText) {
+    if (!fileText || !fileText.trim()) return baseTopic;
+
+    return (
+      baseTopic +
+      "\n\n---\n\n" +
+      "The following text comes from uploaded study PDFs. " +
+      "Use it as reference to generate exam-focused dental content. " +
+      "Do not repeat everything; organize it into clear OSCE steps, high-yield notes, or questions as requested:\n\n" +
+      fileText
+    );
   }
 
   // -----------------------------
@@ -286,11 +414,11 @@ document.addEventListener("DOMContentLoaded", () => {
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
 
-    const topic = topicInput ? topicInput.value.trim() : "";
+    const baseTopic = topicInput ? topicInput.value.trim() : "";
     const mode = getSelectedMode();
     const subject = getSelectedSubject();
 
-    if (!topic) {
+    if (!baseTopic) {
       showPlaceholder("Please enter a topic or question first.");
       if (topicInput) topicInput.focus();
       return;
@@ -300,6 +428,16 @@ document.addEventListener("DOMContentLoaded", () => {
     setLoading(true);
     showPlaceholder("Preparing your AI answer...");
     updateCopyVisibility();
+
+    let topic = baseTopic;
+
+    try {
+      const fileText = await extractTextFromPdfFiles(attachedFiles || []);
+      topic = buildTopicWithFiles(baseTopic, fileText);
+    } catch (err) {
+      console.warn("[study-builder] Failed to read attached files", err);
+      topic = baseTopic;
+    }
 
     let accessToken = null;
 
@@ -409,6 +547,13 @@ document.addEventListener("DOMContentLoaded", () => {
       showPlaceholder(
         "Your AI-powered answer will appear here once you generate it."
       );
+      if (fileInput) fileInput.value = "";
+      if (fileSummary) {
+        fileSummary.textContent = "";
+        fileSummary.classList.remove("is-visible");
+      }
+      attachedFiles = [];
+
       updateCopyVisibility();
     });
   }
@@ -446,7 +591,91 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Initial state
+  // -----------------------------
+// File input (Pro-gated + PDF.js)
+// -----------------------------
+if (addFilesBtn && fileInput && fileSummary) {
+  addFilesBtn.addEventListener("click", () => {
+    // PRO gating: show upsell for guest + free
+    if (!isProTier) {
+      fileSummary.textContent =
+        "File uploads are available only on Pro plans.";
+      fileSummary.classList.add("is-visible", "is-warning");
+      return;
+    }
+
+    // Pro users → open file picker
+    try {
+      fileInput.click();
+    } catch (err) {
+      console.warn("[study-builder] File input trigger failed", err);
+    }
+  });
+
+  fileInput.addEventListener("change", () => {
+    const newFiles = fileInput.files;
+    if (!newFiles || newFiles.length === 0) return;
+
+    let skippedTooLarge = 0;
+
+    // Accumulate files with size + count limits
+    for (const file of newFiles) {
+      if (!file) continue;
+
+      if (file.size > MAX_FILE_SIZE_BYTES) {
+        skippedTooLarge++;
+        continue;
+      }
+
+      if (attachedFiles.length >= MAX_FILE_COUNT) break;
+
+      const exists = attachedFiles.some(
+        (f) =>
+          f.name === file.name &&
+          f.size === file.size &&
+          f.lastModified === file.lastModified
+      );
+      if (!exists) {
+        attachedFiles.push(file);
+      }
+    }
+
+    if (attachedFiles.length === 0) {
+      if (skippedTooLarge > 0) {
+        fileSummary.textContent = `All selected files were too large. Max ${MAX_FILE_SIZE_MB} MB per file.`;
+        fileSummary.classList.add("is-visible", "is-warning");
+      } else {
+        fileSummary.textContent = "";
+        fileSummary.classList.remove("is-visible", "is-warning");
+      }
+      return;
+    }
+
+    let summary = "";
+    if (attachedFiles.length === 1) {
+      summary = `1 file added: ${attachedFiles[0].name}`;
+    } else if (attachedFiles.length >= MAX_FILE_COUNT) {
+      summary = `${attachedFiles.length} files added (max ${MAX_FILE_COUNT})`;
+    } else {
+      summary = `${attachedFiles.length} files added`;
+    }
+
+    if (skippedTooLarge > 0) {
+      summary += ` — ${skippedTooLarge} skipped (too large, max ${MAX_FILE_SIZE_MB} MB).`;
+      fileSummary.classList.add("is-warning");
+    } else {
+      fileSummary.classList.remove("is-warning");
+    }
+
+    fileSummary.textContent = summary;
+    fileSummary.classList.add("is-visible");
+  });
+}
+
+// Resolve user tier for Pro/Free gating
+initUserTier();
+
+// Initial state
   updateCopyVisibility();
   showPlaceholder("Your AI-powered answer will appear here once you generate it.");
 });

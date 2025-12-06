@@ -13,6 +13,9 @@
     <!-- Main CSS -->
     <link rel="stylesheet" href="assets/css/style-v3.css" />
 
+    <!-- PDF.js for reading uploaded PDFs -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
     <!-- JS: Supabase + Auth client + Guard + Main -->
     <script
       src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
@@ -164,6 +167,31 @@
                       ></textarea>
                     </div>
 
+                    <!-- ADD FILE -->
+                    <div class="study-input-row">
+                      <button
+                        type="button"
+                        id="study-add-file"
+                        class="btn btn-files"
+                      >
+                        Add files
+                      </button>
+
+                      <input
+                        type="file"
+                        id="study-file-input"
+                        class="study-file-input"
+                        multiple
+                        accept=".pdf"
+                      />
+
+                      <div
+                        id="study-file-summary"
+                        class="study-file-summary"
+                        aria-live="polite"
+                      ></div>
+                    </div>
+
                     <!-- OUTPUT STYLE -->
                     <div class="study-input-row">
                       <span class="study-input-label">Output style</span>
@@ -259,16 +287,24 @@
                   rel="noopener noreferrer"
                   aria-label="DentAIstudy on TikTok"
                 >
-                  <img src="assets/img/footer-icons/tiktok-icon.png" alt="TikTok" class="footer-social-img">
+                  <img
+                    src="assets/img/footer-icons/tiktok-icon.png"
+                    alt="TikTok"
+                    class="footer-social-img"
+                  />
                 </a>
-              
+
                 <a
                   href="mailto:info@dentaistudy.com"
                   aria-label="Contact DentAIstudy by email"
                 >
-                  <img src="assets/img/footer-icons/email-icon.png" alt="Email" class="footer-social-img">
+                  <img
+                    src="assets/img/footer-icons/email-icon.png"
+                    alt="Email"
+                    class="footer-social-img"
+                  />
                 </a>
-              </div> 
+              </div>
             </div>
             <div class="footer-column">
               <h4>Product</h4>
@@ -299,12 +335,6 @@
           </div>
         </div>
       </footer>
-    </div>
-
-    <!-- Cookie -->
-    <div class="cookie-banner">
-      <p>DentAIstudy uses cookies to improve your experience.</p>
-      <button class="btn btn-primary cookie-accept">Got it</button>
     </div>
   </body>
 </html>
