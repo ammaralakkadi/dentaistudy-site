@@ -2383,6 +2383,34 @@ a:hover { opacity: 0.7; }
   color: #111827;
 }
 
+/* AI-rendered markdown tables inside Study Builder */
+.study-ai-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.75rem 0;
+  font-size: 0.9rem;
+}
+
+.study-ai-table th,
+.study-ai-table td {
+  border: 1px solid #e5e7eb;
+  padding: 0.4rem 0.6rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.study-ai-table th {
+  background-color: #f3f4f6;
+  font-weight: 600;
+}
+
+/* Separator for --- lines */
+.study-ai-separator {
+  border: 0;
+  border-top: 1px solid #e5e7eb;
+  margin: 0.75rem 0;
+}
+
 /* Responsive stacking */
 @media (max-width: 900px) {
   .workspace-shell {

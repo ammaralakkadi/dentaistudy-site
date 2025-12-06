@@ -87,22 +87,94 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function renderAnswer(content) {
     if (!answerEl) return;
-    const safe = (content || "").toString();
 
-    // Escape basic HTML
-    let html = safe
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;");
+    const raw = (content || "").toString().replace(/\r\n/g, "\n");
 
-    // Convert **bold** style
-    html = html.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+    }
 
-    // Line breaks
-    html = html.replace(/\r\n/g, "\n");
-    html = html.replace(/\n/g, "<br>");
+    const lines = raw.split("\n");
+    const htmlLines = [];
+    let i = 0;
 
-    answerEl.innerHTML = html;
+    while (i < lines.length) {
+      const line = lines[i];
+
+      // ---------- Markdown table detection ----------
+      if (
+        /^\s*\|.+\|\s*$/.test(line) &&
+        i + 1 < lines.length &&
+        /^\s*\|\s*-+/.test(lines[i + 1])
+      ) {
+        const headerLine = line.trim();
+        const headerCells = headerLine
+          .slice(1, -1)
+          .split("|")
+          .map((c) => escapeHtml(c.trim()));
+
+        i += 2; // skip header + separator row
+
+        const bodyRows = [];
+        while (i < lines.length && /^\s*\|.+\|\s*$/.test(lines[i])) {
+          const rowLine = lines[i].trim();
+          const rowCells = rowLine
+            .slice(1, -1)
+            .split("|")
+            .map((c) => escapeHtml(c.trim()));
+          bodyRows.push(rowCells);
+          i++;
+        }
+
+        let tableHtml = '<table class="study-ai-table"><thead><tr>';
+        headerCells.forEach((h) => {
+          tableHtml += `<th>${h}</th>`;
+        });
+        tableHtml += "</tr></thead><tbody>";
+
+        bodyRows.forEach((row) => {
+          tableHtml += "<tr>";
+          row.forEach((cell) => {
+            tableHtml += `<td>${cell}</td>`;
+          });
+          tableHtml += "</tr>";
+        });
+
+        tableHtml += "</tbody></table>";
+        htmlLines.push(tableHtml);
+        continue;
+      }
+
+      // ---------- Normal line ----------
+      let htmlLine = escapeHtml(line);
+
+      // Horizontal rule: ---  -> nice separator
+      if (/^\s*-{3,}\s*$/.test(line)) {
+        htmlLines.push('<hr class="study-ai-separator">');
+        i++;
+        continue;
+      }
+
+      // Headings: #, ##, ###  -> bold line (cleaner than raw #)
+      htmlLine = htmlLine.replace(/^###\s+(.*)/, "<strong>$1</strong>");
+      htmlLine = htmlLine.replace(/^##\s+(.*)/, "<strong>$1</strong>");
+      htmlLine = htmlLine.replace(/^#\s+(.*)/, "<strong>$1</strong>");
+
+      // Bold with optional spaces: ** title ** -> <strong>title</strong>
+      htmlLine = htmlLine.replace(
+        /\*\*\s*(.+?)\s*\*\*/g,
+        "<strong>$1</strong>"
+      );
+
+      htmlLines.push(htmlLine);
+      i++;
+    }
+
+    const finalHtml = htmlLines.join("<br>");
+    answerEl.innerHTML = finalHtml;
   }
 
   function updateCopyVisibility() {
