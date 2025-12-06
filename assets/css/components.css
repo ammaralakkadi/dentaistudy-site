@@ -2090,12 +2090,14 @@ a:hover { opacity: 0.7; }
 .workspace-main {
   min-width: 0;
 }
-/* Give workspace main content some breathing room on mobile */
-@media (max-width: 640px) {
+
+/* Give workspace main content some breathing room on phones + tablets */
+@media (max-width: 900px) {
   .workspace-main {
-    padding: 0 12px;   /* increase to 16px if you want more inset */
+    padding: 0 16px;
   }
 }
+
 /* Sidebar card */
 .sidebar-card {
   background: #ffffff;
@@ -2258,22 +2260,39 @@ a:hover { opacity: 0.7; }
 }
 
 .study-input-row textarea {
-  resize: vertical;
-  min-height: 120px;
+  resize: none;
+  /* remove cheap corner handle */
+  min-height: 150px;
   border-radius: 12px;
   border: 1px solid #e5e7eb;
-  background: #f9fafb;       /* same soft background as AI output */
-  padding: 10px 11px;        /* same inner spacing */
+  background: #f9fafb;
+  /* same soft background as AI output */
+  padding: 10px 11px;
+  /* same inner spacing */
   font-size: 0.9rem;
-  font-family: inherit;      /* use the same font as the page */
+  font-family: inherit;
+  /* use the same font as the page */
+  line-height: 1.5;
 }
 
 .study-input-row select {
+  width: 100%;
   border-radius: 999px;
   border: 1px solid #d1d5db;
-  padding: 6px 11px;
+  padding: 6px 36px 6px 11px;
+  /* extra space on right for custom arrow */
   font-size: 0.9rem;
-  background: #f9fafb;
+  background-color: #f9fafb;
+  color: #111827;
+
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 6l4 4 4-4' stroke='%239ca3af' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 14px 14px;
 }
 
 .study-mode-row {
@@ -2386,6 +2405,14 @@ a:hover { opacity: 0.7; }
   min-height: 120px;
 }
 
+/* Mobile: allow horizontal scroll for wide AI tables inside the answer card */
+@media (max-width: 768px) {
+  .study-answer-body-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
 /* ============================================
    Study Builder – Shimmer Placeholder
    ============================================ */
@@ -2397,28 +2424,24 @@ a:hover { opacity: 0.7; }
   color: #9ca3af;
 }
 
-/* When loading → shimmer ONLY the text (ChatGPT-style) */
+/* When loading → soft pulsing text (ChatGPT-style "thinking") */
 .study-answer-placeholder.is-loading {
-  animation: das-shimmer 1.4s ease infinite;
-  background: linear-gradient(90deg,
-      #9ca3af 0%,
-      #6b7280 50%,
-      #9ca3af 100%);
-  background-size: 200% 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  /* text takes the gradient */
+  color: #6b7280;
+  animation: das-shimmer 0.9s ease-in-out infinite;
 }
 
-/* Shimmer animation */
+/* Text "breathing" animation */
 @keyframes das-shimmer {
   0% {
-    background-position: 200% 0;
+    opacity: 0.35;
+  }
+
+  50% {
+    opacity: 1;
   }
 
   100% {
-    background-position: -200% 0;
+    opacity: 0.35;
   }
 }
 
