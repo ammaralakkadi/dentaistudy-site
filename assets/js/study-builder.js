@@ -152,13 +152,15 @@ document.addEventListener("DOMContentLoaded", function () {
     // Call Supabase Edge Function
     // -----------------------------
     try {
-      const response = await fetch(AI_ENDPOINT, {
+            const response = await fetch(AI_ENDPOINT, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          ...(accessToken
-            ? { Authorization: "Bearer " + accessToken }
-            : {}),
+          apikey: typeof SUPABASE_ANON_KEY === "string" ? SUPABASE_ANON_KEY : "",
+          Authorization:
+            "Bearer " +
+            (accessToken ||
+              (typeof SUPABASE_ANON_KEY === "string" ? SUPABASE_ANON_KEY : "")),
         },
         body: JSON.stringify({
           topic,
