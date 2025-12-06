@@ -221,6 +221,13 @@ async function initUserTier() {
 
     const finalHtml = htmlLines.join("<br>");
     answerEl.innerHTML = finalHtml;
+
+    // Fade-in animation for new answer
+    answerEl.classList.remove("is-fade-in");
+    // force reflow so animation restarts each time
+    // eslint-disable-next-line no-unused-expressions
+    answerEl.offsetWidth;
+    answerEl.classList.add("is-fade-in");
   }
 
   function updateCopyVisibility() {

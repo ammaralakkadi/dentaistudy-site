@@ -2397,18 +2397,18 @@ a:hover { opacity: 0.7; }
   color: #9ca3af;
 }
 
-/* When loading → shimmer behind the text */
+/* When loading → shimmer ONLY the text (ChatGPT-style) */
 .study-answer-placeholder.is-loading {
-  background: linear-gradient(90deg,
-      #f2f4f7 0%,
-      #e6e9ef 50%,
-      #f2f4f7 100%);
-  background-size: 200% 100%;
   animation: das-shimmer 1.4s ease infinite;
-  border-radius: 10px;
-  min-height: 120px;
-  overflow: hidden;
-  /* keep it neat */
+  background: linear-gradient(90deg,
+      #9ca3af 0%,
+      #6b7280 50%,
+      #9ca3af 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  /* text takes the gradient */
 }
 
 /* Shimmer animation */
@@ -2429,6 +2429,22 @@ a:hover { opacity: 0.7; }
   white-space: pre-wrap;
   margin: 0;
   color: #111827;
+}
+
+.study-answer-body.is-fade-in {
+  animation: study-answer-fade-in 0.28s ease-out;
+}
+
+@keyframes study-answer-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(2px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* AI-rendered markdown tables inside Study Builder */
