@@ -22,6 +22,25 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function getSelectedMode() {
+    function renderAnswer(content) {
+      if (!answerEl) return;
+      const safe = (content || "").toString();
+  
+      // Escape basic HTML
+      let html = safe
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+  
+      // Turn **title** into <strong>title</strong>
+      html = html.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+  
+      // Simple line breaks
+      html = html.replace(/\r\n/g, "\n");
+      html = html.replace(/\n/g, "<br>");
+  
+      answerEl.innerHTML = html;
+    }  
     const checked = document.querySelector('input[name="mode"]:checked');
     return checked ? checked.value : "General overview";
   }
@@ -90,6 +109,7 @@ document.addEventListener("DOMContentLoaded", function () {
     answerEl.textContent = "";
     placeholderEl.style.display = "block";
     placeholderEl.textContent = "Generating exam-focused answer...";
+    placeholderEl.classList.add("is-loading");
     updateCopyVisibility();
 
     const submitBtn = form.querySelector('button[type="submit"]');
@@ -117,8 +137,9 @@ document.addEventListener("DOMContentLoaded", function () {
     } catch (err) {
       // @ts-ignore
       if (err.code === "ANON_LIMIT") {
+        placeholderEl.classList.remove("is-loading");
         placeholderEl.textContent =
-          "You reached today's free AI limit. Create a free account or log in to continue.";
+          "You've hit today's guest limit. Create a free DentAIstudy account to unlock more AI sessions each day.";
         if (submitBtn) {
           submitBtn.disabled = false;
           submitBtn.textContent = "Generate";
@@ -154,9 +175,17 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       if (!response.ok || !data || data.error) {
+        placeholderEl.classList.remove("is-loading");
+
         if (data?.error === "LIMIT_REACHED") {
-          placeholderEl.textContent =
-            "You reached today's AI limit. Try again tomorrow.";
+          const tier = data.tier || "free";
+          if (tier === "pro" || tier === "pro_yearly") {
+            placeholderEl.textContent =
+              "You've reached today's safety cap for AI requests. Please try again a bit later.";
+          } else {
+            placeholderEl.textContent =
+              "You've used today's AI allowance on your free plan. You can try again tomorrow, or upgrade to Pro for more sessions.";
+          }
         } else if (data?.error === "TOPIC_REQUIRED") {
           placeholderEl.textContent = "Please enter a topic.";
         } else {
@@ -166,8 +195,19 @@ document.addEventListener("DOMContentLoaded", function () {
         answerEl.textContent = "";
       } else {
         // SUCCESS
+        placeholderEl.classList.remove("is-loading");
         placeholderEl.style.display = "none";
-        answerEl.textContent = data.content || "No answer returned.";
+
+        renderAnswer(data.content || "No answer returned.");
+
+        const answerCard = document.querySelector(".study-answer-card");
+        if (answerCard && answerCard.scrollIntoView) {
+          answerCard.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+        }
+
         updateCopyVisibility();
 
         // Update study preference counters (best-effort)
@@ -188,6 +228,9 @@ document.addEventListener("DOMContentLoaded", function () {
       if (submitBtn) {
         submitBtn.disabled = false;
         submitBtn.textContent = "Generate";
+      }
+      if (placeholderEl) {
+        placeholderEl.classList.remove("is-loading");
       }
       updateCopyVisibility();
     }
