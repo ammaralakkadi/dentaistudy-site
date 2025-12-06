@@ -194,10 +194,15 @@ document.addEventListener("DOMContentLoaded", () => {
       headers["apikey"] = SUPABASE_ANON_KEY;
     }
 
-    // Only send Authorization when we have a real user session
+    // Authorization:
+    // - Logged in: Bearer <accessToken>
+    // - Anonymous: Bearer <SUPABASE_ANON_KEY> (valid JWT, treated as guest)
     if (accessToken) {
       // @ts-ignore
       headers["Authorization"] = `Bearer ${accessToken}`;
+    } else if (typeof SUPABASE_ANON_KEY === "string") {
+      // @ts-ignore
+      headers["Authorization"] = `Bearer ${SUPABASE_ANON_KEY}`;
     }
 
     return headers;
