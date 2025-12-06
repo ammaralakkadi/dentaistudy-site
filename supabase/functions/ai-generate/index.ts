@@ -14,7 +14,8 @@ const corsHeaders: Record<string, string> = {
     "authorization, x-client-info, apikey, content-type",
 };
 
-const LOGGED_IN_DAILY_LIMIT = 8;
+const FREE_DAILY_LIMIT = 8;
+const PRO_DAILY_LIMIT = 200; // internal safety cap for paid users
 
 function getTodayUTC(): string {
   const now = new Date();
@@ -122,52 +123,65 @@ const subject = subjectRaw.toString();
         const { data: adminData, error: adminError } =
           await supabase.auth.admin.getUserById(userId);
 
-        if (adminError || !adminData?.user) {
-          console.error("admin.getUserById error", adminError);
-        } else {
-          const meta: any = adminData.user.user_metadata || {};
-          let usedToday =
-            typeof meta.ai_count === "number" ? meta.ai_count : 0;
-          let storedDate =
-            typeof meta.ai_date === "string" ? meta.ai_date : null;
-
-          if (storedDate !== today) {
-            usedToday = 0;
-            storedDate = today;
-          }
-
-          if (usedToday >= LOGGED_IN_DAILY_LIMIT) {
-            return new Response(
-              JSON.stringify({
-                error: "LIMIT_REACHED",
-                type: "logged_in",
-                limit: LOGGED_IN_DAILY_LIMIT,
-              }),
-              {
-                status: 429,
-                headers: {
-                  ...corsHeaders,
-                  "Content-Type": "application/json",
+          if (adminError || !adminData?.user) {
+            console.error("admin.getUserById error", adminError);
+          } else {
+            const userMeta: any = adminData.user.user_metadata || {};
+            const appMeta: any = adminData.user.app_metadata || {};
+  
+            const subscriptionTier: string =
+              (appMeta.subscription_tier as string) ||
+              (userMeta.subscription_tier as string) ||
+              "free";
+  
+            const isProTier =
+              subscriptionTier === "pro" || subscriptionTier === "pro_yearly";
+  
+            const tierLimit = isProTier ? PRO_DAILY_LIMIT : FREE_DAILY_LIMIT;
+  
+            let usedToday =
+              typeof userMeta.ai_count === "number" ? userMeta.ai_count : 0;
+            let storedDate =
+              typeof userMeta.ai_date === "string" ? userMeta.ai_date : null;
+  
+            if (storedDate !== today) {
+              usedToday = 0;
+              storedDate = today;
+            }
+  
+            if (usedToday >= tierLimit) {
+              return new Response(
+                JSON.stringify({
+                  error: "LIMIT_REACHED",
+                  type: "logged_in",
+                  limit: tierLimit,
+                  tier: subscriptionTier,
+                }),
+                {
+                  status: 429,
+                  headers: {
+                    ...corsHeaders,
+                    "Content-Type": "application/json",
+                  },
                 },
-              },
-            );
-          }
-
-          const newMeta = {
-            ...meta,
-            ai_date: today,
-            ai_count: usedToday + 1,
-          };
-
-          const { error: updateError } =
-            await supabase.auth.admin.updateUserById(userId, {
-              user_metadata: newMeta,
-            });
-
-          if (updateError) {
-            console.error("admin.updateUserById error", updateError);
-          }
-        }
+              );
+            }
+  
+            const newMeta = {
+              ...userMeta,
+              ai_date: today,
+              ai_count: usedToday + 1,
+            };
+  
+            const { error: updateError } =
+              await supabase.auth.admin.updateUserById(userId, {
+                user_metadata: newMeta,
+              });
+  
+            if (updateError) {
+              console.error("admin.updateUserById error", updateError);
+            }
+          }  
       } catch (err) {
         console.error("Error applying logged-in limit", err);
         // We don't block the request for meta errors
