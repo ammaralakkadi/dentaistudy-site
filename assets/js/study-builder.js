@@ -563,30 +563,57 @@ async function initUserTier() {
   // -----------------------------
   if (copyBtn) {
     copyBtn.addEventListener("click", async () => {
-      if (!answerEl || !answerEl.textContent) return;
-      const textToCopy = answerEl.innerText || answerEl.textContent;
+      if (!answerEl) return;
+
+      const raw =
+        (answerEl.innerText || answerEl.textContent || "").toString();
+      const textToCopy = raw.trim();
+
+      // Nothing meaningful to copy
+      if (!textToCopy) {
+        showPlaceholder(
+          "There is nothing to copy yet. Generate an answer first."
+        );
+        return;
+      }
+
+      const fallbackCopy = () => {
+        const temp = document.createElement("textarea");
+        temp.value = textToCopy;
+        temp.style.position = "fixed";
+        temp.style.opacity = "0";
+        document.body.appendChild(temp);
+        temp.focus();
+        temp.select();
+        document.execCommand("copy");
+        document.body.removeChild(temp);
+      };
 
       try {
         if (navigator.clipboard && navigator.clipboard.writeText) {
           await navigator.clipboard.writeText(textToCopy);
         } else {
-          // Fallback for older browsers
-          const temp = document.createElement("textarea");
-          temp.value = textToCopy;
-          temp.style.position = "fixed";
-          temp.style.opacity = "0";
-          document.body.appendChild(temp);
-          temp.focus();
-          temp.select();
-          document.execCommand("copy");
-          document.body.removeChild(temp);
+          fallbackCopy();
         }
+
         copyBtn.textContent = "Copied";
         setTimeout(() => {
           copyBtn.textContent = "Copy";
         }, 1200);
       } catch (err) {
-        console.warn("[study-builder] Copy failed", err);
+        console.warn("[study-builder] Copy failed, trying fallback", err);
+        try {
+          fallbackCopy();
+          copyBtn.textContent = "Copied";
+          setTimeout(() => {
+            copyBtn.textContent = "Copy";
+          }, 1200);
+        } catch (err2) {
+          console.warn("[study-builder] Fallback copy failed", err2);
+          showPlaceholder(
+            "Copy failed. Please select and copy the text manually."
+          );
+        }
       }
     });
   }

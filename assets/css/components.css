@@ -2386,37 +2386,39 @@ a:hover { opacity: 0.7; }
   min-height: 120px;
 }
 
+/* ============================================
+   Study Builder – Shimmer Placeholder
+   ============================================ */
+
 .study-answer-placeholder {
+  display: block;
+  padding: 14px 12px;
   font-size: 0.85rem;
   color: #9ca3af;
 }
 
+/* When loading → shimmer behind the text */
 .study-answer-placeholder.is-loading {
-  position: relative;
-  color: transparent;
-  overflow: hidden;
-}
-
-.study-answer-placeholder.is-loading::before {
-  content: "Generating exam-focused answer...";
-  color: #9ca3af;
-}
-
-.study-answer-placeholder.is-loading::after {
-  content: "";
-  position: absolute;
-  inset: 0;
   background: linear-gradient(90deg,
-      rgba(243, 244, 246, 0),
-      rgba(209, 213, 219, 0.7),
-      rgba(243, 244, 246, 0));
-  transform: translateX(-100%);
-  animation: study-answer-skeleton 1.2s ease-in-out infinite;
+      #f2f4f7 0%,
+      #e6e9ef 50%,
+      #f2f4f7 100%);
+  background-size: 200% 100%;
+  animation: das-shimmer 1.4s ease infinite;
+  border-radius: 10px;
+  min-height: 120px;
+  overflow: hidden;
+  /* keep it neat */
 }
 
-@keyframes study-answer-skeleton {
-  to {
-    transform: translateX(100%);
+/* Shimmer animation */
+@keyframes das-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
   }
 }
 
