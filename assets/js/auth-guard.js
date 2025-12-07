@@ -117,8 +117,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Study activity / usage
     const packsCount =
       typeof meta.packs_count === "number" ? meta.packs_count : 0;
-    const osceCount =
-      typeof meta.osce_count === "number" ? meta.osce_count : 0;
+    const osceCount = typeof meta.osce_count === "number" ? meta.osce_count : 0;
     const flashcardCount =
       typeof meta.flashcard_count === "number" ? meta.flashcard_count : 0;
     const starredCount =
@@ -192,7 +191,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       // Study activity numbers
       const packsEl = document.getElementById("das-profile-packs-count");
       const osceEl = document.getElementById("das-profile-osce-count");
-      const flashcardEl = document.getElementById("das-profile-flashcard-count");
+      const flashcardEl = document.getElementById(
+        "das-profile-flashcard-count"
+      );
       const topModeEl = document.getElementById("das-profile-top-mode");
       const lastActiveEl = document.getElementById("das-profile-last-active");
       const starredEl = document.getElementById("das-profile-starred-count");
@@ -400,68 +401,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
       }
     }
-
-    // -------------------------------------------------------------
-    // 10) Avatar upload (profile page only)
-    //     Uses helper uploadProfilePicture(userId, file) from supabase.js
-    // -------------------------------------------------------------
-    const avatarUploadBtn = document.getElementById("avatar-upload-btn");
-    const avatarFileInput = document.getElementById("avatar-input");
-    const avatarStatusEl = document.getElementById("avatar-status");
-
-    if (avatarUploadBtn && avatarFileInput) {
-      avatarUploadBtn.addEventListener("click", () => {
-        avatarFileInput.click();
-      });
-
-      avatarFileInput.addEventListener("change", async () => {
-        if (!avatarFileInput.files || avatarFileInput.files.length === 0) {
-          return;
-        }
-
-        const file = avatarFileInput.files[0];
-
-        if (avatarStatusEl) {
-          avatarStatusEl.textContent = "Uploading photo...";
-        }
-
-        try {
-          if (typeof uploadProfilePicture !== "function") {
-            console.error("[auth-guard] uploadProfilePicture helper is missing");
-            if (avatarStatusEl) {
-              avatarStatusEl.textContent = "Upload helper missing.";
-            }
-            return;
-          }
-
-          const newUrl = await uploadProfilePicture(user.id, file);
-
-          if (newUrl) {
-            if (profileAvatarEl) profileAvatarEl.src = newUrl;
-            if (sidebarAvatarImg) sidebarAvatarImg.src = newUrl;
-            if (avatarTargets.length) {
-              avatarTargets.forEach((el) => {
-                el.src = newUrl;
-              });
-            }
-          }
-
-          if (avatarStatusEl) {
-            avatarStatusEl.textContent = "Photo updated.";
-          }
-        } catch (e) {
-          console.error("[auth-guard] Avatar upload error:", e);
-          if (avatarStatusEl) {
-            avatarStatusEl.textContent = "Something went wrong.";
-          }
-        } finally {
-          avatarFileInput.value = "";
-        }
-      });
-    }
   } catch (err) {
     console.error("[auth-guard] Auth guard failed:", err);
-
     updateAuthUI(null);
 
     if (isProtected) {
