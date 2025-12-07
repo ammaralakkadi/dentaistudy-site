@@ -284,6 +284,97 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     // -------------------------------------------------------------
+    // 7) Settings page: account details + default level
+    // -------------------------------------------------------------
+    if (isSettings) {
+      const settingsFullNameInput =
+        document.getElementById("settings-fullname");
+      const settingsEmailInput = document.getElementById("settings-email");
+      const settingsDefaultLevelSelect = document.getElementById(
+        "settings-default-level"
+      );
+      const settingsNewPasswordInput = document.getElementById(
+        "settings-new-password"
+      );
+      const settingsSaveBtn = document.getElementById("settings-save-btn");
+      const settingsSaveStatus = document.getElementById(
+        "settings-save-status"
+      );
+
+      // Pre-fill readonly profile info
+      if (settingsFullNameInput && fullName) {
+        settingsFullNameInput.value = fullName;
+      }
+      if (settingsEmailInput && email) {
+        settingsEmailInput.value = email;
+      }
+
+      // Pre-select current default level so Settings matches Profile
+      if (settingsDefaultLevelSelect && defaultLevel) {
+        settingsDefaultLevelSelect.value = defaultLevel;
+      }
+
+      // Handle Save button: update default_level (+ optional password)
+      if (settingsSaveBtn && settingsDefaultLevelSelect && settingsSaveStatus) {
+        settingsSaveBtn.addEventListener("click", async () => {
+          const chosenLevel =
+            settingsDefaultLevelSelect.value === "postgraduate"
+              ? "postgraduate"
+              : "undergraduate";
+
+          const newPassword = settingsNewPasswordInput
+            ? settingsNewPasswordInput.value.trim()
+            : "";
+
+          settingsSaveStatus.style.opacity = "1";
+          settingsSaveStatus.style.color = "#0f3c7d";
+          settingsSaveStatus.textContent = "Saving...";
+
+          try {
+            // Preserve all existing metadata, only change default_level
+            const updatedMeta = {
+              ...meta,
+              default_level: chosenLevel,
+            };
+
+            const updatePayload = { data: updatedMeta };
+            if (newPassword) {
+              updatePayload.password = newPassword;
+            }
+
+            const { error: updateError } = await supabase.auth.updateUser(
+              updatePayload
+            );
+
+            if (updateError) {
+              console.error("[settings] updateUser error", updateError);
+              settingsSaveStatus.style.color = "#b91c1c";
+              settingsSaveStatus.textContent =
+                updateError.message || "Could not save settings.";
+              return;
+            }
+
+            // Reflect change locally for this session
+            if (settingsNewPasswordInput) {
+              settingsNewPasswordInput.value = "";
+            }
+            settingsSaveStatus.style.color = "#0f3c7d";
+            settingsSaveStatus.textContent = "Settings saved.";
+
+            setTimeout(() => {
+              settingsSaveStatus.style.opacity = "0";
+            }, 2000);
+          } catch (err) {
+            console.error("[settings] unexpected error", err);
+            settingsSaveStatus.style.color = "#b91c1c";
+            settingsSaveStatus.textContent =
+              "Something went wrong. Please try again.";
+          }
+        });
+      }
+    }
+
+    // -------------------------------------------------------------
     // 7) Settings page: plan label + preferences card
     // -------------------------------------------------------------
     if (isSettings) {
