@@ -253,10 +253,74 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (defaultLevel === "postgraduate") {
           defaultLevelEl.textContent = "Postgraduate";
         } else if (defaultLevel === "undergraduate") {
-          defaultLevelEl.textContent = "Undergrad / Intern";
-        } else {
+          defaultLevelEl.textContent = "Undergraduate";
+        } else if (defaultLevel) {
           defaultLevelEl.textContent = defaultLevel;
+        } else {
+          defaultLevelEl.textContent = "Set your level";
         }
+      }
+
+      // Sidebar identity chips (Profile + Study)
+      const identityLevelTag = document.getElementById("das-identity-level");
+      const identityPlanTag = document.getElementById("das-identity-plan");
+      const identityActivityTag = document.getElementById(
+        "das-identity-activity"
+      );
+
+      // Level chip
+      if (identityLevelTag) {
+        if (defaultLevel === "postgraduate") {
+          identityLevelTag.textContent = "Postgraduate";
+        } else if (defaultLevel === "undergraduate") {
+          identityLevelTag.textContent = "Undergraduate";
+        } else if (defaultLevel) {
+          identityLevelTag.textContent = defaultLevel;
+        } else {
+          identityLevelTag.textContent = "Set your level";
+        }
+      }
+
+      // Plan chip
+      if (identityPlanTag) {
+        let planLabel = "Free";
+        if (subscriptionTier === "pro_yearly") {
+          planLabel = "Pro yearly";
+        } else if (subscriptionTier === "pro") {
+          planLabel = "Pro";
+        }
+        identityPlanTag.textContent = planLabel;
+      }
+
+      // Activity chip (relative)
+      if (identityActivityTag) {
+        let activityLabel = "New member";
+
+        if (lastActive) {
+          const d = new Date(lastActive);
+          if (!Number.isNaN(d.getTime())) {
+            const now = new Date();
+            const diffMs = now.getTime() - d.getTime();
+            const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+            if (diffDays <= 0) {
+              activityLabel = "Active today";
+            } else if (diffDays === 1) {
+              activityLabel = "Active yesterday";
+            } else if (diffDays < 7) {
+              activityLabel = `Active ${diffDays} days ago`;
+            } else {
+              activityLabel = `Active ${d.toLocaleDateString(undefined, {
+                month: "short",
+                day: "numeric",
+              })}`;
+            }
+          } else {
+            activityLabel = "Activity unknown";
+          }
+        }
+
+        identityActivityTag.textContent = activityLabel;
       }
 
       // Profile study preferences card (lock/ unlock)
