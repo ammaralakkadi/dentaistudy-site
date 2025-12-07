@@ -2239,6 +2239,7 @@ a:hover { opacity: 0.7; }
   color: #6b7280;
 }
 
+/* File upload summary + pills */
 .study-file-summary {
   margin-top: 2px;
   font-size: 0.75rem;
@@ -2247,12 +2248,49 @@ a:hover { opacity: 0.7; }
 }
 
 .study-file-summary.is-visible {
-  display: inline-block;
+  display: block;
 }
 
 .study-file-summary.is-warning {
   color: #b45309;
-  /* soft amber tone for warnings */
+}
+
+.study-file-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 2px;
+}
+
+.study-file-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid #e5e7eb;
+  background: #f9fafb;
+  font-size: 0.75rem;
+  color: #111827;
+  max-width: 100%;
+}
+
+.study-file-pill-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 180px;
+}
+
+.study-file-pill-remove {
+  margin-left: 6px;
+  font-size: 0.8rem;
+  line-height: 1;
+  cursor: pointer;
+  color: #b91c1c;
+}
+
+.study-file-pill-remove:hover {
+  color: #991b1b;
 }
 
 .study-file-input {

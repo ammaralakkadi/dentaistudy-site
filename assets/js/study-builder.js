@@ -546,21 +546,26 @@ async function initUserTier() {
   // -----------------------------
   if (clearBtn) {
     clearBtn.addEventListener("click", () => {
+      // Reset text input
       if (topicInput) topicInput.value = "";
+
+      // Clear AI answer
       if (answerEl) {
         answerEl.textContent = "";
         answerEl.innerHTML = "";
       }
+
+      // Reset attached files + hidden input + summary pills
+      attachedFiles = [];
+      if (fileInput) fileInput.value = "";
+      renderFileSummary();
+
+      // Restore default placeholder text
       showPlaceholder(
         "Your AI-powered answer will appear here once you generate it."
       );
-      if (fileInput) fileInput.value = "";
-      if (fileSummary) {
-        fileSummary.textContent = "";
-        fileSummary.classList.remove("is-visible");
-      }
-      attachedFiles = [];
 
+      // Hide copy button if no answer
       updateCopyVisibility();
     });
   }
@@ -626,70 +631,36 @@ async function initUserTier() {
   }
 
   // -----------------------------
-// File input (Pro-gated + PDF.js)
-// -----------------------------
-if (addFilesBtn && fileInput && fileSummary) {
-  addFilesBtn.addEventListener("click", () => {
-    // PRO gating: show upsell for guest + free
-    if (!isProTier) {
-      fileSummary.textContent =
-        "File uploads are available only on Pro plans.";
-      fileSummary.classList.add("is-visible", "is-warning");
+  // FILE SUMMARY RENDERER
+  // -----------------------------
+  function renderFileSummary(options = {}) {
+    if (!fileSummary) return;
+
+    const { skippedTooLarge = 0 } = options;
+
+    if (!attachedFiles || attachedFiles.length === 0) {
+      fileSummary.innerHTML = "";
+      fileSummary.classList.remove("is-visible", "is-warning");
       return;
     }
 
-    // Pro users → open file picker
-    try {
-      fileInput.click();
-    } catch (err) {
-      console.warn("[study-builder] File input trigger failed", err);
-    }
-  });
+    // Pills for each attached file
+    const pillsHtml = attachedFiles
+      .map((file, index) => {
+        const safeName = (file && file.name) || "File";
+        return `
+          <button type="button" class="study-file-pill" data-file-index="${index}">
+            <span class="study-file-pill-name">${safeName}</span>
+            <span class="study-file-pill-remove" aria-label="Remove file">&times;</span>
+          </button>
+        `;
+      })
+      .join("");
 
-  fileInput.addEventListener("change", () => {
-    const newFiles = fileInput.files;
-    if (!newFiles || newFiles.length === 0) return;
-
-    let skippedTooLarge = 0;
-
-    // Accumulate files with size + count limits
-    for (const file of newFiles) {
-      if (!file) continue;
-
-      if (file.size > MAX_FILE_SIZE_BYTES) {
-        skippedTooLarge++;
-        continue;
-      }
-
-      if (attachedFiles.length >= MAX_FILE_COUNT) break;
-
-      const exists = attachedFiles.some(
-        (f) =>
-          f.name === file.name &&
-          f.size === file.size &&
-          f.lastModified === file.lastModified
-      );
-      if (!exists) {
-        attachedFiles.push(file);
-      }
-    }
-
-    if (attachedFiles.length === 0) {
-      if (skippedTooLarge > 0) {
-        fileSummary.textContent = `All selected files were too large. Max ${MAX_FILE_SIZE_MB} MB per file.`;
-        fileSummary.classList.add("is-visible", "is-warning");
-      } else {
-        fileSummary.textContent = "";
-        fileSummary.classList.remove("is-visible", "is-warning");
-      }
-      return;
-    }
-
+    // Summary line
     let summary = "";
     if (attachedFiles.length === 1) {
-      summary = `1 file added: ${attachedFiles[0].name}`;
-    } else if (attachedFiles.length >= MAX_FILE_COUNT) {
-      summary = `${attachedFiles.length} files added (max ${MAX_FILE_COUNT})`;
+      summary = "1 file added";
     } else {
       summary = `${attachedFiles.length} files added`;
     }
@@ -701,10 +672,92 @@ if (addFilesBtn && fileInput && fileSummary) {
       fileSummary.classList.remove("is-warning");
     }
 
-    fileSummary.textContent = summary;
+    fileSummary.innerHTML = `
+      <div class="study-file-list">
+        ${pillsHtml}
+      </div>
+      <div>${summary}</div>
+    `;
     fileSummary.classList.add("is-visible");
-  });
-}
+  }
+
+  // -----------------------------
+  // File input (Pro-gated + PDF.js + removable pills)
+  // -----------------------------
+  if (addFilesBtn && fileInput && fileSummary) {
+    addFilesBtn.addEventListener("click", () => {
+      // Only Pro tiers can actually attach files.
+      if (!isProTier) {
+        fileSummary.textContent =
+          "File uploads are available on Pro plans.";
+        fileSummary.classList.add("is-visible", "is-warning");
+        return;
+      }
+
+      try {
+        fileInput.click();
+      } catch (err) {
+        console.warn("[study-builder] File input trigger failed", err);
+      }
+    });
+
+    fileInput.addEventListener("change", () => {
+      const newFiles = fileInput.files;
+      if (!newFiles || newFiles.length === 0) return;
+
+      let skippedTooLarge = 0;
+
+      // Merge new selection into attachedFiles (up to MAX_FILE_COUNT, and size limit)
+      for (const file of newFiles) {
+        if (!file) continue;
+
+        if (file.size > MAX_FILE_SIZE_BYTES) {
+          skippedTooLarge++;
+          continue;
+        }
+
+        if (attachedFiles.length >= MAX_FILE_COUNT) break;
+
+        const exists = attachedFiles.some(
+          (f) =>
+            f.name === file.name &&
+            f.size === file.size &&
+            f.lastModified === file.lastModified
+        );
+        if (!exists) {
+          attachedFiles.push(file);
+        }
+      }
+
+      if (attachedFiles.length === 0) {
+        // Everything was too large or nothing valid
+        renderFileSummary({ skippedTooLarge });
+        console.log(
+          "[study-builder] Files attached: none (skipped too large or invalid)"
+        );
+        return;
+      }
+
+      renderFileSummary({ skippedTooLarge });
+      console.log("[study-builder] Files attached:", attachedFiles);
+    });
+
+    // Remove file when clicking the small "x" on a pill
+    fileSummary.addEventListener("click", (event) => {
+      const pill = event.target.closest(".study-file-pill");
+      if (!pill) return;
+
+      const indexAttr = pill.getAttribute("data-file-index");
+      const index = Number(indexAttr);
+      if (Number.isNaN(index) || index < 0 || index >= attachedFiles.length) {
+        return;
+      }
+
+      attachedFiles.splice(index, 1);
+      renderFileSummary();
+    });
+  }
+
 
 // Resolve user tier for Pro/Free gating
 initUserTier();
