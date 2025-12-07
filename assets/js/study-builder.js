@@ -253,6 +253,32 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // -----------------------------
+  // STUDY USAGE TRACKING (Profile activity)
+  // -----------------------------
+  function trackStudyUsage(modeLabel) {
+    if (!window.dasStudyPrefs || !window.dasStudyPrefs.increment) return;
+
+    // Map UI mode labels → metadata categories
+    let category = "theory"; // default
+    const label = (modeLabel || "").toLowerCase();
+
+    if (label.includes("osce")) {
+      category = "osce";
+    } else if (label.includes("flashcard")) {
+      category = "flashcard";
+    } else if (label.includes("mcq")) {
+      category = "packs";
+    } else if (label.includes("viva")) {
+      category = "viva";
+    }
+
+    try {
+      window.dasStudyPrefs.increment(category);
+    } catch (err) {
+      console.warn("[study-builder] Failed to increment study prefs", err);
+    }
+  }
+  // -----------------------------
   // PDF FILE TEXT EXTRACTION (pdf.js)
   // -----------------------------
   const PDFJS_WORKER_URL =
@@ -500,9 +526,13 @@ document.addEventListener("DOMContentLoaded", () => {
         hidePlaceholder();
         renderAnswer(data.content || "No answer returned.");
         updateCopyVisibility();
+
+        // Track usage for logged-in users (updates counters + last_active_at)
+        trackStudyUsage(mode);
+
         return;
       }
-
+      
       // Handle rate/usage limit from server
       if (response.status === 429 && data && data.error === "LIMIT_REACHED") {
         const tier = data.tier || "free";

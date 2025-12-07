@@ -1232,6 +1232,16 @@ a:hover { opacity: 0.7; }
   background-color: #f9fafb;
 }
 
+/* Settings – default level select styled like Study Builder subject */
+.form-group select.settings-level-select {
+  border-radius: 999px;
+  border: 1px solid #d1d5db;
+  padding: 6px 11px;
+  font-size: 0.9rem;
+  background: #f9fafb;
+  color: #111827;
+}
+
 .form-group select:focus {
   border-color: #4f46e5;
   box-shadow: 0 0 0 1px rgba(79, 70, 229, 0.2);
