@@ -162,20 +162,3 @@ document.querySelectorAll(".copy-btn").forEach((btn) => {
     btn.addEventListener("click", handlePlanClick);
   });
 })();
-
-// Profile image preview (UI only)
-const avatarInput = document.getElementById("avatar-input");
-const avatarImg = document.getElementById("das-profile-avatar-main");
-
-if (avatarInput && avatarImg) {
-  avatarInput.addEventListener("change", (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      avatarImg.src = reader.result;
-    };
-    reader.readAsDataURL(file);
-  });
-}

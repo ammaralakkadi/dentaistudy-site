@@ -23,7 +23,8 @@ document.addEventListener("DOMContentLoaded", () => {
   let userTier = ACCESS_TIER_UNKNOWN; // "guest" | "free" | "pro" | "pro_yearly"
   let isProTier = false;
   const submitBtn =
-    form && (form.querySelector('button[type="submit"]') ||
+    form &&
+    (form.querySelector('button[type="submit"]') ||
       document.getElementById("study-generate"));
 
   console.log("[study-builder] init", {
@@ -48,37 +49,36 @@ document.addEventListener("DOMContentLoaded", () => {
   const ANON_DAILY_LIMIT = 2; // guest sessions per day (client-side guard)
 
   // -----------------------------
-// USER TIER RESOLUTION (Pro gating)
-// -----------------------------
-async function initUserTier() {
-  try {
-    if (!window.dasSupabase || !window.dasSupabase.auth) {
+  // USER TIER RESOLUTION (Pro gating)
+  // -----------------------------
+  async function initUserTier() {
+    try {
+      if (!window.dasSupabase || !window.dasSupabase.auth) {
+        userTier = "guest";
+        isProTier = false;
+        return;
+      }
+
+      const { data, error } = await window.dasSupabase.auth.getSession();
+      if (error || !data || !data.session) {
+        userTier = "guest";
+        isProTier = false;
+        return;
+      }
+
+      const user = data.session.user;
+      const meta = user?.user_metadata || {};
+      const tier = meta.subscription_tier || "free";
+
+      userTier = tier;
+      isProTier = tier === "pro" || tier === "pro_yearly";
+    } catch (err) {
       userTier = "guest";
       isProTier = false;
-      return;
     }
-
-    const { data, error } = await window.dasSupabase.auth.getSession();
-    if (error || !data || !data.session) {
-      userTier = "guest";
-      isProTier = false;
-      return;
-    }
-
-    const user = data.session.user;
-    const meta = user?.user_metadata || {};
-    const tier = meta.subscription_tier || "free";
-
-    userTier = tier;
-    isProTier = tier === "pro" || tier === "pro_yearly";
-
-  } catch (err) {
-    userTier = "guest";
-    isProTier = false;
   }
-}
 
-// -----------------------------
+  // -----------------------------
   // UI HELPERS
   // -----------------------------
   function setLoading(isLoading) {
@@ -103,8 +103,7 @@ async function initUserTier() {
     if (!placeholderEl) {
       // fallback if there is no placeholder element:
       if (answerEl) {
-        answerEl.textContent =
-          typeof message === "string" ? message : "";
+        answerEl.textContent = typeof message === "string" ? message : "";
       }
       return;
     }
@@ -153,14 +152,14 @@ async function initUserTier() {
       ) {
         const headerLine = line.trim();
         const headerCells = headerLine
-        .slice(1, -1)
-        .split("|")
-        .map((c) => {
-          let h = escapeHtml(c.trim());
-          // bold inside tables: **text** -> <strong>text</strong>
-          h = h.replace(/\*\*\s*(.+?)\s*\*\*/g, "<strong>$1</strong>");
-          return h;
-        });
+          .slice(1, -1)
+          .split("|")
+          .map((c) => {
+            let h = escapeHtml(c.trim());
+            // bold inside tables: **text** -> <strong>text</strong>
+            h = h.replace(/\*\*\s*(.+?)\s*\*\*/g, "<strong>$1</strong>");
+            return h;
+          });
 
         i += 2; // skip header + separator row
 
@@ -170,7 +169,15 @@ async function initUserTier() {
           const rowCells = rowLine
             .slice(1, -1)
             .split("|")
-            .map((c) => escapeHtml(c.trim()));
+            .map((c) => {
+              let cell = escapeHtml(c.trim());
+              // bold inside table body: **text** -> <strong>text</strong>
+              cell = cell.replace(
+                /\*\*\s*(.+?)\s*\*\*/g,
+                "<strong>$1</strong>"
+              );
+              return cell;
+            });
           bodyRows.push(rowCells);
           i++;
         }
@@ -204,10 +211,8 @@ async function initUserTier() {
         continue;
       }
 
-      // Headings: #, ##, ###  -> bold line (cleaner than raw #)
-      htmlLine = htmlLine.replace(/^###\s+(.*)/, "<strong>$1</strong>");
-      htmlLine = htmlLine.replace(/^##\s+(.*)/, "<strong>$1</strong>");
-      htmlLine = htmlLine.replace(/^#\s+(.*)/, "<strong>$1</strong>");
+      // Headings: #, ##, ###, #### ... -> bold line (cleaner than raw #)
+      htmlLine = htmlLine.replace(/^\s*#{1,6}\s+(.*)/, "<strong>$1</strong>");
 
       // Bold with optional spaces: ** title ** -> <strong>title</strong>
       htmlLine = htmlLine.replace(
@@ -303,11 +308,7 @@ async function initUserTier() {
           if (combinedText.length >= MAX_FILE_TEXT_LENGTH) break;
         }
       } catch (err) {
-        console.warn(
-          "[study-builder] Failed to read PDF file",
-          file.name,
-          err
-        );
+        console.warn("[study-builder] Failed to read PDF file", file.name, err);
       }
 
       if (combinedText.length >= MAX_FILE_TEXT_LENGTH) break;
@@ -353,8 +354,7 @@ async function initUserTier() {
   function enforceAnonLimitOrThrow() {
     const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
     const data = getAnonUsage() || {};
-    let usedToday =
-      typeof data.usedToday === "number" ? data.usedToday : 0;
+    let usedToday = typeof data.usedToday === "number" ? data.usedToday : 0;
     const lastDate = typeof data.date === "string" ? data.date : null;
 
     if (lastDate !== today) {
@@ -577,8 +577,7 @@ async function initUserTier() {
     copyBtn.addEventListener("click", async () => {
       if (!answerEl) return;
 
-      const raw =
-        (answerEl.innerText || answerEl.textContent || "").toString();
+      const raw = (answerEl.innerText || answerEl.textContent || "").toString();
       const textToCopy = raw.trim();
 
       // Nothing meaningful to copy
@@ -688,8 +687,7 @@ async function initUserTier() {
     addFilesBtn.addEventListener("click", () => {
       // Only Pro tiers can actually attach files.
       if (!isProTier) {
-        fileSummary.textContent =
-          "File uploads are available on Pro plans.";
+        fileSummary.textContent = "File uploads are available on Pro plans.";
         fileSummary.classList.add("is-visible", "is-warning");
         return;
       }
@@ -758,11 +756,12 @@ async function initUserTier() {
     });
   }
 
+  // Resolve user tier for Pro/Free gating
+  initUserTier();
 
-// Resolve user tier for Pro/Free gating
-initUserTier();
-
-// Initial state
+  // Initial state
   updateCopyVisibility();
-  showPlaceholder("Your AI-powered answer will appear here once you generate it.");
+  showPlaceholder(
+    "Your AI-powered answer will appear here once you generate it."
+  );
 });
