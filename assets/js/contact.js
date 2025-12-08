@@ -10,6 +10,24 @@ document.addEventListener("DOMContentLoaded", function () {
   const topicInput = document.getElementById("contact-topic");
   const messageInput = document.getElementById("contact-message");
   const statusEl = document.getElementById("contact-status");
+  // If coming from Settings → "Delete account", pre-fill the form
+  try {
+    const params = new URLSearchParams(window.location.search || "");
+    const reason = params.get("reason");
+
+    if (reason === "delete-account") {
+      if (topicInput && !topicInput.value) {
+        topicInput.value = "Delete my DentAIstudy account";
+      }
+
+      if (messageInput && !messageInput.value) {
+        messageInput.value =
+          "Hi DentAIstudy team,\n\nI'd like to permanently delete my DentAIstudy account and all related study activity. Please confirm once this is completed.\n\nThank you.";
+      }
+    }
+  } catch (err) {
+    console.warn("[contact] Could not read URL params", err);
+  }
 
   function setStatus(msg, isError) {
     if (!statusEl) return;

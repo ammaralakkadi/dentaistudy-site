@@ -28,11 +28,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // No domain restrictions — allow all valid emails
-    showMessage("Creating your account.");
-
     showMessage("Creating your account...");
 
-        try {
+    try {
       const { data, error } = await window.dasSupabase.auth.signUp({
         email,
         password,

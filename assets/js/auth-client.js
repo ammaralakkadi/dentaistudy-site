@@ -7,6 +7,16 @@ const SUPABASE_ANON_KEY =
 
 window.dasSupabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+const functionsBaseUrl = SUPABASE_URL.replace(
+  ".supabase.co",
+  ".functions.supabase.co"
+);
+
+// Expose URLs for other scripts (read-only)
+window.dasSupabaseUrl = SUPABASE_URL;
+window.dasSupabaseFunctionsBase = functionsBaseUrl;
+
+
 // -----------------------------------------------------------
 // Google OAuth sign-in / sign-up (shared for login + signup)
 // -----------------------------------------------------------

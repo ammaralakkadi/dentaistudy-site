@@ -38,6 +38,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const supabase = window.dasSupabase;
 
+    const functionsBase =
+      typeof window.dasSupabaseFunctionsBase === "string"
+        ? window.dasSupabaseFunctionsBase
+        : "";
+
     // -------------------------------------------------------------
     // 1) Get current session (may be slightly stale)
     // -------------------------------------------------------------
@@ -365,6 +370,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         "settings-save-status"
       );
 
+      const deleteAccountBtn = document.getElementById("delete-account-btn");
+      const deleteAccountStatus = document.getElementById(
+        "delete-account-status"
+      );
+
       // Pre-fill readonly profile info
       if (settingsFullNameInput && fullName) {
         settingsFullNameInput.value = fullName;
@@ -436,6 +446,28 @@ document.addEventListener("DOMContentLoaded", async () => {
           }
         });
       }
+      // Delete account → Phase 1: manual deletion request via Contact page
+      if (deleteAccountBtn && deleteAccountStatus) {
+        deleteAccountBtn.addEventListener("click", (event) => {
+          event.preventDefault();
+
+          const confirmed = window.confirm(
+            "Are you sure you want to delete your DentAIstudy account? This will permanently remove your study activity and preferences. For now, we handle deletions manually via support."
+          );
+
+          if (!confirmed) return;
+
+          deleteAccountBtn.disabled = true;
+          deleteAccountBtn.textContent = "Opening request...";
+          deleteAccountStatus.style.opacity = "1";
+          deleteAccountStatus.style.color = "#0f3c7d";
+          deleteAccountStatus.textContent =
+            "We’ll open the contact form with a pre-filled delete request.";
+
+          // Redirect to Contact page with a reason flag
+          window.location.href = "contact.html?reason=delete-account";
+        });
+      }
     }
 
     // -------------------------------------------------------------
@@ -453,6 +485,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       );
       const settingsPlanManage = document.getElementById(
         "das-settings-plan-manage-actions"
+      );
+
+      const deleteAccountBtn = document.getElementById("delete-account-btn");
+      const deleteAccountStatus = document.getElementById(
+        "delete-account-status"
       );
 
       if (settingsPlanLabel) {
@@ -500,6 +537,109 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
       if (settingsPrefsNote) {
         settingsPrefsNote.style.display = isPaidPlan ? "none" : "block";
+      }
+      if (settingsPrefsCard) {
+        // ... your existing lock/unlock logic ...
+      }
+      if (settingsPrefsNote) {
+        settingsPrefsNote.style.display = isPaidPlan ? "none" : "block";
+      }
+
+      // Delete account → automatic via Supabase Edge Function
+      if (deleteAccountBtn && deleteAccountStatus) {
+        deleteAccountBtn.addEventListener("click", async (event) => {
+          event.preventDefault();
+
+          const confirmed = window.confirm(
+            "Are you sure you want to delete your DentAIstudy account? This will permanently remove your study activity and preferences."
+          );
+          if (!confirmed) return;
+
+          if (!functionsBase) {
+            deleteAccountStatus.style.opacity = "1";
+            deleteAccountStatus.style.color = "#b91c1c";
+            deleteAccountStatus.textContent =
+              "Account deletion is temporarily unavailable. Please contact support.";
+            return;
+          }
+
+          deleteAccountBtn.disabled = true;
+          deleteAccountBtn.textContent = "Deleting...";
+          deleteAccountStatus.style.opacity = "1";
+          deleteAccountStatus.style.color = "#0f3c7d";
+          deleteAccountStatus.textContent =
+            "Deleting your account securely. Please wait...";
+
+          try {
+            const { data: sessionData, error: sessionError } =
+              await supabase.auth.getSession();
+
+            if (sessionError || !sessionData?.session?.access_token) {
+              console.error(
+                "[delete-account] getSession error",
+                sessionError
+              );
+              deleteAccountStatus.style.color = "#b91c1c";
+              deleteAccountStatus.textContent =
+                "We couldn't verify your session. Please log in again and try deleting your account.";
+              deleteAccountBtn.disabled = false;
+              deleteAccountBtn.textContent = "Delete my account";
+              return;
+            }
+
+            const accessToken = sessionData.session.access_token;
+            const endpoint = `${functionsBase}/delete-account`;
+
+            const response = await fetch(endpoint, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${accessToken}`,
+              },
+              body: JSON.stringify({
+                reason: "user-initiated-from-settings",
+              }),
+            });
+
+            const result = await response.json().catch(() => null);
+
+            if (!response.ok || !result?.success) {
+              console.error(
+                "[delete-account] function error",
+                response.status,
+                result
+              );
+              deleteAccountStatus.style.color = "#b91c1c";
+              deleteAccountStatus.textContent =
+                result?.error ||
+                "We couldn't delete your account. Please try again in a moment.";
+              deleteAccountBtn.disabled = false;
+              deleteAccountBtn.textContent = "Delete my account";
+              return;
+            }
+
+            deleteAccountStatus.style.color = "#15803d";
+            deleteAccountStatus.textContent =
+              "Your account has been deleted. Signing you out...";
+
+            try {
+              await supabase.auth.signOut();
+            } catch (signOutErr) {
+              console.warn("[delete-account] signOut error", signOutErr);
+            }
+
+            setTimeout(() => {
+              window.location.href = "goodbye.html";
+            }, 800);
+          } catch (err) {
+            console.error("[delete-account] unexpected error", err);
+            deleteAccountStatus.style.color = "#b91c1c";
+            deleteAccountStatus.textContent =
+              "Something went wrong. Please try again.";
+            deleteAccountBtn.disabled = false;
+            deleteAccountBtn.textContent = "Delete my account";
+          }
+        });
       }
     }
 
