@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   try {
     // -------------------------------------------------------------
-    // 0) Ensure Supabase client exists
+    // Ensure Supabase client exists
     // -------------------------------------------------------------
     if (!window.dasSupabase || !window.dasSupabase.auth) {
       console.warn("[auth-guard] Supabase client not found on this page");
@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         : "";
 
     // -------------------------------------------------------------
-    // 1) Get current session (may be slightly stale)
+    // Get current session (may be slightly stale)
     // -------------------------------------------------------------
     const { data: sessionData, error: sessionError } =
       await supabase.auth.getSession();
@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     updateAuthUI(session);
 
     // -------------------------------------------------------------
-    // 2) Get a FRESH user from Supabase
+    // Get a FRESH user from Supabase
     //    This makes sure we see updated metadata after SQL changes,
     //    Google sign-in, etc.
     // -------------------------------------------------------------
@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     // -------------------------------------------------------------
-    // 3) Choose which user object to trust
+    // Choose which user object to trust
     //    Prefer fresh user → fall back to session.user
     // -------------------------------------------------------------
     const effectiveUser = freshUserData?.user || session?.user || null;
@@ -103,7 +103,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     // -------------------------------------------------------------
-    // 4) Derive metadata + plan information
+    // Derive metadata + plan information
     // -------------------------------------------------------------
     const user = effectiveUser;
     const meta = user.user_metadata || {};
@@ -159,7 +159,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       : [];
 
     // -------------------------------------------------------------
-    // 5) Fill common workspace header name (top left)
+    // Fill common workspace header name (top left)
     // -------------------------------------------------------------
     const workspaceNameEl = document.getElementById("das-user-name");
     if (workspaceNameEl && fullName) {
@@ -167,7 +167,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     // -------------------------------------------------------------
-    // 6) Profile page: basic info + counters + preferences card
+    // Profile page: basic info + counters + preferences card
     // -------------------------------------------------------------
     if (isProfile) {
       // Basic identity
@@ -250,7 +250,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
       }
 
-      // Default level text
+      // Default level text + chip color
       const defaultLevelEl = document.getElementById(
         "das-profile-default-level"
       );
@@ -263,6 +263,17 @@ document.addEventListener("DOMContentLoaded", async () => {
           defaultLevelEl.textContent = defaultLevel;
         } else {
           defaultLevelEl.textContent = "Set your level";
+        }
+
+        // Chip color: neutral for Free, accent for Pro
+        if (isPaidPlan) {
+          // Pro / Pro yearly → accent chip
+          defaultLevelEl.style.background = "#eff6ff";
+          defaultLevelEl.style.color = "#1d4ed8";
+        } else {
+          // Free → neutral grey like the other tags
+          defaultLevelEl.style.background = "#f3f4f6";
+          defaultLevelEl.style.color = "#4b5563";
         }
       }
 
@@ -353,7 +364,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     // -------------------------------------------------------------
-    // 7) Settings page: account details + default level
+    // Settings page: account details + default level
     // -------------------------------------------------------------
     if (isSettings) {
       const settingsFullNameInput =
@@ -446,32 +457,10 @@ document.addEventListener("DOMContentLoaded", async () => {
           }
         });
       }
-      // Delete account → Phase 1: manual deletion request via Contact page
-      if (deleteAccountBtn && deleteAccountStatus) {
-        deleteAccountBtn.addEventListener("click", (event) => {
-          event.preventDefault();
-
-          const confirmed = window.confirm(
-            "Are you sure you want to delete your DentAIstudy account? This will permanently remove your study activity and preferences. For now, we handle deletions manually via support."
-          );
-
-          if (!confirmed) return;
-
-          deleteAccountBtn.disabled = true;
-          deleteAccountBtn.textContent = "Opening request...";
-          deleteAccountStatus.style.opacity = "1";
-          deleteAccountStatus.style.color = "#0f3c7d";
-          deleteAccountStatus.textContent =
-            "We’ll open the contact form with a pre-filled delete request.";
-
-          // Redirect to Contact page with a reason flag
-          window.location.href = "contact.html?reason=delete-account";
-        });
-      }
     }
 
     // -------------------------------------------------------------
-    // 7) Settings page: plan label + preferences card
+    // Settings page: plan label + preferences card
     // -------------------------------------------------------------
     if (isSettings) {
       const settingsPlanLabel = document.getElementById(
@@ -575,10 +564,7 @@ document.addEventListener("DOMContentLoaded", async () => {
               await supabase.auth.getSession();
 
             if (sessionError || !sessionData?.session?.access_token) {
-              console.error(
-                "[delete-account] getSession error",
-                sessionError
-              );
+              console.error("[delete-account] getSession error", sessionError);
               deleteAccountStatus.style.color = "#b91c1c";
               deleteAccountStatus.textContent =
                 "We couldn't verify your session. Please log in again and try deleting your account.";
@@ -643,21 +629,21 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     }
 
-    // -------------------------------------------------------------
-    // 8) Favorite subjects + preferred output style pills
+    // Favorite subjects + preferred output style pills
     // -------------------------------------------------------------
     const subjectPills = document.querySelectorAll("[data-das-subject-pill]");
     if (subjectPills.length) {
       const topFavorites = favoriteSubjects.slice(0, 3);
+
       subjectPills.forEach((pill) => {
         const slug = pill.getAttribute("data-das-subject-pill");
 
-        // base style: neutral pill
+        // Base style: neutral pill for everyone
         pill.style.background = "#f3f4f6";
         pill.style.color = "#4b5563";
 
-        // highlight top 3 favorites
-        if (topFavorites.includes(slug)) {
+        // Paid plans only: highlight top 3 favorites
+        if (isPaidPlan && topFavorites.includes(slug)) {
           pill.style.background = "#f3f4ff";
           pill.style.color = "#4f46e5";
         }
@@ -669,11 +655,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       outputPills.forEach((pill) => {
         const slug = pill.getAttribute("data-das-output-pill");
 
-        // base style
+        // Base style: neutral for everyone
         pill.style.background = "#f3f4f6";
         pill.style.color = "#4b5563";
 
-        if (preferredOutputStyles.includes(slug)) {
+        // Paid plans only: highlight saved styles
+        if (isPaidPlan && preferredOutputStyles.includes(slug)) {
           pill.style.background = "#eef2ff";
           pill.style.color = "#4338ca";
         }
@@ -681,7 +668,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     // -------------------------------------------------------------
-    // 9) Avatar display (profile + sidebar)
+    // Avatar display (profile + sidebar)
     // -------------------------------------------------------------
     const profileAvatarEl = document.getElementById("das-profile-avatar-main");
     const sidebarAvatarImg = document.querySelector(".sidebar-avatar img");
