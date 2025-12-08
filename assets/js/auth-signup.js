@@ -27,6 +27,9 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    // No domain restrictions — allow all valid emails
+    showMessage("Creating your account.");
+
     showMessage("Creating your account...");
 
         try {
@@ -55,10 +58,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (error) {
         console.error("Signup error:", error);
-        showMessage(
-          error.message || "Signup failed. Please try again.",
-          "error"
-        );
+
+        const raw = (error.message || "").toLowerCase();
+        let friendly = "Signup failed. Please try again.";
+
+        if (raw.includes("user already registered")) {
+          friendly =
+            "An account already exists with this email. Log in instead.";
+        } else if (raw.includes("password")) {
+          friendly = "Please choose a slightly stronger password.";
+        }
+
+        showMessage(friendly, "error");
         return;
       }
 
