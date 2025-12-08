@@ -1234,12 +1234,23 @@ a:hover { opacity: 0.7; }
 
 /* Settings – default level select styled like Study Builder subject */
 .form-group select.settings-level-select {
+  width: 100%;
   border-radius: 999px;
   border: 1px solid #d1d5db;
-  padding: 6px 11px;
+  padding: 6px 36px 6px 11px;
+  /* space for arrow on the right */
   font-size: 0.9rem;
-  background: #f9fafb;
+  background-color: #f9fafb;
   color: #111827;
+
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 6l4 4 4-4' stroke='%239ca3af' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 14px 14px;
 }
 
 .form-group select:focus {

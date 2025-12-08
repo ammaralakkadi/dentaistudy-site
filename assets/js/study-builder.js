@@ -1,5 +1,5 @@
 // assets/js/study-builder.js
-// DentAIstudy Study Builder (AI generation) — polished + resilient
+// DentAIstudy Study Builder (AI generation) — premium + tier-aware
 
 document.addEventListener("DOMContentLoaded", () => {
   // -----------------------------
@@ -15,19 +15,24 @@ document.addEventListener("DOMContentLoaded", () => {
   const addFilesBtn = document.getElementById("study-add-file");
   const fileInput = document.getElementById("study-file-input");
   const fileSummary = document.getElementById("study-file-summary");
-  const MAX_FILE_COUNT = 5; // easy to tweak later
+
+  // Base Pro-tier limits
+  const MAX_FILE_COUNT = 5;
   const MAX_FILE_SIZE_MB = 10;
   const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
+
+  // Effective per-tier limits (resolved in initUserTier)
+  let effectiveMaxFileCount = 0; // guest / unknown → no files
+  let effectiveMaxFileSizeMb = 3; // conservative default
+  let effectiveMaxFileSizeBytes = effectiveMaxFileSizeMb * 1024 * 1024;
+
   let attachedFiles = [];
+
   const ACCESS_TIER_UNKNOWN = "unknown";
   let userTier = ACCESS_TIER_UNKNOWN; // "guest" | "free" | "pro" | "pro_yearly"
   let isProTier = false;
-  const submitBtn =
-    form &&
-    (form.querySelector('button[type="submit"]') ||
-      document.getElementById("study-generate"));
 
-  console.log("[study-builder] init", {
+  console.log("[study-builder] init v2", {
     hasForm: !!form,
     hasTopicInput: !!topicInput,
     hasAnswerEl: !!answerEl,
@@ -40,13 +45,41 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
+  const submitBtn =
+    form.querySelector('button[type="submit"]') ||
+    document.getElementById("study-generate");
+
   // -----------------------------
   // CONSTANTS
   // -----------------------------
   const AI_ENDPOINT =
     "https://hlvkbqpesiqjxbastxux.functions.supabase.co/ai-generate"; // Supabase Edge Function URL
+
+  // Guest (anonymous) AI usage — per day
   const ANON_USAGE_KEY = "das_ai_anon_usage";
   const ANON_DAILY_LIMIT = 2; // guest sessions per day (client-side guard)
+
+  // Free-tier file usage — per day (logged-in free users)
+  const FREE_FILE_USAGE_KEY = "das_free_file_usage";
+  const FREE_FILE_DAILY_LIMIT = 3; // max PDFs per day on free tier
+
+  // -----------------------------
+  // PDF FILE TEXT EXTRACTION (pdf.js)
+  // -----------------------------
+  const PDFJS_WORKER_URL =
+    "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
+  // Base Pro-tier extraction limits
+  const MAX_PAGES_PER_FILE = 5;
+  const MAX_FILE_TEXT_LENGTH = 12000; // characters across all PDFs
+
+  // Effective per-tier extraction limits
+  let effectiveMaxPagesPerFile = 2; // free default
+  let effectiveMaxFileTextLength = 6000;
+
+  if (window.pdfjsLib && window.pdfjsLib.GlobalWorkerOptions) {
+    window.pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS_WORKER_URL;
+  }
 
   // -----------------------------
   // USER TIER RESOLUTION (Pro gating)
@@ -56,27 +89,61 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!window.dasSupabase || !window.dasSupabase.auth) {
         userTier = "guest";
         isProTier = false;
-        return;
+      } else {
+        const { data, error } = await window.dasSupabase.auth.getSession();
+        if (error || !data || !data.session) {
+          userTier = "guest";
+          isProTier = false;
+        } else {
+          const user = data.session.user;
+          const meta = user?.user_metadata || {};
+          const tier = meta.subscription_tier || "free";
+
+          userTier = tier;
+          isProTier = tier === "pro" || tier === "pro_yearly";
+        }
       }
-
-      const { data, error } = await window.dasSupabase.auth.getSession();
-      if (error || !data || !data.session) {
-        userTier = "guest";
-        isProTier = false;
-        return;
-      }
-
-      const user = data.session.user;
-      const meta = user?.user_metadata || {};
-      const tier = meta.subscription_tier || "free";
-
-      userTier = tier;
-      isProTier = tier === "pro" || tier === "pro_yearly";
     } catch (err) {
+      console.warn("[study-builder] initUserTier error", err);
       userTier = "guest";
       isProTier = false;
     }
+
+    // Compute effective limits based on tier
+    if (isProTier) {
+      // Pro / Pro yearly → full power
+      effectiveMaxFileCount = MAX_FILE_COUNT;
+      effectiveMaxFileSizeMb = MAX_FILE_SIZE_MB;
+      effectiveMaxFileSizeBytes = MAX_FILE_SIZE_BYTES;
+      effectiveMaxPagesPerFile = MAX_PAGES_PER_FILE;
+      effectiveMaxFileTextLength = MAX_FILE_TEXT_LENGTH;
+    } else if (userTier === "free") {
+      // Logged-in free users: 1 small PDF, limited pages/text
+      effectiveMaxFileCount = 1;
+      effectiveMaxFileSizeMb = 3;
+      effectiveMaxFileSizeBytes = effectiveMaxFileSizeMb * 1024 * 1024;
+      effectiveMaxPagesPerFile = Math.min(2, MAX_PAGES_PER_FILE);
+      effectiveMaxFileTextLength = Math.min(6000, MAX_FILE_TEXT_LENGTH);
+    } else {
+      // Guests / unknown: no file uploads
+      effectiveMaxFileCount = 0;
+      effectiveMaxFileSizeMb = 0;
+      effectiveMaxFileSizeBytes = 0;
+      effectiveMaxPagesPerFile = 0;
+      effectiveMaxFileTextLength = 0;
+    }
+
+    console.log("[study-builder] tier resolved", {
+      userTier,
+      isProTier,
+      effectiveMaxFileCount,
+      effectiveMaxFileSizeMb,
+      effectiveMaxPagesPerFile,
+    });
   }
+
+  // Kick off tier resolution (no need to await for the initial UI)
+  initUserTier();
 
   // -----------------------------
   // UI HELPERS
@@ -101,7 +168,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function showPlaceholder(message) {
     if (!placeholderEl) {
-      // fallback if there is no placeholder element:
       if (answerEl) {
         answerEl.textContent = typeof message === "string" ? message : "";
       }
@@ -156,7 +222,6 @@ document.addEventListener("DOMContentLoaded", () => {
           .split("|")
           .map((c) => {
             let h = escapeHtml(c.trim());
-            // bold inside tables: **text** -> <strong>text</strong>
             h = h.replace(/\*\*\s*(.+?)\s*\*\*/g, "<strong>$1</strong>");
             return h;
           });
@@ -171,7 +236,6 @@ document.addEventListener("DOMContentLoaded", () => {
             .split("|")
             .map((c) => {
               let cell = escapeHtml(c.trim());
-              // bold inside table body: **text** -> <strong>text</strong>
               cell = cell.replace(
                 /\*\*\s*(.+?)\s*\*\*/g,
                 "<strong>$1</strong>"
@@ -211,7 +275,7 @@ document.addEventListener("DOMContentLoaded", () => {
         continue;
       }
 
-      // Headings: #, ##, ###, #### ... -> bold line (cleaner than raw #)
+      // Headings: #, ##, ###, #### ... -> bold line
       htmlLine = htmlLine.replace(/^\s*#{1,6}\s+(.*)/, "<strong>$1</strong>");
 
       // Bold with optional spaces: ** title ** -> <strong>title</strong>
@@ -258,7 +322,6 @@ document.addEventListener("DOMContentLoaded", () => {
   function trackStudyUsage(modeLabel) {
     if (!window.dasStudyPrefs || !window.dasStudyPrefs.increment) return;
 
-    // Map UI mode labels → metadata categories
     let category = "theory"; // default
     const label = (modeLabel || "").toLowerCase();
 
@@ -277,83 +340,6 @@ document.addEventListener("DOMContentLoaded", () => {
     } catch (err) {
       console.warn("[study-builder] Failed to increment study prefs", err);
     }
-  }
-  // -----------------------------
-  // PDF FILE TEXT EXTRACTION (pdf.js)
-  // -----------------------------
-  const PDFJS_WORKER_URL =
-    "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
-  const MAX_PAGES_PER_FILE = 5;
-  const MAX_FILE_TEXT_LENGTH = 12000; // characters across all PDFs
-
-  if (window.pdfjsLib && window.pdfjsLib.GlobalWorkerOptions) {
-    window.pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS_WORKER_URL;
-  }
-
-  async function extractTextFromPdfFiles(files) {
-    if (!files || files.length === 0) return "";
-
-    const pdfjsLib = window.pdfjsLib;
-    if (!pdfjsLib || !pdfjsLib.getDocument) {
-      console.warn(
-        "[study-builder] pdf.js not available; skipping file extraction."
-      );
-      return "";
-    }
-
-    let combinedText = "";
-
-    for (const file of files) {
-      if (!file) continue;
-
-      const isPdfType =
-        (file.type && file.type.toLowerCase() === "application/pdf") ||
-        (file.name && file.name.toLowerCase().endsWith(".pdf"));
-
-      if (!isPdfType) continue;
-
-      try {
-        const arrayBuffer = await file.arrayBuffer();
-        const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
-        const pdfDoc = await loadingTask.promise;
-
-        const totalPages = pdfDoc.numPages;
-        const pagesToRead = Math.min(totalPages, MAX_PAGES_PER_FILE);
-
-        for (let pageNum = 1; pageNum <= pagesToRead; pageNum++) {
-          const page = await pdfDoc.getPage(pageNum);
-          const textContent = await page.getTextContent();
-          const pageText = textContent.items
-            .map((item) => (item.str || "").trim())
-            .join(" ");
-
-          if (pageText) {
-            combinedText += "\n\n" + pageText;
-          }
-
-          if (combinedText.length >= MAX_FILE_TEXT_LENGTH) break;
-        }
-      } catch (err) {
-        console.warn("[study-builder] Failed to read PDF file", file.name, err);
-      }
-
-      if (combinedText.length >= MAX_FILE_TEXT_LENGTH) break;
-    }
-
-    return combinedText.trim();
-  }
-
-  function buildTopicWithFiles(baseTopic, fileText) {
-    if (!fileText || !fileText.trim()) return baseTopic;
-
-    return (
-      baseTopic +
-      "\n\n---\n\n" +
-      "The following text comes from uploaded study PDFs. " +
-      "Use it as reference to generate exam-focused dental content. " +
-      "Do not repeat everything; organize it into clear OSCE steps, high-yield notes, or questions as requested:\n\n" +
-      fileText
-    );
   }
 
   // -----------------------------
@@ -401,6 +387,25 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Free-tier file usage (per-day) for logged-in "free" users
+  function getFreeFileUsage() {
+    try {
+      const raw = localStorage.getItem(FREE_FILE_USAGE_KEY);
+      if (!raw) return null;
+      return JSON.parse(raw);
+    } catch {
+      return null;
+    }
+  }
+
+  function setFreeFileUsage(obj) {
+    try {
+      localStorage.setItem(FREE_FILE_USAGE_KEY, JSON.stringify(obj));
+    } catch {
+      // ignore
+    }
+  }
+
   // -----------------------------
   // SUPABASE SESSION HELPERS
   // -----------------------------
@@ -439,6 +444,81 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     return headers;
+  }
+
+  // -----------------------------
+  // PDF TEXT EXTRACTION (tier-aware)
+  // -----------------------------
+  async function extractTextFromPdfFiles(files) {
+    if (!files || files.length === 0) return "";
+
+    const pdfjsLib = window.pdfjsLib;
+    if (!pdfjsLib || !pdfjsLib.getDocument) {
+      console.warn(
+        "[study-builder] pdf.js not available; skipping file extraction."
+      );
+      return "";
+    }
+
+    let combinedText = "";
+    const maxPages =
+      effectiveMaxPagesPerFile || MAX_PAGES_PER_FILE || MAX_PAGES_PER_FILE;
+    const maxChars =
+      effectiveMaxFileTextLength ||
+      MAX_FILE_TEXT_LENGTH ||
+      MAX_FILE_TEXT_LENGTH;
+
+    for (const file of files) {
+      if (!file) continue;
+
+      const isPdfType =
+        (file.type && file.type.toLowerCase() === "application/pdf") ||
+        (file.name && file.name.toLowerCase().endsWith(".pdf"));
+
+      if (!isPdfType) continue;
+
+      try {
+        const arrayBuffer = await file.arrayBuffer();
+        const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
+        const pdfDoc = await loadingTask.promise;
+
+        const totalPages = pdfDoc.numPages;
+        const pagesToRead = Math.min(totalPages, maxPages);
+
+        for (let pageNum = 1; pageNum <= pagesToRead; pageNum++) {
+          const page = await pdfDoc.getPage(pageNum);
+          const textContent = await page.getTextContent();
+          const pageText = textContent.items
+            .map((item) => (item.str || "").trim())
+            .join(" ");
+
+          if (pageText) {
+            combinedText += "\n\n" + pageText;
+          }
+
+          if (combinedText.length >= maxChars) break;
+        }
+      } catch (err) {
+        console.warn("[study-builder] Failed to read PDF file", file.name, err);
+      }
+
+      if (combinedText.length >= maxChars) break;
+    }
+
+    return combinedText.trim();
+  }
+
+  function buildTopicWithFiles(baseTopic, fileText) {
+    if (!fileText || !fileText.trim()) return baseTopic;
+
+    return (
+      baseTopic +
+      "\n\n---\n\n" +
+      "The following text comes from uploaded study PDFs. " +
+      "Use it as reference to generate exam-focused dental content. " +
+      "Do not repeat everything; organize it into clear OSCE steps, high-yield notes, or questions as requested:\n\n" +
+      fileText
+    );
   }
 
   // -----------------------------
@@ -532,7 +612,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         return;
       }
-      
+
       // Handle rate/usage limit from server
       if (response.status === 429 && data && data.error === "LIMIT_REACHED") {
         const tier = data.tier || "free";
@@ -576,10 +656,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // -----------------------------
   if (clearBtn) {
     clearBtn.addEventListener("click", () => {
-      // Reset text input
       if (topicInput) topicInput.value = "";
 
-      // Clear AI answer
       if (answerEl) {
         answerEl.textContent = "";
         answerEl.innerHTML = "";
@@ -590,12 +668,10 @@ document.addEventListener("DOMContentLoaded", () => {
       if (fileInput) fileInput.value = "";
       renderFileSummary();
 
-      // Restore default placeholder text
       showPlaceholder(
         "Your AI-powered answer will appear here once you generate it."
       );
 
-      // Hide copy button if no answer
       updateCopyVisibility();
     });
   }
@@ -610,7 +686,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const raw = (answerEl.innerText || answerEl.textContent || "").toString();
       const textToCopy = raw.trim();
 
-      // Nothing meaningful to copy
       if (!textToCopy) {
         showPlaceholder(
           "There is nothing to copy yet. Generate an answer first."
@@ -673,7 +748,6 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // Pills for each attached file
     const pillsHtml = attachedFiles
       .map((file, index) => {
         const safeName = (file && file.name) || "File";
@@ -686,7 +760,6 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .join("");
 
-    // Summary line
     let summary = "";
     if (attachedFiles.length === 1) {
       summary = "1 file added";
@@ -695,10 +768,18 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (skippedTooLarge > 0) {
-      summary += ` — ${skippedTooLarge} skipped (too large, max ${MAX_FILE_SIZE_MB} MB).`;
+      const sizeLabel =
+        effectiveMaxFileSizeMb && effectiveMaxFileSizeMb > 0
+          ? effectiveMaxFileSizeMb
+          : MAX_FILE_SIZE_MB;
+      summary += ` — ${skippedTooLarge} skipped (too large, max ${sizeLabel} MB on your plan).`;
       fileSummary.classList.add("is-warning");
     } else {
       fileSummary.classList.remove("is-warning");
+    }
+
+    if (!isProTier && userTier === "free") {
+      summary += " · Free plan: up to 1 PDF per prompt.";
     }
 
     fileSummary.innerHTML = `
@@ -711,15 +792,29 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // -----------------------------
-  // File input (Pro-gated + PDF.js + removable pills)
+  // File input (tier-aware gating + PDF.js + removable pills)
   // -----------------------------
   if (addFilesBtn && fileInput && fileSummary) {
     addFilesBtn.addEventListener("click", () => {
-      // Only Pro tiers can actually attach files.
-      if (!isProTier) {
-        fileSummary.textContent = "File uploads are available on Pro plans.";
+      // Guests / unknown: nudge to sign up for free
+      if (
+        !isProTier &&
+        (userTier === "guest" || userTier === ACCESS_TIER_UNKNOWN)
+      ) {
+        fileSummary.textContent =
+          "Sign in with a free DentAIstudy account to attach PDFs to your prompts.";
         fileSummary.classList.add("is-visible", "is-warning");
         return;
+      }
+
+      // Logged-in free tier: limited but allowed
+      if (!isProTier && userTier === "free") {
+        if (effectiveMaxFileCount <= 0) {
+          fileSummary.textContent =
+            "Your current plan does not allow file uploads.";
+          fileSummary.classList.add("is-visible", "is-warning");
+          return;
+        }
       }
 
       try {
@@ -733,18 +828,64 @@ document.addEventListener("DOMContentLoaded", () => {
       const newFiles = fileInput.files;
       if (!newFiles || newFiles.length === 0) return;
 
-      let skippedTooLarge = 0;
+      // Hard guard: if this tier currently has no file capacity
+      if (effectiveMaxFileCount <= 0 || effectiveMaxFileSizeBytes <= 0) {
+        fileInput.value = "";
+        fileSummary.textContent = isProTier
+          ? "File uploads are temporarily unavailable."
+          : userTier === "free"
+          ? "Your current plan does not allow file uploads."
+          : "Sign in with a free DentAIstudy account to attach PDFs.";
+        fileSummary.classList.add("is-visible", "is-warning");
+        return;
+      }
 
-      // Merge new selection into attachedFiles (up to MAX_FILE_COUNT, and size limit)
+      // Free-tier daily limit
+      let remainingFreeQuota = Infinity;
+      let usageToday = null;
+      if (!isProTier && userTier === "free") {
+        const today = new Date().toISOString().slice(0, 10);
+        const usage = getFreeFileUsage() || {};
+        let used = typeof usage.usedFiles === "number" ? usage.usedFiles : 0;
+        const lastDate = typeof usage.date === "string" ? usage.date : null;
+
+        if (lastDate !== today) {
+          used = 0;
+        }
+
+        remainingFreeQuota = Math.max(0, FREE_FILE_DAILY_LIMIT - used);
+        usageToday = { date: today, usedFiles: used };
+
+        if (remainingFreeQuota <= 0) {
+          fileInput.value = "";
+          fileSummary.textContent =
+            "You've reached today's free PDF limit. Upgrade to Pro to attach more files.";
+          fileSummary.classList.add("is-visible", "is-warning");
+          return;
+        }
+      }
+
+      let skippedTooLarge = 0;
+      let acceptedCount = 0;
+
+      // Merge new selection into attachedFiles (respecting per-tier limits)
       for (const file of newFiles) {
         if (!file) continue;
 
-        if (file.size > MAX_FILE_SIZE_BYTES) {
+        if (file.size > effectiveMaxFileSizeBytes) {
           skippedTooLarge++;
           continue;
         }
 
-        if (attachedFiles.length >= MAX_FILE_COUNT) break;
+        if (attachedFiles.length >= effectiveMaxFileCount) break;
+
+        if (
+          !isProTier &&
+          userTier === "free" &&
+          acceptedCount >= remainingFreeQuota
+        ) {
+          break;
+        }
 
         const exists = attachedFiles.some(
           (f) =>
@@ -754,14 +895,25 @@ document.addEventListener("DOMContentLoaded", () => {
         );
         if (!exists) {
           attachedFiles.push(file);
+          acceptedCount++;
         }
       }
 
+      // Update free-tier usage counter
+      if (
+        !isProTier &&
+        userTier === "free" &&
+        acceptedCount > 0 &&
+        usageToday
+      ) {
+        usageToday.usedFiles += acceptedCount;
+        setFreeFileUsage(usageToday);
+      }
+
       if (attachedFiles.length === 0) {
-        // Everything was too large or nothing valid
         renderFileSummary({ skippedTooLarge });
         console.log(
-          "[study-builder] Files attached: none (skipped too large or invalid)"
+          "[study-builder] Files attached: none (skipped too large, no quota, or invalid)"
         );
         return;
       }
@@ -785,9 +937,6 @@ document.addEventListener("DOMContentLoaded", () => {
       renderFileSummary();
     });
   }
-
-  // Resolve user tier for Pro/Free gating
-  initUserTier();
 
   // Initial state
   updateCopyVisibility();
