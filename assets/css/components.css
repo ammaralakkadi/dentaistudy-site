@@ -733,6 +733,12 @@ a:hover { opacity: 0.7; }
   color: #0f3c7d;
   text-decoration: underline;
 }
+.pricing-powered {
+  margin-top: 0.75rem;
+  text-align: center;
+  font-size: 0.72rem;
+  color: #6b7280;
+}
 
 /* Cookie banner – upgraded SaaS style */
 .cookie-banner {
