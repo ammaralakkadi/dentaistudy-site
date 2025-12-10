@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ADEX Medical Emergencies OSCE – High-Yield Guide | DentAIstudy</title>
+
+    <link rel="stylesheet" href="../../assets/css/style-v3.css" />
+    <link rel="icon" type="image/png" sizes="512x512" href="../../assets/img/favicon.png?v=2" />
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <script src="../../assets/js/auth-client.js" defer></script>
+    <script src="../../assets/js/auth-guard.js" defer></script>
+    <script src="../../assets/js/auth-logout.js" defer></script>
+    <script defer src="../../assets/js/main.js"></script>
+  </head>
+
+  <body>
+    <div class="main-wrapper">
+
+      <!-- HEADER -->
+      <header class="site-header">
+        <div class="container header-inner">
+          <a class="brand" href="../../index.html"><span>Dent</span><span>AIstudy</span></a>
+
+          <nav class="header-nav">
+            <a href="../../subjects.html">Subjects</a>
+            <a href="../../study.html">Study builder</a>
+            <a href="../../blogs.html" class="is-active">Blogs</a>
+            <a href="../../pricing.html">Pricing</a>
+            <a href="../../contact.html">Contact</a>
+          </nav>
+
+          <div class="header-right">
+            <a href="../../login.html" class="btn btn-outline header-login">Log in</a>
+            <a href="../../signup.html" class="btn btn-primary header-signup">Sign up</a>
+            <button class="menu-toggle"><span></span><span></span><span></span></button>
+          </div>
+        </div>
+      </header>
+
+      <!-- MOBILE NAV -->
+      <div class="slide-nav-backdrop"></div>
+      <nav class="slide-nav">
+        <div class="slide-nav-header">
+          <h3>Menu</h3>
+          <button class="slide-nav-close">&times;</button>
+        </div>
+
+        <div class="slide-nav-links">
+          <a href="../../subjects.html">Subjects</a>
+          <a href="../../study.html">Study builder</a>
+          <a href="../../blogs.html">Blogs</a>
+          <a href="../../pricing.html">Pricing</a>
+          <a href="../../contact.html">Contact</a>
+          <a href="../../login.html" class="slide-login-link">Log in</a>
+        </div>
+      </nav>
+
+      <!-- BLOG -->
+      <main class="section">
+        <div class="container container-narrow">
+
+          <div class="section-header" style="text-align:left;">
+            <div class="section-kicker">ADEX exam</div>
+            <h1 class="section-title">ADEX Medical Emergencies OSCE – High-Yield Decision Guide</h1>
+            <p class="section-subtitle">
+              The emergency scenarios that appear most often, the drug doses you must know,
+              and the safest exam-style responses.
+            </p>
+          </div>
+
+          <!-- QUICK ANSWERS -->
+          <section class="study-answer-card">
+            <h2>Quick Answers</h2>
+
+            <h3>What emergencies appear most in the ADEX OSCE?</h3>
+            <p>Syncope, hypoglycemia, angina, asthma, anaphylaxis, and mild allergic reactions.</p>
+
+            <h3>What is the #1 emergency OSCE rule?</h3>
+            <p>Stabilize first, diagnose second. The safest action always scores best.</p>
+
+            <h3>What is the dose of epinephrine for anaphylaxis?</h3>
+            <p>0.3–0.5 mg of 1:1000 IM, repeat every 5–15 minutes if needed.</p>
+
+            <h3>How do you treat hypoglycemia?</h3>
+            <p>Give glucose (oral if conscious, IV/IM if unconscious).</p>
+
+            <h3>What is the emergency algorithm for angina?</h3>
+            <p>Nitroglycerin + oxygen → repeat up to 3 doses → if unresolved → treat as MI.</p>
+
+            <h3>What do most students get wrong?</h3>
+            <p>They choose a “clinical” answer instead of the “safest immediate action.”</p>
+          </section>
+
+          <article class="blog-body">
+
+            <h2>1. Why emergencies are the easiest OSCE marks</h2>
+            <p>
+              ADEX emergency questions repeat the same logic every year.  
+              They test whether you know:
+            </p>
+            <ul>
+              <li>First-line drug choices</li>
+              <li>Correct dose and route</li>
+              <li>Immediate stabilization steps</li>
+              <li>When to activate EMS</li>
+            </ul>
+            <p>
+              If you memorize the patterns, these become free points.
+            </p>
+
+            <h2>2. Syncope – the most common scenario</h2>
+            <p>Classic signs: pale, dizzy, slow pulse, sweating.</p>
+            <ul>
+              <li>Lay patient supine with legs elevated</li>
+              <li>Loosen tight clothing</li>
+              <li>Oxygen if needed</li>
+              <li>Ammonia vapor is optional, not required</li>
+            </ul>
+            <p>
+              Do NOT give glucose, nitro, or medications — syncope is positional and self-limiting.
+            </p>
+
+            <h2>3. Hypoglycemia – fast recognition saves the question</h2>
+            <p>Common signs: confusion, sweating, tremors, tachycardia, irritability.</p>
+            <ul>
+              <li>Conscious → give oral glucose (gel/tablets/juice)</li>
+              <li>Unconscious → glucagon IM or IV dextrose</li>
+              <li>Never delay carbohydrate intake in borderline cases</li>
+            </ul>
+
+            <div class="study-form-card">
+              <h3>High-yield clue</h3>
+              <p>A confused diabetic = treat as hypoglycemia until proven otherwise.</p>
+            </div>
+
+            <h2>4. Angina & MI – the chest pain decision tree</h2>
+            <p>
+              The OSCE will ask for the **next best step**, not the long-term plan.
+            </p>
+
+            <strong>Angina action steps:</strong>
+            <ul>
+              <li>Stop treatment</li>
+              <li>Administer nitroglycerin (0.4 mg sublingual)</li>
+              <li>Give oxygen</li>
+              <li>Repeat nitro up to 3 times over 15 minutes</li>
+            </ul>
+
+            <p>If pain does NOT resolve → treat as MI.</p>
+
+            <strong>MI action steps:</strong>
+            <ul>
+              <li>CHEW aspirin (if not allergic)</li>
+              <li>Activate EMS</li>
+              <li>Monitor vitals and oxygen</li>
+            </ul>
+
+            <h2>5. Asthma attack – quick relief rules</h2>
+            <p>Classic OSCE features: wheezing, difficulty breathing, accessory muscle use.</p>
+            <ul>
+              <li>Position upright</li>
+              <li>Use albuterol inhaler (2 puffs)</li>
+              <li>Oxygen if needed</li>
+              <li>If severe → epinephrine 1:1000 IM</li>
+            </ul>
+
+            <h2>6. Anaphylaxis – the highest-risk scenario</h2>
+            <p>Signs: swelling, wheezing, hypotension, widespread rash, difficulty breathing.</p>
+
+            <div class="study-form-card">
+              <h3>Critical rule</h3>
+              <p>Epinephrine FIRST. Everything else is secondary.</p>
+            </div>
+
+            <ul>
+              <li>Epinephrine 0.3–0.5 mg IM (1:1000)</li>
+              <li>Call EMS immediately</li>
+              <li>Oxygen</li>
+              <li>Antihistamines after epinephrine is delivered</li>
+            </ul>
+
+            <h2>7. Mild allergic reaction – don’t confuse with anaphylaxis</h2>
+            <p>Localized rash or mild itching without airway compromise.</p>
+            <ul>
+              <li>Administer an antihistamine (e.g., diphenhydramine)</li>
+              <li>No epinephrine unless airway symptoms appear</li>
+            </ul>
+
+            <h2>8. Hyperventilation – students often overreact</h2>
+            <p>Rapid breathing, tingling, tight chest, anxiety.</p>
+            <ul>
+              <li>Reassure patient</li>
+              <li>Have them breathe slowly into cupped hands</li>
+              <li>No oxygen (it worsens symptoms)</li>
+            </ul>
+
+            <h2>9. How emergencies appear in OSCE questions</h2>
+            <p>
+              Most emergency questions follow a predictable pattern:
+            </p>
+            <ul>
+              <li>Short case → key symptoms highlighted</li>
+              <li>Four answer choices</li>
+              <li>Only one is immediately safe</li>
+            </ul>
+            <p>
+              The key is to choose the action that stabilizes the patient quickly, not the final medical treatment.
+            </p>
+
+            <h2>10. How DentAIstudy helps with emergency OSCE prep</h2>
+            <p>
+              DentAIstudy can structure emergency training through:
+            </p>
+            <ul>
+              <li>Flashcards for drug doses & emergency actions</li>
+              <li>Generated OSCE-style emergency questions</li>
+              <li>Short notes summarizing key symptoms and first steps</li>
+              <li>Case-based reasoning prompts for decision-making</li>
+            </ul>
+
+            <p>
+              <a href="../../study.html" class="btn btn-primary">Try Study Builder →</a>
+            </p>
+
+            <h2>References</h2>
+            <ul>
+              <li>ADEX OSCE Emergency Guidelines</li>
+              <li>Standard dental emergency protocols</li>
+              <li>Clinical pharmacology references for emergency drugs</li>
+            </ul>
+
+          </article>
+        </div>
+      </main>
+
+      <!-- FOOTER -->
+      <footer class="site-footer">
+        <div class="container">
+          <div class="footer-top">
+            <div>
+              <div class="footer-brand">DentAIstudy</div>
+              <p>AI-enhanced tools for dental students and residents.</p>
+              <div class="footer-social">
+                <a href="https://www.tiktok.com/@dentaistudy" target="_blank">
+                  <img src="../../assets/img/footer-icons/tiktok-icon.png" class="footer-social-img" />
+                </a>
+                <a href="mailto:info@dentaistudy.com">
+                  <img src="../../assets/img/footer-icons/email-icon.png" class="footer-social-img" />
+                </a>
+              </div>
+            </div>
+
+            <div class="footer-column">
+              <h4>Product</h4>
+              <a href="../../subjects.html">Subjects</a>
+              <a href="../../study.html">Study builder</a>
+              <a href="../../blogs.html">Blogs</a>
+              <a href="../../pricing.html">Pricing</a>
+            </div>
+
+            <div class="footer-column">
+              <h4>Company</h4>
+              <a href="../../about.html">About</a>
+              <a href="../../contact.html">Contact</a>
+              <a href="../../faqs.html">FAQ</a>
+            </div>
+
+            <div class="footer-column">
+              <h4>Legal</h4>
+              <a href="../../privacy.html">Privacy Policy</a>
+              <a href="../../terms.html">Terms & Conditions</a>
+              <a href="../../cookies.html">Cookies Policy</a>
+              <a href="../../disclaimer.html">Disclaimer</a>
+              <a href="../../billing.html">Billing</a>
+              <a href="../../refund-policy.html">Refunds</a>
+            </div>
+          </div>
+
+          <div class="footer-bottom">© 2025 DentAIstudy</div>
+        </div>
+      </footer>
+
+    </div>
+  </body>
+</html>

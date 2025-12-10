@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ADEX Radiology OSCE – High-Yield Interpretation Guide | DentAIstudy</title>
+
+    <link rel="stylesheet" href="../../assets/css/style-v3.css" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="512x512"
+      href="../../assets/img/favicon.png?v=2"
+    />
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+      defer
+    ></script>
+    <script src="../../assets/js/auth-client.js" defer></script>
+    <script src="../../assets/js/auth-guard.js" defer></script>
+    <script src="../../assets/js/auth-logout.js" defer></script>
+    <script defer src="../../assets/js/main.js"></script>
+  </head>
+
+  <body>
+    <div class="main-wrapper">
+      <!-- HEADER -->
+      <header class="site-header">
+        <div class="container header-inner">
+          <a class="brand" href="../../index.html">
+            <span>Dent</span><span>AIstudy</span>
+          </a>
+
+          <nav class="header-nav">
+            <a href="../../subjects.html">Subjects</a>
+            <a href="../../study.html">Study builder</a>
+            <a href="../../blogs.html" class="is-active">Blogs</a>
+            <a href="../../pricing.html">Pricing</a>
+            <a href="../../contact.html">Contact</a>
+          </nav>
+
+          <div class="header-right">
+            <a href="../../login.html" class="btn btn-outline header-login"
+              >Log in</a
+            >
+            <a href="../../signup.html" class="btn btn-primary header-signup"
+              >Sign up</a
+            >
+            <button class="menu-toggle">
+              <span></span><span></span><span></span>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- MOBILE NAV -->
+      <div class="slide-nav-backdrop"></div>
+      <nav class="slide-nav">
+        <div class="slide-nav-header">
+          <h3>Menu</h3>
+          <button class="slide-nav-close">&times;</button>
+        </div>
+        <div class="slide-nav-links">
+          <a href="../../subjects.html">Subjects</a>
+          <a href="../../study.html">Study builder</a>
+          <a href="../../blogs.html">Blogs</a>
+          <a href="../../pricing.html">Pricing</a>
+          <a href="../../contact.html">Contact</a>
+          <a href="../../login.html" class="slide-login-link">Log in</a>
+        </div>
+      </nav>
+
+      <!-- BLOG -->
+      <main class="section">
+        <div class="container container-narrow">
+          <div class="section-header" style="text-align:left;">
+            <div class="section-kicker">ADEX exam</div>
+            <h1 class="section-title">
+              ADEX Radiology OSCE – High-Yield Interpretation Guide
+            </h1>
+            <p class="section-subtitle">
+              The key radiographic patterns, mistakes, and decision rules that
+              appear again and again in the ADEX OSCE.
+            </p>
+          </div>
+
+          <!-- QUICK ANSWERS -->
+          <section class="study-answer-card">
+            <h2>Quick Answers</h2>
+
+            <h3>What does the ADEX Radiology OSCE focus on?</h3>
+            <p>
+              Detection of caries, periapical pathology, bone loss patterns,
+              anatomical landmarks, and common technical errors.
+            </p>
+
+            <h3>What is the biggest cause of wrong answers?</h3>
+            <p>
+              Misreading bone levels and missing subtle radiolucencies at the
+              apex or furcation.
+            </p>
+
+            <h3>Do I need to describe every detail?</h3>
+            <p>
+              No. You need to recognise the main pathology and choose the safest
+              next step or diagnosis.
+            </p>
+
+            <h3>How can I get faster at reading films?</h3>
+            <p>
+              Use a fixed viewing order (crown–root–bone–apex) and practise on
+              many examples until patterns feel familiar.
+            </p>
+
+            <h3>Are technical errors tested?</h3>
+            <p>
+              Yes. Questions often ask you to identify foreshortening,
+              elongation, cone cuts, and overlapping contacts.
+            </p>
+
+            <h3>What is the smartest way to study Radiology for ADEX?</h3>
+            <p>
+              Combine pattern drills (lots of examples) with short checklists
+              for caries, periapical disease, and periodontitis.
+            </p>
+          </section>
+
+          <article class="blog-body">
+            <h2>1. Why radiology is the backbone of the OSCE</h2>
+            <p>
+              Radiology questions are among the most common in ADEX OSCE
+              forms. Examiners use radiographs to test your:
+            </p>
+            <ul>
+              <li>Ability to detect pathology early</li>
+              <li>Understanding of disease patterns</li>
+              <li>Clinical judgment for treatment decisions</li>
+            </ul>
+            <p>
+              The good news: radiology is highly pattern-based. Once you know
+              the patterns, your score improves quickly.
+            </p>
+
+            <h2>2. A simple viewing routine for every radiograph</h2>
+            <p>
+              Instead of staring at the whole image and hoping you notice
+              everything, use a fixed, repeatable order:
+            </p>
+            <ul>
+              <li><strong>Crowns</strong> – restorations, caries, fractures.</li>
+              <li><strong>Roots</strong> – length, shape, endodontic fillings.</li>
+              <li><strong>Apex</strong> – radiolucencies, widened PDL.</li>
+              <li><strong>Bone</strong> – trabecular pattern, lamina dura.</li>
+              <li><strong>Crest</strong> – horizontal/vertical bone loss.</li>
+              <li><strong>Surroundings</strong> – sinuses, canal, soft tissues.</li>
+            </ul>
+
+            <div class="study-form-card">
+              <h3>One-line rule</h3>
+              <p>
+                Scan the whole image, then zoom into details. Do not answer
+                before you have checked apex and bone levels.
+              </p>
+            </div>
+
+            <h2>3. Caries patterns that appear in ADEX</h2>
+            <p>
+              Most caries questions test whether you can identify:
+            </p>
+            <ul>
+              <li>
+                <strong>Proximal caries</strong> – triangular radiolucency with
+                apex toward the DEJ.
+              </li>
+              <li>
+                <strong>Occlusal caries</strong> – under the enamel surface,
+                often not visible until it reaches dentin.
+              </li>
+              <li>
+                <strong>Root caries</strong> – saucer-shaped radiolucency on the
+                root surface, usually with recession.
+              </li>
+            </ul>
+            <p>
+              Many options try to confuse activity with mere staining. Look for
+              radiolucency extending into dentin, not just surface change.
+            </p>
+
+            <h2>4. Periapical pathology and endodontic questions</h2>
+            <p>
+              Typical OSCE tasks: identify periapical radiolucency, failed
+              endodontic treatment, or missed canals.
+            </p>
+            <ul>
+              <li>
+                Periapical radiolucency at the apex with loss of lamina dura →
+                possible periapical periodontitis.
+              </li>
+              <li>
+                Large, poorly condensed root filling short or beyond apex →
+                likely failure risk.
+              </li>
+              <li>
+                Sudden canal disappearance or different root outline →
+                possible missed canal.
+              </li>
+            </ul>
+
+            <div class="study-form-card">
+              <h3>High-yield periapical clues</h3>
+              <p>
+                • Symmetry with neighbouring teeth<br />
+                • Presence/absence of lamina dura<br />
+                • Size and shape of radiolucency at apex<br />
+              </p>
+            </div>
+
+            <h2>5. Periodontal bone patterns</h2>
+            <p>
+              Periodontal questions usually test whether you can classify bone
+              loss and relate it to diagnosis.
+            </p>
+            <ul>
+              <li><strong>Horizontal loss</strong> – bone parallel to CEJ line.</li>
+              <li>
+                <strong>Vertical loss</strong> – angular defects, often
+                localised.
+              </li>
+              <li>
+                <strong>Furcation involvement</strong> – radiolucency in
+                furcation area.
+              </li>
+            </ul>
+            <p>
+              Combine radiographic findings with clinical attachment history in
+              the case description to choose the correct diagnosis.
+            </p>
+
+            <h2>6. Anatomical landmarks & normal findings</h2>
+            <p>
+              Not all radiolucencies are pathology. Some questions test whether
+              you can recognise normal anatomy:
+            </p>
+            <ul>
+              <li>Incisive foramen, mental foramen</li>
+              <li>Maxillary sinus outline</li>
+              <li>Mylohyoid ridge, external oblique ridge</li>
+              <li>Nasal fossa, median palatal suture</li>
+            </ul>
+            <p>
+              The safest approach: ask yourself, “Does this follow expected
+              anatomical location and shape?”
+            </p>
+
+            <h2>7. Technical errors – image quality questions</h2>
+            <p>
+              Some OSCE questions ask what went wrong in the radiograph:
+            </p>
+            <ul>
+              <li><strong>Foreshortening</strong> – too steep vertical angle.</li>
+              <li><strong>Elongation</strong> – too shallow vertical angle.</li>
+              <li><strong>Overlapping contacts</strong> – incorrect horizontal angulation.</li>
+              <li><strong>Cone cut</strong> – beam not centred on receptor.</li>
+            </ul>
+            <p>
+              The answer often asks you to choose the positioning correction
+              that would fix the image.
+            </p>
+
+            <h2>8. How radiology links to other OSCE sections</h2>
+            <p>
+              Radiographs rarely stand alone. They usually feed into questions
+              about:
+            </p>
+            <ul>
+              <li>Treatment planning (restore, monitor, refer?)</li>
+              <li>Endodontic decisions</li>
+              <li>Periodontal therapy and prognosis</li>
+              <li>Screening for pathology before extractions</li>
+            </ul>
+            <p>
+              For the best results, practise combined cases that force you to go
+              from radiographic observation → diagnosis → planned action.
+            </p>
+
+            <h2>9. How to train radiology for ADEX efficiently</h2>
+            <p>
+              Instead of passively scrolling through images, aim for active,
+              structured training:
+            </p>
+            <ul>
+              <li>Do short sessions with 5–10 radiographs each time.</li>
+              <li>
+                For each image, say out loud: “crowns, roots, apex, crest, bone,
+                surroundings”.
+              </li>
+              <li>
+                Commit common patterns to memory (classic caries and periapical
+                appearances).
+              </li>
+              <li>
+                Mix normal anatomy images with clear pathology to build contrast
+                recognition.
+              </li>
+            </ul>
+
+            <h2>10. How DentAIstudy supports ADEX Radiology OSCE prep</h2>
+            <p>
+              DentAIstudy can transform radiology topics into compact, practical
+              study material:
+            </p>
+            <ul>
+              <li>
+                Flashcards for key radiographic patterns and differential
+                diagnoses.
+              </li>
+              <li>
+                OSCE-style question sets for radiology decision-making (what is
+                the best next step?).
+              </li>
+              <li>
+                Short notes summarising bone loss patterns, caries staging, and
+                endodontic signs.
+              </li>
+              <li>
+                Custom checklists you can review before each practice session or
+                mock exam.
+              </li>
+            </ul>
+
+            <p>
+              <a href="../../study.html" class="btn btn-primary"
+                >Try Study Builder →</a
+              >
+            </p>
+
+            <h2>References</h2>
+            <ul>
+              <li>
+                Dental radiology textbooks and licensure exam interpretation
+                guides.
+              </li>
+              <li>
+                ADEX OSCE candidate information and sample case descriptions.
+              </li>
+              <li>
+                Standard radiographic anatomy and pathology atlases used in
+                clinical training.
+              </li>
+            </ul>
+          </article>
+        </div>
+      </main>
+
+      <!-- FOOTER -->
+      <footer class="site-footer">
+        <div class="container">
+          <div class="footer-top">
+            <div>
+              <div class="footer-brand">DentAIstudy</div>
+              <p>AI-enhanced tools for dental students and residents.</p>
+              <div class="footer-social">
+                <a
+                  href="https://www.tiktok.com/@dentaistudy"
+                  target="_blank"
+                >
+                  <img
+                    src="../../assets/img/footer-icons/tiktok-icon.png"
+                    class="footer-social-img"
+                  />
+                </a>
+                <a href="mailto:info@dentaistudy.com">
+                  <img
+                    src="../../assets/img/footer-icons/email-icon.png"
+                    class="footer-social-img"
+                  />
+                </a>
+              </div>
+            </div>
+
+            <div class="footer-column">
+              <h4>Product</h4>
+              <a href="../../subjects.html">Subjects</a>
+              <a href="../../study.html">Study builder</a>
+              <a href="../../blogs.html">Blogs</a>
+              <a href="../../pricing.html">Pricing</a>
+            </div>
+
+            <div class="footer-column">
+              <h4>Company</h4>
+              <a href="../../about.html">About</a>
+              <a href="../../contact.html">Contact</a>
+              <a href="../../faqs.html">FAQ</a>
+            </div>
+
+            <div class="footer-column">
+              <h4>Legal</h4>
+              <a href="../../privacy.html">Privacy Policy</a>
+              <a href="../../terms.html">Terms &amp; Conditions</a>
+              <a href="../../cookies.html">Cookies Policy</a>
+              <a href="../../disclaimer.html">Disclaimer</a>
+              <a href="../../billing.html">Billing</a>
+              <a href="../../refund-policy.html">Refunds</a>
+            </div>
+          </div>
+
+          <div class="footer-bottom">© 2025 DentAIstudy</div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
