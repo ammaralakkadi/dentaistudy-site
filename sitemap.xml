@@ -10,12 +10,6 @@
   <url><loc>https://dentaistudy.com/study.html</loc></url>
   <url><loc>https://dentaistudy.com/blogs.html</loc></url>
 
-  <!-- Auth pages -->
-  <url><loc>https://dentaistudy.com/login.html</loc></url>
-  <url><loc>https://dentaistudy.com/signup.html</loc></url>
-  <url><loc>https://dentaistudy.com/profile.html</loc></url>
-  <url><loc>https://dentaistudy.com/settings.html</loc></url>
-
     <!-- Legal pages -->
   <url><loc>https://dentaistudy.com/privacy.html</loc></url>
   <url><loc>https://dentaistudy.com/terms.html</loc></url>
@@ -63,5 +57,17 @@
   <url><loc>https://dentaistudy.com/blogs/blog-turn-chapter-into-sessions.html</loc></url>
   <url><loc>https://dentaistudy.com/blogs/blog-universal-osce-checklist.html</loc></url>
   <url><loc>https://dentaistudy.com/blogs/blog-viva-structure.html</loc></url>
+
+    <!-- ADEX blog cluster -->
+  <url><loc>https://dentaistudy.com/blogs/adex/adex-what-is-the-exam.html</loc></url>
+  <url><loc>https://dentaistudy.com/blogs/adex/adex-scoring-fail-points.html</loc></url>
+  <url><loc>https://dentaistudy.com/blogs/adex/adex-class-ii-preparation.html</loc></url>
+  <url><loc>https://dentaistudy.com/blogs/adex/adex-class-iii-preparation.html</loc></url>
+  <url><loc>https://dentaistudy.com/blogs/adex/adex-provisional-crown-preparation.html</loc></url>
+  <url><loc>https://dentaistudy.com/blogs/adex/adex-osce-overview.html</loc></url>
+  <url><loc>https://dentaistudy.com/blogs/adex/adex-radiology-osce.html</loc></url>
+  <url><loc>https://dentaistudy.com/blogs/adex/adex-emergencies-osce.html</loc></url>
+  <url><loc>https://dentaistudy.com/blogs/adex/adex-treatment-planning-osce.html</loc></url>
+  <url><loc>https://dentaistudy.com/blogs/adex/adex-ethics-legal-osce.html</loc></url>
 
 </urlset>

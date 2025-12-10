@@ -1,10 +1,19 @@
 User-agent: *
 Allow: /
 
-# Block sensitive internal paths (good SEO practice)
-Disallow: /assets/
+# Block internal / non-SEO pages
+Disallow: /goodbye.html
+Disallow: /profile.html
+Disallow: /settings.html
+Disallow: /logout.html
 Disallow: /supabase/
 Disallow: /blogs/temp/
+
+# Allow assets (CSS, JS, images)
+Allow: /assets/
+
+# Crawl optimization
+Crawl-delay: 2
 
 # Sitemap location
 Sitemap: https://dentaistudy.com/sitemap.xml
