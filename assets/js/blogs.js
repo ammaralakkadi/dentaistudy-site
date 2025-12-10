@@ -1,10 +1,163 @@
+// blogs.js – registry-based blog listing (ADEX-ready)
 document.addEventListener("DOMContentLoaded", () => {
-  const cards = Array.from(document.querySelectorAll(".blog-card"));
+  const blogLibrary = document.getElementById("blog-library");
   const filters = Array.from(document.querySelectorAll(".blog-filter"));
   const searchInput = document.getElementById("blog-search");
   const loadMoreBtn = document.getElementById("load-more");
 
-  if (!cards.length) return; // nothing to do if no blogs
+  // If we're not on the blogs page, do nothing
+  if (!blogLibrary) return;
+
+  // ------------------------------------
+  // 1. BLOG REGISTRY
+  //    Add new entries here only.
+  // ------------------------------------
+  const BLOG_REGISTRY = [
+    {
+      title: "ADEX Exam 2025 – What Candidates Must Know",
+      url: "blogs/adex/adex-what-is-the-exam.html",
+      tag: "ADEX exam",
+      description:
+        "A clear, examiner-focused guide to the ADEX exam structure, scoring, and what you need to pass.",
+      meta: "7 min read • ADEX exam",
+      category: "theory adex", // used for filter pills + search
+    },
+    // ➜ Future ADEX posts: add more objects here.
+
+    {
+      title: "ADEX Scoring & Common Failing Points",
+      url: "blogs/adex/adex-scoring-fail-points.html",
+      tag: "ADEX exam",
+      description:
+        "Understanding ADEX scoring, critical errors, and the mistakes that cause most candidates to fail.",
+      meta: "8 min read • ADEX exam",
+      category: "theory adex",
+    },
+    {
+      title: "ADEX Class II Preparation – Step-by-Step Guide",
+      url: "blogs/adex/adex-class-ii-preparation.html",
+      tag: "ADEX exam",
+      description:
+        "A safe, examiner-friendly Class II (MO/DO) preparation method for predictable ADEX passing.",
+      meta: "9 min read • ADEX exam",
+      category: "skills adex class2",
+    },
+    {
+      title: "ADEX Class III Preparation – Complete Exam Guide",
+      url: "blogs/adex/adex-class-iii-preparation.html",
+      tag: "ADEX exam",
+      description:
+        "Controlled access, proximal extension, enamel preservation, and the criteria you must meet to pass.",
+      meta: "8 min read • ADEX exam",
+      category: "skills adex class3",
+    },
+    {
+      title: "ADEX Provisional Crown Preparation – Step-by-Step Guide",
+      url: "blogs/adex/adex-provisional-crown-preparation.html",
+      tag: "ADEX exam",
+      description:
+        "How to prepare, trim, fit, and finish a provisional crown that meets ADEX pass-level criteria.",
+      meta: "8 min read • ADEX exam",
+      category: "skills adex provisional",
+    },
+    {
+      title: "ADEX OSCE Overview – Format, Topics & Strategy",
+      url: "blogs/adex/adex-osce-overview.html",
+      tag: "ADEX exam",
+      description:
+        "A complete breakdown of ADEX OSCE structure, radiology patterns, emergency logic, and clinical reasoning.",
+      meta: "7 min read • ADEX exam",
+      category: "theory adex osce",
+    },
+    {
+      title: "ADEX Radiology OSCE – High-Yield Interpretation Guide",
+      url: "blogs/adex/adex-radiology-osce.html",
+      tag: "ADEX exam",
+      description:
+        "The radiographic patterns, bone loss rules, caries appearances, and periapical signs repeatedly tested in the ADEX OSCE.",
+      meta: "8 min read • ADEX exam",
+      category: "theory adex osce radiology",
+    },
+    {
+      title: "ADEX Medical Emergencies OSCE – High-Yield Decision Guide",
+      url: "blogs/adex/adex-emergencies-osce.html",
+      tag: "ADEX exam",
+      description:
+        "A predictable guide to syncope, hypoglycemia, angina, asthma, and anaphylaxis — and the first-step actions ADEX expects.",
+      meta: "7 min read • ADEX exam",
+      category: "theory adex osce emergencies",
+    },
+    {
+      title: "ADEX Treatment Planning OSCE – Next Best Step Guide",
+      url: "blogs/adex/adex-treatment-planning-osce.html",
+      tag: "ADEX exam",
+      description:
+        "Simple, predictable sequencing rules to choose the safest next step in ADEX treatment planning OSCE cases.",
+      meta: "7 min read • ADEX exam",
+      category: "theory adex osce treatment"
+    },
+    {
+      title: "ADEX Ethics & Legal OSCE – High-Yield Decision Guide",
+      url: "blogs/adex/adex-ethics-legal-osce.html",
+      tag: "ADEX exam",
+      description:
+        "Consent, confidentiality, documentation, minors, scope of practice, and error disclosure — the ethics patterns ADEX repeats.",
+      meta: "7 min read • ADEX exam",
+      category: "theory adex osce ethics"
+    }
+  ];
+
+  // ------------------------------------
+  // 2. INJECT REGISTRY BLOG CARDS
+  //    This appends new cards to the existing 35 cards.
+  //    No need to edit blogs.html for new posts.
+  // ------------------------------------
+  function injectDynamicBlogs() {
+    BLOG_REGISTRY.forEach((blog) => {
+      // Skip if card already exists (safety)
+      const existing = blogLibrary.querySelector(
+        `a.blog-card[href="${blog.url}"]`
+      );
+      if (existing) return;
+
+      const link = document.createElement("a");
+      link.href = blog.url;
+      link.className = "blog-card is-hidden";
+      link.dataset.category = blog.category;
+
+      const article = document.createElement("article");
+      article.className = "subject-card";
+
+      const tagDiv = document.createElement("div");
+      tagDiv.className = "sidebar-tag";
+      tagDiv.style.width = "max-content";
+      tagDiv.textContent = blog.tag;
+
+      const h3 = document.createElement("h3");
+      h3.textContent = blog.title;
+
+      const p = document.createElement("p");
+      p.textContent = blog.description;
+
+      const metaDiv = document.createElement("div");
+      metaDiv.className = "subject-ai";
+      metaDiv.textContent = blog.meta;
+
+      article.appendChild(tagDiv);
+      article.appendChild(h3);
+      article.appendChild(p);
+      article.appendChild(metaDiv);
+
+      link.appendChild(article);
+      blogLibrary.appendChild(link);
+    });
+  }
+
+  injectDynamicBlogs();
+
+  // After injection, collect all cards (old + new) and apply filters/search.
+  const cards = Array.from(document.querySelectorAll(".blog-card"));
+  if (!cards.length) return;
 
   let activeFilter = "all";
   let visibleCount = 9;
@@ -14,7 +167,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .toLowerCase()
       .trim();
 
-    const filtered = cards.filter(card => {
+    const filtered = cards.filter((card) => {
       const cats = (card.dataset.category || "").toLowerCase();
       const text = (card.innerText || "").toLowerCase();
       const matchFilter = activeFilter === "all" || cats.includes(activeFilter);
@@ -23,39 +176,36 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // hide all
-    cards.forEach(c => {
+    cards.forEach((c) => {
       c.classList.add("is-hidden");
       c.style.display = "none";
     });
 
     // show first batch
-    filtered.slice(0, visibleCount).forEach(c => {
+    filtered.slice(0, visibleCount).forEach((c) => {
       c.classList.remove("is-hidden");
       c.style.display = "";
     });
 
     // load more button visibility
     if (loadMoreBtn) {
-      if (filtered.length > visibleCount) {
-        loadMoreBtn.style.display = "inline-block";
-      } else {
-        loadMoreBtn.style.display = "none";
-      }
+      loadMoreBtn.style.display =
+        filtered.length > visibleCount ? "inline-block" : "none";
     }
   }
 
-  // filter buttons
-  filters.forEach(btn => {
+  // Filter pills
+  filters.forEach((btn) => {
     btn.addEventListener("click", () => {
       activeFilter = btn.dataset.filter || "all";
-      filters.forEach(b => b.classList.remove("is-active"));
+      filters.forEach((b) => b.classList.remove("is-active"));
       btn.classList.add("is-active");
       visibleCount = 9;
       applyVisibility();
     });
   });
 
-  // search input
+  // Search box
   if (searchInput) {
     searchInput.addEventListener("input", () => {
       visibleCount = 9;
@@ -63,7 +213,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // load more button
+  // Load more
   if (loadMoreBtn) {
     loadMoreBtn.addEventListener("click", () => {
       visibleCount += 9;
@@ -71,6 +221,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // initial state
+  // Initial state
   applyVisibility();
 });
