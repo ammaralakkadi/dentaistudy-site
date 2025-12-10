@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      ADEX Periodontal Assessment OSCE – Probing, Charting & Diagnosis |
+      DentAIstudy
+    </title>
+
+    <link rel="stylesheet" href="../../assets/css/style-v3.css" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="512x512"
+      href="../../assets/img/favicon.png?v=2"
+    />
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+      defer
+    ></script>
+    <script src="../../assets/js/auth-client.js" defer></script>
+    <script src="../../assets/js/auth-guard.js" defer></script>
+    <script src="../../assets/js/auth-logout.js" defer></script>
+    <script defer src="../../assets/js/main.js"></script>
+  </head>
+
+  <body>
+    <div class="main-wrapper">
+      <!-- HEADER -->
+      <header class="site-header">
+        <div class="container header-inner">
+          <a class="brand" href="../../index.html"
+            ><span>Dent</span><span>AIstudy</span></a
+          >
+
+          <nav class="header-nav">
+            <a href="../../subjects.html">Subjects</a>
+            <a href="../../study.html">Study builder</a>
+            <a href="../../blogs.html" class="is-active">Blogs</a>
+            <a href="../../pricing.html">Pricing</a>
+            <a href="../../contact.html">Contact</a>
+          </nav>
+
+          <div class="header-right">
+            <a href="../../login.html" class="btn btn-outline header-login"
+              >Log in</a
+            >
+            <a href="../../signup.html" class="btn btn-primary header-signup"
+              >Sign up</a
+            >
+            <button class="menu-toggle">
+              <span></span><span></span><span></span>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- MOBILE NAV -->
+      <div class="slide-nav-backdrop"></div>
+      <nav class="slide-nav">
+        <div class="slide-nav-header">
+          <h3>Menu</h3>
+          <button class="slide-nav-close">&times;</button>
+        </div>
+        <div class="slide-nav-links">
+          <a href="../../subjects.html">Subjects</a>
+          <a href="../../study.html">Study builder</a>
+          <a href="../../blogs.html">Blogs</a>
+          <a href="../../pricing.html">Pricing</a>
+          <a href="../../contact.html">Contact</a>
+          <a href="../../login.html" class="slide-login-link">Log in</a>
+        </div>
+      </nav>
+
+      <!-- BLOG -->
+      <main class="section">
+        <div class="container container-narrow">
+          <div class="section-header" style="text-align: left">
+            <div class="section-kicker">ADEX exam</div>
+            <h1 class="section-title">
+              ADEX Periodontal Assessment OSCE – Probing, Charting & Diagnosis
+              Guide
+            </h1>
+            <p class="section-subtitle">
+              A focused guide on probing, charting, and periodontal diagnosis
+              the way ADEX examiners expect in the OSCE.
+            </p>
+          </div>
+
+          <!-- QUICK ANSWERS -->
+          <section class="study-answer-card">
+            <h2>Quick Answers</h2>
+
+            <h3>What does the ADEX periodontal OSCE test?</h3>
+            <p>
+              Correct probing technique, complete charting, accurate diagnosis,
+              and choosing the right first treatment step.
+            </p>
+
+            <h3>How many probing sites per tooth?</h3>
+            <p>
+              Six sites: mesio-buccal, buccal, disto-buccal, mesio-lingual,
+              lingual, disto-lingual.
+            </p>
+
+            <h3>What probing force should you use?</h3>
+            <p>
+              Light pressure only, around 20–25 grams – enough to bend the probe
+              slightly, not cause pain.
+            </p>
+
+            <h3>What basic diagnoses are expected?</h3>
+            <p>
+              Healthy, gingivitis, or stage I–IV periodontitis based on pocket
+              depth, CAL, bleeding, and radiographic support.
+            </p>
+
+            <h3>What is usually the first treatment step?</h3>
+            <p>
+              Oral hygiene instruction plus debridement (scaling and root
+              planing) before any complex treatment.
+            </p>
+
+            <h3>What common errors lose marks?</h3>
+            <p>
+              Using too much force, skipping sites, recording random values, and
+              giving the wrong diagnosis for the findings.
+            </p>
+          </section>
+
+          <!-- BODY -->
+          <article class="blog-body">
+            <h2>1. What the periodontal OSCE really checks</h2>
+            <p>
+              The ADEX periodontal station does not expect you to perform
+              surgery. It checks if you can gather basic periodontal data
+              correctly and turn it into a simple, logical diagnosis and plan.
+            </p>
+            <p>
+              Examiners look for gentle probing, complete charting, a defensible
+              diagnosis, and a realistic first treatment step.
+            </p>
+
+            <h2>2. Probing technique the ADEX way</h2>
+            <p>
+              Use a standard periodontal probe (such as UNC-15) and keep the
+              probe as parallel as possible to the long axis of the tooth.
+              Insert slowly into the sulcus and walk the probe around the tooth.
+            </p>
+            <ul>
+              <li>
+                Use light pressure – the probe should bend slightly but not
+                blanch tissue.
+              </li>
+              <li>Slide gently to the base of the pocket without stabbing.</li>
+              <li>Record the deepest reading at each site, not an average.</li>
+              <li>
+                Be consistent across all teeth – random numbers suggest poor
+                technique.
+              </li>
+            </ul>
+
+            <div class="study-form-card">
+              <h3>Six sites per tooth</h3>
+              <p>
+                Always record: mesio-buccal, buccal, disto-buccal,
+                mesio-lingual, lingual, and disto-lingual.
+              </p>
+            </div>
+
+            <p>
+              Skipping a site or guessing values is a common fail point in
+              periodontal assessment stations.
+            </p>
+
+            <h2>3. Clinical findings you must recognise</h2>
+            <p>
+              A typical ADEX-style periodontal scenario will give you some or
+              all of the following:
+            </p>
+            <ul>
+              <li>Pocket depths – normal (1–3 mm) or deep (4 mm or more).</li>
+              <li>Bleeding on probing – localised or generalised.</li>
+              <li>Gingival recession and visible root surfaces.</li>
+              <li>
+                Clinical attachment loss (CAL) from pocket depth plus recession.
+              </li>
+              <li>Mobility – grade I–III.</li>
+              <li>Furcation involvement on molars.</li>
+            </ul>
+            <p>
+              Examiners expect you to use these findings to support your
+              diagnosis, not just list them.
+            </p>
+
+            <h2>4. Converting findings into a diagnosis</h2>
+            <p>
+              ADEX follows current periodontal classification ideas. For OSCE
+              purposes, keep the pattern simple and clear:
+            </p>
+            <ul>
+              <li><strong>Healthy:</strong> 1–3 mm pockets, no BOP, no CAL.</li>
+              <li>
+                <strong>Gingivitis:</strong> 1–3 mm pockets, BOP present, no
+                CAL.
+              </li>
+              <li>
+                <strong>Early periodontitis:</strong> some CAL (1–2 mm), pockets
+                around 4 mm, limited bone loss.
+              </li>
+              <li>
+                <strong>Moderate periodontitis:</strong> more CAL (3–4 mm),
+                deeper pockets, more generalised involvement.
+              </li>
+              <li>
+                <strong>Severe periodontitis:</strong> CAL ≥5 mm, deep pockets,
+                furcations, and mobility.
+              </li>
+            </ul>
+            <p>
+              Your diagnosis should match the depth and distribution of the
+              pockets and attachment loss described in the case.
+            </p>
+
+            <h2>5. First-step treatment sequence ADEX likes</h2>
+            <p>
+              The OSCE is testing if you know the correct order of treatment,
+              not advanced periodontal surgery details.
+            </p>
+            <ul>
+              <li>
+                Start with patient education and oral hygiene instruction.
+              </li>
+              <li>Perform scaling and root planing to control inflammation.</li>
+              <li>Address local factors (plaque retention, overhangs).</li>
+              <li>Re-evaluate after healing, usually 4–8 weeks.</li>
+            </ul>
+            <p>
+              Only after disease control and re-evaluation should you consider
+              surgery or complex restorative work.
+            </p>
+
+            <h2>6. Common exam traps to avoid</h2>
+            <ul>
+              <li>
+                Using too much probing force and recording exaggerated depths.
+              </li>
+              <li>Failing to record all six sites around a tooth.</li>
+              <li>
+                Calling clear periodontitis “gingivitis” despite CAL and deep
+                pockets.
+              </li>
+              <li>
+                Jumping straight to surgery or implants without non-surgical
+                therapy.
+              </li>
+              <li>Ignoring the need for a re-evaluation phase.</li>
+            </ul>
+            <p>
+              In most questions, the safest, most conservative and
+              evidence-based answer scores highest.
+            </p>
+
+            <h2>7. Fast memory points the day before the exam</h2>
+            <ul>
+              <li>
+                Gentle probing, six sites per tooth, record the deepest reading.
+              </li>
+              <li>Use pocket depth, CAL, and BOP to build your diagnosis.</li>
+              <li>
+                First treatment step is almost always non-surgical therapy.
+              </li>
+              <li>Always mention re-evaluation after initial therapy.</li>
+              <li>
+                Choose conservative, defendable answers if you are unsure.
+              </li>
+            </ul>
+
+            <h2>How DentAIstudy can help</h2>
+            <p>DentAIstudy’s Study builder can generate:</p>
+            <ul>
+              <li>Periodontal OSCE-style scenarios for quick practice.</li>
+              <li>Short notes on probing, charting, and diagnosis patterns.</li>
+              <li>Flashcards on periodontal staging and common exam traps.</li>
+              <li>
+                Checklists for non-surgical therapy and re-evaluation steps.
+              </li>
+            </ul>
+
+            <p>
+              <a href="../../study.html" class="btn btn-primary"
+                >Try Study Builder →</a
+              >
+            </p>
+
+            <h2>References</h2>
+            <ul>
+              <li>
+                CDCA-WREB-CITA. ADEX Dental Examination Candidate Manual,
+                Periodontal Assessment Section.
+              </li>
+              <li>
+                2018 AAP Classification of Periodontal and Peri-Implant
+                Diseases.
+              </li>
+              <li>
+                Standard periodontal probing and charting guidelines used in
+                clinical practice.
+              </li>
+            </ul>
+          </article>
+        </div>
+      </main>
+
+      <!-- FOOTER -->
+      <footer class="site-footer">
+        <div class="container">
+          <div class="footer-top">
+            <div>
+              <div class="footer-brand">DentAIstudy</div>
+              <p>AI-enhanced tools for dental students and residents.</p>
+              <div class="footer-social">
+                <a href="https://www.tiktok.com/@dentaistudy" target="_blank">
+                  <img
+                    src="../../assets/img/footer-icons/tiktok-icon.png"
+                    class="footer-social-img"
+                  />
+                </a>
+                <a href="mailto:info@dentaistudy.com">
+                  <img
+                    src="../../assets/img/footer-icons/email-icon.png"
+                    class="footer-social-img"
+                  />
+                </a>
+              </div>
+            </div>
+
+            <div class="footer-column">
+              <h4>Product</h4>
+              <a href="../../subjects.html">Subjects</a>
+              <a href="../../study.html">Study builder</a>
+              <a href="../../blogs.html">Blogs</a>
+              <a href="../../pricing.html">Pricing</a>
+            </div>
+
+            <div class="footer-column">
+              <h4>Company</h4>
+              <a href="../../about.html">About</a>
+              <a href="../../contact.html">Contact</a>
+              <a href="../../faqs.html">FAQ</a>
+            </div>
+
+            <div class="footer-column">
+              <h4>Legal</h4>
+              <a href="../../privacy.html">Privacy Policy</a>
+              <a href="../../terms.html">Terms & Conditions</a>
+              <a href="../../cookies.html">Cookies Policy</a>
+              <a href="../../disclaimer.html">Disclaimer</a>
+              <a href="../../billing.html">Billing</a>
+              <a href="../../refund-policy.html">Refunds</a>
+            </div>
+          </div>
+
+          <div class="footer-bottom">© 2025 DentAIstudy</div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

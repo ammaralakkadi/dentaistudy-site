@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      ADEX Pharmacology Essentials – What You Must Know | DentAIstudy
+    </title>
+
+    <link rel="stylesheet" href="../../assets/css/style-v3.css" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="512x512"
+      href="../../assets/img/favicon.png?v=2"
+    />
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+      defer
+    ></script>
+    <script src="../../assets/js/auth-client.js" defer></script>
+    <script src="../../assets/js/auth-guard.js" defer></script>
+    <script src="../../assets/js/auth-logout.js" defer></script>
+    <script defer src="../../assets/js/main.js"></script>
+  </head>
+
+  <body>
+    <div class="main-wrapper">
+      <!-- HEADER -->
+      <header class="site-header">
+        <div class="container header-inner">
+          <a class="brand" href="../../index.html"
+            ><span>Dent</span><span>AIstudy</span></a
+          >
+
+          <nav class="header-nav">
+            <a href="../../subjects.html">Subjects</a>
+            <a href="../../study.html">Study builder</a>
+            <a href="../../blogs.html" class="is-active">Blogs</a>
+            <a href="../../pricing.html">Pricing</a>
+            <a href="../../contact.html">Contact</a>
+          </nav>
+
+          <div class="header-right">
+            <a href="../../login.html" class="btn btn-outline header-login"
+              >Log in</a
+            >
+            <a href="../../signup.html" class="btn btn-primary header-signup"
+              >Sign up</a
+            >
+            <button class="menu-toggle">
+              <span></span><span></span><span></span>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- MOBILE NAV -->
+      <div class="slide-nav-backdrop"></div>
+      <nav class="slide-nav">
+        <div class="slide-nav-header">
+          <h3>Menu</h3>
+          <button class="slide-nav-close">&times;</button>
+        </div>
+        <div class="slide-nav-links">
+          <a href="../../subjects.html">Subjects</a>
+          <a href="../../study.html">Study builder</a>
+          <a href="../../blogs.html">Blogs</a>
+          <a href="../../pricing.html">Pricing</a>
+          <a href="../../contact.html">Contact</a>
+          <a href="../../login.html" class="slide-login-link">Log in</a>
+        </div>
+      </nav>
+
+      <!-- BLOG -->
+      <main class="section">
+        <div class="container container-narrow">
+          <div class="section-header" style="text-align: left">
+            <div class="section-kicker">ADEX exam</div>
+            <h1 class="section-title">
+              ADEX Pharmacology Essentials – What You Must Know for the Exam
+            </h1>
+            <p class="section-subtitle">
+              A streamlined guide to the high-yield drugs, interactions, and
+              safety points ADEX examiners focus on during OSCE and scenario
+              questions.
+            </p>
+          </div>
+
+          <!-- QUICK ANSWERS -->
+          <section class="study-answer-card">
+            <h2>Quick Answers</h2>
+
+            <h3>What pharmacology topics appear most in ADEX?</h3>
+            <p>
+              Local anesthetics, antibiotics, analgesics, anticoagulants, drug
+              allergies, and medical-dental interactions.
+            </p>
+
+            <h3>What is the most common ADEX drug error?</h3>
+            <p>
+              Giving the wrong drug to a patient with systemic risk—especially
+              heart disease, diabetes, or anticoagulation.
+            </p>
+
+            <h3>What antibiotic is first-line for dental infections?</h3>
+            <p>Amoxicillin; use clindamycin for penicillin allergy.</p>
+
+            <h3>What pain control does ADEX expect?</h3>
+            <p>
+              NSAIDs as first-line, acetaminophen for gastric risk, and avoiding
+              opioids when unnecessary.
+            </p>
+
+            <h3>What drug must you avoid in uncontrolled hypertension?</h3>
+            <p>High doses of epinephrine-containing anesthetics.</p>
+          </section>
+
+          <!-- BODY -->
+          <article class="blog-body">
+            <h2>1. What ADEX evaluates in pharmacology</h2>
+            <p>
+              Pharmacology questions in ADEX assess your ability to choose safe
+              medications for common dental scenarios. You are not expected to
+              memorize advanced drug mechanisms—only to recognize safe choices
+              and contraindications.
+            </p>
+            <p>The exam rewards conservative and medically sound decisions.</p>
+
+            <h2>2. Local anesthetic essentials</h2>
+            <p>High-yield LA concepts for ADEX:</p>
+            <ul>
+              <li>Lidocaine 2% with 1:100,000 epi is standard.</li>
+              <li>Maximum safe dose of lidocaine with epi: 7 mg/kg.</li>
+              <li>
+                Avoid high-epi doses in patients with uncontrolled hypertension
+                or arrhythmias.
+              </li>
+              <li>
+                Mepivacaine 3% (plain) for patients who cannot receive
+                vasoconstrictors.
+              </li>
+              <li>
+                Articaine for infiltration; avoid in specific nerve-block-only
+                contraindications.
+              </li>
+            </ul>
+
+            <h2>3. Antibiotics – simple and predictable</h2>
+            <p>Most tested antibiotics:</p>
+            <ul>
+              <li>
+                <strong>Amoxicillin:</strong> first-line for dental infections.
+              </li>
+              <li>
+                <strong>Clindamycin:</strong> alternative for
+                penicillin-allergic patients.
+              </li>
+              <li>
+                <strong>Amoxicillin + clavulanic acid:</strong> used for
+                resistant infections.
+              </li>
+              <li>
+                <strong>Azithromycin:</strong> alternative but not first-line in
+                ADEX-style questions.
+              </li>
+            </ul>
+            <p>
+              ADEX often tests when <em>not</em> to prescribe antibiotics (e.g.,
+              reversible pulpitis, simple caries).
+            </p>
+
+            <h2>4. Pain control</h2>
+            <ul>
+              <li><strong>NSAIDs:</strong> first-line for most dental pain.</li>
+              <li>
+                <strong>Acetaminophen:</strong> used when NSAIDs are
+                contraindicated.
+              </li>
+              <li>
+                <strong>Combination therapy:</strong> NSAID + acetaminophen for
+                severe pain.
+              </li>
+              <li>
+                <strong>Opioids:</strong> rarely needed—avoid unless absolutely
+                necessary.
+              </li>
+            </ul>
+
+            <h2>5. Anticoagulants – high-yield risk area</h2>
+            <p>ADEX focuses heavily on anticoagulated patients:</p>
+            <ul>
+              <li>
+                Warfarin: check INR; safe range generally ≤3.5 for minor
+                procedures.
+              </li>
+              <li>DOACs: time procedures relative to dosing.</li>
+              <li>
+                Antiplatelets (aspirin, clopidogrel): continue unless instructed
+                otherwise.
+              </li>
+              <li>
+                Use local hemostatic measures when performing extractions.
+              </li>
+            </ul>
+
+            <h2>6. Allergies and drug contraindications</h2>
+            <p>Classic ADEX test points:</p>
+            <ul>
+              <li>Penicillin allergy → clindamycin or azithromycin.</li>
+              <li>Asthma → avoid NSAIDs if sensitive.</li>
+              <li>Liver disease → reduce acetaminophen.</li>
+              <li>Ulcer history → avoid NSAIDs.</li>
+              <li>Uncontrolled hypertension → minimize epinephrine.</li>
+            </ul>
+
+            <h2>7. Fast memory points</h2>
+            <ul>
+              <li>Amoxicillin first-line; clindamycin if allergic.</li>
+              <li>NSAIDs first-line for pain.</li>
+              <li>
+                Lidocaine with epi is standard but caution with hypertension.
+              </li>
+              <li>Check INR for warfarin patients.</li>
+              <li>
+                Always consider systemic conditions before choosing medications.
+              </li>
+            </ul>
+
+            <h2>How DentAIstudy helps</h2>
+            <p>With Study Builder, you can generate:</p>
+            <ul>
+              <li>Short pharmacology summaries for ADEX.</li>
+              <li>Drug-interaction OSCE scenarios.</li>
+              <li>Flashcards on antibiotic and analgesic choices.</li>
+              <li>Common safe/unsafe drug combinations.</li>
+            </ul>
+
+            <p>
+              <a href="../../study.html" class="btn btn-primary"
+                >Try Study Builder →</a
+              >
+            </p>
+
+            <h2>References</h2>
+            <ul>
+              <li>CDCA-WREB-CITA Pharmacology expectations.</li>
+              <li>Standard dental drug reference guidelines.</li>
+              <li>Commonly taught dental pharmacology principles.</li>
+            </ul>
+          </article>
+        </div>
+      </main>
+
+      <!-- FOOTER -->
+      <footer class="site-footer">
+        <div class="container">
+          <div class="footer-top">
+            <div>
+              <div class="footer-brand">DentAIstudy</div>
+              <p>AI-enhanced tools for dental students and residents.</p>
+              <div class="footer-social">
+                <a href="https://www.tiktok.com/@dentaistudy" target="_blank">
+                  <img
+                    src="../../assets/img/footer-icons/tiktok-icon.png"
+                    class="footer-social-img"
+                  />
+                </a>
+                <a href="mailto:info@dentaistudy.com">
+                  <img
+                    src="../../assets/img/footer-icons/email-icon.png"
+                    class="footer-social-img"
+                  />
+                </a>
+              </div>
+            </div>
+
+            <div class="footer-column">
+              <h4>Product</h4>
+              <a href="../../subjects.html">Subjects</a>
+              <a href="../../study.html">Study builder</a>
+              <a href="../../blogs.html">Blogs</a>
+              <a href="../../pricing.html">Pricing</a>
+            </div>
+
+            <div class="footer-column">
+              <h4>Company</h4>
+              <a href="../../about.html">About</a>
+              <a href="../../contact.html">Contact</a>
+              <a href="../../faqs.html">FAQ</a>
+            </div>
+
+            <div class="footer-column">
+              <h4>Legal</h4>
+              <a href="../../privacy.html">Privacy Policy</a>
+              <a href="../../terms.html">Terms & Conditions</a>
+              <a href="../../cookies.html">Cookies Policy</a>
+              <a href="../../disclaimer.html">Disclaimer</a>
+              <a href="../../billing.html">Billing</a>
+              <a href="../../refund-policy.html">Refunds</a>
+            </div>
+          </div>
+
+          <div class="footer-bottom">© 2025 DentAIstudy</div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      ADEX Patient Communication OSCE – Consent, Explanation & Behavior |
+      DentAIstudy
+    </title>
+
+    <link rel="stylesheet" href="../../assets/css/style-v3.css" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="512x512"
+      href="../../assets/img/favicon.png?v=2"
+    />
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+      defer
+    ></script>
+    <script src="../../assets/js/auth-client.js" defer></script>
+    <script src="../../assets/js/auth-guard.js" defer></script>
+    <script src="../../assets/js/auth-logout.js" defer></script>
+    <script defer src="../../assets/js/main.js"></script>
+  </head>
+
+  <body>
+    <div class="main-wrapper">
+      <!-- HEADER -->
+      <header class="site-header">
+        <div class="container header-inner">
+          <a class="brand" href="../../index.html"
+            ><span>Dent</span><span>AIstudy</span></a
+          >
+
+          <nav class="header-nav">
+            <a href="../../subjects.html">Subjects</a>
+            <a href="../../study.html">Study builder</a>
+            <a href="../../blogs.html" class="is-active">Blogs</a>
+            <a href="../../pricing.html">Pricing</a>
+            <a href="../../contact.html">Contact</a>
+          </nav>
+
+          <div class="header-right">
+            <a href="../../login.html" class="btn btn-outline header-login"
+              >Log in</a
+            >
+            <a href="../../signup.html" class="btn btn-primary header-signup"
+              >Sign up</a
+            >
+            <button class="menu-toggle">
+              <span></span><span></span><span></span>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- MOBILE NAV -->
+      <div class="slide-nav-backdrop"></div>
+      <nav class="slide-nav">
+        <div class="slide-nav-header">
+          <h3>Menu</h3>
+          <button class="slide-nav-close">&times;</button>
+        </div>
+        <div class="slide-nav-links">
+          <a href="../../subjects.html">Subjects</a>
+          <a href="../../study.html">Study builder</a>
+          <a href="../../blogs.html">Blogs</a>
+          <a href="../../pricing.html">Pricing</a>
+          <a href="../../contact.html">Contact</a>
+          <a href="../../login.html" class="slide-login-link">Log in</a>
+        </div>
+      </nav>
+
+      <!-- BLOG -->
+      <main class="section">
+        <div class="container container-narrow">
+          <div class="section-header" style="text-align: left">
+            <div class="section-kicker">ADEX exam</div>
+            <h1 class="section-title">
+              ADEX Patient Communication OSCE – Consent, Explanation &amp;
+              Behavior
+            </h1>
+            <p class="section-subtitle">
+              A guide to the communication skills ADEX expects: explaining
+              procedures, obtaining consent, and responding professionally.
+            </p>
+          </div>
+
+          <!-- QUICK ANSWERS -->
+          <section class="study-answer-card">
+            <h2>Quick Answers</h2>
+
+            <h3>What does the communication OSCE test?</h3>
+            <p>
+              Your ability to explain procedures clearly, obtain informed
+              consent, and maintain a professional, empathetic tone.
+            </p>
+
+            <h3>What is the most important rule?</h3>
+            <p>
+              Use simple language and confirm understanding before moving
+              forward.
+            </p>
+
+            <h3>What breaks professionalism?</h3>
+            <p>
+              Using technical jargon, rushing explanations, ignoring patient
+              concerns, or not addressing anxiety.
+            </p>
+
+            <h3>What must you always include when explaining a procedure?</h3>
+            <p>
+              The reason, steps involved, risks, benefits, alternatives, and
+              what the patient will feel.
+            </p>
+
+            <h3>How do you score higher?</h3>
+            <p>
+              Summarize, check understanding, and ask for questions before
+              requesting consent.
+            </p>
+          </section>
+
+          <!-- BODY -->
+          <article class="blog-body">
+            <h2>1. What ADEX wants to see</h2>
+            <p>
+              This station evaluates your ability to communicate as a safe,
+              trustworthy clinician. The focus is not dental knowledge but
+              clarity, empathy, professionalism, and ensuring the patient
+              understands the procedure.
+            </p>
+            <p>
+              A calm, friendly tone with structured explanations scores highest.
+            </p>
+
+            <h2>2. How to explain a procedure the ADEX way</h2>
+            <p>Use this simple and effective pattern:</p>
+            <ul>
+              <li>Explain the problem in simple terms.</li>
+              <li>Describe the procedure step-by-step.</li>
+              <li>State risks, benefits, and alternatives.</li>
+              <li>Explain sensations the patient may feel.</li>
+              <li>Set expectations for recovery.</li>
+              <li>Ask if the patient has any concerns.</li>
+            </ul>
+            <p>Avoid complicated terminology—ADEX rewards plain language.</p>
+
+            <div class="study-form-card">
+              <h3>Example (Class II composite):</h3>
+              <p>
+                “We will remove the decayed part of the tooth, clean the area,
+                and place a tooth-colored filling. You may feel vibration but no
+                pain. The risks are sensitivity or fracture if decay is deep. A
+                benefit is restoring strength and preventing further decay.”
+              </p>
+            </div>
+
+            <h2>3. Informed consent – exam essentials</h2>
+            <p>ADEX expects these elements clearly stated:</p>
+            <ul>
+              <li>Diagnosis and reason for treatment.</li>
+              <li>Procedure steps in understandable language.</li>
+              <li>Risks and common complications.</li>
+              <li>Benefits and expected outcomes.</li>
+              <li>Alternatives, including doing nothing.</li>
+              <li>Opportunity for questions.</li>
+            </ul>
+            <p>
+              Consent is only valid when the patient understands and agrees
+              voluntarily.
+            </p>
+
+            <h2>4. Professional and empathetic behavior</h2>
+            <p>High-yield behaviors for scoring:</p>
+            <ul>
+              <li>Sit or stand at eye level with the patient.</li>
+              <li>Use the patient’s name and maintain respectful tone.</li>
+              <li>Address dental anxiety with reassurance.</li>
+              <li>Avoid interrupting or rushing.</li>
+              <li>Summarize the plan before obtaining consent.</li>
+            </ul>
+
+            <h2>5. Common communication mistakes</h2>
+            <ul>
+              <li>Using technical dental terminology.</li>
+              <li>Explaining too briefly or too vaguely.</li>
+              <li>Ignoring patient’s emotional cues.</li>
+              <li>Not checking understanding before consent.</li>
+              <li>Sounding memorized rather than conversational.</li>
+            </ul>
+
+            <h2>6. Fast memory points</h2>
+            <ul>
+              <li>
+                Explain → Risks → Benefits → Alternatives → Questions → Consent.
+              </li>
+              <li>Speak slowly and clearly.</li>
+              <li>Avoid jargon.</li>
+              <li>Empathy improves scoring significantly.</li>
+            </ul>
+
+            <h2>How DentAIstudy helps</h2>
+            <p>With Study Builder, you can generate:</p>
+            <ul>
+              <li>Communication OSCE practice scripts.</li>
+              <li>Patient explanation templates.</li>
+              <li>Flashcards on consent elements.</li>
+              <li>
+                Scenario prompts requiring patient-centered communication.
+              </li>
+            </ul>
+
+            <p>
+              <a href="../../study.html" class="btn btn-primary"
+                >Try Study Builder →</a
+              >
+            </p>
+
+            <h2>References</h2>
+            <ul>
+              <li>ADEX Candidate Manual – Patient Communication standards.</li>
+              <li>
+                Common OSCE communication frameworks used in dental education.
+              </li>
+              <li>Guidelines for informed consent in clinical dentistry.</li>
+            </ul>
+          </article>
+        </div>
+      </main>
+
+      <!-- FOOTER -->
+      <footer class="site-footer">
+        <div class="container">
+          <div class="footer-top">
+            <div>
+              <div class="footer-brand">DentAIstudy</div>
+              <p>AI-enhanced tools for dental students and residents.</p>
+              <div class="footer-social">
+                <a href="https://www.tiktok.com/@dentaistudy" target="_blank">
+                  <img
+                    src="../../assets/img/footer-icons/tiktok-icon.png"
+                    class="footer-social-img"
+                  />
+                </a>
+                <a href="mailto:info@dentaistudy.com">
+                  <img
+                    src="../../assets/img/footer-icons/email-icon.png"
+                    class="footer-social-img"
+                  />
+                </a>
+              </div>
+            </div>
+
+            <div class="footer-column">
+              <h4>Product</h4>
+              <a href="../../subjects.html">Subjects</a>
+              <a href="../../study.html">Study builder</a>
+              <a href="../../blogs.html">Blogs</a>
+              <a href="../../pricing.html">Pricing</a>
+            </div>
+
+            <div class="footer-column">
+              <h4>Company</h4>
+              <a href="../../about.html">About</a>
+              <a href="../../contact.html">Contact</a>
+              <a href="../../faqs.html">FAQ</a>
+            </div>
+
+            <div class="footer-column">
+              <h4>Legal</h4>
+              <a href="../../privacy.html">Privacy Policy</a>
+              <a href="../../terms.html">Terms & Conditions</a>
+              <a href="../../cookies.html">Cookies Policy</a>
+              <a href="../../disclaimer.html">Disclaimer</a>
+              <a href="../../billing.html">Billing</a>
+              <a href="../../refund-policy.html">Refunds</a>
+            </div>
+          </div>
+
+          <div class="footer-bottom">© 2025 DentAIstudy</div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
