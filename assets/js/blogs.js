@@ -107,65 +107,95 @@ document.addEventListener("DOMContentLoaded", () => {
     },
     // ADEX BLOGS (11–20)
     {
-      id: "adex-periodontal-assessment-osce",
       title: "ADEX Periodontal Assessment OSCE – Probing, Charting & Diagnosis",
       url: "blogs/adex/adex-periodontal-assessment-osce.html",
-      tags: ["ADEX", "OSCE", "Periodontics"],
+      tag: "ADEX exam",
+      description:
+        "How to probe, chart, and stage periodontal disease in ADEX OSCE cases with safe, examiner-friendly wording.",
+      meta: "7 min read • ADEX exam",
+      category: "theory adex osce perio",
     },
     {
-      id: "adex-local-anesthesia-osce",
       title: "ADEX Local Anesthesia OSCE – Techniques & Safety Steps",
       url: "blogs/adex/adex-local-anesthesia-osce.html",
-      tags: ["ADEX", "Local Anesthesia", "OSCE"],
+      tag: "ADEX exam",
+      description:
+        "Landmarks, injection sequence, aspiration, and failure management for ADEX local anesthesia OSCE stations.",
+      meta: "7 min read • ADEX exam",
+      category: "theory adex osce anesthesia",
     },
     {
-      id: "adex-medical-history-review-osce",
       title: "ADEX Medical History Review OSCE – Red Flags & Modifications",
       url: "blogs/adex/adex-medical-history-review-osce.html",
-      tags: ["ADEX", "Medical", "OSCE"],
+      tag: "ADEX exam",
+      description:
+        "Systematic questions, medical red flags, and chairside treatment modifications ADEX expects you to mention.",
+      meta: "7 min read • ADEX exam",
+      category: "theory adex osce medical",
     },
     {
-      id: "adex-infection-control-ppe-osce",
       title: "ADEX Infection Control & PPE OSCE – Step-by-Step Guide",
       url: "blogs/adex/adex-infection-control-ppe-osce.html",
-      tags: ["ADEX", "Infection Control", "OSCE"],
+      tag: "ADEX exam",
+      description:
+        "Donning and doffing PPE, surface disinfection, instrument flow, and cross-contamination traps in ADEX OSCE.",
+      meta: "6 min read • ADEX exam",
+      category: "theory adex osce infection",
     },
     {
-      id: "adex-restorative-errors-fail-points",
       title: "ADEX Restorative Errors & Fail Points – Mistakes to Avoid",
       url: "blogs/adex/adex-restorative-errors-fail-points.html",
-      tags: ["ADEX", "Restorative", "Manikin"],
+      tag: "ADEX exam",
+      description:
+        "The preparation, margin, and contact mistakes that repeatedly cause critical failures in ADEX manikin exams.",
+      meta: "7 min read • ADEX exam",
+      category: "skills adex restorative",
     },
     {
-      id: "adex-radiographic-interpretation",
       title: "ADEX Radiographic Interpretation – Caries, Perio & Endo Patterns",
       url: "blogs/adex/adex-radiographic-interpretation.html",
-      tags: ["ADEX", "Radiology", "Diagnosis"],
+      tag: "ADEX exam",
+      description:
+        "Pattern recognition for caries, periodontal bone loss, and endodontic lesions in ADEX radiographic questions.",
+      meta: "8 min read • ADEX exam",
+      category: "theory adex osce radiology",
     },
     {
-      id: "adex-emergency-drug-kit",
       title: "ADEX Emergency Drug Kit – Items, Uses & Exam Essentials",
       url: "blogs/adex/adex-emergency-drug-kit.html",
-      tags: ["ADEX", "Emergency", "Pharmacology"],
+      tag: "ADEX exam",
+      description:
+        "Core emergency drugs, indications, and dosages you must recall for ADEX OSCE and medical emergency stations.",
+      meta: "6 min read • ADEX exam",
+      category: "theory adex osce emergencies",
     },
     {
-      id: "adex-patient-communication-osce",
       title:
         "ADEX Patient Communication OSCE – Consent, Explanation & Behavior",
       url: "blogs/adex/adex-patient-communication-osce.html",
-      tags: ["ADEX", "Communication", "OSCE"],
+      tag: "ADEX exam",
+      description:
+        "How to structure consent, explain risks, and manage anxious or upset patients in ADEX communication OSCEs.",
+      meta: "7 min read • ADEX exam",
+      category: "theory adex osce communication",
     },
     {
-      id: "adex-pharmacology-essentials",
       title: "ADEX Pharmacology Essentials – What You Must Know for the Exam",
       url: "blogs/adex/adex-pharmacology-essentials.html",
-      tags: ["ADEX", "Pharmacology"],
+      tag: "ADEX exam",
+      description:
+        "High-yield analgesic, antibiotic, and emergency drug facts ADEX commonly tests in OSCE and viva questions.",
+      meta: "7 min read • ADEX exam",
+      category: "theory adex pharmacology",
     },
     {
-      id: "adex-common-viva-questions",
       title: "ADEX Common Viva Questions – High-Yield Short Answers",
       url: "blogs/adex/adex-common-viva-questions.html",
-      tags: ["ADEX", "Viva", "OSCE"],
+      tag: "ADEX exam",
+      description:
+        "Short, structured sample answers to common ADEX viva questions in cariology, perio, endo, anesthesia, and emergencies.",
+      meta: "8 min read • ADEX exam",
+      category: "theory adex viva",
     },
   ];
 
