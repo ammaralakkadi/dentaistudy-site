@@ -94,7 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
       description:
         "Simple, predictable sequencing rules to choose the safest next step in ADEX treatment planning OSCE cases.",
       meta: "7 min read • ADEX exam",
-      category: "theory adex osce treatment"
+      category: "theory adex osce treatment",
     },
     {
       title: "ADEX Ethics & Legal OSCE – High-Yield Decision Guide",
@@ -103,8 +103,70 @@ document.addEventListener("DOMContentLoaded", () => {
       description:
         "Consent, confidentiality, documentation, minors, scope of practice, and error disclosure — the ethics patterns ADEX repeats.",
       meta: "7 min read • ADEX exam",
-      category: "theory adex osce ethics"
-    }
+      category: "theory adex osce ethics",
+    },
+    // ADEX BLOGS (11–20)
+    {
+      id: "adex-periodontal-assessment-osce",
+      title: "ADEX Periodontal Assessment OSCE – Probing, Charting & Diagnosis",
+      url: "blogs/adex/adex-periodontal-assessment-osce.html",
+      tags: ["ADEX", "OSCE", "Periodontics"],
+    },
+    {
+      id: "adex-local-anesthesia-osce",
+      title: "ADEX Local Anesthesia OSCE – Techniques & Safety Steps",
+      url: "blogs/adex/adex-local-anesthesia-osce.html",
+      tags: ["ADEX", "Local Anesthesia", "OSCE"],
+    },
+    {
+      id: "adex-medical-history-review-osce",
+      title: "ADEX Medical History Review OSCE – Red Flags & Modifications",
+      url: "blogs/adex/adex-medical-history-review-osce.html",
+      tags: ["ADEX", "Medical", "OSCE"],
+    },
+    {
+      id: "adex-infection-control-ppe-osce",
+      title: "ADEX Infection Control & PPE OSCE – Step-by-Step Guide",
+      url: "blogs/adex/adex-infection-control-ppe-osce.html",
+      tags: ["ADEX", "Infection Control", "OSCE"],
+    },
+    {
+      id: "adex-restorative-errors-fail-points",
+      title: "ADEX Restorative Errors & Fail Points – Mistakes to Avoid",
+      url: "blogs/adex/adex-restorative-errors-fail-points.html",
+      tags: ["ADEX", "Restorative", "Manikin"],
+    },
+    {
+      id: "adex-radiographic-interpretation",
+      title: "ADEX Radiographic Interpretation – Caries, Perio & Endo Patterns",
+      url: "blogs/adex/adex-radiographic-interpretation.html",
+      tags: ["ADEX", "Radiology", "Diagnosis"],
+    },
+    {
+      id: "adex-emergency-drug-kit",
+      title: "ADEX Emergency Drug Kit – Items, Uses & Exam Essentials",
+      url: "blogs/adex/adex-emergency-drug-kit.html",
+      tags: ["ADEX", "Emergency", "Pharmacology"],
+    },
+    {
+      id: "adex-patient-communication-osce",
+      title:
+        "ADEX Patient Communication OSCE – Consent, Explanation & Behavior",
+      url: "blogs/adex/adex-patient-communication-osce.html",
+      tags: ["ADEX", "Communication", "OSCE"],
+    },
+    {
+      id: "adex-pharmacology-essentials",
+      title: "ADEX Pharmacology Essentials – What You Must Know for the Exam",
+      url: "blogs/adex/adex-pharmacology-essentials.html",
+      tags: ["ADEX", "Pharmacology"],
+    },
+    {
+      id: "adex-common-viva-questions",
+      title: "ADEX Common Viva Questions – High-Yield Short Answers",
+      url: "blogs/adex/adex-common-viva-questions.html",
+      tags: ["ADEX", "Viva", "OSCE"],
+    },
   ];
 
   // ------------------------------------
