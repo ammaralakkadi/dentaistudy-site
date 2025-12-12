@@ -31,7 +31,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       console.warn("[auth-guard] Supabase client not found on this page");
       updateAuthUI(null);
       if (isProtected) {
-        window.location.href = "login.html";
+        // Use replace so protected pages don't stay in history for anonymous users
+        window.location.replace("login.html");
       }
       return;
     }
@@ -97,7 +98,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     // If there is no user and this is a protected page → go to login
     if (!effectiveUser) {
       if (isProtected) {
-        window.location.href = "login.html";
+        // Replace instead of href so back button can't show profile/settings
+        window.location.replace("login.html");
       }
       return;
     }
@@ -688,7 +690,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     updateAuthUI(null);
 
     if (isProtected) {
-      window.location.href = "login.html";
+      // Safety: also use replace here on any unexpected error
+      window.location.replace("login.html");
     }
   }
 });
