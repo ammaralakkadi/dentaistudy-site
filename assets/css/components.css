@@ -638,6 +638,21 @@ a:hover { opacity: 0.7; }
   margin: 0;
   font-size: 1.3rem;
 }
+.pricing-title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pricing-badge {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: rgba(15, 60, 125, 0.08);
+  color: #0f3c7d;
+  white-space: nowrap;
+}
 
 .pricing-subtitle {
   margin: 0.25rem 0 0.9rem;
