@@ -4,12 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Study Builder – DentAIstudy</title>
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="512x512"
-      href="assets/img/favicon.png?v=2"
-    />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/favicon-512.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon-512.png" />
+
     <!-- Main CSS -->
     <link rel="stylesheet" href="assets/css/style-v3.css" />
 
@@ -96,10 +95,16 @@
               </div>
 
               <div class="sidebar-tags">
-                <span class="sidebar-tag" id="das-identity-level">Undergraduate</span>
-                <span class="sidebar-tag" id="das-identity-plan">Free plan</span>
-                <span class="sidebar-tag" id="das-identity-activity">Active today</span>
-              </div>              
+                <span class="sidebar-tag" id="das-identity-level"
+                  >Undergraduate</span
+                >
+                <span class="sidebar-tag" id="das-identity-plan"
+                  >Free plan</span
+                >
+                <span class="sidebar-tag" id="das-identity-activity"
+                  >Active today</span
+                >
+              </div>
 
               <nav class="sidebar-nav">
                 <a href="study.html" class="sidebar-nav-item is-active"
@@ -262,10 +267,11 @@
 
                   <div class="study-answer-body-wrapper">
                     <p class="study-answer-placeholder">
-                      Your AI-powered answer will appear here once you generate it.
+                      Your AI-powered answer will appear here once you generate
+                      it.
                     </p>
                     <pre class="study-answer-body" id="study-answer"></pre>
-                  </div>                  
+                  </div>
                 </div>
               </div>
             </div>
@@ -335,6 +341,24 @@
           </div>
         </div>
       </footer>
+    </div>
+
+    <div class="cookie-banner">
+      <div class="container cookie-inner">
+        <div class="cookie-text">
+          <h3>Cookies &amp; privacy</h3>
+          <p>
+            We use essential cookies to keep DentAIstudy running and to improve
+            your study experience. By continuing, you agree to our
+            <a href="cookies.html">Cookies Policy</a>.
+          </p>
+        </div>
+
+        <div class="cookie-actions">
+          <a href="cookies.html" class="btn btn-outline">Learn more</a>
+          <button class="btn btn-primary cookie-accept">Accept</button>
+        </div>
+      </div>
     </div>
   </body>
 </html>

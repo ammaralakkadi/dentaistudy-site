@@ -7,12 +7,10 @@
 
     <!-- Main CSS -->
     <link rel="stylesheet" href="assets/css/style-v3.css" />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="512x512"
-      href="assets/img/favicon.png?v=2"
-    />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/favicon-512.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon-512.png" />
 
     <!-- JS: Supabase + client + guard + main -->
     <script
@@ -150,7 +148,10 @@
 
                 <div class="form-group">
                   <label>Default level</label>
-                  <select id="settings-default-level" class="settings-level-select">
+                  <select
+                    id="settings-default-level"
+                    class="settings-level-select"
+                  >
                     <option value="undergraduate">Undergraduate</option>
                     <option value="postgraduate">Postgraduate</option>
                   </select>
@@ -372,17 +373,17 @@
               >
                 <h2 style="color: #b91c1c">Delete Account</h2>
                 <p
-                style="
-                  margin: 4px 0 10px;
-                  font-size: 0.85rem;
-                  color: #6b7280;
-                  max-width: 520px;
-                "
-              >
-                If you delete your DentAIstudy account, your study activity,
-                preferences and saved AI outputs will be permanently removed.
-                This action cannot be undone.
-              </p>
+                  style="
+                    margin: 4px 0 10px;
+                    font-size: 0.85rem;
+                    color: #6b7280;
+                    max-width: 520px;
+                  "
+                >
+                  If you delete your DentAIstudy account, your study activity,
+                  preferences and saved AI outputs will be permanently removed.
+                  This action cannot be undone.
+                </p>
                 <button
                   id="delete-account-btn"
                   class="btn btn-outline"
