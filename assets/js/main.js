@@ -175,7 +175,7 @@ document.querySelectorAll(".copy-btn").forEach((btn) => {
       `?email=${encodeURIComponent(email)}` +
       `&metadata_user_id=${encodeURIComponent(userId)}` +
       `&redirect_url=${encodeURIComponent(
-        window.location.origin + "/billing-success.html"
+        window.location.origin + "/billing-success.html?plan=" + plan
       )}`;
 
     window.location.href = checkoutUrl;
