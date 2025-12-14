@@ -168,15 +168,17 @@ document.querySelectorAll(".copy-btn").forEach((btn) => {
         return;
       }
 
+      const email = user.email;
+      const userId = user.id;
+
       const checkoutUrl =
         `https://test.checkout.dodopayments.com/buy/${productId}` +
         `?email=${encodeURIComponent(email)}` +
+        `&metadata_user_id=${encodeURIComponent(userId)}` +
         `&redirect_url=${encodeURIComponent(
           window.location.origin + "/billing-success.html"
-        )}`;
+       )}`;
 
-      window.location.href = checkoutUrl;
-    }
   }
 
   planButtons.forEach((btn) => {
