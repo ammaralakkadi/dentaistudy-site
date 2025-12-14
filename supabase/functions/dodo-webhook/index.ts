@@ -28,11 +28,11 @@ function json(status: number, body: Record<string, unknown>) {
 serve(async (req) => {
   if (req.method !== "POST") return json(405, { error: "Method not allowed" });
 
-  const SUPABASE_URL = Deno.env.get("SUPABASE_URL") || "";
-  const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") || "";
-  const DODO_WEBHOOK_SECRET = Deno.env.get("DODO_WEBHOOK_SECRET") || "";
-  const PRO_MONTHLY_ID = Deno.env.get("DODO_PRO_MONTHLY_PRODUCT_ID") || "";
-  const PRO_YEARLY_ID = Deno.env.get("DODO_PRO_YEARLY_PRODUCT_ID") || "";
+  const SUPABASE_URL = Deno.env.get("https://hlvkbqpesiqjxbastxux.supabase.co") || "";
+  const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhsdmticXBlc2lxanhiYXN0eHV4Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2NDE2MjA0OSwiZXhwIjoyMDc5NzM4MDQ5fQ.AJybLizQmfn3ZUPJGawQ_7JmUzLcGZ5und-QwXVu_N8") || "";
+  const DODO_WEBHOOK_SECRET = Deno.env.get("whsec_larLFJIa/T/aEtfSYlGdCAv8/qAqnjEf") || "";
+  const PRO_MONTHLY_ID = Deno.env.get("pdt_rynZ1jQtGhV2iHFrs9hMs") || "";
+  const PRO_YEARLY_ID = Deno.env.get("pdt_eWs83c5p438JW6Go1oaub") || "";
 
   if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
     return json(500, { error: "Missing Supabase env vars" });
