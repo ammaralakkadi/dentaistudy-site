@@ -150,35 +150,36 @@ document.querySelectorAll(".copy-btn").forEach((btn) => {
     const directUrl = checkoutUrls[plan];
     if (typeof directUrl === "string" && directUrl.length > 0) {
       window.location.href = directUrl;
-    } else {
-      // Dodo Test checkout (Pro / Pro Yearly)
-      const email = user.email;
+      return;
+    }
 
-      // ✅ IMPORTANT: replace these with your REAL Dodo Test product IDs (copy full ID from Dodo)
-      const dodoProducts = {
-        pro: "pdt_rynZ1jQtGhV2iHFrs9hMs",
-        pro_yearly: "pdt_eWs83c5p438JW6Go1oaub",
-      };
+    // Dodo Test checkout (Pro / Pro Yearly)
+    const dodoProducts = {
+      pro: "pdt_rynZ1jQtGhV2iHFrs9hMs",
+      pro_yearly: "pdt_eWs83c5p438JW6Go1oaub",
+    };
 
-      const productId = dodoProducts[plan];
+    const productId = dodoProducts[plan];
 
-      // If plan is not Pro/Yearly (or missing ID), fallback to billing page
-      if (!productId) {
-        window.location.href = "billing.html";
-        return;
-      }
+    // If plan is not Pro/Yearly (or missing ID), fallback to billing page
+    if (!productId) {
+      window.location.href = "billing.html";
+      return;
+    }
 
-      const email = user.email;
-      const userId = user.id;
+    const email = user.email || "";
+    const userId = user.id || "";
 
-      const checkoutUrl =
-        `https://test.checkout.dodopayments.com/buy/${productId}` +
-        `?email=${encodeURIComponent(email)}` +
-        `&metadata_user_id=${encodeURIComponent(userId)}` +
-        `&redirect_url=${encodeURIComponent(
-          window.location.origin + "/billing-success.html"
-       )}`;
+    const checkoutUrl =
+      `https://test.checkout.dodopayments.com/buy/${productId}` +
+      `?email=${encodeURIComponent(email)}` +
+      `&metadata_user_id=${encodeURIComponent(userId)}` +
+      `&redirect_url=${encodeURIComponent(
+        window.location.origin + "/billing-success.html"
+      )}`;
 
+    window.location.href = checkoutUrl;
+    return;
   }
 
   planButtons.forEach((btn) => {
