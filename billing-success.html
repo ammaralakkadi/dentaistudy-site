@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Account deleted – DentAIstudy</title>
+    <link rel="stylesheet" href="assets/css/style-v3.css" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/favicon-512.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon-512.png" />
+
+    <!-- JS: Supabase + auth UI + logout + main -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+      defer
+    ></script>
+    <script src="assets/js/auth-client.js" defer></script>
+    <script src="assets/js/auth-guard.js" defer></script>
+    <script src="assets/js/auth-logout.js" defer></script>
+    <script defer src="assets/js/main.js"></script>
+  </head>
+
+  <body>
+    <div class="main-wrapper">
+      <!-- HEADER -->
+      <header class="site-header">
+        <div class="container header-inner">
+          <a class="brand" href="index.html">
+            <span>Dent</span><span>AIstudy</span>
+          </a>
+
+          <nav class="header-nav">
+            <a href="subjects.html">Subjects</a>
+            <a href="study.html">Study builder</a>
+            <a href="blogs.html">Blogs</a>
+            <a href="pricing.html">Pricing</a>
+            <a href="contact.html">Contact</a>
+          </nav>
+
+          <div class="header-right">
+            <a href="login.html" class="btn btn-outline header-login">Log in</a>
+            <a href="signup.html" class="btn btn-primary header-signup"
+              >Sign up</a
+            >
+
+            <!-- hamburger (hidden on desktop via CSS) -->
+            <button class="menu-toggle" aria-label="Open menu">
+              <span></span><span></span><span></span>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- SLIDE MENU (mobile) -->
+      <div class="slide-nav-backdrop"></div>
+      <nav class="slide-nav">
+        <div class="slide-nav-header">
+          <h3>Menu</h3>
+          <button class="slide-nav-close" aria-label="Close menu">
+            &times;
+          </button>
+        </div>
+
+        <div class="slide-nav-links">
+          <a href="subjects.html">Subjects</a>
+          <a href="study.html">Study builder</a>
+          <a href="blogs.html">Blogs</a>
+          <a href="pricing.html">Pricing</a>
+          <a href="contact.html">Contact</a>
+          <a href="login.html" class="slide-login-link">Log in</a>
+        </div>
+      </nav>
+
+      <!-- MAIN -->
+      <main class="page-main">
+        <div class="container">
+          <section class="study-layout">
+            <div class="study-main">
+              <div
+                class="study-form-card"
+                style="max-width: 720px; margin: 40px auto"
+              >
+                <div
+                  style="
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    gap: 12px;
+                    flex-wrap: wrap;
+                  "
+                >
+                  <h1 style="margin: 0">Payment successful</h1>
+                  <span
+                    class="pill"
+                    style="display: inline-flex; align-items: center; gap: 8px"
+                  >
+                    <span aria-hidden="true" style="font-size: 16px">✅</span>
+                    <span id="billingStatusText">Processing…</span>
+                  </span>
+                </div>
+
+                <p style="margin-top: 10px; color: #4b5563">
+                  Thanks! Your subscription is being activated now. This page
+                  will update automatically.
+                </p>
+
+                <div
+                  style="
+                    margin-top: 18px;
+                    padding: 14px;
+                    border: 1px solid rgba(15, 60, 125, 0.12);
+                    border-radius: 14px;
+                    background: #fff;
+                  "
+                >
+                  <div
+                    style="
+                      display: grid;
+                      grid-template-columns: 1fr 1fr;
+                      gap: 12px;
+                    "
+                  >
+                    <div>
+                      <div style="font-size: 12px; color: #6b7280">Plan</div>
+                      <div id="billingPlanText" style="font-weight: 600">
+                        DentAIstudy Pro
+                      </div>
+                    </div>
+                    <div>
+                      <div style="font-size: 12px; color: #6b7280">
+                        Reference
+                      </div>
+                      <div id="billingRefText" style="font-weight: 600">—</div>
+                    </div>
+                  </div>
+
+                  <div
+                    style="margin-top: 10px; font-size: 13px; color: #6b7280"
+                  >
+                    If your account doesn’t upgrade within a minute, refresh
+                    this page once.
+                  </div>
+                </div>
+
+                <div
+                  style="
+                    display: flex;
+                    gap: 12px;
+                    flex-wrap: wrap;
+                    margin-top: 18px;
+                  "
+                >
+                  <a href="study.html" class="btn btn-primary"
+                    >Go to Study builder</a
+                  >
+                  <a href="profile.html" class="btn btn-outline"
+                    >Open Profile</a
+                  >
+                  <a href="pricing.html" class="btn btn-outline"
+                    >Back to Pricing</a
+                  >
+                </div>
+
+                <p style="margin-top: 18px; font-size: 0.9rem; color: #6b7280">
+                  Note: If you paid while logged out, the system can’t link the
+                  payment to your account. In that case, contact support and
+                  include the reference shown above.
+                </p>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- (Optional) tiny helper: shows useful info from URL query params -->
+        <script>
+          (function () {
+            const qs = new URLSearchParams(window.location.search);
+            const sub =
+              qs.get("subscription_id") || qs.get("subscriptionId") || "";
+            const pay = qs.get("payment_id") || qs.get("paymentId") || "";
+            const ref = pay || sub || "";
+            if (ref)
+              document.getElementById("billingRefText").textContent = ref;
+
+            // If Dodo adds plan/product in query later, we can show it:
+            const plan = qs.get("plan") || qs.get("product") || "";
+            if (plan)
+              document.getElementById("billingPlanText").textContent = plan;
+          })();
+        </script>
+      </main>
+
+      <!-- FOOTER -->
+      <footer class="site-footer">
+        <div class="container">
+          <div class="footer-top">
+            <div>
+              <div class="footer-brand">DentAIstudy</div>
+              <p>AI-enhanced tools for dental students and residents.</p>
+              <div class="footer-social">
+                <a
+                  href="https://www.tiktok.com/@dentaistudy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="DentAIstudy on TikTok"
+                >
+                  <img
+                    src="assets/img/footer-icons/tiktok-icon.png"
+                    alt="TikTok"
+                    class="footer-social-img"
+                  />
+                </a>
+
+                <a
+                  href="mailto:info@dentaistudy.com"
+                  aria-label="Contact DentAIstudy by email"
+                >
+                  <img
+                    src="assets/img/footer-icons/email-icon.png"
+                    alt="Email"
+                    class="footer-social-img"
+                  />
+                </a>
+              </div>
+            </div>
+
+            <div class="footer-column">
+              <h4>Product</h4>
+              <a href="subjects.html">Subjects</a>
+              <a href="study.html">Study builder</a>
+              <a href="blogs.html">Blogs</a>
+              <a href="pricing.html">Pricing</a>
+            </div>
+
+            <div class="footer-column">
+              <h4>Company</h4>
+              <a href="about.html">About</a>
+              <a href="contact.html">Contact</a>
+              <a href="faqs.html">FAQ</a>
+            </div>
+
+            <div class="footer-column">
+              <h4>Legal</h4>
+              <a href="privacy.html">Privacy Policy</a>
+              <a href="terms.html">Terms & Conditions</a>
+              <a href="cookies.html">Cookies Policy</a>
+              <a href="disclaimer.html">Disclaimer</a>
+              <a href="billing.html">Billing</a>
+              <a href="refund-policy.html">Refunds</a>
+            </div>
+          </div>
+
+          <div class="footer-bottom">
+            © 2025 DentAIstudy. All rights reserved.
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
