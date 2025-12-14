@@ -1,103 +1,75 @@
 // supabase/functions/dodo-webhook/index.ts
 
-export const config = { verify_jwt: false };
+import { serve } from "https://deno.land/std@0.224.0/http/server.ts";
+import { Webhook } from "https://esm.sh/svix@1.45.1";
 
-import "jsr:@supabase/functions-js/edge-runtime.d.ts";
-import { Webhook } from "https://esm.sh/svix@1.81.0";
-
-type DodoEvent = {
-  type: string; // e.g. "payment.succeeded"
-  timestamp?: string;
-  business_id?: string;
-  data?: unknown;
+const corsHeaders: Record<string, string> = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers": "content-type",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
 
-function json(status: number, body: Record<string, unknown>) {
+function json(status: number, body: unknown) {
   return new Response(JSON.stringify(body), {
     status,
-    headers: { "Content-Type": "application/json" },
+    headers: { ...corsHeaders, "Content-Type": "application/json" },
   });
 }
 
-Deno.serve(async (req: Request) => {
-  // Dodo/Svix will POST
+serve(async (req: Request) => {
+  // Webhooks sometimes do preflight (rare), safe to support
+  if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
+
   if (req.method !== "POST") {
-    return json(405, { error: "Method not allowed" });
+    return json(405, { ok: false, error: "Method not allowed" });
   }
 
-  const secret = Deno.env.get("DODO_WEBHOOK_SECRET");
+  const secret = Deno.env.get("DODO_WEBHOOK_SECRET") ?? "";
   if (!secret) {
-    // If this happens, the webhook can never verify.
-    console.error("Missing env: DODO_WEBHOOK_SECRET");
-    return json(500, { error: "Server misconfigured" });
+    console.error("[dodo-webhook] Missing DODO_WEBHOOK_SECRET in Supabase Secrets");
+    return json(500, { ok: false, error: "Server not configured" });
   }
 
-  // IMPORTANT: must read raw body as text BEFORE json parsing
-  const rawBody = await req.text();
+  // IMPORTANT: use raw body for signature verification
+  const payload = await req.text();
 
-  // Svix signature headers
-  const svixId = req.headers.get("svix-id") ?? "";
-  const svixTimestamp = req.headers.get("svix-timestamp") ?? "";
-  const svixSignature = req.headers.get("svix-signature") ?? "";
+  // Svix headers (Dodo uses Svix – your log shows Svix sender)
+  const svix_id = req.headers.get("svix-id") ?? "";
+  const svix_timestamp = req.headers.get("svix-timestamp") ?? "";
+  const svix_signature = req.headers.get("svix-signature") ?? "";
 
-  if (!svixId || !svixTimestamp || !svixSignature) {
-    console.error("Missing Svix headers", {
-      hasId: !!svixId,
-      hasTs: !!svixTimestamp,
-      hasSig: !!svixSignature,
+  if (!svix_id || !svix_timestamp || !svix_signature) {
+    console.error("[dodo-webhook] Missing Svix headers", {
+      svix_id: !!svix_id,
+      svix_timestamp: !!svix_timestamp,
+      svix_signature: !!svix_signature,
     });
-    return json(400, { error: "Missing webhook signature headers" });
+    return json(400, { ok: false, error: "Missing webhook signature headers" });
   }
 
-  // Verify signature
-  let event: DodoEvent;
+  let event: any;
   try {
     const wh = new Webhook(secret);
-
-    // Svix expects a plain object of headers
-    const verified = wh.verify(rawBody, {
-      "svix-id": svixId,
-      "svix-timestamp": svixTimestamp,
-      "svix-signature": svixSignature,
-    }) as unknown;
-
-    event = verified as DodoEvent;
+    event = wh.verify(payload, {
+      "svix-id": svix_id,
+      "svix-timestamp": svix_timestamp,
+      "svix-signature": svix_signature,
+    });
   } catch (err) {
-    console.error("Webhook signature verification failed:", err);
-    return json(400, { error: "Invalid signature" });
+    console.error("[dodo-webhook] Signature verification failed:", err);
+    return json(400, { ok: false, error: "Invalid signature" });
   }
 
-  // At this point: request is authenticated by signature ✅
-  console.log("dodo-webhook hit:", {
+  // At this point: verified ✅
+  // event.type examples: "payment.succeeded", "subscription.active", etc.
+  console.info("[dodo-webhook] Verified event:", {
     type: event?.type,
-    timestamp: event?.timestamp,
-    business_id: event?.business_id,
+    business_id: event?.data?.business_id ?? event?.business_id,
+    payment_id: event?.data?.payment_id,
+    subscription_id: event?.data?.subscription_id,
+    customer_email: event?.data?.customer?.email,
   });
 
-  // TODO: handle your business logic here (update user tier, mark paid, etc.)
-  // Common patterns:
-  // - payment.succeeded: grant access
-  // - subscription.active/renewed/updated/cancelled/expired: sync subscription state
-
-  switch (event.type) {
-    case "payment.succeeded":
-      // Example: just log for now
-      console.log("payment.succeeded received");
-      break;
-
-    case "subscription.active":
-    case "subscription.renewed":
-    case "subscription.updated":
-    case "subscription.cancelled":
-    case "subscription.expired":
-      console.log(`subscription event received: ${event.type}`);
-      break;
-
-    default:
-      console.log("Unhandled event type:", event.type);
-      break;
-  }
-
-  // Return 200 quickly so Dodo marks delivery as success
+  // TODO (next step): map event → update your Supabase user (by email or metadata user_id)
   return json(200, { ok: true });
 });
