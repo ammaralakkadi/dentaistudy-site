@@ -55,8 +55,6 @@ document.querySelectorAll(".copy-btn").forEach((btn) => {
   });
 });
 
-
-
 // Cookie banner
 (() => {
   const cookieBanner = document.querySelector(".cookie-banner");
@@ -154,7 +152,24 @@ document.querySelectorAll(".copy-btn").forEach((btn) => {
       window.location.href = directUrl;
     } else {
       // Temporary: your generic billing page until Paddle checkout is wired
-      window.location.href = "billing.html";
+      const email = user.email;
+
+      // Dodo test product IDs (replace with your real ones)
+      const dodoProducts = {
+        pro: "pdt_e9mUw084cWnu0tz",
+        pro_yearly: "pdt_YEARLY_ID_HERE",
+      };
+
+      const productId = dodoProducts[plan];
+
+      const checkoutUrl =
+        `https://test.checkout.dodopayments.com/buy/${productId}` +
+        `?email=${encodeURIComponent(email)}` +
+        `&redirect_url=${encodeURIComponent(
+          window.location.origin + "/billing-success.html"
+        )}`;
+
+      window.location.href = checkoutUrl;
     }
   }
 
