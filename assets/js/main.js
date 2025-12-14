@@ -131,8 +131,10 @@ document.querySelectorAll(".copy-btn").forEach((btn) => {
 
     const user = session.user;
     const meta = (user && user.user_metadata) || {};
-    const tier = meta.subscription_tier || "free";
+    const appMeta = (user && user.app_metadata) || {};
+    const tier = appMeta.subscription_tier || meta.subscription_tier || "free";
     const isPaid = tier === "pro" || tier === "pro_yearly";
+
 
     // Free plan button: logged-in users go straight to Study builder
     if (isFreePlan) {
