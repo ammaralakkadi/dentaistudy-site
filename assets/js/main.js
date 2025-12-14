@@ -151,16 +151,22 @@ document.querySelectorAll(".copy-btn").forEach((btn) => {
     if (typeof directUrl === "string" && directUrl.length > 0) {
       window.location.href = directUrl;
     } else {
-      // Temporary: your generic billing page until Paddle checkout is wired
+      // Dodo Test checkout (Pro / Pro Yearly)
       const email = user.email;
 
-      // Dodo test product IDs (replace with your real ones)
+      // ✅ IMPORTANT: replace these with your REAL Dodo Test product IDs (copy full ID from Dodo)
       const dodoProducts = {
-        pro: "pdt_e9mUw084cWnu0tz",
-        pro_yearly: "pdt_YEARLY_ID_HERE",
+        pro: "pdt_rynZ1jQtGhV2iHFrs9hMs",
+        pro_yearly: "pdt_eWs83c5p438JW6Go1oaub",
       };
 
       const productId = dodoProducts[plan];
+
+      // If plan is not Pro/Yearly (or missing ID), fallback to billing page
+      if (!productId) {
+        window.location.href = "billing.html";
+        return;
+      }
 
       const checkoutUrl =
         `https://test.checkout.dodopayments.com/buy/${productId}` +
