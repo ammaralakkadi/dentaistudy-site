@@ -1,131 +1,130 @@
-// supabase/functions/dodo-webhook/index.ts
-import "jsr:@supabase/functions-js/edge-runtime.d.ts";
-import { createClient } from "npm:@supabase/supabase-js@2";
-import { Webhook } from "npm:standardwebhooks@1";
+/// <reference path="./.supabase/functions.d.ts" />
 
-function json(status: number, body: Record<string, unknown>) {
-  return new Response(JSON.stringify(body), {
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { Webhook } from "npm:svix@1.43.0";
+
+type DodoEvent = {
+  type: string;
+  business_id?: string;
+  data?: any;
+};
+
+const json = (status: number, body: unknown) =>
+  new Response(JSON.stringify(body), {
     status,
-    headers: { "Content-Type": "application/json" },
+    headers: { "content-type": "application/json" },
   });
-}
 
-function getHeader(req: Request, name: string) {
-  return req.headers.get(name) ?? req.headers.get(name.toLowerCase());
-}
-
-Deno.serve(async (req: Request) => {
+Deno.serve(async (req) => {
   if (req.method !== "POST") return json(405, { error: "Method not allowed" });
 
-  const secret = Deno.env.get("DODO_WEBHOOK_SECRET");
-  if (!secret) return json(500, { error: "Missing DODO_WEBHOOK_SECRET" });
+  const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "";
+  const SERVICE_ROLE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
+  const DODO_WEBHOOK_SECRET = Deno.env.get("DODO_WEBHOOK_SECRET") ?? "";
 
-  // Read raw body for signature verification
+  // Your Dodo product IDs (TEST or LIVE — must match the mode you’re using)
+  const DODO_PRO_PRODUCT_ID = Deno.env.get("DODO_PRO_PRODUCT_ID") ?? "";
+  const DODO_PRO_YEARLY_PRODUCT_ID = Deno.env.get("DODO_PRO_YEARLY_PRODUCT_ID") ?? "";
+
+  if (!SUPABASE_URL || !SERVICE_ROLE) {
+    console.error("Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY");
+    return json(500, { error: "Server misconfigured" });
+  }
+  if (!DODO_WEBHOOK_SECRET) {
+    console.error("Missing DODO_WEBHOOK_SECRET");
+    return json(500, { error: "Webhook secret not set" });
+  }
+
+  // 1) Read raw body (Svix verification needs the exact raw payload)
   const rawBody = await req.text();
 
-  // Dodo is sent by Svix (often uses svix-* headers)
-  const svixId = getHeader(req, "svix-id");
-  const svixTs = getHeader(req, "svix-timestamp");
-  const svixSig = getHeader(req, "svix-signature");
+  // 2) Verify Svix headers
+  const svix_id = req.headers.get("svix-id");
+  const svix_ts = req.headers.get("svix-timestamp");
+  const svix_sig = req.headers.get("svix-signature");
 
-  // Some libraries expect webhook-* headers; map svix-* -> webhook-*
-  const webhookId = getHeader(req, "webhook-id") ?? svixId;
-  const webhookTs = getHeader(req, "webhook-timestamp") ?? svixTs;
-  const webhookSig = getHeader(req, "webhook-signature") ?? svixSig;
-
-  if (!webhookId || !webhookTs || !webhookSig) {
-    console.error("Missing signature headers", {
-      hasId: !!webhookId,
-      hasTs: !!webhookTs,
-      hasSig: !!webhookSig,
+  if (!svix_id || !svix_ts || !svix_sig) {
+    console.error("Missing Svix headers", {
+      hasId: !!svix_id,
+      hasTs: !!svix_ts,
+      hasSig: !!svix_sig,
     });
     return json(400, { error: "Missing webhook signature headers" });
   }
 
-  // Verify signature
-  let event: any;
+  let event: DodoEvent;
   try {
-    const wh = new Webhook(secret);
+    const wh = new Webhook(DODO_WEBHOOK_SECRET);
     event = wh.verify(rawBody, {
-      "webhook-id": webhookId,
-      "webhook-timestamp": webhookTs,
-      "webhook-signature": webhookSig,
-    });
+      "svix-id": svix_id,
+      "svix-timestamp": svix_ts,
+      "svix-signature": svix_sig,
+    }) as DodoEvent;
   } catch (err) {
-    console.error("Signature verification failed:", String(err));
+    console.error("Webhook signature verification failed:", err);
     return json(401, { error: "Invalid signature" });
   }
 
   const type = event?.type;
   const data = event?.data ?? {};
-  const metadata = data?.metadata ?? {};
 
-  console.log("Dodo webhook received", {
+  console.log("Dodo webhook received:", {
     type,
     payment_id: data?.payment_id,
-    status: data?.status,
-    product_id: data?.product_cart?.[0]?.product_id,
-    has_user_id: !!(metadata?.user_id || metadata?.userId || metadata?.metadata_user_id),
+    subscription_id: data?.subscription_id,
+    product_cart: data?.product_cart,
+    metadata: data?.metadata,
+    customer_email: data?.customer?.email,
   });
 
-  // We only care about successful payments
-  if (type !== "payment.succeeded") {
+  // We only act on success events
+  const isSuccess =
+    type === "payment.succeeded" ||
+    type === "subscription.active" ||
+    type === "subscription.created";
+
+  if (!isSuccess) {
     return json(200, { ok: true, ignored: true });
   }
 
-  // Your checkout link should send: &metadata_user_id=<supabase user id>
-  const userId =
-    metadata?.user_id ??
-    metadata?.metadata_user_id ??
-    metadata?.userId;
+  // 3) Identify user (REQUIRE user_id in metadata)
+  const meta = data?.metadata ?? {};
+  const userId: string | undefined =
+    meta.user_id ?? meta.userId ?? meta.supabase_user_id ?? meta.supabaseUserId;
 
-  if (!userId || typeof userId !== "string") {
-    // Don’t fail the webhook; just log so you can fix URL param
-    console.error("Missing metadata user id. Add &metadata_user_id=... to checkout URL.", {
-      metadata,
-    });
-    return json(200, { ok: true, missing_user_id: true });
+  if (!userId) {
+    console.error("Missing metadata user_id. Cannot upgrade safely.");
+    return json(200, { ok: true, upgraded: false, reason: "missing_user_id" });
   }
 
-  const supabaseUrl = Deno.env.get("SUPABASE_URL");
-  const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
-  if (!supabaseUrl || !serviceRoleKey) {
-    return json(500, { error: "Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY" });
+  // 4) Decide plan (monthly vs yearly) by product_id
+  const productId = data?.product_cart?.[0]?.product_id as string | undefined;
+
+  let tier: "free" | "pro" | "pro_yearly" = "pro"; // default to pro
+  if (productId && DODO_PRO_YEARLY_PRODUCT_ID && productId === DODO_PRO_YEARLY_PRODUCT_ID) {
+    tier = "pro_yearly";
+  } else if (productId && DODO_PRO_PRODUCT_ID && productId === DODO_PRO_PRODUCT_ID) {
+    tier = "pro";
   }
 
-  const supabase = createClient(supabaseUrl, serviceRoleKey);
+  // 5) Upgrade user in Supabase Auth metadata
+  const supabase = createClient(SUPABASE_URL, SERVICE_ROLE, {
+    auth: { persistSession: false },
+  });
 
-  // Map product -> tier
-  const paidProductId = data?.product_cart?.[0]?.product_id;
-  const proMonthly = Deno.env.get("DODO_PRO_MONTHLY_PRODUCT_ID");
-  const proYearly = Deno.env.get("DODO_PRO_YEARLY_PRODUCT_ID");
-
-  let tier: "pro" | "pro_yearly" | null = null;
-  if (paidProductId && proMonthly && paidProductId === proMonthly) tier = "pro";
-  if (paidProductId && proYearly && paidProductId === proYearly) tier = "pro_yearly";
-
-  if (!tier) {
-    console.error("Unknown product id, set env vars DODO_PRO_MONTHLY_PRODUCT_ID / DODO_PRO_YEARLY_PRODUCT_ID", {
-      paidProductId,
-    });
-    return json(200, { ok: true, unknown_product: true });
-  }
-
-  // Update Auth user metadata
-  const { data: updated, error } = await supabase.auth.admin.updateUserById(userId, {
+  const { error } = await supabase.auth.admin.updateUserById(userId, {
     user_metadata: {
       subscription_tier: tier,
-      subscription_source: "dodo",
-      dodo_payment_id: data?.payment_id ?? null,
-      dodo_last_event: type,
-      dodo_updated_at: new Date().toISOString(),
+      // optional flags (keep if you use them elsewhere)
+      is_pro: tier === "pro" || tier === "pro_yearly",
+      updated_from: "dodo_webhook",
     },
   });
 
   if (error) {
     console.error("Failed to update user:", error);
-    return json(500, { error: "Failed to update user" });
+    return json(500, { ok: false, error: error.message });
   }
 
-  return json(200, { ok: true, tier, user: updated?.user?.id });
+  return json(200, { ok: true, upgraded: true, userId, tier });
 });
