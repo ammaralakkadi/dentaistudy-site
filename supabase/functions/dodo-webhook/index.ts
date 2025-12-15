@@ -51,11 +51,17 @@ function extractUserId(evt: any): string | null {
   return typeof userId === "string" && userId.length > 10 ? userId : null;
 }
 
-function tierFromProductId(productId: string): "pro" | "pro_yearly" | null {
-  if (productId === DODO_PRODUCT_PRO_MONTHLY) return "pro";
-  if (productId === DODO_PRODUCT_PRO_YEARLY) return "pro_yearly";
+function tierFromProductId(productId: string | null): "pro" | "pro_yearly" | null {
+  const pid = (productId || "").trim();
+  const monthly = (DODO_PRODUCT_PRO_MONTHLY || "").trim();
+  const yearly = (DODO_PRODUCT_PRO_YEARLY || "").trim();
+
+  if (!pid) return null;
+  if (monthly && pid === monthly) return "pro";
+  if (yearly && pid === yearly) return "pro_yearly";
   return null;
 }
+
 
 serve(async (req) => {
   if (req.method === "OPTIONS") return json(200, { ok: true });
@@ -110,22 +116,28 @@ serve(async (req) => {
 
     // If we can't identify the user or tier, still return 200 so Dodo doesn't spam retries
     if (!userId || !tier) {
-      return json(200, {
-        received: true,
-        note: "No user_id or unknown product_id; not upgrading",
-        eventType,
-        userIdFound: !!userId,
-        productId,
-      });
-    }
+      return new Response(
+        JSON.stringify({
+          received: true,
+          note: "No user_id or tier (debug)",
+          userId,
+          productId,
+          envMonthly: (DODO_PRODUCT_PRO_MONTHLY || "").trim(),
+          envYearly: (DODO_PRODUCT_PRO_YEARLY || "").trim(),
+        }),
+        {
+          status: 200,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        }
+      );
+    }    
 
     // Update Supabase user app_metadata (what your auth-guard reads)
     const supabaseAdmin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
     const { error } = await supabaseAdmin.auth.admin.updateUserById(userId, {
       app_metadata: { subscription_tier: tier },
-      user_metadata: { subscription_tier: tier },
-    });    
+    });
 
     if (error) {
       return json(500, { error: "Supabase update failed", details: error.message });
