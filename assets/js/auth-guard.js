@@ -137,8 +137,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     const topMode = meta.top_used_category || null;
 
     // ⚡ Plan / subscription tier
+    // Prefer user_metadata so upgrades reflect immediately.
+    // app_metadata stays as fallback (useful for some auth providers / defaults).
     const subscriptionTier =
-      appMeta.subscription_tier || meta.subscription_tier || "free";
+      meta.subscription_tier || appMeta.subscription_tier || "free";
 
     const isPaidPlan =
       subscriptionTier === "pro" || subscriptionTier === "pro_yearly";
