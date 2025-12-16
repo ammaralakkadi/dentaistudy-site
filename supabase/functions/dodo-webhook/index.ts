@@ -1,6 +1,5 @@
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-
 import { Webhook } from "https://esm.sh/standardwebhooks@1.0.0";
 
 // --- Env (DO NOT paste keys in code) ---
@@ -27,7 +26,7 @@ function json(status: number, body: unknown) {
 }
 
 function pickHeader(req: Request, a: string, b: string) {
-  return (req.headers.get(a) || req.headers.get(b) || "").trim();
+  return (req.headers.get(a) ?? req.headers.get(b) ?? "").trim();
 }
 
 function extractProductId(evt: any): string | null {
@@ -56,9 +55,9 @@ function extractUserId(evt: any): string | null {
 function tierFromProductId(
   productId: string | null
 ): "pro" | "pro_yearly" | null {
-  const pid = (productId || "").trim();
-  const monthly = (DODO_PRODUCT_PRO_MONTHLY || "").trim();
-  const yearly = (DODO_PRODUCT_PRO_YEARLY || "").trim();
+  const pid = (productId ?? "").trim();
+  const monthly = (DODO_PRODUCT_PRO_MONTHLY ?? "").trim();
+  const yearly = (DODO_PRODUCT_PRO_YEARLY ?? "").trim();
 
   if (!pid) return null;
   if (monthly && pid === monthly) return "pro";
@@ -114,56 +113,60 @@ serve(async (req) => {
     }) as any;
 
     const eventType = (
-      verifiedEvent?.type ||
-      verifiedEvent?.event_type ||
+      verifiedEvent?.type ??
+      verifiedEvent?.event_type ??
       ""
     ).toString();
 
-    const userId = extractUserId(verifiedEvent);
-
-    // ✅ Subscription entitlement events we accept
-    const entitlementEvent =
-      eventType === "subscription.active" ||
-      eventType === "subscription.updated";
-
-    if (!entitlementEvent) {
-      return json(200, { received: true, ignored: eventType });
+    // 🔒 We do NOT trust eventType names for entitlements (forwarders/adapters may rename).
+    // ✅ We decide entitlement strictly by payload_type + status.
+    const payloadType = verifiedEvent?.data?.payload_type;
+    if (payloadType !== "Subscription") {
+      return json(200, { received: true, ignored: eventType, payloadType });
     }
 
-    // Only grant entitlement from subscription events when status is active
-    const payloadType = verifiedEvent?.data?.payload_type;
     const subStatus = verifiedEvent?.data?.status;
-
-    if (payloadType !== "Subscription" || subStatus !== "active") {
+    if (subStatus !== "active") {
       return json(200, {
         received: true,
         ignored: true,
+        reason: "subscription_not_active",
+        eventType,
         payloadType,
         subStatus,
-        eventType,
       });
     }
 
-    // ✅ Use your helper (canonical)
+    const userId = extractUserId(verifiedEvent);
     const productId = extractProductId(verifiedEvent);
     const tier = tierFromProductId(productId);
 
+    // ✅ Always log the entitlement decision (for Supabase Logs)
+    console.log("[dodo-webhook] entitlement decision", {
+      eventType,
+      payloadType,
+      subStatus,
+      userId,
+      productId,
+      tier,
+      envMonthly: (DODO_PRODUCT_PRO_MONTHLY ?? "").trim(),
+      envYearly: (DODO_PRODUCT_PRO_YEARLY ?? "").trim(),
+      subscription_id: verifiedEvent?.data?.subscription_id ?? null,
+    });
+
     // If we can't identify the user or tier, still return 200 so Dodo doesn't spam retries
     if (!userId || !tier) {
-      return new Response(
-        JSON.stringify({
-          received: true,
-          note: "No user_id or tier (debug)",
-          userId,
-          productId,
-          envMonthly: (DODO_PRODUCT_PRO_MONTHLY || "").trim(),
-          envYearly: (DODO_PRODUCT_PRO_YEARLY || "").trim(),
-        }),
-        {
-          status: 200,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        }
-      );
+      return json(200, {
+        received: true,
+        note: "No user_id or tier (debug)",
+        eventType,
+        payloadType,
+        subStatus,
+        userId,
+        productId,
+        envMonthly: (DODO_PRODUCT_PRO_MONTHLY ?? "").trim(),
+        envYearly: (DODO_PRODUCT_PRO_YEARLY ?? "").trim(),
+      });
     }
 
     const supabaseAdmin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
@@ -171,6 +174,7 @@ serve(async (req) => {
     // Fetch existing metadata so we MERGE (never overwrite provider fields)
     const { data: userRes, error: getErr } =
       await supabaseAdmin.auth.admin.getUserById(userId);
+
     if (getErr || !userRes?.user) {
       return json(500, {
         error: "Supabase getUserById failed",
@@ -178,13 +182,10 @@ serve(async (req) => {
       });
     }
 
+    // Only update app_metadata; do not touch user_metadata
     const { error: upErr } = await supabaseAdmin.auth.admin.updateUserById(
       userId,
-      {
-        app_metadata: { subscription_tier: tier },
-        // CRITICAL: Only update app_metadata, not user_metadata
-        // This matches our architecture where auth guard reads app_metadata first
-      }
+      { app_metadata: { subscription_tier: tier } }
     );
 
     if (upErr) {
@@ -193,6 +194,8 @@ serve(async (req) => {
         details: upErr.message,
       });
     }
+
+    console.log("[dodo-webhook] upgraded", { userId, tier, productId });
 
     return json(200, {
       received: true,
