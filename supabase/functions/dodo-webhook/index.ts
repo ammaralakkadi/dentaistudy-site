@@ -32,16 +32,17 @@ function pickHeader(req: Request, a: string, b: string) {
 function extractProductId(evt: any): string | null {
   const data = evt?.data;
 
-  // Subscription payload (best)
-  if (data?.payload_type === "Subscription" && typeof data?.product_id === "string") {
-    return data.product_id;
+  // For subscriptions, Dodo’s canonical product identifier is data.product_id
+  if (typeof data?.product_id === "string" && data.product_id.trim()) {
+    return data.product_id.trim();
   }
 
-  // Payment payload with product_cart
+  // Fallback only for one-time payments that may include a cart
   const cart = data?.product_cart;
-  if (Array.isArray(cart) && cart[0]?.product_id) return cart[0].product_id;
+  if (Array.isArray(cart) && typeof cart?.[0]?.product_id === "string") {
+    return cart[0].product_id.trim();
+  }
 
-  // Some payment events might not include cart
   return null;
 }
 
@@ -118,18 +119,32 @@ serve(async (req) => {
 
     const userId = extractUserId(verifiedEvent);
 
-    // ✅ Authoritative entitlement event
-    if (eventType !== "subscription.active") {
+    // ✅ Subscription entitlement events we accept
+    const entitlementEvent =
+      eventType === "subscription.active" ||
+      eventType === "subscription.updated";
+
+    if (!entitlementEvent) {
       return json(200, { received: true, ignored: eventType });
     }
 
-    // ✅ Canonical product identifier for subscriptions
-    const productId =
-      typeof verifiedEvent?.data?.product_id === "string"
-        ? verifiedEvent.data.product_id
-        : null;
+    // Only grant entitlement from subscription events when status is active
+    const payloadType = verifiedEvent?.data?.payload_type;
+    const subStatus = verifiedEvent?.data?.status;
 
-    const tier = tierFromProductId(productId);
+    if (payloadType !== "Subscription" || subStatus !== "active") {
+      return json(200, {
+        received: true,
+        ignored: true,
+        payloadType,
+        subStatus,
+        eventType,
+      });
+    }
+
+    // ✅ Use your helper (canonical)
+    const productId = extractProductId(verifiedEvent);
+    const tier = tierFromProductId(productId);    
 
     // If we can't identify the user or tier, still return 200 so Dodo doesn't spam retries
     if (!userId || !tier) {
@@ -147,20 +162,6 @@ serve(async (req) => {
           headers: { ...corsHeaders, "Content-Type": "application/json" },
         }
       );
-    }
-
-    // Only grant entitlement from subscription events when status is active
-    const payloadType = verifiedEvent?.data?.payload_type;
-    const subStatus = verifiedEvent?.data?.status;
-
-    if (payloadType !== "Subscription" || subStatus !== "active") {
-      return json(200, {
-        received: true,
-        ignored: true,
-        payloadType,
-        subStatus,
-        eventType,
-      });
     }
 
     const supabaseAdmin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
