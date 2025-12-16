@@ -9,8 +9,15 @@ const SUPABASE_SERVICE_ROLE_KEY =
 
 const DODO_WEBHOOK_SECRET = Deno.env.get("DODO_WEBHOOK_SECRET") ?? "";
 
-const DODO_PRODUCT_PRO_MONTHLY = Deno.env.get("DODO_PRODUCT_PRO_MONTHLY") ?? "";
-const DODO_PRODUCT_PRO_YEARLY = Deno.env.get("DODO_PRODUCT_PRO_YEARLY") ?? "";
+const DODO_PRODUCT_PRO_MONTHLY =
+  Deno.env.get("DODO_PRODUCT_PRO_MONTHLY") ??
+  Deno.env.get("DODO_PRO_MONTHLY_PRODUCT_ID") ??
+  "";
+
+  const DODO_PRODUCT_PRO_YEARLY =
+    Deno.env.get("DODO_PRODUCT_PRO_YEARLY") ??
+    Deno.env.get("DODO_PRO_YEARLY_PRODUCT_ID") ??
+    "";
 
 const corsHeaders: Record<string, string> = {
   "Access-Control-Allow-Origin": "*",
