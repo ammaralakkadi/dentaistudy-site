@@ -189,6 +189,24 @@
               document.getElementById("billingPlanText").textContent = plan;
           })();
         </script>
+        <script>
+          (async function () {
+            try {
+              // Force Supabase to refresh JWT to get updated app_metadata
+              if (window.supabase?.auth) {
+                await window.supabase.auth.refreshSession();
+              }
+
+              // Optional: small delay to ensure UI consistency
+              setTimeout(() => {
+                document.getElementById("billingStatusText").textContent =
+                  "Activated";
+              }, 500);
+            } catch (e) {
+              console.error("Session refresh failed:", e);
+            }
+          })();
+        </script>
       </main>
 
       <!-- FOOTER -->
