@@ -135,12 +135,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         : 0;
     const lastActive = meta.last_active_at || null;
     const topMode = meta.top_used_category || null;
-
+    
     // ⚡ Plan / subscription tier
-    // Prefer user_metadata so upgrades reflect immediately.
-    // app_metadata stays as fallback (useful for some auth providers / defaults).
+    // AUTHORITATIVE: app_metadata is updated by webhook, user_metadata is fallback
+    // This matches our architecture where Dodo webhook updates app_metadata
     const subscriptionTier =
-      meta.subscription_tier || appMeta.subscription_tier || "free";
+      appMeta.subscription_tier || meta.subscription_tier || "free";
 
     const isPaidPlan =
       subscriptionTier === "pro" || subscriptionTier === "pro_yearly";

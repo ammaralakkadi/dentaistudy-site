@@ -36,31 +36,39 @@ document.addEventListener("DOMContentLoaded", async () => {
   // (your webhook updates app_metadata.subscription_tier)
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-  for (let i = 0; i < 8; i++) {
+  let isActivated = false;
+  for (let i = 0; i < 6; i++) {
+    // Reduced attempts
     try {
-      await supabase.auth.refreshSession();
+      // CRITICAL: Force a token refresh and get a fresh user object
+      const { data: refreshData, error: refreshError } =
+        await supabase.auth.refreshSession();
+      if (refreshError) throw refreshError;
 
       const {
         data: { user },
+        error: userError,
       } = await supabase.auth.getUser();
+      if (userError) throw userError;
 
-      const tier = user?.app_metadata?.subscription_tier;
+      const tier = user?.app_metadata?.subscription_tier; // Check app_metadata directly
 
       if (tier === "pro" || tier === "pro_yearly") {
-        if (statusEl) statusEl.textContent = `Activated: ${tier}`;
-        await sleep(800);
+        if (statusEl) statusEl.textContent = `✅ Activated: ${tier} plan`;
+        isActivated = true;
+        await sleep(1200);
         window.location.href = "profile.html";
-        return;
+        break; // Exit loop on success
       }
     } catch (e) {
-      // ignore and retry
+      console.warn(`[billing] Poll attempt ${i + 1} failed:`, e);
     }
-
-    await sleep(2000);
+    await sleep(2500); // Slightly longer delay between attempts
   }
 
-  // Still not updated (webhook might be delayed) — don’t block user here
-  if (statusEl)
+  // If loop finishes without activation
+  if (!isActivated && statusEl) {
     statusEl.textContent =
-      "Payment received. Activation can take a moment — open Profile to check.";
+      "Payment confirmed. Your Pro access is being activated (usually within 2 minutes).";
+  }
 });
