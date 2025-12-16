@@ -68,7 +68,9 @@ serve(async (req) => {
 
   try {
     if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
-      return json(500, { error: "Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY" });
+      return json(500, {
+        error: "Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY",
+      });
     }
     if (!DODO_WEBHOOK_SECRET) {
       return json(500, { error: "Missing DODO_WEBHOOK_SECRET" });
@@ -108,24 +110,29 @@ serve(async (req) => {
       "webhook-signature": whSig,
     }) as any;
 
-    const eventType = (verifiedEvent?.type || verifiedEvent?.event_type || "").toString();
+    const eventType = (
+      verifiedEvent?.type ||
+      verifiedEvent?.event_type ||
+      ""
+    ).toString();
 
     const userId = extractUserId(verifiedEvent);
 
-// ✅ Authoritative entitlement event
-  if (eventType !== "subscription.active") {
-   return json(200, { received: true, ignored: eventType });
-  }  
+    // ✅ Authoritative entitlement event
+    if (eventType !== "subscription.active") {
+      return json(200, { received: true, ignored: eventType });
+    }
 
-// ✅ Canonical product identifier for subscriptions
-const productId = typeof verifiedEvent?.data?.product_id === "string"
-  ? verifiedEvent.data.product_id
-  : null;
+    // ✅ Canonical product identifier for subscriptions
+    const productId =
+      typeof verifiedEvent?.data?.product_id === "string"
+        ? verifiedEvent.data.product_id
+        : null;
 
-const tier = tierFromProductId(productId);
+    const tier = tierFromProductId(productId);
 
-// If we can't identify the user or tier, still return 200 so Dodo doesn't spam retries
-if (!userId || !tier) {
+    // If we can't identify the user or tier, still return 200 so Dodo doesn't spam retries
+    if (!userId || !tier) {
       return new Response(
         JSON.stringify({
           received: true,
@@ -140,18 +147,50 @@ if (!userId || !tier) {
           headers: { ...corsHeaders, "Content-Type": "application/json" },
         }
       );
-    }    
+    }
 
-    // Update Supabase user app_metadata (what your auth-guard reads)
+    // Only grant entitlement from subscription events when status is active
+    const payloadType = verifiedEvent?.data?.payload_type;
+    const subStatus = verifiedEvent?.data?.status;
+
+    if (payloadType !== "Subscription" || subStatus !== "active") {
+      return json(200, {
+        received: true,
+        ignored: true,
+        payloadType,
+        subStatus,
+        eventType,
+      });
+    }
+
     const supabaseAdmin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
-    const { error } = await supabaseAdmin.auth.admin.updateUserById(userId, {
-      app_metadata: { subscription_tier: tier },
-      user_metadata: { subscription_tier: tier },
-    });    
+    // Fetch existing metadata so we MERGE (never overwrite provider fields)
+    const { data: userRes, error: getErr } =
+      await supabaseAdmin.auth.admin.getUserById(userId);
+    if (getErr || !userRes?.user) {
+      return json(500, {
+        error: "Supabase getUserById failed",
+        details: getErr?.message ?? "No user",
+      });
+    }
 
-    if (error) {
-      return json(500, { error: "Supabase update failed", details: error.message });
+    const existingApp = userRes.user.app_metadata ?? {};
+    const existingUser = userRes.user.user_metadata ?? {};
+
+    const { error: upErr } = await supabaseAdmin.auth.admin.updateUserById(
+      userId,
+      {
+        app_metadata: { ...existingApp, subscription_tier: tier },
+        user_metadata: { ...existingUser, subscription_tier: tier },
+      }
+    );
+
+    if (upErr) {
+      return json(500, {
+        error: "Supabase update failed",
+        details: upErr.message,
+      });
     }
 
     return json(200, {
@@ -161,7 +200,9 @@ if (!userId || !tier) {
       eventType,
       userId,
       productId,
+      subscription_id: verifiedEvent?.data?.subscription_id ?? null,
     });
+    
   } catch (e) {
     return json(401, {
       error: "Webhook verification failed",
