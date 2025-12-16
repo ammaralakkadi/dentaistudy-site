@@ -108,14 +108,24 @@ serve(async (req) => {
       "webhook-signature": whSig,
     }) as any;
 
-    const eventType = verifiedEvent?.type || verifiedEvent?.event_type || null;
+    const eventType = (verifiedEvent?.type || verifiedEvent?.event_type || "").toString();
 
     const userId = extractUserId(verifiedEvent);
-    const productId = extractProductId(verifiedEvent);
-    const tier = productId ? tierFromProductId(productId) : null;
 
-    // If we can't identify the user or tier, still return 200 so Dodo doesn't spam retries
-    if (!userId || !tier) {
+// ✅ Authoritative entitlement event
+  if (eventType !== "subscription.active") {
+   return json(200, { received: true, ignored: eventType });
+  }  
+
+// ✅ Canonical product identifier for subscriptions
+const productId = typeof verifiedEvent?.data?.product_id === "string"
+  ? verifiedEvent.data.product_id
+  : null;
+
+const tier = tierFromProductId(productId);
+
+// If we can't identify the user or tier, still return 200 so Dodo doesn't spam retries
+if (!userId || !tier) {
       return new Response(
         JSON.stringify({
           received: true,
@@ -137,7 +147,8 @@ serve(async (req) => {
 
     const { error } = await supabaseAdmin.auth.admin.updateUserById(userId, {
       app_metadata: { subscription_tier: tier },
-    });
+      user_metadata: { subscription_tier: tier },
+    });    
 
     if (error) {
       return json(500, { error: "Supabase update failed", details: error.message });
