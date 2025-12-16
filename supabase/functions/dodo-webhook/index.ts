@@ -5,7 +5,8 @@ import { Webhook } from "https://esm.sh/standardwebhooks@1.0.0";
 
 // --- Env (DO NOT paste keys in code) ---
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "";
-const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
+const SUPABASE_SERVICE_ROLE_KEY =
+  Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
 
 const DODO_WEBHOOK_SECRET = Deno.env.get("DODO_WEBHOOK_SECRET") ?? "";
 
@@ -52,7 +53,9 @@ function extractUserId(evt: any): string | null {
   return typeof userId === "string" && userId.length > 10 ? userId : null;
 }
 
-function tierFromProductId(productId: string | null): "pro" | "pro_yearly" | null {
+function tierFromProductId(
+  productId: string | null
+): "pro" | "pro_yearly" | null {
   const pid = (productId || "").trim();
   const monthly = (DODO_PRODUCT_PRO_MONTHLY || "").trim();
   const yearly = (DODO_PRODUCT_PRO_YEARLY || "").trim();
@@ -62,7 +65,6 @@ function tierFromProductId(productId: string | null): "pro" | "pro_yearly" | nul
   if (yearly && pid === yearly) return "pro_yearly";
   return null;
 }
-
 
 serve(async (req) => {
   if (req.method === "OPTIONS") return json(200, { ok: true });
@@ -144,7 +146,7 @@ serve(async (req) => {
 
     // ✅ Use your helper (canonical)
     const productId = extractProductId(verifiedEvent);
-    const tier = tierFromProductId(productId);    
+    const tier = tierFromProductId(productId);
 
     // If we can't identify the user or tier, still return 200 so Dodo doesn't spam retries
     if (!userId || !tier) {
@@ -176,14 +178,12 @@ serve(async (req) => {
       });
     }
 
-    const existingApp = userRes.user.app_metadata ?? {};
-    const existingUser = userRes.user.user_metadata ?? {};
-
     const { error: upErr } = await supabaseAdmin.auth.admin.updateUserById(
       userId,
       {
-        app_metadata: { ...existingApp, subscription_tier: tier },
-        user_metadata: { ...existingUser, subscription_tier: tier },
+        app_metadata: { subscription_tier: tier },
+        // CRITICAL: Only update app_metadata, not user_metadata
+        // This matches our architecture where auth guard reads app_metadata first
       }
     );
 
@@ -203,7 +203,6 @@ serve(async (req) => {
       productId,
       subscription_id: verifiedEvent?.data?.subscription_id ?? null,
     });
-    
   } catch (e) {
     return json(401, {
       error: "Webhook verification failed",
