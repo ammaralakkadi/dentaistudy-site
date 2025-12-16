@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Account deleted – DentAIstudy</title>
+    <title>Billing Success – DentAIstudy</title>
     <link rel="stylesheet" href="assets/css/style-v3.css" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
@@ -173,41 +173,7 @@
         </div>
 
         <!-- (Optional) tiny helper: shows useful info from URL query params -->
-        <script>
-          (function () {
-            const qs = new URLSearchParams(window.location.search);
-            const sub =
-              qs.get("subscription_id") || qs.get("subscriptionId") || "";
-            const pay = qs.get("payment_id") || qs.get("paymentId") || "";
-            const ref = pay || sub || "";
-            if (ref)
-              document.getElementById("billingRefText").textContent = ref;
-
-            // If Dodo adds plan/product in query later, we can show it:
-            const plan = qs.get("plan") || qs.get("product") || "";
-            if (plan)
-              document.getElementById("billingPlanText").textContent = plan;
-          })();
-        </script>
-        <script>
-          (async function () {
-            try {
-              // Force Supabase to refresh JWT to get updated app_metadata
-              if (window.supabase?.auth) {
-                await window.supabase.auth.refreshSession();
-              }
-
-              // Optional: small delay to ensure UI consistency
-              setTimeout(() => {
-                document.getElementById("billingStatusText").textContent =
-                  "Activated";
-              }, 500);
-            } catch (e) {
-              console.error("Session refresh failed:", e);
-            }
-          })();
-        </script>
-      </main>
+        <script src="assets/js/billing-success.js"></script>
 
       <!-- FOOTER -->
       <footer class="site-footer">
