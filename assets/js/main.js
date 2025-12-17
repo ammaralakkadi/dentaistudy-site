@@ -135,7 +135,6 @@ document.querySelectorAll(".copy-btn").forEach((btn) => {
     const tier = appMeta.subscription_tier || meta.subscription_tier || "free";
     const isPaid = tier === "pro" || tier === "pro_yearly";
 
-
     // Free plan button: logged-in users go straight to Study builder
     if (isFreePlan) {
       window.location.href = "study.html";
@@ -188,3 +187,25 @@ document.querySelectorAll(".copy-btn").forEach((btn) => {
     btn.addEventListener("click", handlePlanClick);
   });
 })();
+
+// Settings: Manage payment details (Dodo Customer Portal)
+(() => {
+  const btn = document.querySelector('[data-das-manage-plan="billing"]');
+  if (!btn) return;
+
+  btn.addEventListener("click", async () => {
+    try {
+      const supabase = window.dasSupabase;
+      if (!supabase) throw new Error("Supabase not initialized");
+
+      const { data, error } = await supabase.functions.invoke("dodo-portal");
+      if (error) throw error;
+      if (!data?.url) throw new Error("No portal URL returned");
+
+      window.location.href = data.url;
+    } catch (e) {
+      alert(e?.message || "Unable to open billing portal");
+    }
+  });
+})();
+
