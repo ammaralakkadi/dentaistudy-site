@@ -59,6 +59,16 @@ function extractUserId(evt: any): string | null {
   return typeof userId === "string" && userId.length > 10 ? userId : null;
 }
 
+function extractCustomerId(evt: any): string | null {
+  const cid = evt?.data?.customer_id;
+  return typeof cid === "string" && cid.trim() ? cid.trim() : null;
+}
+
+function extractSubscriptionId(evt: any): string | null {
+  const sid = evt?.data?.subscription_id;
+  return typeof sid === "string" && sid.trim() ? sid.trim() : null;
+}
+
 function tierFromProductId(
   productId: string | null
 ): "pro" | "pro_yearly" | null {
@@ -190,9 +200,47 @@ serve(async (req) => {
     }
 
     // Only update app_metadata; do not touch user_metadata
+    const existingApp = (userRes.user.app_metadata ?? {}) as Record<
+      string,
+      unknown
+    >;
+
+    const dodoCustomerId =
+      typeof verifiedEvent?.data?.customer?.customer_id === "string"
+        ? verifiedEvent.data.customer.customer_id
+        : null;
+
+    const dodoSubscriptionId =
+      typeof verifiedEvent?.data?.subscription_id === "string"
+        ? verifiedEvent.data.subscription_id
+        : null;
+
+    const dodoProductId =
+      typeof verifiedEvent?.data?.product_id === "string"
+        ? verifiedEvent.data.product_id
+        : null;
+
+    const dodoPayInterval =
+      typeof verifiedEvent?.data?.payment_frequency_interval === "string"
+        ? verifiedEvent.data.payment_frequency_interval
+        : null;
+
+    const nextApp = {
+      ...existingApp,
+      subscription_tier: tier,
+
+      // ✅ store Dodo linkage for billing portal / cancel flows later
+      dodo_customer_id: dodoCustomerId,
+      dodo_subscription_id: dodoSubscriptionId,
+      dodo_product_id: dodoProductId,
+      dodo_payment_frequency_interval: dodoPayInterval,
+    };
+
     const { error: upErr } = await supabaseAdmin.auth.admin.updateUserById(
       userId,
-      { app_metadata: { subscription_tier: tier } }
+      {
+        app_metadata: nextApp,
+      }
     );
 
     if (upErr) {
@@ -200,6 +248,29 @@ serve(async (req) => {
         error: "Supabase update failed",
         details: upErr.message,
       });
+    }
+
+    const dodoCustomerId2 = extractCustomerId(verifiedEvent);
+    const dodoSubscriptionId2 = extractSubscriptionId(verifiedEvent);
+
+
+    // Save Dodo IDs for portal + cancellation flows (webhook is source of truth)
+    if (dodoCustomerId2) {
+      const { error: billUpErr } = await supabaseAdmin
+        .from("billing_accounts")
+        .upsert(
+          {
+            user_id: userId,
+            dodo_customer_id: dodoCustomerId2,
+            dodo_subscription_id: dodoSubscriptionId2 ?? null,
+          },
+          { onConflict: "user_id" }
+        );
+
+      if (billUpErr) {
+        // Keep 200 to avoid Dodo retries spamming, but log for debugging
+        console.log("[dodo-webhook] billing_accounts upsert failed", billUpErr);
+      }
     }
 
     console.log("[dodo-webhook] upgraded", { userId, tier, productId });
