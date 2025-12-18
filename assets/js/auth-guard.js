@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // -------------------------------------------------------------
     // Get a FRESH user from Supabase
-    //    This makes sure we see updated metadata after SQL changes,
+    //    This makes sure we see updated metadata after changes,
     //    Google sign-in, etc.
     // -------------------------------------------------------------
     let freshUserData = null;
@@ -136,9 +136,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     const lastActive = meta.last_active_at || null;
     const topMode = meta.top_used_category || null;
 
-    // ⚡ Plan / subscription tier
-    // AUTHORITATIVE: app_metadata is updated by webhook, user_metadata is fallback
-    // This matches our architecture where Dodo webhook updates app_metadata
+    // Plan / subscription tier (provider-neutral)
+    // Prefer app_metadata, fall back to user_metadata
     const subscriptionTier =
       appMeta.subscription_tier || meta.subscription_tier || "free";
 
@@ -385,11 +384,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         "settings-save-status"
       );
 
-      const deleteAccountBtn = document.getElementById("delete-account-btn");
-      const deleteAccountStatus = document.getElementById(
-        "delete-account-status"
-      );
-
       // Pre-fill readonly profile info
       if (settingsFullNameInput && fullName) {
         settingsFullNameInput.value = fullName;
@@ -464,7 +458,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     // -------------------------------------------------------------
-    // Settings page: plan label + preferences card
+    // Settings page: plan label + preferences card + delete account
     // -------------------------------------------------------------
     if (isSettings) {
       const settingsPlanLabel = document.getElementById(
@@ -531,107 +525,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (settingsPrefsNote) {
         settingsPrefsNote.style.display = isPaidPlan ? "none" : "block";
       }
-      if (settingsPrefsCard) {
-        // ... your existing lock/unlock logic ...
-      }
-      if (settingsPrefsNote) {
-        settingsPrefsNote.style.display = isPaidPlan ? "none" : "block";
-      }
-
-      // -------------------------------------------------------------
-      // Settings page: Manage plan buttons (Dodo portal + cancel)
-      // -------------------------------------------------------------
-      const planManageButtons = document.querySelectorAll(
-        "[data-das-manage-plan]"
-      );
-
-      async function callDodoManage(action) {
-        // action: "billing" | "cancel"
-        if (!functionsBase) {
-          alert(
-            "Billing management is temporarily unavailable. Please contact support."
-          );
-          return;
-        }
-
-        const { data: sessionData, error: sessionError } =
-          await supabase.auth.getSession();
-        if (sessionError || !sessionData?.session?.access_token) {
-          alert("We couldn't verify your session. Please log in again.");
-          return;
-        }
-
-        const accessToken = sessionData.session.access_token;
-
-        if (action === "billing") {
-          const endpoint = `${functionsBase}/dodo-portal`;
-          const res = await fetch(endpoint, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${accessToken}`,
-            },
-            body: JSON.stringify({}),
-          });
-
-          const out = await res.json().catch(() => ({}));
-          if (!res.ok || !out?.url) {
-            console.error("[dodo-portal] error", out);
-            alert(
-              "Could not open billing portal. Please try again or contact support."
-            );
-            return;
-          }
-
-          window.location.href = out.url;
-          return;
-        }
-
-        if (action === "cancel") {
-          const confirmed = window.confirm(
-            "Cancel your Pro plan at the next billing date?\n\nYou will keep Pro access until the end of the paid period."
-          );
-          if (!confirmed) return;
-
-          const endpoint = `${functionsBase}/dodo-cancel`;
-          const res = await fetch(endpoint, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${accessToken}`,
-            },
-            body: JSON.stringify({ cancel_at_next_billing_date: true }),
-          });
-
-          const out = await res.json().catch(() => ({}));
-          if (!res.ok || !out?.ok) {
-            console.error("[dodo-cancel] error", out);
-            alert(
-              "Cancel request failed. Please try again or contact support."
-            );
-            return;
-          }
-
-          alert(
-            "Cancellation scheduled. You’ll keep Pro until the end of your billing period."
-          );
-          return;
-        }
-      }
-
-      planManageButtons.forEach((btn) => {
-        btn.addEventListener("click", async (e) => {
-          e.preventDefault();
-          const action = btn.getAttribute("data-das-manage-plan") || "";
-          if (action !== "billing" && action !== "cancel") return;
-          try {
-            btn.disabled = true;
-            await callDodoManage(action);
-          } finally {
-            btn.disabled = false;
-          }
-        });
-      });
 
       // Delete account → automatic via Supabase Edge Function
       if (deleteAccountBtn && deleteAccountStatus) {
@@ -844,42 +737,4 @@ function updateAuthUI(session) {
       slideLoginLink.removeAttribute("data-das-logout");
     }
   }
-  async function openDodoPortal() {
-    try {
-      const supabase = window.dasSupabase;
-
-      // invoke Edge Function (it uses the logged-in user's JWT automatically)
-      const { data, error } = await supabase.functions.invoke("dodo-portal", {
-        body: {},
-      });
-
-      if (error) {
-        console.error("[dodo-portal] invoke error", error);
-        alert("Edge Function returned a non-2xx status code");
-        return;
-      }
-
-      if (!data?.link) {
-        console.error("[dodo-portal] bad response", data);
-        alert("No portal link returned.");
-        return;
-      }
-
-      window.location.href = data.link;
-    } catch (e) {
-      console.error("[dodo-portal] unexpected", e);
-      alert("Edge Function returned a non-2xx status code");
-    }
-  }
-
-  function wirePlanButtons() {
-    const manageBtn = document.querySelector("[data-das-manage-plan]");
-    const cancelBtn = document.querySelector("[data-das-cancel-plan]");
-
-    if (manageBtn) manageBtn.addEventListener("click", openDodoPortal);
-    if (cancelBtn) cancelBtn.addEventListener("click", openDodoPortal);
-  }
-
-  // call it
-  wirePlanButtons();
 }

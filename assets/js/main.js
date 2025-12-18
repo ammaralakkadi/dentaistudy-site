@@ -85,19 +85,25 @@ document.querySelectorAll(".copy-btn").forEach((btn) => {
   });
 })();
 
-// Pricing page – handle Pro / Pro Yearly buttons
+// Pricing page – handle plan buttons
 (() => {
   const planButtons = document.querySelectorAll("[data-pricing-plan]");
   if (!planButtons.length) return;
 
-  // Optional: put your real Paddle checkout URLs here later
+  /**
+   * Provider-neutral checkout URL map.
+   * Later, we can set these to:
+   * - a Payoneer hosted checkout URL (if static)
+   * - OR your internal checkout page (recommended): "checkout.html?plan=pro"
+   */
   const checkoutUrls = {
-    pro: null, // e.g. "https://checkout.paddle.com/pro"
-    pro_yearly: null, // e.g. "https://checkout.paddle.com/pro-yearly"
+    pro: null,
+    pro_yearly: null,
   };
 
   async function handlePlanClick(event) {
     event.preventDefault();
+
     const btn = event.currentTarget;
     const plan = btn.getAttribute("data-pricing-plan") || "pro";
     const isFreePlan = plan === "free";
@@ -141,45 +147,22 @@ document.querySelectorAll(".copy-btn").forEach((btn) => {
       return;
     }
 
+    // Already paid users → send to Settings (manage plan)
     if (isPaid) {
-      // Already Pro → send to Settings (manage plan)
       window.location.href = "settings.html";
       return;
     }
 
-    // Logged in Free → send to payment / billing
+    // Logged-in free user clicking Pro/Pro Yearly:
+    // 1) If a direct checkout URL is configured, go there
     const directUrl = checkoutUrls[plan];
     if (typeof directUrl === "string" && directUrl.length > 0) {
       window.location.href = directUrl;
       return;
     }
 
-    // Dodo Test checkout (Pro / Pro Yearly)
-    const dodoProducts = {
-      pro: "pdt_rynZ1jQtGhV2iHFrs9hMs",
-      pro_yearly: "pdt_eWs83c5p438JW6Go1oaub",
-    };
-
-    const productId = dodoProducts[plan];
-
-    // If plan is not Pro/Yearly (or missing ID), fallback to billing page
-    if (!productId) {
-      window.location.href = "billing.html";
-      return;
-    }
-
-    const email = user.email || "";
-    const userId = user.id || "";
-
-    const checkoutUrl =
-      `https://test.checkout.dodopayments.com/buy/${productId}` +
-      `?email=${encodeURIComponent(email)}` +
-      `&metadata_user_id=${encodeURIComponent(userId)}` +
-      `&redirect_url=${encodeURIComponent(
-        window.location.origin + "/billing-success.html?plan=" + plan
-      )}`;
-
-    window.location.href = checkoutUrl;
+    // 2) Otherwise, fallback to your internal billing page
+    window.location.href = "billing.html";
     return;
   }
 
@@ -187,25 +170,3 @@ document.querySelectorAll(".copy-btn").forEach((btn) => {
     btn.addEventListener("click", handlePlanClick);
   });
 })();
-
-// Settings: Manage payment details (Dodo Customer Portal)
-(() => {
-  const btn = document.querySelector('[data-das-manage-plan="billing"]');
-  if (!btn) return;
-
-  btn.addEventListener("click", async () => {
-    try {
-      const supabase = window.dasSupabase;
-      if (!supabase) throw new Error("Supabase not initialized");
-
-      const { data, error } = await supabase.functions.invoke("dodo-portal");
-      if (error) throw error;
-      if (!data?.url) throw new Error("No portal URL returned");
-
-      window.location.href = data.url;
-    } catch (e) {
-      alert(e?.message || "Unable to open billing portal");
-    }
-  });
-})();
-

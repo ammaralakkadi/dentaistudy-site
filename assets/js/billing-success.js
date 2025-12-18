@@ -1,6 +1,7 @@
 // assets/js/billing-success.js
 document.addEventListener("DOMContentLoaded", async () => {
-  const supabase = window.dasSupabase; // comes from auth-client.js
+  const supabase = window.dasSupabase; // from auth-client.js
+
   const statusEl = document.getElementById("billingStatusText");
   const planEl = document.getElementById("billingPlanText");
   const refEl = document.getElementById("billingRefText");
@@ -8,7 +9,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const params = new URLSearchParams(window.location.search);
   const plan = (params.get("plan") || "").trim(); // "pro" | "pro_yearly" | etc.
 
-  // 1) Show plan text
+  // 1) Show plan label (friendly text)
   const planLabel =
     plan === "pro"
       ? "Pro Monthly"
@@ -20,53 +21,58 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   if (planEl) planEl.textContent = planLabel;
 
-  // Optional reference (if you add these later)
+  // Optional reference (provider or your backend can add this later)
   const ref = params.get("ref") || params.get("sub") || params.get("pay") || "";
-  if (refEl) refEl.textContent = ref ? `Reference: ${ref}` : "";
+  if (refEl) refEl.textContent = ref ? `Reference: ${ref}` : "—";
 
-  // 2) If no Supabase client, stop (but page still shows success UI)
-  if (!supabase) {
-    if (statusEl)
+  // 2) If no Supabase client, stop (page still shows success UI)
+  if (!supabase || !supabase.auth) {
+    if (statusEl) {
       statusEl.textContent =
         "Payment received. Please open Profile to confirm activation.";
+    }
     return;
   }
 
-  // 3) Refresh session a few times to pull updated app_metadata from Supabase
-  // (your webhook updates app_metadata.subscription_tier)
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
+  // 3) Poll for subscription activation
+  //    Activation is done by your backend (Payoneer webhook + your logic).
   let isActivated = false;
+
+  // (6 tries ~ up to ~15–20 seconds; keeps page fast)
   for (let i = 0; i < 6; i++) {
-    // Reduced attempts
     try {
-      // CRITICAL: Force a token refresh and get a fresh user object
-      const { data: refreshData, error: refreshError } =
-        await supabase.auth.refreshSession();
+      // Refresh tokens to pull newest metadata
+      const { error: refreshError } = await supabase.auth.refreshSession();
       if (refreshError) throw refreshError;
 
-      const {
-        data: { user },
-        error: userError,
-      } = await supabase.auth.getUser();
+      const { data, error: userError } = await supabase.auth.getUser();
       if (userError) throw userError;
 
-      const tier = user?.app_metadata?.subscription_tier; // Check app_metadata directly
+      const user = data?.user || null;
+      const tier =
+        user?.app_metadata?.subscription_tier ||
+        user?.user_metadata?.subscription_tier ||
+        "free";
 
       if (tier === "pro" || tier === "pro_yearly") {
         if (statusEl) statusEl.textContent = `✅ Activated: ${tier} plan`;
         isActivated = true;
-        await sleep(1200);
+
+        // Small pause so user sees the “Activated” state
+        await sleep(900);
         window.location.href = "profile.html";
-        break; // Exit loop on success
+        return;
       }
     } catch (e) {
-      console.warn(`[billing] Poll attempt ${i + 1} failed:`, e);
+      console.warn(`[billing-success] Poll attempt ${i + 1} failed:`, e);
     }
-    await sleep(2500); // Slightly longer delay between attempts
+
+    await sleep(2500);
   }
 
-  // If loop finishes without activation
+  // 4) If activation didn't appear yet, show a calm message
   if (!isActivated && statusEl) {
     statusEl.textContent =
       "Payment confirmed. Your Pro access is being activated (usually within 2 minutes).";
