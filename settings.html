@@ -255,8 +255,8 @@
                       color: #6b7280;
                     "
                   >
-                    You&apos;ll be redirected to our billing partner to manage
-                    your subscription.
+                    Manage billing: update your payment method or request
+                    cancellation. We’ll process it within 24 hours.
                   </small>
                 </div>
               </section>
@@ -467,26 +467,37 @@
     </div>
 
     <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const saveBtn = document.getElementById("settings-save-btn");
-        const statusEl = document.getElementById("settings-save-status");
-        if (!saveBtn || !statusEl) return;
+      // Settings billing actions (safe placeholders)
+      // Later: replace these with Payoneer + DB subscription actions.
+      (function () {
+        const manageBtn = document.getElementById("dasManageBillingBtn");
+        const cancelBtn = document.getElementById("dasCancelPlanBtn");
 
-        function showStatus(text) {
-          statusEl.textContent = text;
-          statusEl.style.opacity = "1";
-          clearTimeout(statusEl._hideTimer);
-          statusEl._hideTimer = setTimeout(function () {
-            statusEl.style.opacity = "0";
-          }, 2600);
+        if (manageBtn) {
+          // For now, send users to Contact (you can add a billing section there)
+          manageBtn.addEventListener("click", (e) => {
+            // keep as normal link to contact.html
+          });
         }
 
-        // Visual feedback when user clicks Save
-        saveBtn.addEventListener("click", function () {
-          // Auth save is still handled by auth-guard.js
-          showStatus("Your changes have been saved.");
-        });
-      });
+        if (cancelBtn) {
+          cancelBtn.addEventListener("click", () => {
+            const ok = confirm(
+              "Cancel your Pro plan?\n\nWe’ll stop future renewals. Your access stays active until the end of your current billing period."
+            );
+            if (!ok) return;
+
+            // Simple, reliable for now: open an email with prefilled subject/body
+            const subject = encodeURIComponent(
+              "DentAIstudy — Cancel my Pro subscription"
+            );
+            const body = encodeURIComponent(
+              "Hi DentAIstudy team,\n\nPlease cancel my Pro subscription.\n\nMy account email: (write your email here)\n\nThank you."
+            );
+            window.location.href = `mailto:info@dentaistudy.com?subject=${subject}&body=${body}`;
+          });
+        }
+      })();
     </script>
   </body>
 </html>
