@@ -1,97 +1,131 @@
 // assets/js/contact.js
-// Handles contact form submission and stores messages in Supabase
+// Sends Contact form submissions to your Supabase Edge Function: `contact`
+// Works for both anonymous + logged-in users (user_id included when available).
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
+  const supabase = window.dasSupabase;
+
   const form = document.getElementById("contact-form");
-  if (!form || !window.dasSupabase) return;
-
-  const nameInput = document.getElementById("contact-name");
-  const emailInput = document.getElementById("contact-email");
-  const topicInput = document.getElementById("contact-topic");
-  const messageInput = document.getElementById("contact-message");
   const statusEl = document.getElementById("contact-status");
-  // If coming from Settings → "Delete account", pre-fill the form
-  try {
-    const params = new URLSearchParams(window.location.search || "");
-    const reason = params.get("reason");
 
-    if (reason === "delete-account") {
-      if (topicInput && !topicInput.value) {
-        topicInput.value = "Delete my DentAIstudy account";
-      }
+  const nameEl = document.getElementById("contact-name");
+  const emailEl = document.getElementById("contact-email");
+  const topicEl = document.getElementById("contact-topic");
+  const messageEl = document.getElementById("contact-message");
 
-      if (messageInput && !messageInput.value) {
-        messageInput.value =
-          "Hi DentAIstudy team,\n\nI'd like to permanently delete my DentAIstudy account and all related study activity. Please confirm once this is completed.\n\nThank you.";
-      }
-    }
-  } catch (err) {
-    console.warn("[contact] Could not read URL params", err);
-  }
+  if (!form) return;
 
-  function setStatus(msg, isError) {
+  const setStatus = (text, isError = false) => {
     if (!statusEl) return;
-    statusEl.textContent = msg || "";
-    statusEl.style.color = isError ? "#b91c1c" : "#6b7280";
-  }
+    statusEl.textContent = text || "";
+    statusEl.style.display = text ? "block" : "none";
+    statusEl.style.color = isError ? "#b42318" : "#067647";
+  };
 
-  form.addEventListener("submit", async function (e) {
+  const isValidEmail = (email) => {
+    if (!email) return false;
+    // simple, practical check (not perfect RFC)
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+  };
+
+  const safeTrim = (v) => (v == null ? "" : String(v).trim());
+
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
+    setStatus("");
 
-    const name = nameInput ? nameInput.value.trim() : "";
-    const email = emailInput ? emailInput.value.trim() : "";
-    const topic = topicInput ? topicInput.value.trim() : "";
-    const message = messageInput ? messageInput.value.trim() : "";
-
-    if (!name || !email || !message) {
-      setStatus("Please fill in your name, email, and message.", true);
+    if (!supabase) {
+      setStatus(
+        "Something went wrong. Please try again or email us directly.",
+        true
+      );
       return;
     }
 
-    setStatus("Sending your message...", false);
+    const name = safeTrim(nameEl?.value);
+    const email = safeTrim(emailEl?.value);
+    const topic = safeTrim(topicEl?.value);
+    const message = safeTrim(messageEl?.value);
 
-    // Try to attach user_id if logged in
-    let userId = null;
-    try {
-      const { data, error } = await window.dasSupabase.auth.getUser();
-      if (!error && data && data.user) {
-        userId = data.user.id;
-      }
-    } catch (err) {
-      console.error("getUser failed in contact form:", err);
+    // Minimal validation (keep it simple, no surprises)
+    if (!name || name.length < 2)
+      return setStatus("Please enter your name.", true);
+    if (!isValidEmail(email))
+      return setStatus("Please enter a valid email.", true);
+    if (!topic || topic.length < 2)
+      return setStatus("Please enter a topic.", true);
+    if (!message || message.length < 5)
+      return setStatus("Please enter a message.", true);
+
+    // Optional: disable submit button to avoid double clicks
+    const submitBtn = form.querySelector(
+      'button[type="submit"], input[type="submit"]'
+    );
+    const prevBtnText = submitBtn?.textContent;
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Sending...";
     }
 
     try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          user_id: userId,
-          name,
-          email,
-          topic,
-          message,
-        }),
-      });
-
-      if (!res.ok) {
-        throw new Error("Contact email failed");
+      // Get user_id if logged-in (don’t fail the form if auth is missing)
+      let userId = null;
+      try {
+        const { data } = await supabase.auth.getUser();
+        userId = data?.user?.id || null;
+      } catch (_) {
+        userId = null;
       }
 
-      // Success
+      const payload = {
+        user_id: userId,
+        name,
+        email,
+        topic,
+        message,
+        page_url: window.location.href,
+        sent_at: new Date().toISOString(),
+      };
+
+      // IMPORTANT:
+      // Do NOT use fetch("/api/contact") on GitHub Pages.
+      // Use the Supabase Edge Function via supabase.functions.invoke("contact", ...)
+      const { data, error } = await supabase.functions.invoke("contact", {
+        body: payload,
+      });
+
+      if (error) {
+        // Common: 401/403 when the Edge Function is still set to require JWT.
+        const status = error?.status || error?.context?.status;
+        if (status === 401 || status === 403) {
+          throw new Error(
+            "Contact service is currently restricted. Please sign in or email us directly."
+          );
+        }
+        throw new Error(error.message || "Contact email failed");
+      }
+
+      // If your function returns { ok: true } (recommended), honor it.
+      if (data && data.ok === false) {
+        throw new Error(data.message || "Contact email failed");
+      }
+
       setStatus("Thank you! Your message has been sent.", false);
-      if (nameInput) nameInput.value = "";
-      if (emailInput) emailInput.value = "";
-      if (topicInput) topicInput.value = "";
-      if (messageInput) messageInput.value = "";
+
+      // Clear fields (keep name/email if you want; but you asked about duplicates—this is single path)
+      if (topicEl) topicEl.value = "";
+      if (messageEl) messageEl.value = "";
     } catch (err) {
       console.error("Contact form error:", err);
       setStatus(
         "Something went wrong. Please try again or email us directly.",
         true
       );
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = prevBtnText || "Send message";
+      }
     }
   });
 });
