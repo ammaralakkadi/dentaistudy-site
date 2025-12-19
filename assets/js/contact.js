@@ -62,23 +62,22 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     try {
-      const { error: insertError } = await window.dasSupabase
-        .from("contact_messages")
-        .insert({
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
           user_id: userId,
           name,
           email,
           topic,
           message,
-        });
+        }),
+      });
 
-      if (insertError) {
-        console.error("Error inserting contact message:", insertError);
-        setStatus(
-          "Something went wrong. Please try again or email us directly.",
-          true
-        );
-        return;
+      if (!res.ok) {
+        throw new Error("Contact email failed");
       }
 
       // Success
