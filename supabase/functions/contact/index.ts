@@ -1,63 +1,44 @@
-import { serve } from "https://deno.land/std@0.203.0/http/server.ts";
+// supabase/functions/contact/index.ts
+import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
-serve(async (req) => {
-  if (req.method !== "POST") {
-    return new Response("Method Not Allowed", { status: 405 });
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers":
+    "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
+};
+
+Deno.serve(async (req) => {
+  // 1) Handle CORS preflight
+  if (req.method === "OPTIONS") {
+    return new Response("ok", { headers: corsHeaders });
   }
 
   try {
-    const { name, email, topic, message } = await req.json();
-
-    if (!name || !email || !message) {
-      return new Response("Missing fields", { status: 400 });
+    if (req.method !== "POST") {
+      return new Response(
+        JSON.stringify({ ok: false, message: "Method not allowed" }),
+        {
+          status: 405,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        }
+      );
     }
 
-    const smtpHost = Deno.env.get("ZOHO_SMTP_HOST");
-    const smtpPort = Deno.env.get("ZOHO_SMTP_PORT");
-    const smtpUser = Deno.env.get("ZOHO_SMTP_USER");
-    const smtpPass = Deno.env.get("ZOHO_SMTP_PASS");
+    const body = await req.json();
 
-    if (!smtpHost || !smtpPort || !smtpUser || !smtpPass) {
-      return new Response("Email not configured", { status: 500 });
-    }
-
-    const emailBody = `
-New contact message from DentAIstudy
-
-Name: ${name}
-Email: ${email}
-Topic: ${topic || "N/A"}
-
-Message:
-${message}
-    `.trim();
-
-    const auth = btoa(`${smtpUser}:${smtpPass}`);
-
-    const res = await fetch(`https://${smtpHost}:${smtpPort}`, {
-      method: "POST",
-      headers: {
-        Authorization: `Basic ${auth}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        from: `"DentAIstudy" <${smtpUser}>`,
-        to: ["info@dentaistudy.com"],
-        subject: `New contact message: ${topic || "General"}`,
-        text: emailBody,
-      }),
-    });
-
-    if (!res.ok) {
-      throw new Error("SMTP send failed");
-    }
-
-    return new Response(JSON.stringify({ ok: true }), {
+    // TEMP response to confirm CORS is fixed (we’ll add Zoho email send next)
+    return new Response(JSON.stringify({ ok: true, received: body }), {
       status: 200,
-      headers: { "Content-Type": "application/json" },
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
-  } catch (err) {
-    console.error(err);
-    return new Response("Server error", { status: 500 });
+  } catch (e) {
+    return new Response(
+      JSON.stringify({ ok: false, message: String(e?.message || e) }),
+      {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      }
+    );
   }
 });
