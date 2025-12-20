@@ -146,11 +146,6 @@
   }
 }
 
-/* Legal pages force left alignment */
-.left-align-legal {
-  text-align: left !important;
-}
-
 .hero-badge-row {
   margin-bottom: 18px;
   display: inline-flex;
@@ -513,88 +508,4 @@
   margin: 0;
   color: #4b5563;
   max-width: 540px;
-}
-
-/* grid of subject cards */
-.subjects-section {
-  padding-top: 10px;
-  padding-bottom: 72px;
-}
-
-.subjects-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 24px;
-  margin-top: 28px;
-}
-
-.subject-card {
-  background: #ffffff;
-  border-radius: var(--radius-lg);
-  padding: 20px 18px 18px;
-  border: 1px solid #e5e7eb;
-  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  transition: transform 0.18s ease, box-shadow 0.18s ease,
-    border-color 0.18s ease, background 0.18s ease;
-}
-
-.subject-card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-soft);
-  border-color: rgba(15, 76, 129, 0.25);
-}
-
-.subject-icon-frame {
-  width: 52px;
-  height: 52px;
-  border-radius: 16px;
-  background: var(--color-primary-soft);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 6px;
-}
-
-.subject-icon-frame img {
-  max-width: 70%;
-  max-height: 70%;
-  object-fit: contain;
-}
-
-.subject-card h3 {
-  margin: 0;
-  font-size: 1.05rem;
-  letter-spacing: -0.01em;
-}
-
-.subject-card p {
-  margin: 0;
-  font-size: 0.9rem;
-  color: #4b5563;
-}
-
-.subject-ai {
-  font-size: 0.8rem;
-  color: #0f4c81;
-  background: #e8f1fb;
-  padding: 8px 10px;
-  border-radius: 10px;
-  margin-top: 6px;
-}
-/* ------------------------------
-   BLOGS PAGE LAYOUT
---------------------------------*/
-.blog-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 28px;
-}
-
-.blog-list-column {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
 }

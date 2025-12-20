@@ -4,39 +4,6 @@
 - Study-specific components (not profile/settings)
 ===================================================================== */
 
-/* ----- BLOG SPACING HELPERS ----- */
-.blog-body h2 {
-  margin-top: 34px;
-}
-.blog-body h3 {
-  margin-top: 18px;
-}
-.blog-body .study-form-card {
-  margin: 28px 0;
-}
-
-.blog-body .btn {
-  margin-top: 28px;
-  margin-bottom: 38px;
-}
-
-/* Blog card padding fix */
-.blog-body .study-form-card {
-  padding: 22px 26px !important;
-}
-.blog-body .study-form-card h3 {
-  margin-top: -4px;
-}
-.blog-body ul {
-  padding-left: 22px;
-}
-
-/* On mobile: stack cards vertically, featured first */
-@media (max-width: 900px) {
-  .blog-grid {
-    grid-template-columns: minmax(0, 1fr);
-  }
-}
 /* --- Study builder dashboard --- */
 
 .workspace-header-row {
@@ -235,11 +202,6 @@
 .study-input-label {
   font-size: 0.8rem;
   font-weight: 500;
-}
-
-.study-input-help {
-  font-size: 0.75rem;
-  color: #6b7280;
 }
 
 /* File upload summary + pills */
