@@ -169,4 +169,37 @@ document.querySelectorAll(".copy-btn").forEach((btn) => {
   planButtons.forEach((btn) => {
     btn.addEventListener("click", handlePlanClick);
   });
+
+  // Blog pages: keep header centered, move body into a wide container (MSR)
+  document.addEventListener("DOMContentLoaded", () => {
+    const isBlogPage = window.location.pathname.includes("/blogs/");
+    if (!isBlogPage) return;
+
+    const main = document.querySelector("main.section");
+    if (!main) return;
+
+    const narrow = main.querySelector(".container.container-narrow");
+    if (!narrow) return;
+
+    const header = narrow.querySelector(".section-header");
+    if (!header) return;
+
+    // Create a new wide container for everything AFTER the header
+    const wide = document.createElement("div");
+    wide.className = "container blog-body-wide";
+
+    // Move siblings after header into wide container
+    const toMove = [];
+    for (const child of Array.from(narrow.children)) {
+      if (child === header) continue;
+      toMove.push(child);
+    }
+    toMove.forEach((el) => wide.appendChild(el));
+
+    // Put wide container right after the narrow header container
+    narrow.parentNode.insertBefore(wide, narrow.nextSibling);
+
+    // Keep only the header inside the narrow container
+    // (narrow currently still contains the header, which is what we want)
+  });
 })();
