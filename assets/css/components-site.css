@@ -687,21 +687,43 @@
   margin-bottom: 38px;
 }
 
-/* Blog posts: keep header centered; force article body left */
-article.blog-body,
-article.blog-body * {
+/* Blog pages: keep header centered, force body left (no HTML edits) */
+body:has(.blog-body) .section-header {
+  text-align: center !important;
+}
+
+.blog-body,
+.blog-body * {
   text-align: left !important;
 }
 
 
 /* Keep lists readable */
-.container.container-narrow > article.blog-body ul {
-  padding-left: 22px;
-}
+.blog-body ul { padding-left: 22px; }
+
 
 .blog-body-wide {
   text-align: left;
 }
+
+/* Optional: on blog pages, make the content column left-aligned instead of centered */
+body:has(.blog-body) .container.container-narrow {
+  margin-left: 0 !important;
+  margin-right: auto !important;
+}
+
+/* Blog pages: align header with content column */
+body:has(.blog-body) .section-header {
+  text-align: left !important;
+}
+
+body:has(.blog-body) .section-header .container,
+body:has(.blog-body) .section-header .container-narrow {
+  margin-left: 0 !important;
+  margin-right: auto !important;
+}
+
+
 
 /* On mobile: stack cards vertically, featured first */
 @media (max-width: 900px) {
