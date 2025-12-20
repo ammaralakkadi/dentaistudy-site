@@ -699,6 +699,9 @@ article.blog-body * {
   padding-left: 22px;
 }
 
+.blog-body-wide {
+  text-align: left;
+}
 
 /* On mobile: stack cards vertically, featured first */
 @media (max-width: 900px) {
