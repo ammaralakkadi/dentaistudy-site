@@ -687,11 +687,12 @@
   margin-bottom: 38px;
 }
 
-/* Blog posts: keep header centered; force article body left (main.js adds .blog-body-left) */
-.blog-body-left,
-.blog-body-left * {
+/* Blog posts: keep header centered; force article body left */
+article.blog-body,
+article.blog-body * {
   text-align: left !important;
 }
+
 
 /* Keep lists readable */
 .container.container-narrow > article.blog-body ul {
