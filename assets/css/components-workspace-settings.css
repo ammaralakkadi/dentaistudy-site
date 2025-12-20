@@ -1,0 +1,418 @@
+/* =====================================================================
+### components-workspace-settings.css
+- Settings page UI
+- Profile page small fixes (merged)
+===================================================================== */
+
+/* Settings: email notifications checkbox */
+.settings-checkbox-block {
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap; /* keeps it nice on very small screens */
+}
+
+.settings-checkbox-block .study-input-label {
+  margin: 0; /* remove extra bottom margin so it aligns */
+}
+
+.settings-checkbox-row {
+  margin-top: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: #4b5563;
+}
+
+.settings-checkbox-row input {
+  width: 16px;
+  height: 16px;
+}
+
+/* --- Settings page micro-tweaks (DentAIstudy v3) --- */
+
+/* More space under the section title */
+.study-preferences-section h2 {
+  margin-bottom: 12px !important;
+}
+
+/* Breathing room around tag groups (output style + focus areas) */
+.study-preferences-section .tag-group {
+  margin-top: 10px !important;
+  margin-bottom: 14px !important;
+}
+
+/* Increase vertical space for each chip */
+.study-preferences-section .sidebar-tag {
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+.study-form-actions {
+  margin-top: 10px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+/* Answer side */
+.study-answer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.study-answer-title {
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.copy-btn-main {
+  font-size: 0.8rem;
+  padding: 5px 10px;
+  border-radius: 999px;
+  border: 1px solid #d1d5db;
+  background: #f9fafb;
+  cursor: pointer;
+}
+
+.copy-btn-main.is-hidden {
+  display: none;
+}
+
+.study-answer-body-wrapper {
+  position: relative;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  background: #f9fafb;
+  padding: 10px 11px;
+  min-height: 120px;
+}
+
+/* Mobile: allow horizontal scroll for wide AI tables inside the answer card */
+@media (max-width: 768px) {
+  .study-answer-body-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* ============================================
+   Study Builder – Shimmer Placeholder
+   ============================================ */
+
+.study-answer-placeholder {
+  display: block;
+  padding: 14px 12px;
+  font-size: 0.85rem;
+  color: #9ca3af;
+}
+
+/* When loading → soft pulsing text (ChatGPT-style "thinking") */
+.study-answer-placeholder.is-loading {
+  color: #6b7280;
+  animation: das-shimmer 0.9s ease-in-out infinite;
+}
+
+/* Text "breathing" animation */
+@keyframes das-shimmer {
+  0% {
+    opacity: 0.35;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0.35;
+  }
+}
+
+.study-answer-body {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  margin: 0;
+  color: #111827;
+}
+
+.study-answer-body.is-fade-in {
+  animation: study-answer-fade-in 0.28s ease-out;
+}
+
+@keyframes study-answer-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(2px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* AI-rendered markdown tables inside Study Builder */
+.study-ai-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.75rem 0;
+  font-size: 0.9rem;
+}
+
+.study-ai-table th,
+.study-ai-table td {
+  border: 1px solid #e5e7eb;
+  padding: 0.4rem 0.6rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.study-ai-table th {
+  background-color: #f3f4f6;
+  font-weight: 600;
+}
+
+/* Separator for --- lines */
+.study-ai-separator {
+  border: 0;
+  border-top: 1px solid #e5e7eb;
+  margin: 0.75rem 0;
+}
+
+/* Responsive stacking */
+@media (max-width: 900px) {
+  .workspace-shell {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .workspace-sidebar {
+    order: -1;
+  }
+
+  .study-chat-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ------------------------------
+   Auth v2.4 (login / signup layout)
+   Scoped to .auth-container so it only affects auth pages.
+--------------------------------*/
+.auth-container {
+  min-height: calc(100vh - 120px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3.5rem 1.5rem;
+  background: radial-gradient(
+    circle at top left,
+    #f5f3ff 0,
+    #e5f3ff 35%,
+    #f9fafb 70%
+  );
+}
+
+.auth-container .auth-card {
+  width: 100%;
+  max-width: 430px;
+  margin: 0 auto;
+}
+
+/* Auth heading */
+.auth-container .auth-card h1 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.4rem;
+  color: #0a3d62;
+}
+
+.auth-container .auth-subtext {
+  font-size: 0.95rem;
+  color: #6b7280;
+  margin-bottom: 1.5rem;
+}
+
+/* Form layout: stack labels/inputs */
+.auth-container form {
+  display: block;
+}
+
+.auth-container form label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 0.35rem;
+}
+
+.auth-container form input[type="text"],
+.auth-container form input[type="email"],
+.auth-container form input[type="password"] {
+  width: 100%;
+  border-radius: 0.75rem;
+  border: 1px solid #d1d5db;
+  padding: 0.65rem 0.75rem;
+  font-size: 0.95rem;
+  outline: none;
+  background-color: #f9fafb;
+  transition: border-color 0.15s, box-shadow 0.15s, background-color 0.15s;
+  margin-bottom: 0.85rem;
+}
+
+.auth-container form input[type="text"]:focus,
+.auth-container form input[type="email"]:focus,
+.auth-container form input[type="password"]:focus {
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 1px rgba(79, 70, 229, 0.2);
+  background-color: #ffffff;
+}
+
+/* Auth primary button */
+.auth-container .auth-submit {
+  width: 100%;
+  border-radius: 999px;
+  border: none;
+  padding: 0.7rem 1rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  background: #0a3d62;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color 0.15s ease, box-shadow 0.15s ease,
+    transform 0.05s ease;
+}
+
+.auth-container .auth-submit:hover {
+  background: #062a44;
+}
+
+.auth-container .auth-submit:active {
+  transform: translateY(1px);
+}
+
+/* Divider spacing */
+.auth-container .auth-divider {
+  margin: 0.25rem 0 1.1rem;
+}
+
+/* Auth links */
+.auth-container .auth-link {
+  display: block;
+  margin-top: 0.6rem;
+  font-size: 0.85rem;
+  color: #4f46e5;
+  text-align: right;
+}
+
+.auth-container .auth-link:hover {
+  text-decoration: underline;
+}
+
+.auth-container .auth-switch {
+  margin-top: 1.4rem;
+  font-size: 0.9rem;
+  color: #6b7280;
+  text-align: center;
+}
+
+.auth-container .auth-switch a {
+  color: #0a3d62;
+  font-weight: 600;
+}
+
+/* Simple navbar for auth pages */
+.navbar {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 1.25rem 1.5rem 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-left .logo {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #0a3d62;
+  letter-spacing: -0.03em;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.nav-btn {
+  font-size: 0.85rem;
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: #4b5563;
+}
+
+.nav-btn.primary {
+  border-color: #0a3d62;
+  background: #0a3d62;
+  color: #ffffff;
+}
+
+/* Compact footer for auth */
+.footer {
+  text-align: center;
+  font-size: 0.8rem;
+  color: #9ca3af;
+  padding: 1.25rem 0 1.75rem;
+}
+
+@media (max-width: 640px) {
+  .auth-container {
+    padding: 2.75rem 1.25rem;
+    min-height: calc(100vh - 100px);
+  }
+
+  .navbar {
+    padding-inline: 1rem;
+  }
+}
+
+/* ---------------------------------
+   Footer refinements (v2.4)
+   Make site footer more compact without touching auth pages
+----------------------------------*/
+.site-footer {
+  padding: 32px 0 18px;
+  margin-top: 40px;
+}
+
+.footer-top {
+  gap: 28px;
+  margin-bottom: 24px;
+}
+
+.footer-bottom {
+  padding-top: 12px;
+}
+
+/* ---------------------------------
+   Profile page mobile fix
+   Fix squished cards on small screens
+----------------------------------*/
+@media (max-width: 768px) {
+  .profile-grid {
+    display: block !important; /* stop forcing 2 columns */
+  }
+
+  .profile-grid > * + * {
+    margin-top: 16px; /* spacing between cards */
+  }
+}

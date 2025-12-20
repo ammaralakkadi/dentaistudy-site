@@ -1,0 +1,333 @@
+/* =====================================================================
+### components-global.css
+- Header/Nav + slide menu
+- Buttons
+- Footer (global)
+- Cookie banner (global)
+- Shared basic elements that appear on most pages
+===================================================================== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: #ffffff;
+  color: #1a1a1a;
+  line-height: 1.6;
+}
+
+a {
+  text-decoration: none;
+  color: #0a3d62;
+}
+a:hover {
+  opacity: 0.7;
+}
+
+/* ------------------------------
+   Sections
+--------------------------------*/
+
+.section-header {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto 30px;
+}
+
+.section-kicker {
+  font-size: 13px;
+  text-transform: uppercase;
+  color: #0a3d62;
+  margin-bottom: 8px;
+}
+
+.section-title {
+  font-size: 28px;
+  margin-bottom: 8px;
+  color: #0a3d62;
+}
+
+.section-subtitle {
+  font-size: 15px;
+  color: #555;
+}
+
+/* ------------------------------
+   Buttons
+--------------------------------*/
+.btn {
+  display: inline-block;
+  padding: 9px 16px;
+  border-radius: 999px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.2s ease;
+  border: none;
+}
+
+.btn-primary {
+  background: #0a3d62;
+  color: white;
+}
+.btn-primary:hover {
+  background: #062a44;
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid #d0d7e2;
+  color: #102a43;
+}
+.btn-outline:hover {
+  background: #f3f4f7;
+}
+
+.btn-files {
+  background: #f3f4f7;
+  color: #102a43;
+  border: 1px dashed #c3cedf;
+  border-radius: 10px;
+  padding: 8px 14px;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.btn-files::before {
+  content: "+";
+  font-weight: 600;
+}
+
+.btn-files:hover {
+  background: #e5ecf7;
+}
+
+.study-input-row .btn-files {
+  align-self: flex-start;
+  display: inline-flex;
+}
+/* ------------------------------
+   HEADER (dribbble-like)
+--------------------------------*/
+.site-header {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.96);
+  border-bottom: 1px solid #e5e7eb;
+  padding: 10px 0;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+}
+
+.header-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+}
+
+.brand {
+  font-size: 22px;
+  font-weight: 700;
+  color: #0a3d62;
+  letter-spacing: -0.03em;
+}
+.brand span:last-child {
+  color: #000;
+}
+
+.header-nav {
+  display: flex;
+  gap: 22px;
+  align-items: center;
+  font-size: 14px;
+}
+
+.header-nav a {
+  color: #4b5563;
+  font-weight: 500;
+  position: relative;
+  padding: 4px 0;
+}
+
+.header-nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0;
+  height: 2px;
+  border-radius: 999px;
+  background: #0a3d62;
+  transition: width 0.2s ease;
+}
+
+.header-nav a:hover::after {
+  width: 100%;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-login {
+  font-weight: 500;
+}
+
+.header-signup {
+  font-weight: 600;
+}
+
+/* Hamburger icon: hidden on desktop, shown on mobile */
+.menu-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: none;
+  flex-direction: column;
+  gap: 4px;
+  padding: 6px;
+  border-radius: 999px;
+  transition: background 0.15s ease;
+}
+
+.menu-toggle span {
+  width: 22px;
+  height: 2px;
+  background: #111827;
+  border-radius: 999px;
+}
+
+.menu-toggle:hover {
+  background: #e5e7eb;
+}
+
+/* ------------------------------
+   Slide Menu (mobile)
+--------------------------------*/
+.slide-nav-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 900;
+}
+
+.slide-nav {
+  width: 260px;
+  height: 100%;
+  background: white;
+  position: fixed;
+  right: -260px;
+  top: 0;
+  transition: 0.35s ease;
+  z-index: 1001;
+  border-left: 1px solid #e5e5e5;
+  padding: 20px;
+}
+
+.slide-nav-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  font-weight: bold;
+  color: #0a3d62;
+}
+
+.slide-nav-close {
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.slide-nav-links a {
+  display: block;
+  padding: 12px 0;
+  font-size: 16px;
+  border-bottom: 1px solid #f1f1f1;
+  color: #0a3d62;
+}
+
+.slide-login-link {
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  /* On mobile: hide all header auth buttons. Use slide menu instead. */
+  .header-right .btn[data-das-logout],
+  .header-right .header-login,
+  .header-right .header-signup {
+    display: none;
+  }
+}
+
+.slide-nav.active {
+  right: 0;
+}
+.slide-nav-backdrop.active {
+  display: block;
+}
+
+/* ------------------------------
+   HERO
+--------------------------------*/
+.hero {
+  padding: 80px 0;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 50px;
+  align-items: center;
+  justify-items: stretch;
+}
+
+.hero-eyebrow {
+  font-size: 14px;
+  color: #0a3d62;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+
+.hero-title {
+  font-size: 42px;
+  font-weight: bold;
+  margin-bottom: 12px;
+  color: #0a3d62;
+}
+
+.hero-lead {
+  font-size: 17px;
+  color: #444;
+  margin-bottom: 22px;
+}
+
+.hero-actions a {
+  margin-right: 14px;
+}
+
+.hero-meta {
+  margin-top: 12px;
+  color: #777;
+  font-size: 13px;
+}
+
+.hero-meta-alt {
+  margin-top: 32px; /* increased spacing to visually confirm */
+  margin-bottom: 22px;
+  max-width: 520px;
+  color: #4b5563 !important;
+}

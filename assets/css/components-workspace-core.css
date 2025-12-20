@@ -1,0 +1,600 @@
+/* =====================================================================
+### components-workspace-core.css
+- Workspace shell: sidebar + main layout
+- Common workspace cards/tabs/topbar elements
+- Shared workspace typography and spacing helpers
+===================================================================== */
+
+/* Outer shell: sidebar + main */
+.workspace-shell {
+  max-width: 1180px;
+  margin: 30px auto 70px;
+  padding: 0 20px;
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  gap: 24px;
+  align-items: flex-start;
+}
+
+/* Left sidebar */
+.workspace-sidebar {
+  background: #f9fafb;
+  border-radius: 18px;
+  border: 1px solid #e5e7eb;
+  padding: 18px 18px 20px;
+}
+
+.workspace-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: #6b7280;
+  margin-bottom: 0.4rem;
+}
+
+.workspace-user-role {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 0.25rem;
+}
+
+.workspace-meta {
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+.workspace-meta span + span::before {
+  content: "•";
+  padding: 0 0.3rem;
+}
+
+/* Right main area */
+.workspace-main {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Top breadcrumb + quick nav */
+.workspace-breadcrumb {
+  font-size: 0.8rem;
+  color: #6b7280;
+  margin-bottom: 0.35rem;
+}
+
+.workspace-breadcrumb span + span::before {
+  content: "/";
+  padding: 0 0.25rem;
+  color: #d1d5db;
+}
+
+.workspace-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.workspace-title-row h1 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #0a3d62;
+}
+
+.workspace-subtitle {
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin-top: 0.25rem;
+}
+
+/* Tabs like Nursify: Study builder / Profile / Settings */
+.workspace-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 0.75rem;
+}
+
+.workspace-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 11px;
+  border-radius: 999px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  font-size: 0.85rem;
+  color: #4b5563;
+  cursor: pointer;
+}
+
+.workspace-tab svg {
+  width: 14px;
+  height: 14px;
+}
+
+.workspace-tab:hover {
+  background: #f3f4f6;
+}
+
+.workspace-tab.is-active {
+  background: #0a3d62;
+  border-color: #0a3d62;
+  color: #ffffff;
+}
+
+/* Card that holds the "Create OSCE flows..." copy and buttons */
+.workspace-main-card {
+  background: #ffffff;
+  border-radius: 18px;
+  border: 1px solid #e5e7eb;
+  padding: 22px 22px 24px;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.06);
+}
+
+/* Helper text style inside the main card */
+.workspace-main-card p {
+  font-size: 0.94rem;
+  color: #4b5563;
+}
+
+/* Mobile layout */
+@media (max-width: 900px) {
+  .workspace-shell {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Legal pages force left alignment */
+.left-align-legal {
+  text-align: left !important;
+}
+
+.hero-badge-row {
+  margin-bottom: 18px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 100%;
+  flex-wrap: wrap;
+  white-space: normal;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid #e5e7eb;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #4b5563;
+}
+
+@media (max-width: 520px) {
+  .hero-badge-row {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    padding: 6px 8px;
+  }
+}
+
+/* Mobile: keep hero badge on one line only */
+@media (max-width: 640px) {
+  .hero-title {
+    font-size: 32px;
+  }
+
+  /* keep the hero badge on ONE line on mobile */
+  .hero-badge-row {
+    font-size: 10px; /* smaller text */
+    letter-spacing: 0.08em; /* less width */
+    gap: 6px; /* tighter gap */
+    padding: 6px 8px; /* slightly tighter pill */
+    white-space: nowrap; /* force single line */
+    flex-wrap: nowrap; /* never wrap flex items */
+  }
+
+  .hero-badge-row span {
+    white-space: nowrap; /* also prevent inner span wrap */
+  }
+}
+
+@media (min-width: 900px) {
+  .hero-badge-row {
+    width: 100%; /* stretch to full left column */
+    max-width: 640px; /* match preview/hero column feel */
+    justify-content: space-between;
+    padding: 8px 16px;
+    white-space: nowrap; /* keep it one clean line */
+  }
+}
+
+.hero-badge-row span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.hero-badge-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #10b981;
+}
+
+.hero-eyebrow {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: #6b7280;
+  margin-bottom: 10px;
+}
+
+.hero-title {
+  font-size: 44px;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  margin: 0 0 10px;
+}
+
+@media (max-width: 640px) {
+  .hero-title {
+    font-size: 32px;
+  }
+}
+
+.hero-lead {
+  max-width: 520px;
+  margin: 0;
+  color: #4b5563;
+}
+
+.hero-lead.hero-meta-alt {
+  margin-top: 26px;
+  margin-bottom: 16px;
+}
+
+.hero-bullets {
+  list-style: none;
+  margin: 18px 0 22px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.hero-bullet {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: 14px;
+}
+
+.hero-bullet-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #0f4c81;
+  margin-top: 6px;
+  flex-shrink: 0;
+}
+
+.hero-bullet-title {
+  font-weight: 600;
+  color: #111827;
+  display: block;
+}
+
+.hero-bullet-text {
+  color: #4b5563;
+}
+
+.hero-actions {
+  margin-top: 4px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.hero-meta {
+  margin-top: 10px;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+/* --- Hero dashboard preview (Option 1) --- */
+.hero-preview-wrap {
+  margin: 18px 0 22px; /* same spacing bullets used */
+  border-radius: 16px;
+  overflow: hidden;
+  background: #0b1220;
+  border: 1px solid #e5e7eb;
+  box-shadow: var(--shadow-soft);
+}
+
+.hero-preview-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.95);
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.hero-preview-bar .dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  display: inline-block;
+}
+.hero-preview-bar .red {
+  background: #ef4444;
+}
+.hero-preview-bar .yellow {
+  background: #f59e0b;
+}
+.hero-preview-bar .green {
+  background: #10b981;
+}
+
+.hero-preview-title {
+  margin-left: 6px;
+  font-size: 12px;
+  color: #6b7280;
+  letter-spacing: 0.08em;
+  text-transform: none;
+  font-weight: 600;
+}
+
+.hero-preview-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  aspect-ratio: 16 / 9;
+}
+
+/* smaller phones */
+@media (max-width: 480px) {
+  .hero-preview-wrap {
+    margin: 14px 0 18px;
+  }
+  .hero-preview-title {
+    font-size: 11px;
+  }
+}
+
+.hero-meta span + span::before {
+  content: "•";
+  padding: 0 6px;
+  color: #9ca3af;
+}
+
+.hero-level-chips {
+  margin-top: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-size: 12px;
+}
+
+.hero-level-chip {
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid #e5e7eb;
+  color: #374151;
+}
+
+/* Right-hand hero card tweaks */
+.hero-home-card {
+  align-self: stretch;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: var(--shadow-soft);
+  border-radius: var(--radius-lg);
+  border: 1px solid #e5e7eb;
+  padding: 24px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.hero-card-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.hero-card-chip {
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--color-primary-soft);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #0f4c81;
+}
+
+/* Right hero card items — force vertical stack on desktop + mobile */
+.hero-card-items {
+  display: grid;
+  grid-template-columns: 1fr; /* ✅ always 1 column */
+  gap: 29px;
+  margin-top: 20px;
+  text-align: center;
+  width: 100%;
+}
+
+@media (max-width: 900px) {
+  .hero-card-items {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  /* ✅ right-card floating boxes: stop 3 columns on mobile */
+  .features-modern {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    width: 100%;
+  }
+}
+
+.hero-card-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+}
+
+/* RIGHT HERO CARD ONLY — force vertical stack */
+.hero-home-card .hero-card-item {
+  flex-direction: column !important;
+  align-items: center !important;
+  text-align: center !important;
+}
+
+.icon-pill {
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  background: #f3f4f6;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  overflow: hidden;
+}
+
+.icon-pill img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.hero-card-item h4 {
+  font-size: 14px;
+  margin: 0 0 2px;
+}
+
+.hero-card-item p {
+  font-size: 13px;
+  margin: 0;
+  color: #6b7280;
+}
+
+.hero-card-footer {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+/* --- Subjects page enhancements --- */
+
+.subjects-shell {
+  background: #f9fafb;
+  border-top: 1px solid #e5e7eb;
+}
+
+.page-hero-subjects {
+  padding: 56px 0 24px;
+}
+
+.page-hero-subjects h1 {
+  margin: 0 0 8px;
+  font-size: 2.1rem;
+  letter-spacing: -0.03em;
+}
+
+.page-hero-subjects p {
+  margin: 0;
+  color: #4b5563;
+  max-width: 540px;
+}
+
+/* grid of subject cards */
+.subjects-section {
+  padding-top: 10px;
+  padding-bottom: 72px;
+}
+
+.subjects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+  margin-top: 28px;
+}
+
+.subject-card {
+  background: #ffffff;
+  border-radius: var(--radius-lg);
+  padding: 20px 18px 18px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: transform 0.18s ease, box-shadow 0.18s ease,
+    border-color 0.18s ease, background 0.18s ease;
+}
+
+.subject-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-soft);
+  border-color: rgba(15, 76, 129, 0.25);
+}
+
+.subject-icon-frame {
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  background: var(--color-primary-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 6px;
+}
+
+.subject-icon-frame img {
+  max-width: 70%;
+  max-height: 70%;
+  object-fit: contain;
+}
+
+.subject-card h3 {
+  margin: 0;
+  font-size: 1.05rem;
+  letter-spacing: -0.01em;
+}
+
+.subject-card p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #4b5563;
+}
+
+.subject-ai {
+  font-size: 0.8rem;
+  color: #0f4c81;
+  background: #e8f1fb;
+  padding: 8px 10px;
+  border-radius: 10px;
+  margin-top: 6px;
+}
+/* ------------------------------
+   BLOGS PAGE LAYOUT
+--------------------------------*/
+.blog-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 28px;
+}
+
+.blog-list-column {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}

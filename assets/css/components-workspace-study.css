@@ -1,0 +1,359 @@
+/* =====================================================================
+### components-workspace-study.css
+- Study builder UI: chat grid, result cards, tables, upload UI
+- Study-specific components (not profile/settings)
+===================================================================== */
+
+/* ----- BLOG SPACING HELPERS ----- */
+.blog-body h2 {
+  margin-top: 34px;
+}
+.blog-body h3 {
+  margin-top: 18px;
+}
+.blog-body .study-form-card {
+  margin: 28px 0;
+}
+
+.blog-body .btn {
+  margin-top: 28px;
+  margin-bottom: 38px;
+}
+
+/* Blog card padding fix */
+.blog-body .study-form-card {
+  padding: 22px 26px !important;
+}
+.blog-body .study-form-card h3 {
+  margin-top: -4px;
+}
+.blog-body ul {
+  padding-left: 22px;
+}
+
+/* On mobile: stack cards vertically, featured first */
+@media (max-width: 900px) {
+  .blog-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+/* --- Study builder dashboard --- */
+
+.workspace-header-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 24px 0 10px;
+}
+/* Keep desktop as-is, only soften edges on small screens */
+@media (max-width: 640px) {
+  .workspace-header-row {
+    padding: 0 17px; /* try 8–12px until it feels right */
+  }
+}
+.workspace-breadcrumb {
+  display: flex;
+  gap: 6px;
+  font-size: 0.8rem;
+  color: #6b7280;
+  margin-bottom: 6px;
+}
+
+.workspace-breadcrumb span + span::before {
+  content: "/";
+  padding: 0 4px;
+  color: #9ca3af;
+}
+
+.workspace-title-row h1 {
+  margin: 0 0 4px;
+  font-size: 1.7rem;
+  letter-spacing: -0.03em;
+}
+
+.workspace-subtitle {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #4b5563;
+}
+
+/* Grid with sidebar + main aligned under header */
+.workspace-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 260px) minmax(0, 1fr);
+  gap: 24px;
+  padding: 8px 0 56px;
+}
+
+.workspace-sidebar {
+  align-self: flex-start;
+}
+
+.workspace-main {
+  min-width: 0;
+}
+
+/* Give workspace main content some breathing room on phones + tablets */
+@media (max-width: 900px) {
+  .workspace-main {
+    padding: 0 16px;
+  }
+}
+
+/* Sidebar card */
+.sidebar-card {
+  background: #ffffff;
+  border-radius: var(--radius-lg);
+  border: 1px solid #e5e7eb;
+  padding: 18px 18px 16px;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.09);
+}
+
+.sidebar-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.sidebar-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: #e5f3ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidebar-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.sidebar-card-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.sidebar-card-subtitle {
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+.sidebar-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.sidebar-tag {
+  font-size: 0.72rem;
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid #e5e7eb;
+  background: #f9fafb;
+  color: #4b5563;
+}
+
+.sidebar-nav {
+  margin-top: 14px;
+  padding-top: 10px;
+  border-top: 1px solid #f3f4f6;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sidebar-nav-item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 6px;
+  font-size: 0.85rem;
+  padding: 6px 6px;
+  border-radius: 8px;
+  color: #4b5563;
+}
+
+.sidebar-nav-item span {
+  display: inline-flex;
+  align-items: center;
+}
+
+.sidebar-nav-item strong {
+  font-weight: 600;
+}
+
+.sidebar-nav-item.is-active {
+  background: #e8f1fb;
+  color: #0f4c81;
+}
+
+/* Chat layout */
+.study-chat-shell {
+  margin-top: 6px;
+}
+
+.study-chat-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 18px;
+}
+
+.study-form-card,
+.study-answer-card {
+  border-radius: var(--radius-lg);
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  padding: 16px 16px 14px;
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+}
+
+/* Form side */
+.study-form-card h2 {
+  font-size: 0.98rem;
+  margin: 0 0 10px;
+}
+
+.study-form-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 10px;
+}
+
+.study-input-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.study-input-label {
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.study-input-help {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+/* File upload summary + pills */
+.study-file-summary {
+  margin-top: 2px;
+  font-size: 0.75rem;
+  color: #6b7280;
+  display: none;
+}
+
+.study-file-summary.is-visible {
+  display: block;
+}
+
+.study-file-summary.is-warning {
+  color: #b45309;
+}
+
+.study-file-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 2px;
+}
+
+.study-file-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid #e5e7eb;
+  background: #f9fafb;
+  font-size: 0.75rem;
+  color: #111827;
+  max-width: 100%;
+}
+
+.study-file-pill-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 180px;
+}
+
+.study-file-pill-remove {
+  margin-left: 6px;
+  font-size: 0.8rem;
+  line-height: 1;
+  cursor: pointer;
+  color: #b91c1c;
+}
+
+.study-file-pill-remove:hover {
+  color: #991b1b;
+}
+
+.study-file-input {
+  display: none;
+}
+
+.study-input-row textarea {
+  resize: none;
+  /* remove cheap corner handle */
+  min-height: 150px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  background: #f9fafb;
+  /* same soft background as AI output */
+  padding: 10px 11px;
+  /* same inner spacing */
+  font-size: 0.9rem;
+  font-family: inherit;
+  /* use the same font as the page */
+  line-height: 1.5;
+}
+
+.study-input-row select {
+  width: 100%;
+  border-radius: 999px;
+  border: 1px solid #d1d5db;
+  padding: 6px 36px 6px 11px;
+  /* extra space on right for custom arrow */
+  font-size: 0.9rem;
+  background-color: #f9fafb;
+  color: #111827;
+
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 6l4 4 4-4' stroke='%239ca3af' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 14px 14px;
+}
+
+.study-mode-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.study-mode-pill {
+  border-radius: 999px;
+  border: 1px solid #e5e7eb;
+  padding: 4px 10px;
+  font-size: 0.8rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #f9fafb;
+}
+
+.study-mode-pill input {
+  accent-color: #0f4c81;
+}

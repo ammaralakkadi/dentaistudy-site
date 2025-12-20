@@ -1,0 +1,568 @@
+/* =====================================================================
+### components-auth-legal.css
+- Auth pages: login/signup/reset/confirm layout + auth card UI
+- Legal pages typography/layout helpers (terms/privacy/refund/disclaimer/cookies)
+===================================================================== */
+
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: radial-gradient(circle at top left, #f5f3ff 0, #e5f3ff 35%, #f9fafb 70%);
+}
+
+.auth-header {
+  padding: 1.5rem 2rem 0;
+}
+
+.auth-section {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3.5rem 1.5rem;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 430px;
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 2.5rem 2.25rem;
+  box-shadow: 0 22px 60px rgba(15, 23, 42, 0.14);
+}
+
+.auth-logo-circle {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 1.5rem;
+  border-radius: 999px;
+  background: #eff3ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-logo-circle img {
+  max-width: 40px;
+  max-height: 40px;
+  display: block;
+}
+
+.auth-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.4rem;
+  color: #0a3d62;
+  text-align: center;
+}
+
+.auth-subtitle {
+  font-size: 0.95rem;
+  color: #6b7280;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.auth-forgot-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 0.75rem;
+}
+
+.link-button {
+  border: none;
+  background: none;
+  padding: 0;
+  font: inherit;
+  color: #4f46e5;
+  cursor: pointer;
+}
+
+.link-button:hover {
+  text-decoration: underline;
+}
+
+.auth-form .form-group {
+  margin-bottom: 1rem;
+}
+
+.auth-form label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 0.35rem;
+}
+
+.auth-form input[type="text"],
+.auth-form input[type="email"],
+.auth-form input[type="password"] {
+  width: 100%;
+  border-radius: 0.75rem;
+  border: 1px solid #d1d5db;
+  padding: 0.65rem 0.75rem;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s, background-color 0.15s;
+  background-color: #f9fafb;
+}
+
+.auth-form input[type="text"]:focus,
+.auth-form input[type="email"]:focus,
+.auth-form input[type="password"]:focus {
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 1px rgba(79, 70, 229, 0.2);
+  background-color: #ffffff;
+}
+
+.form-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  font-size: 0.85rem;
+  color: #4b5563;
+  margin: 0.5rem 0 1.1rem;
+}
+
+.form-check input[type="checkbox"] {
+  margin-top: 0.12rem;
+}
+
+.form-check a {
+  color: #4f46e5;
+  text-decoration: none;
+}
+
+.form-check a:hover {
+  text-decoration: underline;
+}
+
+/* Google button (auth pages) */
+.google-btn {
+  width: 56px;
+  height: 56px;
+  border-radius: 999px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+
+  display: grid;
+  place-items: center;
+
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+  cursor: pointer;
+  margin: 0 auto 1.1rem;
+
+  transition: transform 0.06s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.google-btn:hover {
+  background: #f9fafb;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.1);
+  transform: translateY(-1px);
+}
+
+.google-btn img,
+.google-btn svg {
+  width: 24px;
+  height: 24px;
+  display: block;
+  object-fit: contain;
+}
+
+/* Auth buttons and text */
+.auth-submit {
+  width: 100%;
+}
+
+.auth-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0.5rem 0 1.1rem;
+  font-size: 0.8rem;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #e5e7eb;
+}
+
+.auth-divider span {
+  padding: 0 0.75rem;
+}
+
+.auth-terms {
+  margin-top: 1rem;
+  font-size: 0.78rem;
+  color: #9ca3af;
+  text-align: center;
+}
+
+.auth-terms a {
+  color: #4f46e5;
+  text-decoration: none;
+}
+
+.auth-terms a:hover {
+  text-decoration: underline;
+}
+
+.auth-switch {
+  margin-top: 1.4rem;
+  font-size: 0.9rem;
+  color: #6b7280;
+  text-align: center;
+}
+
+.auth-switch a {
+  color: #0a3d62;
+  font-weight: 600;
+}
+
+.auth-footer {
+  text-align: center;
+  font-size: 0.8rem;
+  color: #9ca3af;
+  padding: 1.25rem 0 1.5rem;
+}
+
+@media (max-width: 640px) {
+  .auth-section { padding: 2.5rem 1.25rem; }
+  .auth-card { padding: 2rem 1.6rem; border-radius: 20px; }
+}
+
+/* ------------------------------
+   LEGAL PAGE (Dribbble-style)
+--------------------------------*/
+/* ------------------------------
+   - Body text aligned left
+   - Section header/title stays centered
+--------------------------------*/
+/* Keep the top header centered */
+.legal-content .section-header {
+  text-align: center;
+}
+/* Force legal body text left */
+.legal-content,
+.legal-content article,
+.legal-content p,
+.legal-content ul,
+.legal-content ol,
+.legal-content li,
+.legal-content h2,
+.legal-content h3 {
+  text-align: left !important;
+}
+.legal-container {
+  padding: 90px 20px;
+  background: #ffffff;
+  display: flex;
+  justify-content: center;
+}
+
+.legal-content {
+  width: 100%;
+  max-width: 800px;
+}
+
+.legal-title {
+  font-size: 2.3rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: #0a3d62;
+}
+
+.legal-subtitle {
+  font-size: 1rem;
+  color: #6b7280;
+  margin-bottom: 40px;
+}
+
+.legal-content h2 {
+  margin-top: 35px;
+  margin-bottom: 10px;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #0a3d62;
+}
+
+.legal-content p {
+  font-size: 1rem;
+  color: #444;
+  margin-bottom: 14px;
+  line-height: 1.7;
+}
+
+.legal-content ul {
+  padding-left: 20px;
+  margin-bottom: 16px;
+}
+
+.legal-content ul li {
+  margin-bottom: 8px;
+  color: #444;
+  font-size: 0.95rem;
+}
+
+.legal-content a {
+  color: #4f46e5;
+  text-decoration: none;
+}
+
+.legal-content a:hover {
+  text-decoration: underline;
+}
+
+/* Generic page layout + cards + form controls */
+
+.page-content {
+  padding: 50px 0 80px;
+}
+
+.card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 24px 24px 26px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+}
+
+/* Form fields styled like other page */
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 0.35rem;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  border-radius: 0.75rem;
+  border: 1px solid #d1d5db;
+  padding: 0.65rem 0.75rem;
+  font-size: 0.95rem;
+  font-family:inherit;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s, background-color 0.15s;
+  background-color: #f9fafb;
+  resize: vertical;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 1px rgba(79, 70, 229, 0.2);
+  background-color: #ffffff;
+}
+/* Style dropdowns like the text inputs */
+.form-group select {
+  width: 100%;
+  border-radius: 0.75rem;
+  border: 1px solid #d1d5db;
+  padding: 0.65rem 0.75rem;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s, background-color 0.15s;
+  background-color: #f9fafb;
+}
+
+/* Settings – default level select styled like Study Builder subject */
+.form-group select.settings-level-select {
+  width: 100%;
+  border-radius: 999px;
+  border: 1px solid #d1d5db;
+  padding: 6px 36px 6px 11px;
+  /* space for arrow on the right */
+  font-size: 0.9rem;
+  background-color: #f9fafb;
+  color: #111827;
+
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 6l4 4 4-4' stroke='%239ca3af' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 14px 14px;
+}
+
+.form-group select:focus {
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 1px rgba(79, 70, 229, 0.2);
+  background-color: #ffffff;
+}
+/* ------------------------------
+   CONTACT PAGE
+--------------------------------*/
+.contact-grid {
+  max-width: 880px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1.3fr);
+  gap: 2.5rem;
+  align-items: flex-start;
+}
+/* About page layout */
+.about-grid {
+  max-width: 880px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: 2.5rem;
+  align-items: flex-start;
+}
+.contact-form h2 {
+  margin-bottom: 0.4rem;
+}
+
+.contact-subtitle {
+  font-size: 0.95rem;
+  color: #6b7280;
+  margin-bottom: 1.5rem;
+}
+
+.contact-info h3 {
+  margin-bottom: 0.75rem;
+}
+
+.contact-notes {
+  list-style: disc;
+  padding-left: 1.2rem;
+  margin: 0 0 1.5rem;
+  font-size: 0.95rem;
+}
+
+.contact-notes li + li {
+  margin-top: 0.35rem;
+}
+
+.contact-meta h4 {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.25rem;
+}
+
+.contact-meta p {
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+@media (max-width: 768px) {
+  .contact-grid,
+  .about-grid {
+    grid-template-columns: 1fr;
+    max-width: 100%;
+  }
+}
+
+/* ------------------------------
+   STUDY BUILDER PAGE – main cards
+--------------------------------*/
+
+/* Top hero of the page */
+.page-hero {
+  padding: 60px 0 28px;
+  border-bottom: 1px solid #e5e7eb;
+  background: #ffffff;
+}
+
+.page-hero h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #0a3d62;
+  margin-bottom: 6px;
+}
+
+.page-hero p {
+  font-size: 0.98rem;
+  color: #6b7280;
+  max-width: 520px;
+}
+
+/* Layout for main content */
+.study-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 2.1fr) minmax(0, 1.3fr);
+  gap: 2.4rem;
+  margin: 0 auto;
+  max-width: 1040px;
+}
+
+/* Left card (prompt + results) reuse .card look */
+.text-sm {
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+.study-results {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.result-card {
+  position: relative;
+  padding: 14px 14px 14px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  background: #f9fafb;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  white-space: pre-line;
+}
+
+/* Copy button on each result */
+.copy-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border-radius: 999px;
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  padding: 4px 10px;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.copy-btn:hover {
+  background: #f3f4f6;
+}
+
+/* Sidebar */
+.study-sidebar-list {
+  list-style: disc;
+  padding-left: 1.2rem;
+  font-size: 0.9rem;
+  color: #4b5563;
+}
+
+.study-sidebar-list li + li {
+  margin-top: 0.4rem;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .study-layout {
+    grid-template-columns: 1fr;
+    max-width: 100%;
+  }
+}
+
+/* ------------------------------
