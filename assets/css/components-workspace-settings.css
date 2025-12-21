@@ -166,12 +166,36 @@
   font-size: 0.9rem;
 }
 
+/* Horizontal swipe for wide tables (mobile + desktop) */
+.study-ai-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.study-ai-table {
+  min-width: 640px; /* forces scroll instead of squishing */
+}
+
 .study-ai-table th,
 .study-ai-table td {
   border: 1px solid #e5e7eb;
   padding: 0.4rem 0.6rem;
   text-align: left;
   vertical-align: top;
+}
+
+/* Prevent ugly letter-by-letter breaks inside table cells */
+.study-ai-table th,
+.study-ai-table td {
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
+}
+
+/* Headers should stay as whole words (safe because table can scroll) */
+.study-ai-table th {
+  white-space: nowrap;
 }
 
 .study-ai-table th {
