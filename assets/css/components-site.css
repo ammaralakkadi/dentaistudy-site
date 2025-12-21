@@ -723,6 +723,15 @@ body:has(.blog-body) .section-header .container-narrow {
   margin-right: auto !important;
 }
 
+/* Blog pages: align body column with the narrower title block (desktop only) */
+@media (min-width: 901px) {
+  main.section .container.container-narrow > section.study-answer-card,
+  main.section .container.container-narrow > article.blog-body {
+    margin-left: 40px;
+    margin-right: 40px;
+  }
+}
+
 
 
 /* On mobile: stack cards vertically, featured first */
