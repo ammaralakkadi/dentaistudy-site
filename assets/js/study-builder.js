@@ -6,15 +6,204 @@ document.addEventListener("DOMContentLoaded", () => {
   // DOM ELEMENTS
   // -----------------------------
   const form = document.getElementById("study-form");
-  const clearBtn = document.getElementById("study-clear");
-  const answerEl = document.getElementById("study-answer");
+  const answerEl = document.getElementById("study-chat");
   const placeholderEl = document.querySelector(".study-answer-placeholder");
   const copyBtn = document.getElementById("copy-answer");
   const topicInput = document.getElementById("study-topic");
-  const subjectSelect = document.getElementById("study-subject");
   const addFilesBtn = document.getElementById("study-add-file");
   const fileInput = document.getElementById("study-file-input");
   const fileSummary = document.getElementById("study-file-summary");
+  const composerMenu = document.getElementById("study-composer-menu");
+  const attachActionBtn = document.getElementById("study-attach-action");
+
+  // -----------------------------
+  // CHAT STORAGE (last 30 messages)
+  // -----------------------------
+  const CHAT_STORAGE_KEY = "das_study_chat_v1";
+  const CHAT_MAX_MESSAGES = 30;
+
+  function safeJsonParse(raw, fallback) {
+    try {
+      const v = JSON.parse(raw);
+      return v ?? fallback;
+    } catch {
+      return fallback;
+    }
+  }
+
+  function loadChatMessages() {
+    const raw = localStorage.getItem(CHAT_STORAGE_KEY);
+    const arr = safeJsonParse(raw, []);
+    return Array.isArray(arr) ? arr : [];
+  }
+
+  function saveChatMessages(messages) {
+    const trimmed = Array.isArray(messages)
+      ? messages.slice(-CHAT_MAX_MESSAGES)
+      : [];
+    localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(trimmed));
+  }
+
+  function escapeHtml(str) {
+    return (str || "")
+      .toString()
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
+  }
+
+  function appendChatBubble(role, html) {
+    if (!answerEl) return;
+
+    const bubble = document.createElement("div");
+    const isUser = role === "user";
+
+    bubble.className = isUser
+      ? "study-chat-bubble study-chat-bubble--user"
+      : "study-chat-bubble study-chat-bubble--ai";
+
+    if (isUser) {
+      bubble.innerHTML = html;
+    } else {
+      // Per-answer copy icon (top-right), copy ONLY this bubble
+      bubble.innerHTML = `
+        <button
+          type="button"
+          class="study-bubble-copy"
+          aria-label="Copy answer"
+          title="Copy"
+        >
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+            <path
+              d="M9 9h10v10H9V9Zm-4 6H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
+        <div class="study-bubble-content">${html}</div>
+      `;
+    }
+
+    answerEl.appendChild(bubble);
+
+    // keep newest in view
+    answerEl.scrollTop = answerEl.scrollHeight;
+  }
+
+  // Per-bubble copy (copies only the clicked AI answer)
+  if (answerEl) {
+    answerEl.addEventListener("click", async (e) => {
+      const btn = e.target.closest(".study-bubble-copy");
+      if (!btn) return;
+
+      const bubble = btn.closest(".study-chat-bubble--ai");
+      if (!bubble) return;
+
+      const contentEl = bubble.querySelector(".study-bubble-content");
+      const textToCopy = (contentEl?.innerText || "").trim();
+      if (!textToCopy) return;
+
+      const fallbackCopy = () => {
+        const temp = document.createElement("textarea");
+        temp.value = textToCopy;
+        temp.style.position = "fixed";
+        temp.style.opacity = "0";
+        document.body.appendChild(temp);
+        temp.focus();
+        temp.select();
+        document.execCommand("copy");
+        document.body.removeChild(temp);
+      };
+
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(textToCopy);
+        } else {
+          fallbackCopy();
+        }
+
+        btn.classList.add("is-copied");
+        btn.title = "Copied";
+        setTimeout(() => {
+          btn.classList.remove("is-copied");
+          btn.title = "Copy";
+        }, 900);
+      } catch {
+        try {
+          fallbackCopy();
+          btn.classList.add("is-copied");
+          btn.title = "Copied";
+          setTimeout(() => {
+            btn.classList.remove("is-copied");
+            btn.title = "Copy";
+          }, 900);
+        } catch {
+          // silent fail (no UX spam)
+        }
+      }
+    });
+  }
+
+  function appendAndPersist(role, content, html) {
+    const messages = loadChatMessages();
+
+    const item = {
+      role,
+      content: (content || "").toString(),
+      ts: Date.now(),
+    };
+
+    // Store rendered HTML for assistant so formatting survives refresh.
+    if (
+      role === "assistant" &&
+      typeof html === "string" &&
+      html.trim().length > 0
+    ) {
+      item.html = html;
+    }
+
+    messages.push(item);
+    saveChatMessages(messages);
+
+    appendChatBubble(role, html);
+  }
+
+  function renderChatFromStorage() {
+    if (!answerEl) return;
+
+    const messages = loadChatMessages();
+    if (!messages.length) return;
+
+    // clear current DOM chat log
+    answerEl.innerHTML = "";
+
+    for (const msg of messages) {
+      const role = msg && msg.role === "user" ? "user" : "assistant";
+      const text = (msg && msg.content ? msg.content : "").toString();
+
+      if (role === "user") {
+        appendChatBubble("user", escapeHtml(text).replace(/\n/g, "<br>"));
+        continue;
+      }
+
+      // assistant: prefer stored HTML; fallback to current renderer
+      const storedHtml = msg && typeof msg.html === "string" ? msg.html : "";
+      if (storedHtml.trim().length > 0) {
+        appendChatBubble("assistant", storedHtml);
+      } else {
+        // fallback: render markdown using the same pipeline as live answers
+        const fallbackHtml = renderMarkdownToHtml(text);
+        appendChatBubble("assistant", fallbackHtml);
+      }
+    }
+
+    hidePlaceholder();
+    updateCopyVisibility();
+  }
 
   // Base Pro-tier limits
   const MAX_FILE_COUNT = 5;
@@ -146,6 +335,35 @@ document.addEventListener("DOMContentLoaded", () => {
   initUserTier();
 
   // -----------------------------
+  // Composer UX: Enter-to-send + autogrow
+  // -----------------------------
+  function autogrowTextarea(el) {
+    if (!el) return;
+    el.style.height = "auto";
+    el.style.height = `${Math.min(el.scrollHeight, 140)}px`;
+  }
+
+  if (topicInput) {
+    // initial size
+    autogrowTextarea(topicInput);
+
+    topicInput.addEventListener("input", () => {
+      autogrowTextarea(topicInput);
+    });
+
+    topicInput.addEventListener("keydown", (e) => {
+      if (e.key !== "Enter") return;
+
+      // Shift+Enter = newline
+      if (e.shiftKey) return;
+
+      // Enter = send
+      e.preventDefault();
+      if (form) form.requestSubmit();
+    });
+  }
+
+  // -----------------------------
   // UI HELPERS
   // -----------------------------
   function setLoading(isLoading) {
@@ -153,37 +371,27 @@ document.addEventListener("DOMContentLoaded", () => {
       placeholderEl.classList.toggle("is-loading", isLoading);
       if (isLoading) {
         placeholderEl.style.display = "block";
-        placeholderEl.textContent = "Generating with DentAIstudy AI...";
+        placeholderEl.textContent = "Generating with DentAIstudy AI.";
       }
     }
 
     if (submitBtn) {
       submitBtn.disabled = isLoading;
-      submitBtn.textContent = isLoading ? "Generating..." : "Generate";
+      submitBtn.classList.toggle("is-loading", isLoading);
+      submitBtn.setAttribute("aria-busy", isLoading ? "true" : "false");
     }
 
-    if (clearBtn) clearBtn.disabled = isLoading;
     if (copyBtn) copyBtn.disabled = isLoading;
   }
 
   function showPlaceholder(message) {
-    if (!placeholderEl) {
-      if (answerEl) {
-        answerEl.textContent = typeof message === "string" ? message : "";
-      }
-      return;
-    }
+    if (!placeholderEl) return;
 
     placeholderEl.style.display = "block";
     placeholderEl.textContent =
       typeof message === "string" && message.trim().length > 0
         ? message
-        : "Your AI-powered answer will appear here once you generate it.";
-
-    if (answerEl) {
-      answerEl.textContent = "";
-      answerEl.innerHTML = "";
-    }
+        : "Ask a question to start the conversation.";
   }
 
   function hidePlaceholder() {
@@ -191,17 +399,8 @@ document.addEventListener("DOMContentLoaded", () => {
     placeholderEl.style.display = "none";
   }
 
-  function renderAnswer(content) {
-    if (!answerEl) return;
-
-    const raw = (content || "").toString().replace(/\r\n/g, "\n");
-
-    function escapeHtml(str) {
-      return str
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;");
-    }
+  function renderMarkdownToHtml(rawText) {
+    const raw = (rawText || "").toString().replace(/\r\n/g, "\n");
 
     const lines = raw.split("\n");
     const htmlLines = [];
@@ -222,7 +421,18 @@ document.addEventListener("DOMContentLoaded", () => {
           .split("|")
           .map((c) => {
             let h = escapeHtml(c.trim());
+
+            // allow only <br> tags (keep everything else escaped)
+            h = h.replace(/&lt;br\s*\/?&gt;/gi, "<br>");
+
+            // **bold** -> bold
             h = h.replace(/\*\*\s*(.+?)\s*\*\*/g, "<strong>$1</strong>");
+            // *emphasis* -> bold (your preference)
+            h = h.replace(
+              /(^|[^*])\*\s*(.+?)\s*\*(?!\*)/g,
+              "$1<strong>$2</strong>"
+            );
+
             return h;
           });
 
@@ -236,17 +446,29 @@ document.addEventListener("DOMContentLoaded", () => {
             .split("|")
             .map((c) => {
               let cell = escapeHtml(c.trim());
+
+              // allow only <br> tags (keep everything else escaped)
+              cell = cell.replace(/&lt;br\s*\/?&gt;/gi, "<br>");
+
+              // **bold** -> bold
               cell = cell.replace(
                 /\*\*\s*(.+?)\s*\*\*/g,
                 "<strong>$1</strong>"
               );
+              // *emphasis* -> bold (your preference)
+              cell = cell.replace(
+                /(^|[^*])\*\s*(.+?)\s*\*(?!\*)/g,
+                "$1<strong>$2</strong>"
+              );
+
               return cell;
             });
           bodyRows.push(rowCells);
           i++;
         }
 
-        let tableHtml = '<table class="study-ai-table"><thead><tr>';
+        let tableHtml =
+          '<div class="study-ai-table-wrap"><table class="study-ai-table"><thead><tr>';
         headerCells.forEach((h) => {
           tableHtml += `<th>${h}</th>`;
         });
@@ -260,43 +482,47 @@ document.addEventListener("DOMContentLoaded", () => {
           tableHtml += "</tr>";
         });
 
-        tableHtml += "</tbody></table>";
+        tableHtml += "</tbody></table></div>";
         htmlLines.push(tableHtml);
         continue;
       }
 
       // ---------- Normal line ----------
       let htmlLine = escapeHtml(line);
+      htmlLine = htmlLine.replace(/&lt;br\s*\/?&gt;/gi, "<br>");
 
-      // Horizontal rule: ---  -> nice separator
       if (/^\s*-{3,}\s*$/.test(line)) {
         htmlLines.push('<hr class="study-ai-separator">');
         i++;
         continue;
       }
 
-      // Headings: #, ##, ###, #### ... -> bold line
       htmlLine = htmlLine.replace(/^\s*#{1,6}\s+(.*)/, "<strong>$1</strong>");
-
-      // Bold with optional spaces: ** title ** -> <strong>title</strong>
+      // **bold** -> bold
       htmlLine = htmlLine.replace(
         /\*\*\s*(.+?)\s*\*\*/g,
         "<strong>$1</strong>"
+      );
+      // *emphasis* -> bold (your preference)
+      htmlLine = htmlLine.replace(
+        /(^|[^*])\*\s*(.+?)\s*\*(?!\*)/g,
+        "$1<strong>$2</strong>"
       );
 
       htmlLines.push(htmlLine);
       i++;
     }
 
-    const finalHtml = htmlLines.join("<br>");
-    answerEl.innerHTML = finalHtml;
+    return htmlLines.join("<br>");
+  }
 
-    // Fade-in animation for new answer
-    answerEl.classList.remove("is-fade-in");
-    // force reflow so animation restarts each time
-    // eslint-disable-next-line no-unused-expressions
-    answerEl.offsetWidth;
-    answerEl.classList.add("is-fade-in");
+  function renderAnswer(content) {
+    if (!answerEl) return;
+
+    const raw = (content || "").toString().replace(/\r\n/g, "\n");
+    const finalHtml = renderMarkdownToHtml(raw);
+
+    appendAndPersist("assistant", raw, finalHtml);
   }
 
   function updateCopyVisibility() {
@@ -304,16 +530,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const hasContent =
       answerEl.textContent && answerEl.textContent.trim().length > 0;
     copyBtn.style.display = hasContent ? "inline-flex" : "none";
-  }
-
-  function getSelectedMode() {
-    const checked = document.querySelector('input[name="mode"]:checked');
-    return checked ? checked.value : "General overview";
-  }
-
-  function getSelectedSubject() {
-    if (!subjectSelect) return "";
-    return subjectSelect.value || "";
   }
 
   // -----------------------------
@@ -528,8 +744,6 @@ document.addEventListener("DOMContentLoaded", () => {
     event.preventDefault();
 
     const baseTopic = topicInput ? topicInput.value.trim() : "";
-    const mode = getSelectedMode();
-    const subject = getSelectedSubject();
 
     if (!baseTopic) {
       showPlaceholder("Please enter a topic or question first.");
@@ -537,9 +751,22 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    // USER bubble + clear input immediately
+    hidePlaceholder();
+    appendAndPersist(
+      "user",
+      baseTopic,
+      escapeHtml(baseTopic).replace(/\n/g, "<br>")
+    );
+
+    if (topicInput) {
+      topicInput.value = "";
+      topicInput.focus();
+    }
+
     // Reset UI
     setLoading(true);
-    showPlaceholder("Preparing your AI answer...");
+    showPlaceholder("Generating with DentAIstudy AI.");
     updateCopyVisibility();
 
     let topic = baseTopic;
@@ -587,8 +814,6 @@ document.addEventListener("DOMContentLoaded", () => {
         headers,
         body: JSON.stringify({
           topic,
-          mode,
-          subject,
         }),
       });
 
@@ -608,7 +833,7 @@ document.addEventListener("DOMContentLoaded", () => {
         updateCopyVisibility();
 
         // Track usage for logged-in users (updates counters + last_active_at)
-        trackStudyUsage(mode);
+        trackStudyUsage("theory");
 
         return;
       }
@@ -650,31 +875,6 @@ document.addEventListener("DOMContentLoaded", () => {
       setLoading(false);
     }
   });
-
-  // -----------------------------
-  // CLEAR BUTTON
-  // -----------------------------
-  if (clearBtn) {
-    clearBtn.addEventListener("click", () => {
-      if (topicInput) topicInput.value = "";
-
-      if (answerEl) {
-        answerEl.textContent = "";
-        answerEl.innerHTML = "";
-      }
-
-      // Reset attached files + hidden input + summary pills
-      attachedFiles = [];
-      if (fileInput) fileInput.value = "";
-      renderFileSummary();
-
-      showPlaceholder(
-        "Your AI-powered answer will appear here once you generate it."
-      );
-
-      updateCopyVisibility();
-    });
-  }
 
   // -----------------------------
   // COPY BUTTON
@@ -795,7 +995,40 @@ document.addEventListener("DOMContentLoaded", () => {
   // File input (tier-aware gating + PDF.js + removable pills)
   // -----------------------------
   if (addFilesBtn && fileInput && fileSummary) {
-    addFilesBtn.addEventListener("click", () => {
+    // Output style (UI-only for now; we will use it in the prompt later)
+    let selectedOutput = "notes";
+
+    function setSelectedOutput(next) {
+      selectedOutput = next || "notes";
+      const chips = composerMenu
+        ? composerMenu.querySelectorAll(".study-output-chip")
+        : [];
+      chips.forEach((btn) => {
+        const isActive = btn.getAttribute("data-output") === selectedOutput;
+        btn.classList.toggle("is-active", isActive);
+      });
+    }
+
+    function closeComposerMenu() {
+      if (!composerMenu) return;
+      composerMenu.classList.remove("is-open");
+      composerMenu.setAttribute("aria-hidden", "true");
+      if (addFilesBtn) addFilesBtn.classList.remove("is-open");
+    }
+
+    function toggleComposerMenu() {
+      if (!composerMenu) return;
+      const willOpen = !composerMenu.classList.contains("is-open");
+      if (willOpen) {
+        composerMenu.classList.add("is-open");
+        composerMenu.setAttribute("aria-hidden", "false");
+        if (addFilesBtn) addFilesBtn.classList.add("is-open");
+      } else {
+        closeComposerMenu();
+      }
+    }
+
+    function triggerFilePicker() {
       // Guests / unknown: nudge to sign up for free
       if (
         !isProTier &&
@@ -822,7 +1055,39 @@ document.addEventListener("DOMContentLoaded", () => {
       } catch (err) {
         console.warn("[study-builder] File input trigger failed", err);
       }
+    }
+
+    // "+" icon now toggles the menu (not file picker)
+    addFilesBtn.addEventListener("click", toggleComposerMenu);
+
+    // Attach action inside the menu triggers file picker
+    if (attachActionBtn) {
+      attachActionBtn.addEventListener("click", () => {
+        closeComposerMenu();
+        triggerFilePicker();
+      });
+    }
+
+    // Chip selection
+    if (composerMenu) {
+      composerMenu.addEventListener("click", (e) => {
+        const chip = e.target.closest(".study-output-chip");
+        if (!chip) return;
+        setSelectedOutput(chip.getAttribute("data-output") || "notes");
+        closeComposerMenu();
+      });
+    }
+
+    // Click outside closes the menu
+    document.addEventListener("click", (e) => {
+      if (!composerMenu || !addFilesBtn) return;
+      const isInside =
+        composerMenu.contains(e.target) || addFilesBtn.contains(e.target);
+      if (!isInside) closeComposerMenu();
     });
+
+    // Init default chip highlight
+    setSelectedOutput(selectedOutput);
 
     fileInput.addEventListener("change", () => {
       const newFiles = fileInput.files;
@@ -940,7 +1205,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Initial state
   updateCopyVisibility();
-  showPlaceholder(
-    "Your AI-powered answer will appear here once you generate it."
-  );
+  showPlaceholder("Ask a question to start the conversation.");
+  renderChatFromStorage();
 });
