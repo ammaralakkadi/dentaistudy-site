@@ -50,11 +50,15 @@
     padding-right: 0;
   }
 
-  /* Remove side padding from workspace wrappers */
-  .page-study .workspace-header-row,
+  /* Keep chat edge-to-edge, but keep the TITLE/BREADCRUMB padded */
   .page-study .workspace-shell {
     padding-left: 0;
     padding-right: 0;
+  }
+
+  .page-study .workspace-header-row {
+    padding-left: clamp(12px, 4vw, 24px);
+    padding-right: clamp(12px, 4vw, 24px);
   }
 
   /* Hide the extra card header inside the chat (keeps it clean) */
@@ -407,6 +411,11 @@
 .page-study .study-answer-header {
   display: none;
 }
+/* Study page: full-screen app feel (hide site footer only here) */
+.page-study .site-footer,
+.page-study footer.site-footer {
+  display: none !important;
+}
 
 .page-study .study-answer-card.study-chat-card {
   border: 0;
@@ -474,45 +483,83 @@
   padding: 10px 11px;
 }
 
-/* Study page: fixed composer (viewport-based) aligned to workspace-main via CSS vars */
+/* Study page: fixed composer aligned to workspace-main via CSS vars (ChatGPT-like) */
 .page-study .study-chat-composer {
+  /* spacing knobs */
+  --das-composer-gutter: 16px; /* side margins */
+  --das-composer-bottom: 12px; /* float above bottom */
+  --das-composer-radius: 18px;
+
   position: fixed;
-  bottom: 0;
-  left: var(--das-composer-left, 0px);
-  width: var(--das-composer-width, 100%);
   z-index: 50;
 
-  margin-top: 0;
-  box-sizing: border-box;
+  /* Use the JS-calculated vars ALWAYS (no self-override) */
+  left: max(
+    0px,
+    calc(var(--das-composer-left, 0px) + var(--das-composer-gutter))
+  );
+  width: max(
+    280px,
+    calc(var(--das-composer-width, 100%) - (var(--das-composer-gutter) * 2))
+  );
+  bottom: calc(var(--das-composer-bottom) + env(safe-area-inset-bottom, 0px));
 
-  /* subtle "surface" */
-  border-top: 1px solid rgba(229, 231, 235, 0.9);
+  box-sizing: border-box;
+  margin: 0;
+
+  /* “floating card” look */
+  border: 1px solid rgba(229, 231, 235, 0.9);
+  border-radius: var(--das-composer-radius);
+  background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12),
+    0 1px 0 rgba(255, 255, 255, 0.6) inset;
 
-  /* Fallback if CSS variables fail */
-  left: 0;
-  width: 100%;
+  /* internal padding for your row controls */
+  padding: 10px;
 }
 
-/* Desktop: when CSS vars work, they override the fallback */
-@media (min-width: 1025px) {
+/* Tablet/Mobile: pin composer to viewport gutters (prevents edge-sticking + overflow) */
+@media (max-width: 1024px) {
   .page-study .study-chat-composer {
-    left: var(--das-composer-left, 0px);
-    width: var(--das-composer-width, 100%);
+    left: var(--das-composer-gutter, 12px) !important;
+    right: var(--das-composer-gutter, 12px) !important;
+
+    width: auto !important; /* left + right define width */
+    max-width: calc(100vw - (var(--das-composer-gutter, 12px) * 2)) !important;
   }
 }
 
 /* Make room so the last message isn't hidden behind the sticky composer */
 .page-study .study-chat-body {
-  padding-bottom: 96px;
+  padding-bottom: calc(128px + env(safe-area-inset-bottom, 0px));
 }
 
 /* Keep the file summary on its own line under the bar */
 .study-chat-composer .study-file-summary {
   width: 100%;
   margin-top: 8px;
+}
+
+/* Composer inner layout (ChatGPT-like row) */
+.page-study .study-chat-composer {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+/* allow textarea to actually stretch inside flex */
+.page-study .study-chat-input#study-topic {
+  flex: 1 1 auto;
+  width: auto;
+  min-width: 0;
+}
+
+/* keep buttons from stretching */
+.page-study .study-composer-left,
+.page-study .study-chat-send {
+  flex: 0 0 auto;
 }
 
 /* Bar children layout */
@@ -621,8 +668,10 @@
 
   /* 3) Composer stays single-line + expands properly */
   .study-chat-composer {
+    display: flex;
     flex-wrap: nowrap;
     align-items: center;
+    gap: 10px;
   }
 
   .study-composer-left {
