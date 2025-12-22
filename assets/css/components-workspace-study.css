@@ -50,6 +50,12 @@
     padding-right: 0;
   }
 
+  /* Profile + Settings: slightly wider on mobile (reduce padding) */
+  .page-account main > .container {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+
   /* Keep chat edge-to-edge, but keep the TITLE/BREADCRUMB padded */
   .page-study .workspace-shell {
     padding-left: 0;

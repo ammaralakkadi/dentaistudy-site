@@ -16,6 +16,23 @@
   align-items: flex-start;
 }
 
+/* ================================
+   Page spacing modifier (Account pages)
+   Apply only when body has .page-spacing--wide
+   ================================ */
+.page-spacing--wide .workspace-shell {
+  max-width: 1240px; /* expands the whole page a bit */
+  padding-left: 24px; /* adds consistent side spacing */
+  padding-right: 24px;
+}
+
+@media (max-width: 1024px) {
+  .page-spacing--wide .workspace-shell {
+    padding-left: 16px; /* mobile/tablet spacing */
+    padding-right: 16px;
+  }
+}
+
 /* Left sidebar */
 .workspace-sidebar {
   background: #f9fafb;
