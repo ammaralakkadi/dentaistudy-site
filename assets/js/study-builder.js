@@ -335,29 +335,27 @@ document.addEventListener("DOMContentLoaded", () => {
   initUserTier();
 
   // -----------------------------
-  // Composer UX: Enter-to-send + autogrow
+  // Composer UX: Enter-to-send (single-line pill)
   // -----------------------------
-  function autogrowTextarea(el) {
+  function lockToSingleLinePill(el) {
     if (!el) return;
-    el.style.height = "auto";
-    el.style.height = `${Math.min(el.scrollHeight, 140)}px`;
+    el.style.height = "38px";
+    el.style.maxHeight = "38px";
+    el.style.overflow = "hidden";
   }
 
   if (topicInput) {
-    // initial size
-    autogrowTextarea(topicInput);
+    lockToSingleLinePill(topicInput);
 
     topicInput.addEventListener("input", () => {
-      autogrowTextarea(topicInput);
+      // Prevent any JS-driven growth (keeps it pro + stable on mobile)
+      lockToSingleLinePill(topicInput);
     });
 
     topicInput.addEventListener("keydown", (e) => {
       if (e.key !== "Enter") return;
 
-      // Shift+Enter = newline
-      if (e.shiftKey) return;
-
-      // Enter = send
+      // Always send. No multi-line.
       e.preventDefault();
       if (form) form.requestSubmit();
     });
