@@ -41,6 +41,35 @@
   padding: 8px 0 56px;
 }
 
+/* Study page only: full-bleed ChatGPT-style layout on mobile */
+@media (max-width: 640px) {
+  /* Expand main container edge-to-edge */
+  .page-study main > .container {
+    max-width: 100%;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  /* Remove side padding from workspace wrappers */
+  .page-study .workspace-header-row,
+  .page-study .workspace-shell {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  /* Remove card look for the chat area */
+  .page-study .study-answer-card {
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  /* Let chat content sit flush */
+  .page-study .study-chat-body {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+}
+
 .workspace-sidebar {
   align-self: flex-start;
 }
