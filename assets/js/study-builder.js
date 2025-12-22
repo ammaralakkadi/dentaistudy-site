@@ -17,6 +17,102 @@ document.addEventListener("DOMContentLoaded", () => {
   const attachActionBtn = document.getElementById("study-attach-action");
 
   // -----------------------------
+  // Fixed composer alignment (respect sidebar width)
+  // -----------------------------
+  const rootStyle = document.documentElement.style;
+
+  function setComposerVars(leftPx, widthPx) {
+    rootStyle.setProperty("--das-composer-left", `${Math.round(leftPx)}px`);
+    rootStyle.setProperty("--das-composer-width", `${Math.round(widthPx)}px`);
+  }
+
+  function syncFixedComposer() {
+    if (!form) return;
+    if (!document.body.classList.contains("page-study")) return;
+
+    console.log("==== DEBUG: syncFixedComposer called ====");
+
+    const mainCol = document.querySelector(".page-study .workspace-main");
+    const sideCol = document.querySelector(".page-study .workspace-sidebar");
+
+    console.log("Found mainCol:", !!mainCol);
+    console.log("Found sideCol:", !!sideCol);
+
+    // If structure is missing, fallback safely.
+    if (!mainCol) {
+      console.log("No main column, fallback to full width");
+      setComposerVars(0, window.innerWidth);
+      return;
+    }
+
+    const mainRect = mainCol.getBoundingClientRect();
+    console.log("mainRect:", {
+      left: mainRect.left,
+      top: mainRect.top,
+      width: mainRect.width,
+      right: mainRect.right,
+    });
+
+    // Detect whether sidebar + main are side-by-side (desktop)
+    // or stacked vertically (mobile/tablet OR devtools-docked narrow viewport).
+    let isStacked = false;
+
+    if (!sideCol) {
+      // If no sidebar exists, treat as stacked (full width).
+      isStacked = true;
+      console.log("No sidebar, using stacked layout");
+    } else {
+      const sideRect = sideCol.getBoundingClientRect();
+      console.log("sideRect:", {
+        left: sideRect.left,
+        top: sideRect.top,
+        width: sideRect.width,
+        right: sideRect.right,
+      });
+
+      // If their top positions are not roughly aligned, sidebar is stacked above.
+      const sameRow = Math.abs(sideRect.top - mainRect.top) < 24;
+      isStacked = !sameRow;
+
+      console.log("sameRow check:", sameRow, "isStacked:", isStacked);
+    }
+
+    if (isStacked) {
+      console.log("Using STACKED layout (mobile) - full width");
+      setComposerVars(0, window.innerWidth);
+    } else {
+      // Side-by-side: align composer to the main column (respects sidebar width)
+      const left = Math.max(0, Math.round(mainRect.left));
+      const width = Math.max(320, Math.round(mainRect.width));
+
+      console.log("Using SIDE-BY-SIDE layout (desktop)", { left, width });
+      console.log(
+        "Setting CSS variables: --das-composer-left:",
+        left + "px",
+        "--das-composer-width:",
+        width + "px"
+      );
+
+      setComposerVars(left, width);
+    }
+  }
+
+  let rafId = 0;
+  function requestSyncFixedComposer() {
+    if (rafId) cancelAnimationFrame(rafId);
+    rafId = requestAnimationFrame(() => {
+      rafId = 0;
+      syncFixedComposer();
+    });
+  }
+
+  // Initial + responsive updates
+  requestSyncFixedComposer();
+  window.addEventListener("resize", requestSyncFixedComposer);
+  window.addEventListener("load", requestSyncFixedComposer);
+  window.addEventListener("scroll", requestSyncFixedComposer);
+
+  // -----------------------------
   // CHAT STORAGE (last 30 messages)
   // -----------------------------
   const CHAT_STORAGE_KEY = "das_study_chat_v1";
