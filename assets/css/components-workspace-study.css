@@ -52,7 +52,7 @@
 /* Give workspace main content some breathing room on phones + tablets */
 @media (max-width: 900px) {
   .workspace-main {
-    padding: 0 16px;
+    padding: 0;
   }
 }
 
@@ -478,8 +478,27 @@
   cursor: not-allowed;
 }
 
-/* Mobile: allow wrap so summary doesn't squeeze layout */
+/* Mobile: make Study Builder chat full-width inside the main card (no inner scroll box) */
 @media (max-width: 520px) {
+  /* 1) Remove the “card inside card” effect */
+  .study-chat-body {
+    padding: 10px 12px; /* keep one padding layer only */
+  }
+
+  .study-chat-log {
+    padding: 0; /* remove inner padding */
+    max-height: none; /* remove inner height cap */
+    overflow-y: visible; /* remove inner scrollbar */
+    background: transparent;
+    border-radius: 0;
+  }
+
+  /* 2) Let bubbles breathe (more words per line) */
+  .study-chat-bubble {
+    max-width: 100%;
+  }
+
+  /* 3) Composer stays single-line + expands properly */
   .study-chat-composer {
     flex-wrap: nowrap;
     align-items: center;
@@ -491,13 +510,45 @@
 
   .study-chat-input#study-topic {
     flex: 1 1 auto;
-    min-width: 0; /* critical: allows the input to shrink instead of wrapping */
+    min-width: 0;
+    height: 38px;
+    max-height: 38px;
+    overflow: hidden;
+    padding-top: 9px;
+    padding-bottom: 9px;
   }
 
   .study-chat-send {
     flex: 0 0 auto;
     margin-left: 0;
   }
+}
+
+/* Reduce double-padding so the chat area visually matches the card width */
+.study-chat-body {
+  padding: 8px;
+}
+
+.study-chat-log {
+  padding: 8px;
+}
+
+/* Let bubbles use the full available width (fixes "2-3 words per line") */
+.study-chat-bubble {
+  max-width: 100%;
+}
+
+/* Reduce nested padding so the text column feels wider */
+.study-chat-body {
+  padding: 8px 10px;
+}
+
+.study-chat-log {
+  padding: 10px;
+}
+
+.study-chat-bubble {
+  max-width: 92%;
 }
 
 /* Per-answer copy icon (assistant bubbles only) */
