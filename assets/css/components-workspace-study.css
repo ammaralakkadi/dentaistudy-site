@@ -41,7 +41,7 @@
   padding: 8px 0 56px;
 }
 
-/* Study page only: full-bleed ChatGPT-style layout on mobile */
+/* Study page only: "Chat mode" on mobile (chat is the page) */
 @media (max-width: 640px) {
   /* Expand main container edge-to-edge */
   .page-study main > .container {
@@ -57,16 +57,64 @@
     padding-right: 0;
   }
 
-  /* Remove card look for the chat area */
-  .page-study .study-answer-card {
-    border-radius: 0;
-    box-shadow: none;
+  /* Hide the extra card header inside the chat (keeps it clean) */
+  .page-study .study-answer-header {
+    display: none;
   }
 
-  /* Let chat content sit flush */
+  /* Remove dashboard-card framing for the chat area */
+  .page-study .study-answer-card.study-chat-card {
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    border-radius: 0;
+    padding: 0;
+  }
+
+  /* One scroll area: the page (no inner chat scroll box) */
   .page-study .study-chat-body {
-    padding-left: 12px;
-    padding-right: 12px;
+    padding: 12px; /* single padding layer */
+  }
+
+  .page-study .study-chat-log {
+    padding: 0;
+    max-height: none;
+    overflow-y: visible;
+    background: transparent;
+    border-radius: 0;
+  }
+
+  /* USER stays right-aligned bubble */
+  .page-study .study-chat-bubble--user {
+    max-width: 82%;
+  }
+
+  /* ASSISTANT becomes full-width document blocks */
+  .page-study .study-chat-bubble--ai {
+    max-width: 100%;
+    width: 100%;
+    margin: 0;
+    border: 0;
+    background: transparent;
+    padding: 0;
+  }
+
+  .page-study .study-chat-bubble--ai .study-bubble-content {
+    padding: 14px 52px 14px 14px; /* keep space for copy icon */
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 0;
+  }
+
+  /* Copy button stays top-right and clean */
+  .page-study .study-bubble-copy {
+    top: 12px;
+    right: 12px;
+  }
+
+  /* Tables: keep scroll, but now they sit inside a wide block */
+  .page-study .study-chat-bubble--ai .study-ai-table-wrap {
+    margin-top: 10px;
   }
 }
 
@@ -551,33 +599,6 @@
     flex: 0 0 auto;
     margin-left: 0;
   }
-}
-
-/* Reduce double-padding so the chat area visually matches the card width */
-.study-chat-body {
-  padding: 8px;
-}
-
-.study-chat-log {
-  padding: 8px;
-}
-
-/* Let bubbles use the full available width (fixes "2-3 words per line") */
-.study-chat-bubble {
-  max-width: 100%;
-}
-
-/* Reduce nested padding so the text column feels wider */
-.study-chat-body {
-  padding: 8px 10px;
-}
-
-.study-chat-log {
-  padding: 10px;
-}
-
-.study-chat-bubble {
-  max-width: 92%;
 }
 
 /* Per-answer copy icon (assistant bubbles only) */
