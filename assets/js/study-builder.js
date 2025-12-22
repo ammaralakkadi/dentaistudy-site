@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // If structure is missing, fallback safely.
     if (!mainCol) {
       console.log("No main column, fallback to full width");
-      setComposerVars(0, window.innerWidth);
+      setComposerVars(0, document.documentElement.clientWidth);
       return;
     }
 
