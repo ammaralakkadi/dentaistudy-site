@@ -12,7 +12,10 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/favicon-512.png" />
 
     <!-- JS: Supabase + auth UI + logout + main -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+      defer
+    ></script>
     <script src="assets/js/auth-client.js" defer></script>
     <script src="assets/js/auth-guard.js" defer></script>
     <script src="assets/js/auth-logout.js" defer></script>
@@ -27,6 +30,10 @@
       <!-- HEADER -->
       <header class="site-header">
         <div class="container header-inner">
+          <!-- hamburger (hidden on desktop via CSS) -->
+          <button class="menu-toggle" aria-label="Open menu">
+            <span></span><span></span><span></span>
+          </button>
           <a class="brand" href="index.html">
             <span>Dent</span><span>AIstudy</span>
           </a>
@@ -41,12 +48,9 @@
 
           <div class="header-right">
             <a href="login.html" class="btn btn-outline header-login">Log in</a>
-            <a href="signup.html" class="btn btn-primary header-signup">Sign up</a>
-
-            <!-- hamburger (hidden on desktop via CSS) -->
-            <button class="menu-toggle" aria-label="Open menu">
-              <span></span><span></span><span></span>
-            </button>
+            <a href="signup.html" class="btn btn-primary header-signup"
+              >Sign up</a
+            >
           </div>
         </div>
       </header>
@@ -56,15 +60,29 @@
       <nav class="slide-nav">
         <div class="slide-nav-header">
           <h3>Menu</h3>
-          <button class="slide-nav-close" aria-label="Close menu">&times;</button>
         </div>
 
         <div class="slide-nav-links">
-          <a href="subjects.html">Subjects</a>
           <a href="study.html">Study builder</a>
+          <a href="subjects.html">Subjects</a>
           <a href="blogs.html">Blogs</a>
           <a href="pricing.html">Pricing</a>
           <a href="contact.html">Contact</a>
+
+          <div
+            class="slide-nav-divider"
+            role="separator"
+            aria-hidden="true"
+          ></div>
+
+          <a href="profile.html">My profile</a>
+          <a href="settings.html">Account settings</a>
+
+          <div
+            class="slide-nav-divider"
+            role="separator"
+            aria-hidden="true"
+          ></div>
           <a href="login.html" class="slide-login-link">Log in</a>
         </div>
       </nav>
@@ -74,7 +92,10 @@
         <div class="container">
           <section class="study-layout">
             <div class="study-main">
-              <div class="study-form-card" style="max-width: 720px; margin: 40px auto">
+              <div
+                class="study-form-card"
+                style="max-width: 720px; margin: 40px auto"
+              >
                 <div
                   style="
                     display: flex;
@@ -85,14 +106,18 @@
                   "
                 >
                   <h1 style="margin: 0">Payment successful</h1>
-                  <span class="pill" style="display: inline-flex; align-items: center; gap: 8px">
+                  <span
+                    class="pill"
+                    style="display: inline-flex; align-items: center; gap: 8px"
+                  >
                     <span aria-hidden="true" style="font-size: 16px">✅</span>
                     <span id="billingStatusText">Processing…</span>
                   </span>
                 </div>
 
                 <p style="margin-top: 10px; color: #4b5563">
-                  Thanks! Your subscription is being activated now. This page will update automatically.
+                  Thanks! Your subscription is being activated now. This page
+                  will update automatically.
                 </p>
 
                 <div
@@ -104,31 +129,58 @@
                     background: #fff;
                   "
                 >
-                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px">
+                  <div
+                    style="
+                      display: grid;
+                      grid-template-columns: 1fr 1fr;
+                      gap: 12px;
+                    "
+                  >
                     <div>
                       <div style="font-size: 12px; color: #6b7280">Plan</div>
-                      <div id="billingPlanText" style="font-weight: 600">DentAIstudy Pro</div>
+                      <div id="billingPlanText" style="font-weight: 600">
+                        DentAIstudy Pro
+                      </div>
                     </div>
                     <div>
-                      <div style="font-size: 12px; color: #6b7280">Reference</div>
+                      <div style="font-size: 12px; color: #6b7280">
+                        Reference
+                      </div>
                       <div id="billingRefText" style="font-weight: 600">—</div>
                     </div>
                   </div>
 
-                  <div style="margin-top: 10px; font-size: 13px; color: #6b7280">
-                    If your account doesn’t upgrade within a minute, refresh this page once.
+                  <div
+                    style="margin-top: 10px; font-size: 13px; color: #6b7280"
+                  >
+                    If your account doesn’t upgrade within a minute, refresh
+                    this page once.
                   </div>
                 </div>
 
-                <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 18px">
-                  <a href="study.html" class="btn btn-primary">Go to Study builder</a>
-                  <a href="profile.html" class="btn btn-outline">Open Profile</a>
-                  <a href="pricing.html" class="btn btn-outline">Back to Pricing</a>
+                <div
+                  style="
+                    display: flex;
+                    gap: 12px;
+                    flex-wrap: wrap;
+                    margin-top: 18px;
+                  "
+                >
+                  <a href="study.html" class="btn btn-primary"
+                    >Go to Study builder</a
+                  >
+                  <a href="profile.html" class="btn btn-outline"
+                    >Open Profile</a
+                  >
+                  <a href="pricing.html" class="btn btn-outline"
+                    >Back to Pricing</a
+                  >
                 </div>
 
                 <p style="margin-top: 18px; font-size: 0.9rem; color: #6b7280">
-                  Note: If you paid while logged out, the system can’t link the payment to your account.
-                  In that case, contact support and include the reference shown above.
+                  Note: If you paid while logged out, the system can’t link the
+                  payment to your account. In that case, contact support and
+                  include the reference shown above.
                 </p>
               </div>
             </div>
@@ -157,7 +209,10 @@
                   />
                 </a>
 
-                <a href="mailto:info@dentaistudy.com" aria-label="Contact DentAIstudy by email">
+                <a
+                  href="mailto:info@dentaistudy.com"
+                  aria-label="Contact DentAIstudy by email"
+                >
                   <img
                     src="assets/img/footer-icons/email-icon.png"
                     alt="Email"
@@ -193,7 +248,9 @@
             </div>
           </div>
 
-          <div class="footer-bottom">© 2025 DentAIstudy. All rights reserved.</div>
+          <div class="footer-bottom">
+            © 2025 DentAIstudy. All rights reserved.
+          </div>
         </div>
       </footer>
     </div>
