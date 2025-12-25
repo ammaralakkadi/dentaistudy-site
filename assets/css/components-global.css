@@ -115,6 +115,11 @@ a:hover {
 /* ------------------------------
    HEADER (dribbble-like)
 --------------------------------*/
+:root {
+  /* Adjust this if you want: it’s the header height */
+  --site-header-offset: 56px;
+}
+
 .site-header {
   width: 100%;
   background: rgba(255, 255, 255, 0.96);
@@ -134,6 +139,17 @@ a:hover {
   gap: 24px;
 }
 
+@media (max-width: 900px) {
+  .header-inner {
+    justify-content: flex-start;
+  }
+
+  .menu-toggle {
+    order: -1; /* ⬅ move hamburger to far left */
+    margin-right: 12px;
+  }
+}
+
 .brand {
   font-size: 22px;
   font-weight: 700;
@@ -142,6 +158,12 @@ a:hover {
 }
 .brand span:last-child {
   color: #000;
+}
+
+@media (max-width: 900px) {
+  .brand {
+    margin-left: -25px;
+  }
 }
 
 .header-nav {
@@ -206,10 +228,27 @@ a:hover {
   height: 2px;
   background: #111827;
   border-radius: 999px;
+
+  /* animation */
+  transition: transform 0.28s ease, opacity 0.18s ease;
+  transform-origin: center;
 }
 
 .menu-toggle:hover {
   background: #e5e7eb;
+}
+
+/* Hamburger morph → X (when menu is open) */
+.menu-toggle.is-open span:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+
+.menu-toggle.is-open span:nth-child(2) {
+  opacity: 0;
+}
+
+.menu-toggle.is-open span:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
 }
 
 /* ------------------------------
@@ -218,27 +257,42 @@ a:hover {
 .slide-nav-backdrop {
   display: none;
   position: fixed;
-  inset: 0;
+
+  /* start under the header (so header stays visible) */
+  top: var(--site-header-offset);
+  left: 0;
+  right: 0;
+  bottom: 0;
+
   background: rgba(0, 0, 0, 0.4);
   z-index: 900;
 }
 
 .slide-nav {
   width: 260px;
-  height: 100%;
+
+  /* start under the header (so header stays visible) */
+  top: var(--site-header-offset);
+  height: calc(100% - var(--site-header-offset));
+
   background: white;
   position: fixed;
-  right: -260px;
-  top: 0;
+
+  /* left slide behavior (keep as you have) */
+  left: -260px;
+
   transition: 0.35s ease;
   z-index: 1001;
-  border-left: 1px solid #e5e5e5;
+
+  /* IMPORTANT: since it slides from the LEFT, the border should be on the RIGHT */
+  border-right: 1px solid #e5e5e5;
+
   padding: 20px;
 }
 
 .slide-nav-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   margin-bottom: 20px;
   font-weight: bold;
@@ -269,7 +323,7 @@ a:hover {
   font-weight: 600;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   /* On mobile: hide all header auth buttons. Use slide menu instead. */
   .header-right .btn[data-das-logout],
   .header-right .header-login,
@@ -279,7 +333,7 @@ a:hover {
 }
 
 .slide-nav.active {
-  right: 0;
+  left: 0;
 }
 .slide-nav-backdrop.active {
   display: block;
