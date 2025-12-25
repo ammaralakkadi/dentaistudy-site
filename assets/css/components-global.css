@@ -256,8 +256,13 @@ a:hover {
   display: block;
   padding: 12px 0;
   font-size: 16px;
-  border-bottom: 1px solid #f1f1f1;
   color: #0a3d62;
+}
+
+.slide-nav-divider {
+  border-top: 1px solid var(--color-primary);
+  width: 150px;
+  margin: 14px 0;
 }
 
 .slide-login-link {

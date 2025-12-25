@@ -842,3 +842,14 @@
   border-color: rgba(10, 61, 98, 0.35);
   background: rgba(10, 61, 98, 0.06);
 }
+/* Study Builder: hide left sidebar on mobile/tablet (same breakpoint as hamburger) */
+@media (max-width: 900px) {
+  body.page-study-builder .workspace-sidebar {
+    display: none;
+  }
+
+  /* Make the main area take full width when sidebar is hidden */
+  body.page-study-builder .workspace-shell {
+    grid-template-columns: 1fr;
+  }
+}
