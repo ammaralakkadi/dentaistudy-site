@@ -6,8 +6,13 @@ const slideNavClose = document.querySelector(".slide-nav-close");
 
 if (menuToggle && slideNav && slideNavBackdrop) {
   menuToggle.addEventListener("click", () => {
-    slideNav.classList.add("active");
-    slideNavBackdrop.classList.add("active");
+    const willOpen = !slideNav.classList.contains("active");
+
+    slideNav.classList.toggle("active", willOpen);
+    slideNavBackdrop.classList.toggle("active", willOpen);
+
+    /* ✅ drives the morph */
+    menuToggle.classList.toggle("is-open", willOpen);
   });
 }
 
@@ -15,6 +20,7 @@ if (slideNavClose && slideNav && slideNavBackdrop) {
   slideNavClose.addEventListener("click", () => {
     slideNav.classList.remove("active");
     slideNavBackdrop.classList.remove("active");
+    if (menuToggle) menuToggle.classList.remove("is-open");
   });
 }
 
@@ -22,8 +28,19 @@ if (slideNavBackdrop && slideNav) {
   slideNavBackdrop.addEventListener("click", () => {
     slideNav.classList.remove("active");
     slideNavBackdrop.classList.remove("active");
+    if (menuToggle) menuToggle.classList.remove("is-open");
   });
 }
+
+// Close menu on ESC (desktop/power users)
+document.addEventListener("keydown", (e) => {
+  if (e.key !== "Escape") return;
+  if (!slideNav || !slideNavBackdrop) return;
+
+  slideNav.classList.remove("active");
+  slideNavBackdrop.classList.remove("active");
+  if (menuToggle) menuToggle.classList.remove("is-open");
+});
 
 // FAQ toggle
 document.querySelectorAll(".faq-item").forEach((item) => {
@@ -168,38 +185,5 @@ document.querySelectorAll(".copy-btn").forEach((btn) => {
 
   planButtons.forEach((btn) => {
     btn.addEventListener("click", handlePlanClick);
-  });
-
-  // Blog pages: keep header centered, move body into a wide container (MSR)
-  document.addEventListener("DOMContentLoaded", () => {
-    const isBlogPage = window.location.pathname.includes("/blogs/");
-    if (!isBlogPage) return;
-
-    const main = document.querySelector("main.section");
-    if (!main) return;
-
-    const narrow = main.querySelector(".container.container-narrow");
-    if (!narrow) return;
-
-    const header = narrow.querySelector(".section-header");
-    if (!header) return;
-
-    // Create a new wide container for everything AFTER the header
-    const wide = document.createElement("div");
-    wide.className = "container blog-body-wide";
-
-    // Move siblings after header into wide container
-    const toMove = [];
-    for (const child of Array.from(narrow.children)) {
-      if (child === header) continue;
-      toMove.push(child);
-    }
-    toMove.forEach((el) => wide.appendChild(el));
-
-    // Put wide container right after the narrow header container
-    narrow.parentNode.insertBefore(wide, narrow.nextSibling);
-
-    // Keep only the header inside the narrow container
-    // (narrow currently still contains the header, which is what we want)
   });
 })();
