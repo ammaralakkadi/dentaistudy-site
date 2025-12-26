@@ -85,12 +85,16 @@
 }
 
 .study-answer-body-wrapper {
-  position: relative;
-  border-radius: 12px;
-  border: 1px solid #e5e7eb;
-  background: #f9fafb;
-  padding: 10px 11px;
-  min-height: 120px;
+  /* clean / no dead box */
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
+
+  /* keep safe table scrolling */
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* Mobile: allow horizontal scroll for wide AI tables inside the answer card */
