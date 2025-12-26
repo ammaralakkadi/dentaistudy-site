@@ -110,7 +110,7 @@
   }
 
   .page-study .study-chat-bubble--ai .study-bubble-content {
-    padding: 14px 52px 14px 14px; /* keep space for copy icon */
+    padding: 14px 42px 14px 14px; /* keep space for copy icon */
     background: #ffffff;
     border: 1px solid #e5e7eb;
     border-radius: 0;
@@ -477,6 +477,84 @@
   -webkit-overflow-scrolling: touch;
 }
 
+/* Wrap AI messages to contain both bubble and actions */
+.study-ai-message-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+/* ================================
+   AI message actions (below bubble)
+   ================================ */
+
+.study-ai-actions {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 6px;
+  margin-left: 6px;
+}
+
+/* Copy icon button */
+.study-bubble-copy {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  background: #ffffff;
+  color: #0a3d62;
+  cursor: pointer;
+}
+
+/* Hidden feedback */
+.study-copy-feedback {
+  position: absolute;
+  top: -28px;
+  right: 0;
+
+  font-size: 0.7rem;
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: #111827;
+  color: #ffffff;
+
+  opacity: 0;
+  transform: translateY(4px);
+  pointer-events: none;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+/* Show feedback when copied */
+.study-bubble-copy.is-copied .study-copy-feedback {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Mobile-specific adjustments */
+@media (max-width: 1024px) {
+  .page-study .study-ai-actions {
+    opacity: 1;
+    margin-left: 8;
+    justify-content: flex-end;
+    margin-top: 4px;
+  }
+
+  .page-study .study-bubble-copy {
+    padding: 5px 6px;
+    font-size: 0.75rem;
+  }
+
+  .page-study .study-chat-bubble--ai .study-bubble-content {
+    padding: 14px; /* uniform, no fake padding */
+  }
+}
+
 /* ==============================
    Study chat "one-box" composer (v1)
    ============================== */
@@ -698,37 +776,6 @@
     flex: 0 0 auto;
     margin-left: 0;
   }
-}
-
-/* Per-answer copy icon (assistant bubbles only) */
-.study-chat-bubble--ai {
-  position: relative;
-}
-
-.study-bubble-copy {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-
-  width: 34px;
-  height: 34px;
-  border-radius: 10px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  background: #fff;
-  color: #0a3d62;
-  cursor: pointer;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.study-bubble-copy.is-copied {
-  opacity: 0.7;
-}
-
-.study-bubble-content {
-  padding-right: 52px; /* space so icon never overlaps text */
 }
 
 /* Composer: icon button + popover menu */
