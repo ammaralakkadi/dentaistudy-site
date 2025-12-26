@@ -42,6 +42,67 @@ document.addEventListener("keydown", (e) => {
   if (menuToggle) menuToggle.classList.remove("is-open");
 });
 
+// Mobile/iPad header auto-hide (hide on scroll up, show on scroll down)
+(() => {
+  const header = document.querySelector(".site-header");
+  if (!header) return;
+
+  const mq = window.matchMedia("(max-width: 900px)");
+  let lastY = window.scrollY;
+  let hidden = false;
+
+  const THRESHOLD = 8;
+
+  function setHidden(nextHidden) {
+    if (hidden === nextHidden) return;
+    hidden = nextHidden;
+    header.classList.toggle("is-hidden", nextHidden);
+  }
+
+  function onScroll() {
+    // Desktop: always visible
+    if (!mq.matches) {
+      setHidden(false);
+      lastY = window.scrollY;
+      return;
+    }
+
+    // If slide menu is open, keep header visible
+    if (slideNav && slideNav.classList.contains("active")) {
+      setHidden(false);
+      lastY = window.scrollY;
+      return;
+    }
+
+    const y = window.scrollY;
+
+    // Top of page: always visible
+    if (y <= 2) {
+      setHidden(false);
+      lastY = y;
+      return;
+    }
+
+    // User rule:
+    // - scroll UP  => hide header
+    // - scroll DOWN => show header
+    if (y < lastY + THRESHOLD) {
+      setHidden(true);
+    } else if (y > lastY - THRESHOLD) {
+      setHidden(false);
+    }
+
+    lastY = y;
+  }
+
+  window.addEventListener("scroll", onScroll, { passive: true });
+
+  // Re-check when crossing breakpoint
+  if (mq.addEventListener) mq.addEventListener("change", onScroll);
+
+  onScroll();
+})();
+
 // FAQ toggle
 document.querySelectorAll(".faq-item").forEach((item) => {
   const btn = item.querySelector(".faq-question");
