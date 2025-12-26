@@ -160,33 +160,47 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (isUser) {
       bubble.innerHTML = html;
+      answerEl.appendChild(bubble);
     } else {
-      // Per-answer copy icon (top-right), copy ONLY this bubble
-      bubble.innerHTML = `
-        <button
-          type="button"
-          class="study-bubble-copy"
-          aria-label="Copy answer"
-          title="Copy"
-        >
-          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
-            <path
-              d="M9 9h10v10H9V9Zm-4 6H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
-        </button>
-        <div class="study-bubble-content">${html}</div>
+      const wrapper = document.createElement("div");
+      wrapper.className = "study-ai-message-wrapper";
+
+      const contentDiv = document.createElement("div");
+      contentDiv.className = "study-bubble-content";
+      contentDiv.innerHTML = html;
+
+      bubble.appendChild(contentDiv);
+      wrapper.appendChild(bubble); // ✅ bubble is added first
+
+      const actions = document.createElement("div");
+      actions.className = "study-ai-actions";
+
+      const copyBtn = document.createElement("button");
+      copyBtn.className = "study-bubble-copy";
+      copyBtn.setAttribute("aria-label", "Copy answer");
+
+      copyBtn.innerHTML = `
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+          <path
+            d="M9 9h10v10H9V9Zm-4 6H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+        <span class="study-copy-feedback">Copied</span>
       `;
+
+      copyBtn.dataset.copy = contentDiv.innerText.trim();
+      actions.appendChild(copyBtn);
+      wrapper.appendChild(actions); // ✅ actions are after the bubble
+
+      answerEl.appendChild(wrapper);
     }
 
-    answerEl.appendChild(bubble);
-
-    // keep newest in view
+    // Keep newest in view
     answerEl.scrollTop = answerEl.scrollHeight;
   }
 
@@ -196,10 +210,10 @@ document.addEventListener("DOMContentLoaded", () => {
       const btn = e.target.closest(".study-bubble-copy");
       if (!btn) return;
 
-      const bubble = btn.closest(".study-chat-bubble--ai");
-      if (!bubble) return;
+      const wrapper = btn.closest(".study-ai-message-wrapper");
+      const contentEl = wrapper?.querySelector(".study-bubble-content");
+      const feedbackEl = btn.querySelector(".study-copy-feedback");
 
-      const contentEl = bubble.querySelector(".study-bubble-content");
       const textToCopy = (contentEl?.innerText || "").trim();
       if (!textToCopy) return;
 
@@ -223,22 +237,20 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         btn.classList.add("is-copied");
-        btn.title = "Copied";
+
+        // remove feedback after delay
         setTimeout(() => {
           btn.classList.remove("is-copied");
-          btn.title = "Copy";
-        }, 900);
+        }, 1200);
       } catch {
         try {
           fallbackCopy();
           btn.classList.add("is-copied");
-          btn.title = "Copied";
           setTimeout(() => {
             btn.classList.remove("is-copied");
-            btn.title = "Copy";
-          }, 900);
+          }, 1200);
         } catch {
-          // silent fail (no UX spam)
+          // silent fail
         }
       }
     });
