@@ -42,65 +42,110 @@ document.addEventListener("keydown", (e) => {
   if (menuToggle) menuToggle.classList.remove("is-open");
 });
 
-// Mobile/iPad header auto-hide (hide on scroll up, show on scroll down)
+// Mobile/iPad header auto-hide (professional standard)
+// - scroll DOWN => hide header
+// - scroll UP   => show header
 (() => {
   const header = document.querySelector(".site-header");
   if (!header) return;
 
   const mq = window.matchMedia("(max-width: 900px)");
-  let lastY = window.scrollY;
-  let hidden = false;
 
-  const THRESHOLD = 8;
+  let lastY = window.scrollY || 0;
+  let lastToggleY = lastY;
+  let hidden = false;
+  let ticking = false;
+
+  // Tune these if you want:
+  const HIDE_AFTER_PX = 24; // distance needed to hide after last toggle
+  const SHOW_AFTER_PX = 18; // distance needed to show after last toggle
+  const TOP_SAFE_PX = 8; // always show header near top
 
   function setHidden(nextHidden) {
     if (hidden === nextHidden) return;
     hidden = nextHidden;
     header.classList.toggle("is-hidden", nextHidden);
+    lastToggleY = lastY;
   }
 
-  function onScroll() {
+  function compute() {
     // Desktop: always visible
     if (!mq.matches) {
       setHidden(false);
-      lastY = window.scrollY;
+      lastY = window.scrollY || 0;
+      lastToggleY = lastY;
       return;
     }
 
     // If slide menu is open, keep header visible
-    if (slideNav && slideNav.classList.contains("active")) {
+    if (
+      typeof slideNav !== "undefined" &&
+      slideNav &&
+      slideNav.classList.contains("active")
+    ) {
       setHidden(false);
-      lastY = window.scrollY;
+      lastY = window.scrollY || 0;
+      lastToggleY = lastY;
       return;
     }
 
-    const y = window.scrollY;
+    const y = window.scrollY || 0;
+    const dy = y - lastY;
 
-    // Top of page: always visible
-    if (y <= 2) {
+    // Always show at the very top
+    if (y <= TOP_SAFE_PX) {
+      lastY = y;
+      lastToggleY = y;
       setHidden(false);
+      return;
+    }
+
+    // Ignore tiny jitter
+    if (Math.abs(dy) < 2) {
       lastY = y;
       return;
     }
 
-    // User rule:
-    // - scroll UP  => hide header
-    // - scroll DOWN => show header
-    if (y < lastY + THRESHOLD) {
-      setHidden(true);
-    } else if (y > lastY - THRESHOLD) {
-      setHidden(false);
+    // Scroll DOWN => hide (after enough distance)
+    if (dy > 0) {
+      if (!hidden && y - lastToggleY >= HIDE_AFTER_PX) {
+        setHidden(true);
+      }
+    }
+
+    // Scroll UP => show (after enough distance)
+    if (dy < 0) {
+      if (hidden && lastToggleY - y >= SHOW_AFTER_PX) {
+        setHidden(false);
+      }
     }
 
     lastY = y;
   }
 
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    window.requestAnimationFrame(() => {
+      compute();
+      ticking = false;
+    });
+  }
+
   window.addEventListener("scroll", onScroll, { passive: true });
 
-  // Re-check when crossing breakpoint
-  if (mq.addEventListener) mq.addEventListener("change", onScroll);
+  // Reset properly when crossing breakpoint
+  const onMqChange = () => {
+    setHidden(false);
+    lastY = window.scrollY || 0;
+    lastToggleY = lastY;
+  };
 
-  onScroll();
+  if (mq.addEventListener) mq.addEventListener("change", onMqChange);
+  else if (mq.addListener) mq.addListener(onMqChange);
+
+  // Run once
+  compute();
 })();
 
 // FAQ toggle
