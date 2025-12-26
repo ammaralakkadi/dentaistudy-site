@@ -133,6 +133,21 @@ a:hover {
 }
 
 /* ---------------------------------
+   Mobile/iPad: hide header on scroll up,
+   show it on scroll down
+---------------------------------- */
+@media (max-width: 900px) {
+  .site-header {
+    will-change: transform;
+    transition: transform 0.22s ease;
+  }
+
+  .site-header.is-hidden {
+    transform: translateY(calc(-1 * var(--site-header-offset)));
+  }
+}
+
+/* ---------------------------------
    Header container padding override
    (mobile / iPad – slide menu mode)
 ---------------------------------- */
