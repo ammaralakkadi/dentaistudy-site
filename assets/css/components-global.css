@@ -132,11 +132,28 @@ a:hover {
   box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
 }
 
+/* ---------------------------------
+   Header container padding override
+   (mobile / iPad – slide menu mode)
+---------------------------------- */
+@media (max-width: 900px) {
+  .site-header .container {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+}
+
 .header-inner {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 24px;
+}
+
+@media (max-width: 900px) {
+  .container.header-inner {
+    gap: 0px;
+  }
 }
 
 @media (max-width: 900px) {
@@ -158,12 +175,6 @@ a:hover {
 }
 .brand span:last-child {
   color: #000;
-}
-
-@media (max-width: 900px) {
-  .brand {
-    margin-left: -25px;
-  }
 }
 
 .header-nav {
@@ -221,6 +232,13 @@ a:hover {
   padding: 6px;
   border-radius: 999px;
   transition: background 0.15s ease;
+  /* ✅ remove mobile "tap highlight" flash */
+  -webkit-tap-highlight-color: transparent;
+  /* optional: makes taps feel cleaner */
+  touch-action: manipulation;
+
+  /* we’ll control focus styling below */
+  outline: none;
 }
 
 .menu-toggle span {
@@ -236,6 +254,14 @@ a:hover {
 
 .menu-toggle:hover {
   background: #e5e7eb;
+}
+/* ✅ keep keyboard accessibility without the ugly tap highlight */
+.menu-toggle:focus {
+  outline: none;
+}
+
+.menu-toggle:focus-visible {
+  box-shadow: 0 0 0 3px rgba(10, 61, 98, 0.25);
 }
 
 /* Hamburger morph → X (when menu is open) */
