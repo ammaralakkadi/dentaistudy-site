@@ -136,6 +136,26 @@
   min-width: 0;
 }
 
+/* =========================================================
+   Desktop-only: make chat area scrollable, sidebar fixed
+   (ChatGPT-style layout)
+   ========================================================= */
+
+@media (min-width: 901px) {
+  .workspace-main {
+    height: calc(100vh - 56px); /* header height */
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .study-chat-shell {
+    flex: 1 1 auto;
+    min-height: 0; /* REQUIRED for flex scroll */
+    overflow-y: auto;
+  }
+}
+
 /* Give workspace main content some breathing room on phones + tablets */
 @media (max-width: 900px) {
   .workspace-main {
@@ -239,6 +259,20 @@
 /* Chat layout */
 .study-chat-shell {
   margin-top: 6px;
+}
+
+.page-study .page-study-placeholder {
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: #4b5563; /* Neutral mid-gray, soft and readable */
+  padding: 0 16px;
+  margin: 0 auto;
+  margin-top: 24vh; /* vertical center on blank screen */
+  max-width: 520px;
+  opacity: 0.9;
+
+  animation: fadeInPlaceholder 0.6s ease-out both;
 }
 
 .study-chat-grid {
@@ -516,7 +550,7 @@
 .study-copy-feedback {
   position: absolute;
   top: -28px;
-  right: 0;
+  right: -4;
 
   font-size: 0.7rem;
   padding: 2px 6px;
@@ -525,7 +559,7 @@
   color: #ffffff;
 
   opacity: 0;
-  transform: translateY(4px);
+  transform: translateX(8px) translateY(4px);
   pointer-events: none;
   transition: opacity 0.15s ease, transform 0.15s ease;
 }
@@ -898,5 +932,16 @@
   /* Make the main area take full width when sidebar is hidden */
   body.page-study-builder .workspace-shell {
     grid-template-columns: 1fr;
+  }
+}
+
+@keyframes fadeInPlaceholder {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 0.9;
+    transform: translateY(0);
   }
 }
