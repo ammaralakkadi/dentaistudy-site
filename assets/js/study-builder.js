@@ -447,18 +447,25 @@ document.addEventListener("DOMContentLoaded", () => {
   // -----------------------------
   function lockToSingleLinePill(el) {
     if (!el) return;
-    el.style.height = "38px";
-    el.style.maxHeight = "38px";
-    el.style.overflow = "hidden";
+
+    el.style.height = "auto";
+    el.style.maxHeight = "240px";
+    el.style.overflowY = "auto";
+
+    el.addEventListener("input", function autoGrow() {
+      this.style.height = "auto";
+      this.style.height = this.scrollHeight + "px";
+
+      if (this.scrollHeight > 240) {
+        this.style.height = "240px";
+      }
+    });
+
+    el.dispatchEvent(new Event("input"));
   }
 
   if (topicInput) {
     lockToSingleLinePill(topicInput);
-
-    topicInput.addEventListener("input", () => {
-      // Prevent any JS-driven growth (keeps it pro + stable on mobile)
-      lockToSingleLinePill(topicInput);
-    });
 
     topicInput.addEventListener("keydown", (e) => {
       if (e.key !== "Enter") return;
@@ -867,6 +874,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (topicInput) {
       topicInput.value = "";
+      topicInput.style.height = "38px"; // Reset to initial height
       topicInput.focus();
     }
 
