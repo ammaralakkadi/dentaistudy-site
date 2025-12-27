@@ -686,24 +686,23 @@
   border-radius: 12px;
 }
 
+/* Composer textarea grows with text */
 .study-chat-input#study-topic {
-  flex: 1;
-
+  flex: 1 1 auto;
   min-height: 38px;
-  max-height: 140px;
-
+  max-height: 240px;
+  height: auto;
   resize: none;
-  overflow: hidden;
-
+  overflow-y: auto;
+  box-sizing: border-box;
   padding: 10px 12px;
-  border-radius: 14px;
 
+  border-radius: 14px;
   border: 0;
   background: #f9fafb;
-
-  line-height: 1.4;
   font-family: inherit;
   font-size: 0.95rem;
+  line-height: 1.5;
   color: inherit;
 }
 
@@ -799,9 +798,13 @@
   .study-chat-input#study-topic {
     flex: 1 1 auto;
     min-width: 0;
-    height: 38px;
-    max-height: 38px;
-    overflow: hidden;
+
+    height: auto;
+    min-height: 38px;
+    max-height: 200px;
+
+    overflow-y: auto;
+
     padding-top: 9px;
     padding-bottom: 9px;
   }
