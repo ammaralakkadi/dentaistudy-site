@@ -113,6 +113,81 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("scroll", requestSyncFixedComposer);
 
   // -----------------------------
+  // MOBILE KEYBOARD DETECTION (fix composer above keyboard)
+  // -----------------------------
+  function setupMobileKeyboardDetection() {
+    const composer = document.querySelector(".study-chat-composer");
+    const textarea = document.querySelector(".study-chat-input#study-topic");
+
+    if (!composer || !textarea || window.innerWidth > 1024) return;
+
+    let originalViewportHeight = window.innerHeight;
+    let keyboardVisible = false;
+    let resizeTimeout;
+
+    function updateComposerForKeyboard() {
+      const currentViewportHeight = window.innerHeight;
+      const keyboardHeight = originalViewportHeight - currentViewportHeight;
+
+      if (keyboardHeight > 100 && document.activeElement === textarea) {
+        // Keyboard is visible
+        composer.classList.add("keyboard-active");
+
+        // Calculate position above keyboard
+        const composerTop = Math.max(
+          50,
+          currentViewportHeight - keyboardHeight - 80
+        );
+        composer.style.top = composerTop + "px";
+
+        keyboardVisible = true;
+      } else if (keyboardVisible) {
+        // Keyboard closed
+        composer.classList.remove("keyboard-active");
+        composer.style.top = "";
+        keyboardVisible = false;
+      }
+
+      // Update for next check
+      originalViewportHeight = Math.max(
+        originalViewportHeight,
+        currentViewportHeight
+      );
+    }
+
+    // Check on focus
+    textarea.addEventListener("focus", () => {
+      setTimeout(() => {
+        updateComposerForKeyboard();
+        // Force re-check after a short delay
+        setTimeout(updateComposerForKeyboard, 300);
+      }, 100);
+    });
+
+    // Check on blur
+    textarea.addEventListener("blur", () => {
+      setTimeout(() => {
+        updateComposerForKeyboard();
+        // Wait for keyboard to fully hide
+        setTimeout(() => {
+          composer.classList.remove("keyboard-active");
+          composer.style.top = "";
+          keyboardVisible = false;
+        }, 200);
+      }, 100);
+    });
+
+    // Check on resize (keyboard triggers resize on mobile)
+    window.addEventListener("resize", () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(updateComposerForKeyboard, 100);
+    });
+
+    // Initial check
+    updateComposerForKeyboard();
+  }
+
+  // -----------------------------
   // CHAT STORAGE (last 30 messages)
   // -----------------------------
   const CHAT_STORAGE_KEY = "das_study_chat_v1";
@@ -1324,4 +1399,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   updateCopyVisibility();
   renderChatFromStorage();
+
+  // Initialize mobile keyboard detection
+  setupMobileKeyboardDetection();
 });
