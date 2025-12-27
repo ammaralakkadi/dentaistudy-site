@@ -603,15 +603,12 @@
 
 /* Study page: fixed composer aligned to workspace-main via CSS vars (ChatGPT-like) */
 .page-study .study-chat-composer {
-  /* spacing knobs */
-  --das-composer-gutter: 16px; /* side margins */
-  --das-composer-bottom: 12px; /* float above bottom */
+  --das-composer-gutter: 16px;
+  --das-composer-bottom: 12px;
   --das-composer-radius: 18px;
 
   position: fixed;
   z-index: 50;
-
-  /* Use the JS-calculated vars ALWAYS (no self-override) */
   left: max(
     0px,
     calc(var(--das-composer-left, 0px) + var(--das-composer-gutter))
@@ -624,18 +621,16 @@
 
   box-sizing: border-box;
   margin: 0;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 
-  /* “floating card” look */
-  border: 1px solid rgba(229, 231, 235, 0.9);
   border-radius: var(--das-composer-radius);
-  background: rgba(255, 255, 255, 0.92);
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
   backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12),
-    0 1px 0 rgba(255, 255, 255, 0.6) inset;
-
-  /* internal padding for your row controls */
-  padding: 10px;
 }
 
 /* Tablet/Mobile: pin composer to viewport gutters (prevents edge-sticking + overflow) */
@@ -671,18 +666,29 @@
   margin-top: 8px;
 }
 
-/* Composer inner layout (ChatGPT-like row) */
 .page-study .study-chat-composer {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
+  flex-wrap: nowrap;
   gap: 10px;
 }
 
-/* allow textarea to actually stretch inside flex */
 .page-study .study-chat-input#study-topic {
   flex: 1 1 auto;
-  width: auto;
   min-width: 0;
+  width: auto;
+  resize: none;
+  padding: 10px 12px;
+  min-height: 38px;
+  max-height: 200px;
+  overflow-y: auto;
+
+  background: transparent;
+  border: none;
+  font-family: inherit;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: inherit;
 }
 
 /* keep buttons from stretching */
