@@ -158,116 +158,12 @@
                     </div>
 
                     <!-- Composer (same IDs so JS keeps working) -->
-                    <form id="study-form" class="study-chat-composer">
-                      <div class="study-composer-left">
-                        <button
-                          type="button"
-                          id="study-add-file"
-                          class="study-chat-iconbtn"
-                          aria-label="Attachments and output style"
-                          title="Attachments and output style"
-                        >
-                          <svg viewBox="0 0 24 24" aria-hidden="true">
-                            <path
-                              d="M12 5v14M5 12h14"
-                              fill="none"
-                              stroke="currentColor"
-                              stroke-width="2"
-                              stroke-linecap="round"
-                            />
-                          </svg>
-                        </button>
-
-                        <div
-                          id="study-composer-menu"
-                          class="study-composer-menu"
-                          aria-hidden="true"
-                        >
-                          <button
-                            type="button"
-                            id="study-attach-action"
-                            class="study-composer-menu-item"
-                          >
-                            <span
-                              class="study-composer-menu-item-icon"
-                              aria-hidden="true"
-                            >
-                              <svg
-                                viewBox="0 0 24 24"
-                                width="22"
-                                height="22"
-                                aria-hidden="true"
-                              >
-                                <path
-                                  d="M21.44 11.05l-8.49 8.49a5.5 5.5 0 0 1-7.78-7.78l9.19-9.19a3.5 3.5 0 0 1 4.95 4.95l-9.19 9.19a1.5 1.5 0 0 1-2.12-2.12l8.49-8.49"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  stroke-width="2"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                />
-                              </svg>
-                            </span>
-                            <span>Attach PDF</span>
-                          </button>
-
-                          <div class="study-composer-menu-section">
-                            <div class="study-composer-menu-label">
-                              Output style
-                            </div>
-                            <div
-                              class="study-output-chips"
-                              role="group"
-                              aria-label="Output style"
-                            >
-                              <button
-                                type="button"
-                                class="study-output-chip is-active"
-                                data-output="notes"
-                              >
-                                Notes
-                              </button>
-                              <button
-                                type="button"
-                                class="study-output-chip"
-                                data-output="osce"
-                              >
-                                OSCE
-                              </button>
-                              <button
-                                type="button"
-                                class="study-output-chip"
-                                data-output="flashcards"
-                              >
-                                Flashcards
-                              </button>
-                              <button
-                                type="button"
-                                class="study-output-chip"
-                                data-output="mcq"
-                              >
-                                MCQs
-                              </button>
-                              <button
-                                type="button"
-                                class="study-output-chip"
-                                data-output="table"
-                              >
-                                Compare table
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <input
-                        type="file"
-                        id="study-file-input"
-                        class="study-file-input"
-                        multiple
-                        accept=".pdf"
-                      />
-
+                    <form
+                      id="study-form"
+                      class="study-chat-composer"
+                      novalidate
+                    >
+                      <!-- TEXTAREA (TOP, grows like ChatGPT) -->
                       <textarea
                         id="study-topic"
                         name="topic"
@@ -276,18 +172,125 @@
                         rows="1"
                       ></textarea>
 
-                      <button
-                        class="study-chat-send"
-                        type="submit"
-                        aria-label="Send"
-                      >
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                          <path
-                            d="M12 5l7 7-1.4 1.4L13 8.8V20h-2V8.8L6.4 13.4 5 12l7-7z"
-                          ></path>
-                        </svg>
-                      </button>
+                      <!-- ACTION ROW (BOTTOM) -->
+                      <div class="study-composer-actions">
+                        <!-- LEFT: PLUS + MENU -->
+                        <div class="study-composer-left">
+                          <button
+                            type="button"
+                            id="study-add-file"
+                            class="study-chat-iconbtn"
+                            aria-label="Attachments and output style"
+                            title="Attachments and output style"
+                          >
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                              <path
+                                d="M12 5v14M5 12h14"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                              />
+                            </svg>
+                          </button>
 
+                          <div
+                            id="study-composer-menu"
+                            class="study-composer-menu"
+                            aria-hidden="true"
+                          >
+                            <!-- Attach -->
+                            <button
+                              type="button"
+                              id="study-attach-action"
+                              class="study-composer-menu-item"
+                            >
+                              <span
+                                class="study-composer-menu-item-icon"
+                                aria-hidden="true"
+                              >
+                                <svg
+                                  viewBox="0 0 24 24"
+                                  width="22"
+                                  height="22"
+                                  aria-hidden="true"
+                                >
+                                  <path
+                                    d="M21.44 11.05l-8.49 8.49a5.5 5.5 0 0 1-7.78-7.78l9.19-9.19a3.5 3.5 0 0 1 4.95 4.95l-9.19 9.19a1.5 1.5 0 0 1-2.12-2.12l8.49-8.49"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                  />
+                                </svg>
+                              </span>
+                              Add PDF
+                            </button>
+
+                            <!-- Output style -->
+                            <div class="study-composer-menu-section">
+                              <div class="study-composer-menu-label">
+                                Output style
+                              </div>
+                              <div class="study-output-chips">
+                                <button
+                                  type="button"
+                                  class="study-output-chip"
+                                  data-output="notes"
+                                >
+                                  Notes
+                                </button>
+                                <button
+                                  type="button"
+                                  class="study-output-chip"
+                                  data-output="flashcards"
+                                >
+                                  Flashcards
+                                </button>
+                                <button
+                                  type="button"
+                                  class="study-output-chip"
+                                  data-output="mcq"
+                                >
+                                  MCQs
+                                </button>
+                                <button
+                                  type="button"
+                                  class="study-output-chip"
+                                  data-output="table"
+                                >
+                                  Compare table
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- HIDDEN FILE INPUT (JS triggers it) -->
+                        <input
+                          type="file"
+                          id="study-file-input"
+                          class="study-file-input"
+                          multiple
+                          accept=".pdf"
+                        />
+
+                        <!-- RIGHT: SEND BUTTON (keep your site style) -->
+                        <button
+                          class="study-chat-send"
+                          type="submit"
+                          aria-label="Send"
+                        >
+                          <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path
+                              d="M12 5l7 7-1.4 1.4L13 8.8V20h-2V8.8L6.4 13.4 5 12l7-7z"
+                            ></path>
+                          </svg>
+                        </button>
+                      </div>
+
+                      <!-- FILE SUMMARY (BOTTOM LINE) -->
                       <div
                         id="study-file-summary"
                         class="study-file-summary"
