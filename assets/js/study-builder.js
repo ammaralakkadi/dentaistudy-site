@@ -448,19 +448,24 @@ document.addEventListener("DOMContentLoaded", () => {
   function lockToSingleLinePill(el) {
     if (!el) return;
 
+    const maxHeight = 240;
+
+    // Set initial styles
     el.style.height = "auto";
-    el.style.maxHeight = "240px";
+    el.style.maxHeight = `${maxHeight}px`;
     el.style.overflowY = "auto";
 
-    el.addEventListener("input", function autoGrow() {
-      this.style.height = "auto";
-      this.style.height = this.scrollHeight + "px";
+    // Auto-expand handler
+    function autoGrow() {
+      el.style.height = "auto";
+      const newHeight = Math.min(el.scrollHeight, maxHeight);
+      el.style.height = newHeight + "px";
+      el.style.overflowY = el.scrollHeight > maxHeight ? "auto" : "hidden";
+    }
 
-      if (this.scrollHeight > 240) {
-        this.style.height = "240px";
-      }
-    });
+    el.addEventListener("input", autoGrow);
 
+    // Trigger initial expansion
     el.dispatchEvent(new Event("input"));
   }
 
