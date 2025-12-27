@@ -646,6 +646,17 @@
 
     width: auto !important; /* left + right define width */
     max-width: calc(100vw - (var(--das-composer-gutter, 12px) * 2)) !important;
+
+    /* New: Dynamic positioning for keyboard */
+    transition: transform 0.3s ease;
+  }
+
+  /* When keyboard is active, composer moves up */
+  .page-study .study-chat-composer.keyboard-active {
+    position: fixed !important;
+    bottom: auto !important;
+    top: calc(100vh - 350px) !important; /* Will be set by JS */
+    transform: translateY(-100%) !important;
   }
 }
 
