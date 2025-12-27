@@ -497,7 +497,7 @@ document.addEventListener("DOMContentLoaded", () => {
     placeholderEl.textContent =
       typeof message === "string" && message.trim().length > 0
         ? message
-        : "Ask a question to start the conversation.";
+        : "Start with a topic or question";
   }
 
   function hidePlaceholder() {
@@ -1309,8 +1309,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Initial state
   updateCopyVisibility();
-  showPlaceholder("Ask a question to start the conversation.");
   renderChatFromStorage();
 });
