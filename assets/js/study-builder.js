@@ -188,31 +188,24 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // -----------------------------
-  // CHAT STORAGE (last 30 messages)
+  // CHAT MEMORY (no persistence)
   // -----------------------------
-  const CHAT_STORAGE_KEY = "das_study_chat_v1";
   const CHAT_MAX_MESSAGES = 30;
-
-  function safeJsonParse(raw, fallback) {
-    try {
-      const v = JSON.parse(raw);
-      return v ?? fallback;
-    } catch {
-      return fallback;
-    }
-  }
+  let chatMemory = [];
 
   function loadChatMessages() {
-    const raw = localStorage.getItem(CHAT_STORAGE_KEY);
-    const arr = safeJsonParse(raw, []);
-    return Array.isArray(arr) ? arr : [];
+    return Array.isArray(chatMemory) ? chatMemory : [];
   }
 
   function saveChatMessages(messages) {
     const trimmed = Array.isArray(messages)
       ? messages.slice(-CHAT_MAX_MESSAGES)
       : [];
-    localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(trimmed));
+    chatMemory = trimmed;
+  }
+
+  function clearChatMemory() {
+    chatMemory = [];
   }
 
   function escapeHtml(str) {
@@ -331,6 +324,18 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  function buildChatMessagesForApi() {
+    const messages = loadChatMessages();
+
+    // Keep it small + safe: only role/content
+    return messages
+      .filter((m) => m && (m.role === "user" || m.role === "assistant"))
+      .map((m) => ({
+        role: m.role,
+        content: (m.content || "").toString(),
+      }));
+  }
+
   function appendAndPersist(role, content, html) {
     const messages = loadChatMessages();
 
@@ -358,39 +363,17 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderChatFromStorage() {
     if (!answerEl) return;
 
-    const messages = loadChatMessages();
-    if (!messages.length) return;
-
-    // clear current DOM chat log
+    // Fresh chat on every page load (no local restore)
+    clearChatMemory();
     answerEl.innerHTML = "";
 
-    for (const msg of messages) {
-      const role = msg && msg.role === "user" ? "user" : "assistant";
-      const text = (msg && msg.content ? msg.content : "").toString();
-
-      if (role === "user") {
-        appendChatBubble("user", escapeHtml(text).replace(/\n/g, "<br>"));
-        continue;
-      }
-
-      // assistant: prefer stored HTML; fallback to current renderer
-      const storedHtml = msg && typeof msg.html === "string" ? msg.html : "";
-      if (storedHtml.trim().length > 0) {
-        appendChatBubble("assistant", storedHtml);
-      } else {
-        // fallback: render markdown using the same pipeline as live answers
-        const fallbackHtml = renderMarkdownToHtml(text);
-        appendChatBubble("assistant", fallbackHtml);
-      }
-    }
-
-    hidePlaceholder();
+    showPlaceholder("Start with a topic or question");
     updateCopyVisibility();
   }
 
   // Base Pro-tier limits
-  const MAX_FILE_COUNT = 5;
-  const MAX_FILE_SIZE_MB = 10;
+  const MAX_FILE_COUNT = 10;
+  const MAX_FILE_SIZE_MB = 20;
   const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
 
   // Effective per-tier limits (resolved in initUserTier)
@@ -433,7 +416,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Free-tier file usage — per day (logged-in free users)
   const FREE_FILE_USAGE_KEY = "das_free_file_usage";
-  const FREE_FILE_DAILY_LIMIT = 3; // max PDFs per day on free tier
+  const FREE_FILE_DAILY_LIMIT = 5; // max PDFs per day on free tier
 
   // -----------------------------
   // PDF FILE TEXT EXTRACTION (pdf.js)
@@ -442,8 +425,8 @@ document.addEventListener("DOMContentLoaded", () => {
     "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 
   // Base Pro-tier extraction limits
-  const MAX_PAGES_PER_FILE = 5;
-  const MAX_FILE_TEXT_LENGTH = 12000; // characters across all PDFs
+  const MAX_PAGES_PER_FILE = 10;
+  const MAX_FILE_TEXT_LENGTH = 120000; // characters across all PDFs
 
   // Effective per-tier extraction limits
   let effectiveMaxPagesPerFile = 2; // free default
@@ -490,19 +473,19 @@ document.addEventListener("DOMContentLoaded", () => {
       effectiveMaxPagesPerFile = MAX_PAGES_PER_FILE;
       effectiveMaxFileTextLength = MAX_FILE_TEXT_LENGTH;
     } else if (userTier === "free") {
-      // Logged-in free users: 1 small PDF, limited pages/text
-      effectiveMaxFileCount = 1;
-      effectiveMaxFileSizeMb = 3;
-      effectiveMaxFileSizeBytes = effectiveMaxFileSizeMb * 1024 * 1024;
-      effectiveMaxPagesPerFile = Math.min(2, MAX_PAGES_PER_FILE);
-      effectiveMaxFileTextLength = Math.min(6000, MAX_FILE_TEXT_LENGTH);
+      // Logged-in free users: higher limits (temporary)
+      effectiveMaxFileCount = MAX_FILE_COUNT;
+      effectiveMaxFileSizeMb = MAX_FILE_SIZE_MB;
+      effectiveMaxFileSizeBytes = MAX_FILE_SIZE_BYTES;
+      effectiveMaxPagesPerFile = MAX_PAGES_PER_FILE;
+      effectiveMaxFileTextLength = MAX_FILE_TEXT_LENGTH;
     } else {
-      // Guests / unknown: no file uploads
-      effectiveMaxFileCount = 0;
-      effectiveMaxFileSizeMb = 0;
-      effectiveMaxFileSizeBytes = 0;
-      effectiveMaxPagesPerFile = 0;
-      effectiveMaxFileTextLength = 0;
+      // Guests / unknown: allow files too (temporary)
+      effectiveMaxFileCount = MAX_FILE_COUNT;
+      effectiveMaxFileSizeMb = MAX_FILE_SIZE_MB;
+      effectiveMaxFileSizeBytes = MAX_FILE_SIZE_BYTES;
+      effectiveMaxPagesPerFile = MAX_PAGES_PER_FILE;
+      effectiveMaxFileTextLength = MAX_FILE_TEXT_LENGTH;
     }
 
     console.log("[study-builder] tier resolved", {
@@ -559,13 +542,51 @@ document.addEventListener("DOMContentLoaded", () => {
   // -----------------------------
   // UI HELPERS
   // -----------------------------
+  // -----------------------------
+  // ChatGPT-like "thinking" bubble (INSIDE chat stream)
+  // -----------------------------
+  let loadingBubbleWrapper = null;
+
+  function removeLoadingBubble() {
+    if (loadingBubbleWrapper && loadingBubbleWrapper.parentNode) {
+      loadingBubbleWrapper.parentNode.removeChild(loadingBubbleWrapper);
+    }
+    loadingBubbleWrapper = null;
+  }
+
+  function appendLoadingBubble() {
+    if (!answerEl) return;
+
+    removeLoadingBubble();
+
+    const wrapper = document.createElement("div");
+    wrapper.className = "study-ai-message-wrapper";
+
+    const bubble = document.createElement("div");
+    bubble.className = "study-chat-bubble study-chat-bubble--ai";
+
+    const contentDiv = document.createElement("div");
+    contentDiv.className = "study-bubble-content study-bubble-content--loading";
+    contentDiv.innerHTML = `
+    <span class="study-thinking">Generating</span>
+  `;
+
+    bubble.appendChild(contentDiv);
+    wrapper.appendChild(bubble);
+
+    answerEl.appendChild(wrapper);
+    answerEl.scrollTop = answerEl.scrollHeight;
+
+    loadingBubbleWrapper = wrapper;
+  }
+
   function setLoading(isLoading) {
-    if (placeholderEl) {
-      placeholderEl.classList.toggle("is-loading", isLoading);
-      if (isLoading) {
-        placeholderEl.style.display = "block";
-        placeholderEl.textContent = "Generating with DentAIstudy AI.";
-      }
+    // ChatGPT-like: show loading INSIDE the chat stream (as the last assistant bubble)
+    if (isLoading) {
+      hidePlaceholder(); // never resurrect the top placeholder during loading
+      appendLoadingBubble();
+    } else {
+      removeLoadingBubble();
     }
 
     if (submitBtn) {
@@ -960,7 +981,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Reset UI
     setLoading(true);
-    showPlaceholder("Generating with DentAIstudy AI.");
     updateCopyVisibility();
 
     let topic = baseTopic;
@@ -1008,6 +1028,7 @@ document.addEventListener("DOMContentLoaded", () => {
         headers,
         body: JSON.stringify({
           topic,
+          messages: buildChatMessagesForApi(),
         }),
       });
 
