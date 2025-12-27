@@ -4,31 +4,62 @@
 - Profile page small fixes (merged)
 ===================================================================== */
 
-/* Settings: email notifications checkbox */
-.settings-checkbox-block {
-  margin-top: 14px;
+.settings-checkbox-row {
   display: flex;
   align-items: center;
-  gap: 12px;
-  flex-wrap: wrap; /* keeps it nice on very small screens */
+
+  flex-wrap: nowrap; /* ✅ prevents checkbox + text from stacking */
+  gap: 14px;
+  white-space: nowrap; /* ✅ keeps phrase on same line */
+
+  padding: 12px 14px;
+  margin-top: 8px;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: #ffffff;
+
+  font-size: 0.92rem;
+  color: #374151;
+
+  cursor: pointer;
+  user-select: none;
+
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
-.settings-checkbox-block .study-input-label {
-  margin: 0; /* remove extra bottom margin so it aligns */
-}
-
-.settings-checkbox-row {
-  margin-top: 0;
-  display: inline-flex;
+.settings-checkbox-label {
+  display: inline-flex; /* ✅ stops it acting like a full-width block */
   align-items: center;
-  gap: 8px;
-  font-size: 0.85rem;
-  color: #4b5563;
+
+  flex: 0 1 auto; /* ✅ prevents it from taking 100% width */
+  min-width: 0;
+
+  line-height: 1.4;
+}
+
+.settings-checkbox-row:hover {
+  border-color: #d1d5db;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+}
+
+.settings-checkbox-row:active {
+  transform: translateY(1px);
 }
 
 .settings-checkbox-row input {
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  flex-shrink: 0;
+
+  accent-color: #0a3d62;
+}
+
+.settings-checkbox-row input:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(10, 61, 98, 0.18);
+  border-radius: 4px;
 }
 
 /* --- Settings page micro-tweaks (DentAIstudy v3) --- */

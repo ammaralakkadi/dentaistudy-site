@@ -142,14 +142,14 @@
    ========================================================= */
 
 @media (min-width: 901px) {
-  .workspace-main {
+  .page-study .workspace-main {
     height: calc(100vh - 56px); /* header height */
     overflow: hidden;
     display: flex;
     flex-direction: column;
   }
 
-  .study-chat-shell {
+  .page-study .study-chat-shell {
     flex: 1 1 auto;
     min-height: 0; /* REQUIRED for flex scroll */
     overflow-y: auto;
@@ -519,6 +519,28 @@
   gap: 4px;
 }
 
+/* ChatGPT-like "thinking" state inside the chat stream */
+.study-bubble-content--loading {
+  color: #6b7280;
+  animation: das-shimmer 0.9s ease-in-out infinite;
+}
+
+@keyframes das-shimmer {
+  0% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.35;
+  }
+}
+
+.study-thinking::after {
+  content: "…";
+}
+
 /* ================================
    AI message actions (below bubble)
    ================================ */
@@ -660,35 +682,62 @@
   padding-bottom: calc(128px + env(safe-area-inset-bottom, 0px));
 }
 
-/* Keep the file summary on its own line under the bar */
-.study-chat-composer .study-file-summary {
-  width: 100%;
-  margin-top: 8px;
-}
-
+/* Composer internal layout (ChatGPT-like):
+   - form is a column
+   - row 1 is buttons + textarea + send
+   - row 2 is file summary (full width)
+*/
 .page-study .study-chat-composer {
   display: flex;
-  align-items: center;
-  flex-wrap: nowrap;
-  gap: 10px;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
 }
 
-.page-study .study-chat-input#study-topic {
+/* Row 1: + / textarea / send */
+.page-study .study-chat-composer .das-composer-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  min-width: 0;
+}
+
+/* Keep buttons from stretching */
+.page-study .study-chat-composer .study-composer-left,
+.page-study .study-chat-composer .study-chat-send {
+  flex: 0 0 auto;
+}
+
+/* Textarea grows like ChatGPT */
+.page-study .study-chat-composer .study-chat-input#study-topic {
   flex: 1 1 auto;
   min-width: 0;
-  width: auto;
+
   resize: none;
   padding: 10px 12px;
   min-height: 38px;
-  max-height: 200px;
+  max-height: 240px;
   overflow-y: auto;
 
   background: transparent;
-  border: none;
+  border: 0;
+  border-radius: 14px;
+
   font-family: inherit;
   font-size: 0.95rem;
   line-height: 1.5;
   color: inherit;
+}
+
+.page-study .study-chat-composer .study-chat-input#study-topic:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(10, 61, 98, 0.12);
+}
+
+/* Row 2: file summary is truly on its own line */
+.page-study .study-chat-composer .study-file-summary {
+  width: 100%;
+  margin: 0;
 }
 
 /* keep buttons from stretching */
@@ -703,7 +752,7 @@
   border-radius: 12px;
 }
 
-/* Composer textarea grows with text */
+/* Composer textarea grows with text (ChatGPT embedded style) */
 .study-chat-input#study-topic {
   flex: 1 1 auto;
   min-height: 38px;
@@ -716,16 +765,20 @@
 
   border-radius: 14px;
   border: 0;
-  background: #f9fafb;
+
+  /* ✅ remove the silver fill */
+  background: transparent;
+
   font-family: inherit;
   font-size: 0.95rem;
   line-height: 1.5;
   color: inherit;
 }
 
+/* Optional: focus ring very subtle (ChatGPT-like) */
 .study-chat-input#study-topic:focus {
   outline: none;
-  box-shadow: 0 0 0 2px rgba(10, 61, 98, 0.12);
+  box-shadow: none;
 }
 
 .study-chat-send {
@@ -800,12 +853,12 @@
     max-width: 100%;
   }
 
-  /* 3) Composer stays single-line + expands properly */
+  /* 3) Composer stays ChatGPT-like on mobile too (row + summary below) */
   .study-chat-composer {
     display: flex;
-    flex-wrap: nowrap;
-    align-items: center;
-    gap: 10px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
   }
 
   .study-composer-left {
@@ -963,5 +1016,76 @@
   to {
     opacity: 0.9;
     transform: translateY(0);
+  }
+}
+
+/* ===============================
+   ChatGPT-like Composer Override
+   =============================== */
+
+.page-study .study-chat-composer {
+  position: fixed;
+
+  /* KEEP your existing left/width logic */
+  left: var(--das-composer-left);
+  width: var(--das-composer-width);
+  bottom: 16px;
+
+  display: flex;
+  flex-direction: column; /* ✅ KEY FIX */
+  gap: 8px;
+
+  padding: 10px 12px;
+  border-radius: 18px;
+  background: #ffffff;
+  border: 1px solid rgba(229, 231, 235, 0.7);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+
+  z-index: 20;
+}
+
+/* TEXTAREA (embedded: NO inner box, ChatGPT style) */
+.page-study .study-chat-input,
+.page-study .study-chat-input#study-topic {
+  width: 100%;
+  min-height: 44px;
+  max-height: 240px;
+  padding: 12px 14px;
+
+  resize: none;
+
+  /* ✅ remove the inner “pill” completely */
+  background: transparent !important;
+  border: 0 !important;
+  outline: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+
+  font-size: 15px;
+  line-height: 1.5;
+
+  overflow-y: auto;
+}
+
+/* ACTION ROW (BOTTOM) */
+.page-study .study-composer-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+/* Prevent icons from stretching */
+.page-study .study-composer-left,
+.page-study .study-chat-send {
+  flex: 0 0 auto;
+}
+
+/* MOBILE: FULL WIDTH */
+@media (max-width: 1024px) {
+  .page-study .study-chat-composer {
+    left: 12px;
+    right: 12px;
+    width: auto;
   }
 }
