@@ -631,13 +631,11 @@
         }`;
         btn.type = "button";
         btn.dataset.chatId = c.id;
-        const fullTitle =
-          ((c.title || "New chat").trim() || "New chat")
-            .split(" ")
-            .slice(0, -1)
-            .join(" ") || "New chat";
+        const fullTitle = (
+          (c.title || "New chat").trim() || "New chat"
+        ).replace(/\s+/g, " ");
         btn.textContent = fullTitle;
-        btn.title = "";
+        btn.title = fullTitle;
 
         const menuBtn = document.createElement("button");
         menuBtn.className = "sb-chatmenu";
