@@ -846,6 +846,37 @@
   line-height: 1.75;
 }
 
+/* Article inline text links */
+.blog-body p a:not(.btn),
+.blog-body li a:not(.btn) {
+  color: #075985;
+  font-weight: 600;
+  text-decoration-line: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(14, 116, 144, 0.35);
+  background: transparent;
+  border-radius: 3px;
+  transition:
+    color 0.15s ease,
+    background 0.15s ease,
+    text-decoration-color 0.15s ease;
+}
+
+.blog-body p a:not(.btn):hover,
+.blog-body li a:not(.btn):hover {
+  color: #0a3d62;
+  background: transparent;
+  text-decoration-color: rgba(10, 61, 98, 0.8);
+  opacity: 1;
+}
+
+.blog-body p a:not(.btn):focus-visible,
+.blog-body li a:not(.btn):focus-visible {
+  outline: 2px solid rgba(14, 116, 144, 0.28);
+  outline-offset: 2px;
+}
+
 .blog-body .study-form-card {
   margin: 28px 0;
   padding: 22px 26px !important;
