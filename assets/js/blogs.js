@@ -40,6 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (href.includes("blogs/ore/")) return TAG_META.ore;
     if (href.includes("blogs/sdle/")) return TAG_META.sdle;
     if (href.includes("blogs/uae/")) return TAG_META.uae;
+    if (href.includes("blogs/pediatric-dentistry/")) return TAG_META.pedo;
 
     if (tag === "operative") return TAG_META.operative;
     if (tag === "endo" || tag === "endodontics") return TAG_META.endo;
