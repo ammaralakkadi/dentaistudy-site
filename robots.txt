@@ -6,6 +6,8 @@ Disallow: /goodbye.html
 Disallow: /profile.html
 Disallow: /settings.html
 Disallow: /billing-success.html
+Disallow: /login.html
+Disallow: /signup.html
 Disallow: /supabase/
 Disallow: /blogs/temp/
 
