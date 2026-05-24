@@ -1,0 +1,1132 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-65ZNB9L5D6"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-65ZNB9L5D6");
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>
+      Periodontal Probing: Pocket Depth vs CAL vs Recession | DentAIstudy
+    </title>
+
+    <meta
+      name="description"
+      content="Clinical guide to periodontal probing: pocket depth, clinical attachment level, recession, gingival margin position, pseudo-pockets, true pockets, and exam-safe charting."
+    />
+    <link
+      rel="canonical"
+      href="https://www.dentaistudy.com/blogs/periodontology/periodontal-probing-pocket-depth-cal-recession.html"
+    />
+
+    <link rel="stylesheet" href="../../assets/css/style-v3.css" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/favicon-512.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon-512.png" />
+
+    <!-- JS: Supabase + Auth Guard + Logout + Main -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+      defer
+    ></script>
+    <script src="../../assets/js/auth-client.js" defer></script>
+    <script src="../../assets/js/auth-guard.js" defer></script>
+    <script src="../../assets/js/auth-logout.js" defer></script>
+    <script defer src="../../assets/js/main.js"></script>
+  </head>
+
+  <body>
+    <div class="main-wrapper">
+      <!-- HEADER -->
+      <header class="site-header">
+        <div class="container header-inner">
+          <button class="menu-toggle" aria-label="Open menu">
+            <span></span><span></span><span></span>
+          </button>
+          <a class="brand" href="../../index.html"
+            ><span>Dent</span><span>AIstudy</span></a
+          >
+          <nav class="header-nav">
+            <a href="../../subjects.html">Subjects</a>
+            <a href="../../exams.html">Exams</a>
+            <a href="../../study.html">Study Builder</a>
+            <a href="../../blogs.html" class="is-active">Blogs</a>
+            <a href="../../pricing.html">Pricing</a>
+          </nav>
+          <div class="header-right">
+            <a href="../../login.html" class="btn btn-outline header-login"
+              >Log in</a
+            >
+            <a href="../../signup.html" class="btn btn-primary header-signup"
+              >Sign up</a
+            >
+          </div>
+        </div>
+      </header>
+
+      <!-- MOBILE NAV -->
+      <div class="slide-nav-backdrop"></div>
+      <nav class="slide-nav">
+        <div class="slide-nav-links">
+          <a href="../../subjects.html">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <rect x="3" y="3" width="7" height="7" rx="1.5" />
+              <rect x="14" y="3" width="7" height="7" rx="1.5" />
+              <rect x="3" y="14" width="7" height="7" rx="1.5" />
+              <rect x="14" y="14" width="7" height="7" rx="1.5" />
+            </svg>
+            <span>Subjects</span>
+          </a>
+          <a href="../../exams.html">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"
+              />
+              <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
+              <path d="M9 14l2 2 4-4" />
+            </svg>
+            <span>Exams</span>
+          </a>
+          <a href="../../study.html">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+              <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+            </svg>
+            <span>Study Builder</span>
+          </a>
+          <a href="../../blogs.html">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M12 20h9" />
+              <path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4z" />
+            </svg>
+            <span>Blogs</span>
+          </a>
+          <a href="../../pricing.html">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"
+              />
+              <line x1="7" y1="7" x2="7.01" y2="7" />
+            </svg>
+            <span>Pricing</span>
+          </a>
+
+          <div
+            class="slide-nav-divider"
+            role="separator"
+            aria-hidden="true"
+          ></div>
+
+          <a href="../../profile.html">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+            <span>My profile</span>
+          </a>
+          <a href="../../settings.html">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="3" />
+              <path
+                d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1.08-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1.08 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1.08 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c.26.604.852.997 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1.08z"
+              />
+            </svg>
+            <span>Account settings</span>
+          </a>
+
+          <div
+            class="slide-nav-divider"
+            role="separator"
+            aria-hidden="true"
+          ></div>
+
+          <a href="../../login.html" class="slide-login-link">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+              <polyline points="10 17 15 12 10 7" />
+              <line x1="15" y1="12" x2="3" y2="12" />
+            </svg>
+            <span>Log in</span>
+          </a>
+        </div>
+      </nav>
+
+      <!-- BREADCRUMB -->
+      <section class="section" style="padding: 20px 0 0">
+        <div class="container">
+          <nav aria-label="Breadcrumb" style="font-size: 14px; color: #64748b">
+            <a
+              href="../../index.html"
+              style="color: #0a3d62; text-decoration: none"
+              >Home</a
+            >
+            <span style="margin: 0 6px">›</span>
+            <a
+              href="../../subjects.html"
+              style="color: #0a3d62; text-decoration: none"
+              >Subjects</a
+            >
+            <span style="margin: 0 6px">›</span>
+            <a
+              href="../../subjects/periodontology.html"
+              style="color: #0a3d62; text-decoration: none"
+              >Periodontology</a
+            >
+            <span style="margin: 0 6px">›</span>
+            <span style="color: #1a1a2e"
+              >Periodontal Probing: PD vs CAL vs Recession</span
+            >
+          </nav>
+        </div>
+      </section>
+
+      <!-- BLOG -->
+      <main class="section">
+        <div class="container container-narrow">
+          <div class="section-header" style="text-align: left">
+            <div class="section-kicker">Periodontology</div>
+            <h1 class="section-title">
+              Periodontal Probing: Pocket Depth vs Clinical Attachment Loss vs
+              Recession
+            </h1>
+            <p class="section-subtitle">
+              A practical periodontology guide to reading probing depth,
+              recession, gingival margin position, and clinical attachment level
+              without confusing pseudo-pockets with true periodontal attachment
+              loss.
+            </p>
+          </div>
+
+          <!-- QUICK ANSWERS -->
+          <section class="study-answer-card">
+            <h2>Quick Answers</h2>
+
+            <h3>What does probing depth measure?</h3>
+            <p>
+              Probing depth measures from the gingival margin to the base of the
+              sulcus or periodontal pocket. It tells you the current depth, not
+              the total amount of support loss.
+            </p>
+
+            <h3>What does clinical attachment level measure?</h3>
+            <p>
+              Clinical attachment level measures from a fixed landmark, usually
+              the CEJ, to the base of the pocket. It is better for identifying
+              periodontal support loss.
+            </p>
+
+            <h3>How does recession affect CAL?</h3>
+            <p>
+              When recession is present, CAL is greater than probing depth
+              because the gingival margin has moved apically. A shallow pocket
+              with recession can still have major attachment loss.
+            </p>
+
+            <h3>Can a deep pocket exist without attachment loss?</h3>
+            <p>
+              Yes. Gingival swelling or enlargement can create a pseudo-pocket.
+              The probing depth is increased, but the attachment has not moved
+              apically.
+            </p>
+
+            <h3>What is the biggest student mistake?</h3>
+            <p>
+              Reading pocket depth alone. A periodontal chart only becomes
+              meaningful when pocket depth, recession, CAL, BOP, mobility,
+              furcation, and radiographs are connected.
+            </p>
+          </section>
+
+          <article class="blog-body">
+            <h2>1. Probing depth and CAL are not the same thing</h2>
+            <p>
+              Periodontal probing looks simple, but the interpretation is where
+              mistakes happen. Students often see a 5 mm or 6 mm reading and
+              immediately think “periodontitis.” That may be correct, but not
+              always. The number is only the start of the diagnosis.
+            </p>
+
+            <p>
+              Probing depth measures from the gingival margin to the base of the
+              pocket. Clinical attachment level measures from the CEJ to the
+              base of the pocket. The difference matters because the gingival
+              margin can move coronally with swelling or apically with
+              recession.
+            </p>
+
+            <p>
+              This is why the same probing depth can mean different things in
+              different mouths. A 5 mm pseudo-pocket in swollen gingiva is not
+              the same as a 5 mm periodontal pocket with attachment loss.
+            </p>
+
+            <div class="study-form-card">
+              <h3>Senior rule</h3>
+              <p>
+                Pocket depth tells you the depth of the sulcus or pocket today.
+                CAL tells you how much support has been lost from a fixed
+                landmark.
+              </p>
+            </div>
+
+            <a
+              href="gingivitis-vs-periodontitis-bop-pocket-depth-cal.html"
+              class="study-answer-card"
+              style="text-decoration: none; color: inherit; display: block"
+            >
+              <h3 style="font-size: 1rem; margin: 0 0 4px; color: #0a3d62">
+                Still separating gingivitis from periodontitis?
+              </h3>
+              <p style="margin: 0; font-size: 0.9rem; color: #64748b">
+                Use BOP for inflammation, but use CAL and bone loss before
+                calling it periodontitis.
+              </p>
+            </a>
+
+            <h2>2. Probing depth: useful, but unstable as a diagnosis tool</h2>
+            <p>
+              Probing depth is recorded from the gingival margin. That makes it
+              sensitive to where the gingival margin sits. If the gingiva is
+              swollen, the margin may move coronally and make the pocket look
+              deeper. If recession is present, the margin moves apically and the
+              pocket may look shallow even when support has been lost.
+            </p>
+
+            <p>
+              This does not make probing depth useless. It is very useful for
+              identifying sites that need attention, monitoring inflammation,
+              and planning treatment. The problem is using it alone as proof of
+              attachment loss.
+            </p>
+
+            <div class="blog-table-wrap">
+              <table class="blog-table">
+                <thead>
+                  <tr>
+                    <th>Probing depth tells you</th>
+                    <th>Probing depth does not tell you alone</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Current pocket or sulcus depth</td>
+                    <td>Total periodontal support loss</td>
+                  </tr>
+                  <tr>
+                    <td>Sites that may need more assessment</td>
+                    <td>Whether the pocket is true or pseudo</td>
+                  </tr>
+                  <tr>
+                    <td>Treatment difficulty and access</td>
+                    <td>Whether past attachment loss has occurred</td>
+                  </tr>
+                  <tr>
+                    <td>Residual pocketing after therapy</td>
+                    <td>Progression risk without staging and grading</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h2>3. Recession changes the meaning of a shallow pocket</h2>
+            <p>
+              Recession means the gingival margin is apical to the CEJ. In this
+              situation, the probing depth may look harmless, but the attachment
+              level may show significant support loss.
+            </p>
+
+            <p>
+              For example, a 3 mm pocket with 4 mm recession gives 7 mm clinical
+              attachment level. The pocket depth is not deep, but the tooth has
+              lost support. This is a classic exam trap.
+            </p>
+
+            <div class="study-form-card">
+              <h3>Clean phrase</h3>
+              <p>
+                “A shallow probing depth does not exclude previous periodontal
+                destruction if recession is present.”
+              </p>
+            </div>
+
+            <a
+              href="gingival-recession-rt1-rt2-rt3-root-coverage.html"
+              class="study-answer-card"
+              style="text-decoration: none; color: inherit; display: block"
+            >
+              <h3 style="font-size: 1rem; margin: 0 0 4px; color: #0a3d62">
+                Recession is not only an aesthetic issue
+              </h3>
+              <p style="margin: 0; font-size: 0.9rem; color: #64748b">
+                Recession affects attachment-level calculation and root coverage
+                predictability.
+              </p>
+            </a>
+
+            <h2>4. Clinical attachment level: the support-loss measurement</h2>
+            <p>
+              Clinical attachment level is measured from the CEJ to the base of
+              the pocket. Because the CEJ is a fixed landmark, CAL is more
+              useful for monitoring periodontal support over time.
+            </p>
+
+            <p>
+              In simple cases, CAL can be understood by combining probing depth
+              with the gingival margin position. If the margin is apical to the
+              CEJ, add recession to the probing depth. If the margin is coronal
+              to the CEJ, subtract the gingival enlargement from the probing
+              depth.
+            </p>
+
+            <div class="blog-table-wrap">
+              <table class="blog-table">
+                <thead>
+                  <tr>
+                    <th>Gingival margin position</th>
+                    <th>Example</th>
+                    <th>CAL logic</th>
+                    <th>Meaning</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>At CEJ</td>
+                    <td>PD 4 mm, margin at CEJ</td>
+                    <td>CAL ≈ 4 mm</td>
+                    <td>Pocket depth and CAL are similar</td>
+                  </tr>
+                  <tr>
+                    <td>Apical to CEJ</td>
+                    <td>PD 3 mm + recession 4 mm</td>
+                    <td>CAL ≈ 7 mm</td>
+                    <td>Support loss is greater than pocket depth</td>
+                  </tr>
+                  <tr>
+                    <td>Coronal to CEJ</td>
+                    <td>PD 6 mm, margin 3 mm coronal</td>
+                    <td>CAL ≈ 3 mm</td>
+                    <td>Deep reading may partly be pseudo-pocketing</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h2>5. Pseudo-pocket vs true periodontal pocket</h2>
+            <p>
+              A pseudo-pocket is caused by gingival enlargement or swelling. The
+              probe travels deeper because the gingival margin is positioned
+              coronally, not because the attachment has moved apically.
+            </p>
+
+            <p>
+              A true periodontal pocket involves apical migration of the
+              attachment and loss of periodontal support. This distinction
+              changes the diagnosis and treatment. Pseudo-pocketing is managed
+              by controlling inflammation and local factors. True periodontal
+              pocketing needs periodontal diagnosis, staging, grading, and a
+              structured treatment plan.
+            </p>
+
+            <div class="blog-table-wrap">
+              <table class="blog-table">
+                <thead>
+                  <tr>
+                    <th>Feature</th>
+                    <th>Pseudo-pocket</th>
+                    <th>True periodontal pocket</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Main reason for depth</td>
+                    <td>Coronal gingival enlargement</td>
+                    <td>Apical attachment loss</td>
+                  </tr>
+                  <tr>
+                    <td>CAL</td>
+                    <td>Absent or less than PD suggests</td>
+                    <td>Present</td>
+                  </tr>
+                  <tr>
+                    <td>Bone loss</td>
+                    <td>Usually absent from that process</td>
+                    <td>May be present</td>
+                  </tr>
+                  <tr>
+                    <td>Common setting</td>
+                    <td>Gingivitis, enlargement, inflammation</td>
+                    <td>Periodontitis</td>
+                  </tr>
+                  <tr>
+                    <td>Treatment direction</td>
+                    <td>Plaque control and local factor removal</td>
+                    <td>Full periodontal therapy pathway</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h2>6. Bleeding helps, but it does not solve the measurement</h2>
+            <p>
+              Bleeding on probing tells you inflammation is present. It does not
+              by itself calculate attachment loss. A bleeding pseudo-pocket and
+              a bleeding true pocket can look similar until you interpret the
+              CEJ, recession, CAL, and radiograph.
+            </p>
+
+            <p>
+              In a patient with previous periodontitis, a reduced but stable
+              periodontium may have little bleeding. That does not mean the past
+              support loss disappeared. The chart must separate current
+              inflammation from historical destruction.
+            </p>
+
+            <a
+              href="../blog-perio-staging-grading.html"
+              class="study-answer-card"
+              style="text-decoration: none; color: inherit; display: block"
+            >
+              <h3 style="font-size: 1rem; margin: 0 0 4px; color: #0a3d62">
+                Stage and grade only after diagnosis
+              </h3>
+              <p style="margin: 0; font-size: 0.9rem; color: #64748b">
+                Staging and grading depend on evidence of periodontitis, not BOP
+                alone.
+              </p>
+            </a>
+
+            <h2>7. Radiographs support the chart</h2>
+            <p>
+              Radiographs help confirm bone loss pattern, severity, furcation
+              involvement, and local factors. They do not replace probing
+              because soft tissue measurements and attachment levels are
+              clinical findings.
+            </p>
+
+            <p>
+              The strongest diagnosis comes from matching the periodontal chart
+              with radiographs. If a site has recession, CAL, and bone loss, the
+              interpretation is stronger than pocket depth alone.
+            </p>
+
+            <div class="study-form-card">
+              <h3>Senior habit</h3>
+              <p>
+                Do not make the radiograph and the chart compete. Use them
+                together.
+              </p>
+            </div>
+
+            <h2>8. Isolated deep sites need extra caution</h2>
+            <p>
+              A single deep probing depth is not automatically generalized
+              periodontitis. Isolated deep pockets can be linked to vertical
+              root fracture, endodontic lesions, overhanging restorations,
+              subgingival calculus, furcation defects, food packing, root
+              grooves, or local trauma.
+            </p>
+
+            <p>
+              This is where internal linking matters clinically. If the site is
+              isolated, narrow, and deep, test vitality and check the radiograph
+              carefully before assuming the source is periodontal.
+            </p>
+
+            <a
+              href="periodontal-abscess-vs-endodontic-abscess.html"
+              class="study-answer-card"
+              style="text-decoration: none; color: inherit; display: block"
+            >
+              <h3 style="font-size: 1rem; margin: 0 0 4px; color: #0a3d62">
+                Narrow isolated pocket?
+              </h3>
+              <p style="margin: 0; font-size: 0.9rem; color: #64748b">
+                Separate periodontal abscess, endodontic abscess, and fracture
+                patterns before treatment.
+              </p>
+            </a>
+
+            <h2>9. Furcations make probing more complex</h2>
+            <p>
+              Molars need special respect because furcation involvement may not
+              be obvious from simple pocket readings. A Nabers probe,
+              radiographs, and careful charting help identify whether attachment
+              loss has reached the furcation area.
+            </p>
+
+            <p>
+              Furcation involvement changes prognosis, maintenance difficulty,
+              and treatment planning. A molar with moderate pocket depth but
+              furcation involvement may be more complex than a single-rooted
+              tooth with the same probing depth.
+            </p>
+
+            <a
+              href="furcation-involvement-classification-treatment.html"
+              class="study-answer-card"
+              style="text-decoration: none; color: inherit; display: block"
+            >
+              <h3 style="font-size: 1rem; margin: 0 0 4px; color: #0a3d62">
+                Molar probing needs a furcation check
+              </h3>
+              <p style="margin: 0; font-size: 0.9rem; color: #64748b">
+                Furcation class can change prognosis even when the pocket depth
+                looks manageable.
+              </p>
+            </a>
+
+            <h2>10. Screening is not the same as full charting</h2>
+            <p>
+              Screening tools such as BPE or PSR are useful for identifying the
+              need for more periodontal assessment. They are not designed to be
+              a complete diagnosis.
+            </p>
+
+            <p>
+              When screening shows deep codes, bleeding, calculus, furcation
+              signs, mobility, or radiographic bone loss, a full periodontal
+              chart is needed. That chart should include probing depths,
+              recession, CAL, BOP, suppuration, mobility, furcation involvement,
+              and relevant radiographs.
+            </p>
+
+            <a
+              href="bpe-psr-vs-full-periodontal-charting.html"
+              class="study-answer-card"
+              style="text-decoration: none; color: inherit; display: block"
+            >
+              <h3 style="font-size: 1rem; margin: 0 0 4px; color: #0a3d62">
+                BPE/PSR found a problem?
+              </h3>
+              <p style="margin: 0; font-size: 0.9rem; color: #64748b">
+                The next step is full charting, not pretending the screening
+                score is the final diagnosis.
+              </p>
+            </a>
+
+            <h2>11. How to read the chart in order</h2>
+            <p>
+              A clean periodontal charting habit prevents most errors. First,
+              read the probing depth. Second, check where the gingival margin is
+              relative to the CEJ. Third, calculate or interpret CAL. Fourth,
+              connect BOP and suppuration. Fifth, compare with radiographs and
+              risk factors.
+            </p>
+
+            <div class="blog-table-wrap">
+              <table class="blog-table">
+                <thead>
+                  <tr>
+                    <th>Step</th>
+                    <th>Question</th>
+                    <th>Why it matters</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>What is the probing depth?</td>
+                    <td>Shows current pocket or sulcus depth</td>
+                  </tr>
+                  <tr>
+                    <td>2</td>
+                    <td>Where is the gingival margin?</td>
+                    <td>Recession or enlargement changes interpretation</td>
+                  </tr>
+                  <tr>
+                    <td>3</td>
+                    <td>What is the CAL?</td>
+                    <td>Shows support loss from a fixed landmark</td>
+                  </tr>
+                  <tr>
+                    <td>4</td>
+                    <td>Is there BOP or suppuration?</td>
+                    <td>Shows inflammation or infection activity</td>
+                  </tr>
+                  <tr>
+                    <td>5</td>
+                    <td>Do radiographs match?</td>
+                    <td>Confirms bone loss pattern and complexity</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h2>12. Common mistakes</h2>
+            <div class="blog-table-wrap">
+              <table class="blog-table">
+                <thead>
+                  <tr>
+                    <th>Mistake</th>
+                    <th>Why it is risky</th>
+                    <th>Better habit</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Calling every 5 mm site periodontitis</td>
+                    <td>Could be pseudo-pocketing</td>
+                    <td>Check CEJ, CAL, and radiographs</td>
+                  </tr>
+                  <tr>
+                    <td>Ignoring recession</td>
+                    <td>Underestimates attachment loss</td>
+                    <td>Add recession to probing depth when appropriate</td>
+                  </tr>
+                  <tr>
+                    <td>Relying on BOP alone</td>
+                    <td>BOP shows inflammation, not support loss</td>
+                    <td>Use CAL and bone loss for destruction</td>
+                  </tr>
+                  <tr>
+                    <td>Not investigating isolated deep pockets</td>
+                    <td>May miss endodontic lesion or fracture</td>
+                    <td>
+                      Check vitality, radiographs, restorations, and local
+                      anatomy
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Using BPE as diagnosis</td>
+                    <td>BPE is a screening tool</td>
+                    <td>Do full periodontal charting when indicated</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h2>13. Exam-safe comparison table</h2>
+            <div class="blog-table-wrap">
+              <table class="blog-table">
+                <thead>
+                  <tr>
+                    <th>Term</th>
+                    <th>Measured from</th>
+                    <th>Measured to</th>
+                    <th>Main use</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Probing depth</td>
+                    <td>Gingival margin</td>
+                    <td>Base of sulcus or pocket</td>
+                    <td>Current pocket depth</td>
+                  </tr>
+                  <tr>
+                    <td>Recession</td>
+                    <td>CEJ</td>
+                    <td>Gingival margin apical to CEJ</td>
+                    <td>Root exposure and CAL calculation</td>
+                  </tr>
+                  <tr>
+                    <td>Gingival enlargement</td>
+                    <td>CEJ</td>
+                    <td>Gingival margin coronal to CEJ</td>
+                    <td>Pseudo-pocket interpretation</td>
+                  </tr>
+                  <tr>
+                    <td>Clinical attachment level</td>
+                    <td>CEJ</td>
+                    <td>Base of pocket</td>
+                    <td>Periodontal support loss</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h2>14. OSCE answer</h2>
+            <p>
+              A good OSCE answer shows that you can read periodontal numbers
+              safely, not just repeat definitions.
+            </p>
+
+            <div class="study-form-card">
+              <h3>Model answer</h3>
+              <p>
+                “I would not interpret pocket depth alone as attachment loss.
+                Probing depth is measured from the gingival margin to the base
+                of the pocket, so it can be affected by swelling, enlargement,
+                or recession. I would identify the CEJ, record recession or
+                gingival margin position, and calculate clinical attachment
+                level from the CEJ to the base of the pocket. CAL and
+                radiographic bone loss are more useful for confirming loss of
+                periodontal support. I would also record BOP, suppuration,
+                mobility, furcation involvement, and compare the chart with
+                radiographs before diagnosing and staging periodontitis.”
+              </p>
+            </div>
+
+            <h2>15. FAQ</h2>
+
+            <h3>Is CAL always pocket depth plus recession?</h3>
+            <p>
+              When the gingival margin is apical to the CEJ, recession is added
+              to probing depth. If the margin is coronal to the CEJ, enlargement
+              is subtracted from probing depth.
+            </p>
+
+            <h3>Why can a shallow pocket still be serious?</h3>
+            <p>
+              Because recession may hide attachment loss. A 3 mm pocket with 4
+              mm recession still represents significant CAL.
+            </p>
+
+            <h3>Why can a deep pocket be less serious than it looks?</h3>
+            <p>
+              Gingival enlargement can create a pseudo-pocket. The probing depth
+              is increased, but the attachment may not have migrated apically.
+            </p>
+
+            <h3>Does BOP affect CAL?</h3>
+            <p>
+              BOP does not calculate CAL. It shows inflammation and helps judge
+              disease activity, but CAL depends on the CEJ-to-pocket-base
+              relationship.
+            </p>
+
+            <h3>Should I record recession in every perio chart?</h3>
+            <p>
+              Yes, when doing full periodontal charting. Without recession or
+              gingival margin position, pocket depths can be misleading.
+            </p>
+
+            <h3>What is the simplest rule?</h3>
+            <p>
+              Pocket depth starts at the gingival margin. CAL starts at the CEJ.
+              That is the difference.
+            </p>
+
+            <div class="blog-cta-card">
+              <h2>How DentAIstudy helps</h2>
+              <p>
+                DentAIstudy turns periodontal charting into decision practice,
+                not number memorisation.
+              </p>
+              <ul>
+                <li>Flashcards for PD, recession, CAL, BOP, and bone loss</li>
+                <li>OSCE scripts for explaining periodontal chart findings</li>
+                <li>Case prompts for pseudo-pockets and true pockets</li>
+                <li>
+                  Tables linking charting, diagnosis, staging, and treatment
+                </li>
+              </ul>
+              <a href="../../study.html" class="btn btn-primary">
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+                  <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+                </svg>
+                Try Study Builder
+              </a>
+            </div>
+
+            <h2>Related periodontology articles</h2>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px">
+              <a
+                href="gingivitis-vs-periodontitis-bop-pocket-depth-cal.html"
+                style="
+                  font-size: 0.85rem;
+                  padding: 6px 14px;
+                  background: #f1f5f9;
+                  border-radius: 999px;
+                  color: #0a3d62;
+                  text-decoration: none;
+                "
+                >Gingivitis vs Periodontitis</a
+              >
+              <a
+                href="bpe-psr-vs-full-periodontal-charting.html"
+                style="
+                  font-size: 0.85rem;
+                  padding: 6px 14px;
+                  background: #f1f5f9;
+                  border-radius: 999px;
+                  color: #0a3d62;
+                  text-decoration: none;
+                "
+                >BPE/PSR vs Full Charting</a
+              >
+              <a
+                href="../blog-perio-staging-grading.html"
+                style="
+                  font-size: 0.85rem;
+                  padding: 6px 14px;
+                  background: #f1f5f9;
+                  border-radius: 999px;
+                  color: #0a3d62;
+                  text-decoration: none;
+                "
+                >Staging and Grading</a
+              >
+              <a
+                href="non-surgical-periodontal-therapy-steps.html"
+                style="
+                  font-size: 0.85rem;
+                  padding: 6px 14px;
+                  background: #f1f5f9;
+                  border-radius: 999px;
+                  color: #0a3d62;
+                  text-decoration: none;
+                "
+                >Non-Surgical Therapy</a
+              >
+              <a
+                href="periodontal-reevaluation-after-srp.html"
+                style="
+                  font-size: 0.85rem;
+                  padding: 6px 14px;
+                  background: #f1f5f9;
+                  border-radius: 999px;
+                  color: #0a3d62;
+                  text-decoration: none;
+                "
+                >Re-Evaluation After SRP</a
+              >
+              <a
+                href="gingival-recession-rt1-rt2-rt3-root-coverage.html"
+                style="
+                  font-size: 0.85rem;
+                  padding: 6px 14px;
+                  background: #f1f5f9;
+                  border-radius: 999px;
+                  color: #0a3d62;
+                  text-decoration: none;
+                "
+                >Gingival Recession RT1–RT3</a
+              >
+            </div>
+
+            <h2>References</h2>
+            <ul>
+              <li>
+                <a
+                  href="https://www.periodontalcare.sdcep.org.uk/guidance/assessment/special-tests/full-periodontal-examination/what-should-be-recorded/periodontal-parameters/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style="color: #0a3d62"
+                  >Scottish Dental Clinical Effectiveness Programme —
+                  Periodontal parameters</a
+                >
+                | Practical guidance on recording probing depth, recession, CAL,
+                BOP, suppuration, mobility, and furcation involvement.
+              </li>
+              <li>
+                <a
+                  href="https://www.bsperio.org.uk/assets/downloads/BSP_BPE_Guidelines_2019.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style="color: #0a3d62"
+                  >British Society of Periodontology — Basic Periodontal
+                  Examination Guidelines. 2019.</a
+                >
+                | Guidance explaining BPE as a screening tool and when further
+                periodontal assessment is indicated.
+              </li>
+              <li>
+                <a
+                  href="https://pubmed.ncbi.nlm.nih.gov/29926944/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style="color: #0a3d62"
+                  >Chapple ILC, Mealey BL, Van Dyke TE, et al. Periodontal
+                  health and gingival diseases and conditions on an intact and a
+                  reduced periodontium. Journal of Clinical Periodontology.
+                  2018.</a
+                >
+                | Consensus report defining periodontal health, gingivitis, and
+                reduced periodontium concepts.
+              </li>
+              <li>
+                <a
+                  href="https://pubmed.ncbi.nlm.nih.gov/29926952/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style="color: #0a3d62"
+                  >Tonetti MS, Greenwell H, Kornman KS. Staging and grading of
+                  periodontitis: Framework and proposal of a new classification.
+                  Journal of Clinical Periodontology. 2018.</a
+                >
+                | Core framework for using attachment loss and bone loss in
+                periodontitis staging and grading.
+              </li>
+              <li>
+                <a
+                  href="https://aap.onlinelibrary.wiley.com/doi/10.1002/JPER.18-0157"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style="color: #0a3d62"
+                  >Caton JG, Armitage G, Berglundh T, et al. A new
+                  classification scheme for periodontal and peri-implant
+                  diseases and conditions. Journal of Periodontology. 2018.</a
+                >
+                | Overview of the 2017 World Workshop periodontal and
+                peri-implant disease classification.
+              </li>
+            </ul>
+          </article>
+        </div>
+      </main>
+
+      <!-- FOOTER -->
+      <footer class="site-footer">
+        <div class="container">
+          <div class="footer-top">
+            <div>
+              <a href="../../index.html" class="footer-brand">DentAIstudy</a>
+              <p>AI-enhanced tools for dental students and residents.</p>
+              <div class="footer-social">
+                <a
+                  href="https://www.tiktok.com/@dentaistudy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="DentAIstudy on TikTok"
+                >
+                  <img
+                    src="../../assets/img/footer-icons/tiktok-icon.png"
+                    alt="TikTok"
+                    class="footer-social-img"
+                  />
+                </a>
+
+                <a
+                  href="mailto:info@dentaistudy.com"
+                  aria-label="Contact DentAIstudy by email"
+                >
+                  <img
+                    src="../../assets/img/footer-icons/email-icon.png"
+                    alt="Email"
+                    class="footer-social-img"
+                  />
+                </a>
+              </div>
+            </div>
+
+            <div class="footer-column">
+              <h4>Product</h4>
+              <a href="../../subjects.html">Subjects</a>
+              <a href="../../exams.html">Exams</a>
+              <a href="../../study.html">Study Builder</a>
+              <a href="../../blogs.html">Blogs</a>
+            </div>
+
+            <div class="footer-column">
+              <h4>Company</h4>
+              <a href="../../about.html">About</a>
+              <a href="../../contact.html">Contact</a>
+              <a href="../../pricing.html">Pricing</a>
+              <a href="../../faqs.html">FAQ</a>
+            </div>
+
+            <div class="footer-column">
+              <h4>Legal</h4>
+              <a href="../../privacy.html">Privacy Policy</a>
+              <a href="../../terms.html">Terms &amp; Conditions</a>
+              <a href="../../cookies.html">Cookies Policy</a>
+              <a href="../../disclaimer.html">Disclaimer</a>
+              <a href="../../billing.html">Billing</a>
+              <a href="../../refund-policy.html">Refunds</a>
+            </div>
+          </div>
+
+          <div class="footer-bottom">
+            © 2026 DentAIstudy. All rights reserved.
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
