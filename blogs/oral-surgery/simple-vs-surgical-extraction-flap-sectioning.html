@@ -1,0 +1,1138 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-65ZNB9L5D6"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-65ZNB9L5D6");
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>
+      Simple Extraction vs Surgical Extraction: When a Flap or Sectioning Is
+      Needed | DentAIstudy
+    </title>
+
+    <meta
+      name="description"
+      content="Clinical guide to simple vs surgical extraction decisions: forceps-only removal, flap design, bone removal, tooth sectioning, root fracture risk, imaging, consent, and referral."
+    />
+    <link
+      rel="canonical"
+      href="https://www.dentaistudy.com/blogs/oral-surgery/simple-vs-surgical-extraction-flap-sectioning.html"
+    />
+
+    <link rel="stylesheet" href="../../assets/css/style-v3.css" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/favicon-512.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon-512.png" />
+
+    <!-- JS: Supabase + Auth Guard + Logout + Main -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+      defer
+    ></script>
+    <script src="../../assets/js/auth-client.js" defer></script>
+    <script src="../../assets/js/auth-guard.js" defer></script>
+    <script src="../../assets/js/auth-logout.js" defer></script>
+    <script defer src="../../assets/js/main.js"></script>
+  </head>
+
+  <body>
+    <div class="main-wrapper">
+      <!-- HEADER -->
+      <header class="site-header">
+        <div class="container header-inner">
+          <button class="menu-toggle" aria-label="Open menu">
+            <span></span><span></span><span></span>
+          </button>
+          <a class="brand" href="../../index.html"
+            ><span>Dent</span><span>AIstudy</span></a
+          >
+          <nav class="header-nav">
+            <a href="../../subjects.html">Subjects</a>
+            <a href="../../exams.html">Exams</a>
+            <a href="../../study.html">Study Builder</a>
+            <a href="../../blogs.html" class="is-active">Blogs</a>
+            <a href="../../pricing.html">Pricing</a>
+          </nav>
+          <div class="header-right">
+            <a href="../../login.html" class="btn btn-outline header-login"
+              >Log in</a
+            >
+            <a href="../../signup.html" class="btn btn-primary header-signup"
+              >Sign up</a
+            >
+          </div>
+        </div>
+      </header>
+
+      <!-- MOBILE NAV -->
+      <div class="slide-nav-backdrop"></div>
+      <nav class="slide-nav">
+        <div class="slide-nav-links">
+          <a href="../../subjects.html">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <rect x="3" y="3" width="7" height="7" rx="1.5" />
+              <rect x="14" y="3" width="7" height="7" rx="1.5" />
+              <rect x="3" y="14" width="7" height="7" rx="1.5" />
+              <rect x="14" y="14" width="7" height="7" rx="1.5" />
+            </svg>
+            <span>Subjects</span>
+          </a>
+          <a href="../../exams.html">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"
+              />
+              <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
+              <path d="M9 14l2 2 4-4" />
+            </svg>
+            <span>Exams</span>
+          </a>
+          <a href="../../study.html">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+              <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+            </svg>
+            <span>Study Builder</span>
+          </a>
+          <a href="../../blogs.html">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M12 20h9" />
+              <path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4z" />
+            </svg>
+            <span>Blogs</span>
+          </a>
+          <a href="../../pricing.html">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"
+              />
+              <line x1="7" y1="7" x2="7.01" y2="7" />
+            </svg>
+            <span>Pricing</span>
+          </a>
+
+          <div
+            class="slide-nav-divider"
+            role="separator"
+            aria-hidden="true"
+          ></div>
+
+          <a href="../../profile.html">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+            <span>My profile</span>
+          </a>
+          <a href="../../settings.html">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="3" />
+              <path
+                d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1.08-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1.08 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1.08 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c.26.604.852.997 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1.08z"
+              />
+            </svg>
+            <span>Account settings</span>
+          </a>
+
+          <div
+            class="slide-nav-divider"
+            role="separator"
+            aria-hidden="true"
+          ></div>
+
+          <a href="../../login.html" class="slide-login-link">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+              <polyline points="10 17 15 12 10 7" />
+              <line x1="15" y1="12" x2="3" y2="12" />
+            </svg>
+            <span>Log in</span>
+          </a>
+        </div>
+      </nav>
+
+      <!-- BREADCRUMB -->
+      <section class="section" style="padding: 20px 0 0">
+        <div class="container">
+          <nav aria-label="Breadcrumb" style="font-size: 14px; color: #64748b">
+            <a
+              href="../../index.html"
+              style="color: #0a3d62; text-decoration: none"
+              >Home</a
+            >
+            <span style="margin: 0 6px">›</span>
+            <a
+              href="../../subjects.html"
+              style="color: #0a3d62; text-decoration: none"
+              >Subjects</a
+            >
+            <span style="margin: 0 6px">›</span>
+            <a
+              href="../../subjects/oral-surgery.html"
+              style="color: #0a3d62; text-decoration: none"
+              >Oral &amp; Maxillofacial Surgery</a
+            >
+            <span style="margin: 0 6px">›</span>
+            <span style="color: #1a1a2e">Simple vs Surgical Extraction</span>
+          </nav>
+        </div>
+      </section>
+
+      <!-- BLOG -->
+      <main class="section">
+        <div class="container container-narrow">
+          <div class="section-header" style="text-align: left">
+            <div class="section-kicker">Oral &amp; Maxillofacial Surgery</div>
+            <h1 class="section-title">
+              Simple Extraction vs Surgical Extraction: When a Flap or
+              Sectioning Is Needed
+            </h1>
+            <p class="section-subtitle">
+              A practical oral surgery guide to deciding when a tooth can be
+              removed with elevators and forceps alone, and when the safer plan
+              needs a flap, bone removal, tooth sectioning, sutures, or
+              referral.
+            </p>
+          </div>
+
+          <!-- QUICK ANSWERS -->
+          <section class="study-answer-card">
+            <h2>Quick Answers</h2>
+
+            <h3>
+              What is the main difference between simple and surgical
+              extraction?
+            </h3>
+            <p>
+              A simple extraction removes an erupted, accessible tooth without
+              raising a flap or removing bone. A surgical extraction needs extra
+              access, usually by flap reflection, bone removal, tooth
+              sectioning, or management of a fractured root.
+            </p>
+
+            <h3>When should I expect a surgical extraction?</h3>
+            <p>
+              Expect a surgical approach when the tooth is impacted, badly
+              broken down, ankylosed, has divergent or curved roots, has dense
+              surrounding bone, has limited access, or is close to important
+              anatomy.
+            </p>
+
+            <h3>Is sectioning a complication?</h3>
+            <p>
+              No. Planned sectioning is often safer than applying uncontrolled
+              force. Sectioning turns a difficult multi-rooted tooth into
+              smaller controlled parts.
+            </p>
+
+            <h3>When is a flap needed?</h3>
+            <p>
+              A flap is needed when you cannot see or access the tooth or root
+              safely, when bone removal is required, or when a root fragment
+              must be managed under direct vision.
+            </p>
+
+            <h3>What is the biggest mistake?</h3>
+            <p>
+              Treating a surgical extraction like a simple extraction for too
+              long. Excessive force increases the risk of root fracture, bone
+              fracture, soft tissue trauma, sinus exposure, and nerve injury.
+            </p>
+          </section>
+
+          <article class="blog-body">
+            <h2>1. The decision is not about pride. It is about access</h2>
+            <p>
+              The simple vs surgical extraction decision is not a badge of
+              skill. It is an access decision. If the tooth can be luxated and
+              delivered safely through the socket with controlled force, it may
+              be a simple extraction. If you need visibility, bone removal,
+              sectioning, or a flap to control the case, it has become surgical.
+            </p>
+
+            <p>
+              A senior clinician does not keep pulling harder just to avoid
+              calling something surgical. The safer habit is to pause early,
+              reassess the anatomy, and choose the technique that reduces
+              trauma.
+            </p>
+
+            <p>
+              This decision connects directly with
+              <a href="post-extraction-bleeding-local-measures-referral.html"
+                >post-extraction bleeding management</a
+              >,
+              <a href="dry-socket-vs-post-extraction-infection.html"
+                >dry socket vs post-extraction infection</a
+              >, and
+              <a href="oroantral-communication-after-maxillary-extraction.html"
+                >oroantral communication after maxillary extraction</a
+              >. The extraction method affects the complication risk.
+            </p>
+
+            <div class="study-form-card">
+              <h3>Senior rule</h3>
+              <p>
+                Do not ask “Can I pull harder?” Ask “Do I have enough access and
+                control to remove this tooth without causing avoidable damage?”
+              </p>
+            </div>
+
+            <h2>2. What makes an extraction simple?</h2>
+            <p>
+              A simple extraction usually means the tooth is erupted, visible,
+              accessible, and has enough crown structure for forceps placement.
+              The roots should allow delivery through the socket after
+              controlled periodontal ligament expansion and luxation.
+            </p>
+
+            <p>
+              Simple does not mean careless. It still needs a medical history,
+              radiographic assessment when indicated, local anesthesia, soft
+              tissue protection, controlled elevation, and a plan if the root
+              fractures.
+            </p>
+
+            <div class="blog-table-wrap">
+              <table class="blog-table">
+                <thead>
+                  <tr>
+                    <th>Feature</th>
+                    <th>Simple extraction more likely</th>
+                    <th>Surgical extraction more likely</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Tooth position</td>
+                    <td>Fully erupted</td>
+                    <td>Impacted, partially erupted, or submerged</td>
+                  </tr>
+                  <tr>
+                    <td>Crown structure</td>
+                    <td>Enough tooth for forceps grip</td>
+                    <td>Grossly broken down or root stump</td>
+                  </tr>
+                  <tr>
+                    <td>Root form</td>
+                    <td>Favorable conical or mild root shape</td>
+                    <td>
+                      Divergent, curved, bulbous, or hypercementosed roots
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Bone</td>
+                    <td>Socket can expand predictably</td>
+                    <td>Dense bone, ankylosis, or limited expansion</td>
+                  </tr>
+                  <tr>
+                    <td>Access</td>
+                    <td>Good mouth opening and visibility</td>
+                    <td>Limited access, distal tooth, third molar, trismus</td>
+                  </tr>
+                  <tr>
+                    <td>Anatomy</td>
+                    <td>Away from high-risk structures</td>
+                    <td>
+                      Close to sinus, inferior alveolar nerve, or adjacent roots
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h2>3. The signs that simple extraction is becoming unsafe</h2>
+            <p>
+              The warning sign is not only pain or bleeding. The real warning is
+              loss of control. If the tooth is not moving despite correct
+              elevator use, if the crown is crumbling, if the root anatomy is
+              resisting, or if visibility is poor, the plan should change before
+              damage happens.
+            </p>
+
+            <p>
+              This is especially important in mandibular molars, maxillary
+              molars, retained roots, and third molars. In those cases, forcing
+              the tooth may create the exact complication the surgical approach
+              was meant to avoid.
+            </p>
+
+            <div class="study-form-card">
+              <h3>Stop point</h3>
+              <p>
+                If controlled luxation is not producing controlled movement,
+                stop and reassess. More force is not a treatment plan.
+              </p>
+            </div>
+
+            <h2>4. Radiographs decide the difficulty before the forceps do</h2>
+            <p>
+              Pre-operative radiographs help you see root number, root shape,
+              caries depth, periapical pathology, retained roots, proximity to
+              the maxillary sinus, and relationship to the inferior alveolar
+              canal. They also help you decide whether the case is suitable for
+              your setting.
+            </p>
+
+            <p>
+              For third molars, radiographic assessment becomes even more
+              important because impaction depth, angulation, bone coverage, and
+              canal relationship can change the plan. This links strongly with
+              <a
+                href="impacted-mandibular-third-molar-remove-monitor-refer.html"
+                >impacted mandibular third molar decision-making</a
+              >
+              and
+              <a href="inferior-alveolar-nerve-injury-third-molar-surgery.html"
+                >inferior alveolar nerve injury after third molar surgery</a
+              >.
+            </p>
+
+            <a
+              href="impacted-mandibular-third-molar-remove-monitor-refer.html"
+              class="study-answer-card"
+              style="text-decoration: none; color: inherit; display: block"
+            >
+              <h3 style="font-size: 1rem; margin: 0 0 4px; color: #0a3d62">
+                Third molar not straightforward?
+              </h3>
+              <p style="margin: 0; font-size: 0.9rem; color: #64748b">
+                Decide removal, monitoring, or referral from anatomy and
+                symptoms, not from pressure to treat every wisdom tooth the same
+                way.
+              </p>
+            </a>
+
+            <h2>5. When a flap is needed</h2>
+            <p>
+              A flap is needed when access through the socket is not enough. The
+              aim is not to make the procedure more aggressive. The aim is to
+              make it controlled. A well-planned flap improves visibility,
+              protects soft tissues, and allows bone removal or sectioning under
+              direct control.
+            </p>
+
+            <p>
+              A flap may be needed for impacted teeth, broken roots below the
+              gingival margin, retained roots covered by bone, surgical
+              exposure, or when the tooth cannot be delivered safely with closed
+              technique.
+            </p>
+
+            <div class="study-form-card">
+              <h3>Clean wording</h3>
+              <p>
+                “I would raise a flap if closed extraction does not provide safe
+                access or visibility, especially if bone removal or root
+                retrieval is required.”
+              </p>
+            </div>
+
+            <h2>6. When bone removal is needed</h2>
+            <p>
+              Bone removal is used to create a path of delivery or expose the
+              part of the tooth that is preventing removal. It should be planned
+              and conservative. Random bone removal creates trauma without
+              solving the mechanical problem.
+            </p>
+
+            <p>
+              The key question is: what is blocking delivery? If the obstruction
+              is buccal bone, dense crestal bone, interradicular bone, or bone
+              overlying an impacted crown, then controlled bone removal may be
+              safer than uncontrolled force.
+            </p>
+
+            <div class="blog-table-wrap">
+              <table class="blog-table">
+                <thead>
+                  <tr>
+                    <th>Problem</th>
+                    <th>Why forceps alone may fail</th>
+                    <th>Surgical solution</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Root stump below gingival margin</td>
+                    <td>No coronal grip and poor visibility</td>
+                    <td>Flap, bone removal if needed, root elevation</td>
+                  </tr>
+                  <tr>
+                    <td>Divergent molar roots</td>
+                    <td>Roots block each other during delivery</td>
+                    <td>Section roots and remove separately</td>
+                  </tr>
+                  <tr>
+                    <td>Impacted third molar</td>
+                    <td>Bone and second molar block path</td>
+                    <td>
+                      Flap, bone removal, sectioning, referral if high risk
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Dense mandibular bone</td>
+                    <td>Limited socket expansion</td>
+                    <td>Controlled bone removal or sectioning</td>
+                  </tr>
+                  <tr>
+                    <td>Curved root apex</td>
+                    <td>Apex may fracture if forced</td>
+                    <td>Careful sectioning or surgical root retrieval</td>
+                  </tr>
+                  <tr>
+                    <td>Close sinus relationship</td>
+                    <td>Risk of oroantral communication</td>
+                    <td>Gentle technique, imaging, referral when needed</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h2>7. Sectioning is a control technique, not a failure</h2>
+            <p>
+              Tooth sectioning is often the cleanest decision in multi-rooted
+              teeth. It separates the tooth into smaller parts so each root can
+              follow its own path of removal. This is especially useful for
+              mandibular molars, maxillary molars, and impacted third molars.
+            </p>
+
+            <p>
+              Planned sectioning is different from rescuing a case after
+              excessive force. If the radiograph already shows divergent roots
+              or a difficult path of withdrawal, sectioning early may reduce
+              trauma.
+            </p>
+
+            <a
+              href="coronectomy-vs-extraction-inferior-alveolar-nerve-risk.html"
+              class="study-answer-card"
+              style="text-decoration: none; color: inherit; display: block"
+            >
+              <h3 style="font-size: 1rem; margin: 0 0 4px; color: #0a3d62">
+                Close to the inferior alveolar nerve?
+              </h3>
+              <p style="margin: 0; font-size: 0.9rem; color: #64748b">
+                In selected high-risk mandibular third molars, coronectomy may
+                be discussed instead of complete root removal.
+              </p>
+            </a>
+
+            <h2>8. Root fracture: retrieve, leave, or refer?</h2>
+            <p>
+              A fractured root does not automatically mean aggressive retrieval.
+              The decision depends on root size, mobility, infection, symptoms,
+              proximity to anatomy, and the risk of retrieval. A small, deeply
+              placed, non-infected apex close to the sinus or nerve may be more
+              dangerous to chase than to monitor.
+            </p>
+
+            <p>
+              But a mobile infected root, a symptomatic retained fragment, or a
+              fragment that prevents healing may need removal. The safe answer
+              is not “always remove” or “always leave.” The safe answer is
+              risk-based.
+            </p>
+
+            <div class="study-form-card">
+              <h3>Exam-safe phrase</h3>
+              <p>
+                “If a root fractures, I would assess visibility, mobility,
+                infection, size, and relation to vital structures before
+                deciding whether retrieval, referral, or documented monitoring
+                is safest.”
+              </p>
+            </div>
+
+            <h2>9. Third molars are not routine simple extractions</h2>
+            <p>
+              Third molars often need a different mindset because access,
+              impaction, angulation, bone coverage, and nerve proximity can all
+              affect difficulty. A partially erupted third molar with recurrent
+              pericoronitis is not the same as a fully erupted premolar with
+              straight roots.
+            </p>
+
+            <p>
+              If the third molar has recurrent soft tissue infection, connect
+              the case with
+              <a
+                href="pericoronitis-irrigation-antibiotics-operculectomy-extraction.html"
+                >pericoronitis management</a
+              >. If imaging suggests high inferior alveolar nerve risk, connect
+              it with
+              <a
+                href="coronectomy-vs-extraction-inferior-alveolar-nerve-risk.html"
+                >coronectomy vs complete extraction</a
+              >.
+            </p>
+
+            <h2>10. When referral is the cleanest treatment</h2>
+            <p>
+              Referral is not weakness. Referral is good judgment when the risk
+              is beyond your setting, equipment, training, or patient factors.
+              This includes difficult impactions, close nerve relationship, high
+              sinus risk, limited mouth opening, uncontrolled medical risk,
+              complex anticoagulant decisions, or suspected jaw pathology.
+            </p>
+
+            <p>
+              Medical risk matters before extraction. A patient taking
+              anticoagulants or antiplatelets needs planned bleeding management,
+              not a last-minute panic. Link this decision with
+              <a href="dental-extraction-anticoagulants-antiplatelets.html"
+                >dental extraction in patients taking anticoagulants or
+                antiplatelets</a
+              >
+              and
+              <a href="mronj-risk-before-dental-extraction.html"
+                >MRONJ risk before dental extraction</a
+              >.
+            </p>
+
+            <div class="blog-table-wrap">
+              <table class="blog-table">
+                <thead>
+                  <tr>
+                    <th>Referral trigger</th>
+                    <th>Risk</th>
+                    <th>Better action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Mandibular third molar close to canal</td>
+                    <td>Inferior alveolar nerve injury</td>
+                    <td>OMFS assessment, CBCT if indicated, discuss options</td>
+                  </tr>
+                  <tr>
+                    <td>Maxillary molar roots close to sinus</td>
+                    <td>Oroantral communication</td>
+                    <td>Careful plan or referral if high risk</td>
+                  </tr>
+                  <tr>
+                    <td>Severe trismus or spreading infection</td>
+                    <td>Airway or fascial space risk</td>
+                    <td>Urgent escalation</td>
+                  </tr>
+                  <tr>
+                    <td>Antiresorptive or antiangiogenic medication history</td>
+                    <td>MRONJ risk</td>
+                    <td>Risk assessment before extraction</td>
+                  </tr>
+                  <tr>
+                    <td>Uncontrolled bleeding risk</td>
+                    <td>Post-operative hemorrhage</td>
+                    <td>Plan local hemostasis and medical coordination</td>
+                  </tr>
+                  <tr>
+                    <td>Suspicious radiolucency or cystic change</td>
+                    <td>Pathology missed</td>
+                    <td>Refer for diagnosis and surgical planning</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h2>11. Consent should match the real procedure</h2>
+            <p>
+              If a tooth may need surgical access, the consent should say so.
+              Patients should understand that the plan may involve a flap, bone
+              removal, sectioning, sutures, post-operative swelling, bleeding,
+              dry socket risk, infection risk, and altered sensation when nerve
+              structures are relevant.
+            </p>
+
+            <p>
+              Consent is not only a form. It is how you show the patient that
+              the extraction has been assessed properly. A difficult surgical
+              extraction should not be presented like a quick forceps removal.
+            </p>
+
+            <h2>
+              12. Post-operative planning starts before the tooth is removed
+            </h2>
+            <p>
+              A surgical extraction usually needs clearer post-operative advice:
+              pressure for bleeding, soft diet, gentle cleaning, avoiding
+              smoking, swelling expectations, pain control, and when to return.
+              This is why surgical planning links naturally with
+              <a href="dry-socket-vs-post-extraction-infection.html"
+                >dry socket vs infection</a
+              >
+              and
+              <a href="post-extraction-bleeding-local-measures-referral.html"
+                >post-extraction bleeding</a
+              >.
+            </p>
+
+            <div class="study-form-card">
+              <h3>Patient-friendly explanation</h3>
+              <p>
+                “This tooth may not come out safely by simple forceps alone. To
+                reduce trauma, we may need to gently open the gum, remove a
+                small amount of bone, or divide the tooth into sections so it
+                can be removed in a controlled way.”
+              </p>
+            </div>
+
+            <h2>13. Common mistakes</h2>
+            <div class="blog-table-wrap">
+              <table class="blog-table">
+                <thead>
+                  <tr>
+                    <th>Mistake</th>
+                    <th>Why it is risky</th>
+                    <th>Better habit</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Pulling harder when the tooth is not moving</td>
+                    <td>Root, bone, or soft tissue damage</td>
+                    <td>Pause, reassess, consider sectioning or flap</td>
+                  </tr>
+                  <tr>
+                    <td>No pre-operative radiograph for a difficult tooth</td>
+                    <td>Root shape and anatomy are missed</td>
+                    <td>Use imaging when difficulty is expected</td>
+                  </tr>
+                  <tr>
+                    <td>Late sectioning after crown destruction</td>
+                    <td>Less control and poorer access</td>
+                    <td>Section early when anatomy predicts difficulty</td>
+                  </tr>
+                  <tr>
+                    <td>Chasing every fractured apex</td>
+                    <td>Sinus or nerve injury risk</td>
+                    <td>Risk-assess retrieval vs monitoring vs referral</td>
+                  </tr>
+                  <tr>
+                    <td>Ignoring medical risk</td>
+                    <td>Bleeding, MRONJ, or infection complications</td>
+                    <td>
+                      Check medications and systemic risks before extraction
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Weak safety-net advice</td>
+                    <td>Complications are recognized late</td>
+                    <td>Give clear return instructions</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h2>14. OSCE answer</h2>
+            <p>
+              A strong OSCE answer explains the mechanical reason for changing
+              from simple to surgical extraction. It should not sound like you
+              are escalating because you failed. It should sound like you are
+              choosing the safest controlled approach.
+            </p>
+
+            <div class="study-form-card">
+              <h3>Model answer</h3>
+              <p>
+                “I would first assess the tooth clinically and radiographically,
+                looking at access, crown structure, root morphology, bone
+                support, proximity to the maxillary sinus or inferior alveolar
+                nerve, and patient medical risk. If the tooth is erupted,
+                accessible, and can be luxated safely, a simple extraction may
+                be appropriate. If access is poor, the tooth is impacted or
+                badly broken down, roots are divergent or curved, bone blocks
+                the path of removal, or important anatomy is close, I would plan
+                a surgical approach such as flap reflection, controlled bone
+                removal, tooth sectioning, suturing, or referral. I would avoid
+                excessive force and explain the risks, benefits, alternatives,
+                and post-operative instructions.”
+              </p>
+            </div>
+
+            <h2>15. FAQ</h2>
+
+            <h3>Is a surgical extraction worse than a simple extraction?</h3>
+            <p>
+              Not necessarily. A surgical extraction may be safer when it gives
+              better access and control. The problem is not surgery; the problem
+              is uncontrolled force.
+            </p>
+
+            <h3>Does every broken tooth need surgical extraction?</h3>
+            <p>
+              No. Some broken teeth can still be elevated simply. Surgical
+              access is more likely when the remaining root is below the
+              gingival margin, covered by bone, infected, or difficult to
+              visualize.
+            </p>
+
+            <h3>When should a molar be sectioned?</h3>
+            <p>
+              Sectioning is useful when roots diverge, the crown is weak, the
+              tooth is multi-rooted, or each root needs a different path of
+              removal.
+            </p>
+
+            <h3>When should I refer a third molar?</h3>
+            <p>
+              Refer when the tooth is deeply impacted, close to the inferior
+              alveolar nerve, associated with pathology, difficult to access, or
+              outside your training and setting.
+            </p>
+
+            <h3>Can I leave a small fractured root tip?</h3>
+            <p>
+              Sometimes. The decision depends on infection, symptoms, root size,
+              mobility, and proximity to vital structures. Document the decision
+              and refer if risk is high.
+            </p>
+
+            <h3>What should I tell the patient before surgical extraction?</h3>
+            <p>
+              Explain that access may require a flap, bone removal, sectioning,
+              sutures, swelling, bleeding risk, infection risk, dry socket risk,
+              and nerve or sinus risks when relevant.
+            </p>
+
+            <div class="blog-cta-card">
+              <h2>How DentAIstudy helps</h2>
+              <p>
+                DentAIstudy turns extraction difficulty into a decision pathway
+                instead of a memorized definition of simple vs surgical
+                extraction.
+              </p>
+              <ul>
+                <li>Flashcards for extraction difficulty predictors</li>
+                <li>OSCE scripts for consent and referral explanation</li>
+                <li>Tables linking anatomy, technique, and complications</li>
+                <li>
+                  Decision prompts for flap, sectioning, bone removal, and
+                  referral
+                </li>
+              </ul>
+              <a href="../../study.html" class="btn btn-primary">
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+                  <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+                </svg>
+                Try Study Builder
+              </a>
+            </div>
+
+            <h2>Related oral surgery articles</h2>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px">
+              <a
+                href="impacted-mandibular-third-molar-remove-monitor-refer.html"
+                style="
+                  font-size: 0.85rem;
+                  padding: 6px 14px;
+                  background: #f1f5f9;
+                  border-radius: 999px;
+                  color: #0a3d62;
+                  text-decoration: none;
+                "
+                >Impacted Mandibular Third Molar</a
+              >
+              <a
+                href="coronectomy-vs-extraction-inferior-alveolar-nerve-risk.html"
+                style="
+                  font-size: 0.85rem;
+                  padding: 6px 14px;
+                  background: #f1f5f9;
+                  border-radius: 999px;
+                  color: #0a3d62;
+                  text-decoration: none;
+                "
+                >Coronectomy vs Extraction</a
+              >
+              <a
+                href="pericoronitis-irrigation-antibiotics-operculectomy-extraction.html"
+                style="
+                  font-size: 0.85rem;
+                  padding: 6px 14px;
+                  background: #f1f5f9;
+                  border-radius: 999px;
+                  color: #0a3d62;
+                  text-decoration: none;
+                "
+                >Pericoronitis Management</a
+              >
+              <a
+                href="oroantral-communication-after-maxillary-extraction.html"
+                style="
+                  font-size: 0.85rem;
+                  padding: 6px 14px;
+                  background: #f1f5f9;
+                  border-radius: 999px;
+                  color: #0a3d62;
+                  text-decoration: none;
+                "
+                >Oroantral Communication</a
+              >
+              <a
+                href="dry-socket-vs-post-extraction-infection.html"
+                style="
+                  font-size: 0.85rem;
+                  padding: 6px 14px;
+                  background: #f1f5f9;
+                  border-radius: 999px;
+                  color: #0a3d62;
+                  text-decoration: none;
+                "
+                >Dry Socket vs Infection</a
+              >
+              <a
+                href="post-extraction-bleeding-local-measures-referral.html"
+                style="
+                  font-size: 0.85rem;
+                  padding: 6px 14px;
+                  background: #f1f5f9;
+                  border-radius: 999px;
+                  color: #0a3d62;
+                  text-decoration: none;
+                "
+                >Post-Extraction Bleeding</a
+              >
+            </div>
+
+            <h2>References</h2>
+            <ul>
+              <li>
+                <a
+                  href="https://www.ncbi.nlm.nih.gov/books/NBK589654/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style="color: #0a3d62"
+                  >StatPearls / NCBI Bookshelf — Oral Surgery, Extraction of
+                  Teeth</a
+                >
+                | Clinical overview of dental extraction assessment, technique,
+                instruments, indications, contraindications, and complications.
+              </li>
+              <li>
+                <a
+                  href="https://www.ncbi.nlm.nih.gov/books/NBK592391/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style="color: #0a3d62"
+                  >StatPearls / NCBI Bookshelf — Oral Surgery, Extraction of
+                  Unerupted Teeth</a
+                >
+                | Surgical extraction principles including flap design, bone
+                removal, tooth sectioning, and suturing for unerupted teeth.
+              </li>
+              <li>
+                <a
+                  href="https://www.ncbi.nlm.nih.gov/books/NBK610687/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style="color: #0a3d62"
+                  >StatPearls / NCBI Bookshelf — Oral Flap Design</a
+                >
+                | Reference on flap planning, surgical access, tissue handling,
+                visibility, and protection of vital structures.
+              </li>
+              <li>
+                <a
+                  href="https://aaoms.org/wp-content/uploads/2024/07/impacted_third_molars.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style="color: #0a3d62"
+                  >American Association of Oral and Maxillofacial Surgeons — The
+                  Management of Impacted Third Molar Teeth</a
+                >
+                | AAOMS clinical paper discussing impacted third molars,
+                symptoms, pathology, diagnosis, and surgical decision-making.
+              </li>
+              <li>
+                <a
+                  href="https://www.rcseng.ac.uk/-/media/files/rcs/fds/guidelines/3rd-molar-guidelines--april-2021.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style="color: #0a3d62"
+                  >Royal College of Surgeons of England — Parameters of Care for
+                  Mandibular Third Molar Management</a
+                >
+                | Guidance on mandibular third molar assessment, impaction,
+                inferior alveolar nerve risk, and care pathways.
+              </li>
+              <li>
+                <a
+                  href="https://www.msdmanuals.com/professional/dental-disorders/dental-emergencies/postextraction-problems"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style="color: #0a3d62"
+                  >MSD Manual Professional Edition — Postextraction Problems</a
+                >
+                | Professional reference for post-extraction bleeding, dry
+                socket, infection, and early complication management.
+              </li>
+            </ul>
+          </article>
+        </div>
+      </main>
+
+      <!-- FOOTER -->
+      <footer class="site-footer">
+        <div class="container">
+          <div class="footer-top">
+            <div>
+              <a href="../../index.html" class="footer-brand">DentAIstudy</a>
+              <p>AI-enhanced tools for dental students and residents.</p>
+              <div class="footer-social">
+                <a
+                  href="https://www.tiktok.com/@dentaistudy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="DentAIstudy on TikTok"
+                >
+                  <img
+                    src="../../assets/img/footer-icons/tiktok-icon.png"
+                    alt="TikTok"
+                    class="footer-social-img"
+                  />
+                </a>
+
+                <a
+                  href="mailto:info@dentaistudy.com"
+                  aria-label="Contact DentAIstudy by email"
+                >
+                  <img
+                    src="../../assets/img/footer-icons/email-icon.png"
+                    alt="Email"
+                    class="footer-social-img"
+                  />
+                </a>
+              </div>
+            </div>
+
+            <div class="footer-column">
+              <h4>Product</h4>
+              <a href="../../subjects.html">Subjects</a>
+              <a href="../../exams.html">Exams</a>
+              <a href="../../study.html">Study Builder</a>
+              <a href="../../blogs.html">Blogs</a>
+            </div>
+
+            <div class="footer-column">
+              <h4>Company</h4>
+              <a href="../../about.html">About</a>
+              <a href="../../contact.html">Contact</a>
+              <a href="../../pricing.html">Pricing</a>
+              <a href="../../faqs.html">FAQ</a>
+            </div>
+
+            <div class="footer-column">
+              <h4>Legal</h4>
+              <a href="../../privacy.html">Privacy Policy</a>
+              <a href="../../terms.html">Terms &amp; Conditions</a>
+              <a href="../../cookies.html">Cookies Policy</a>
+              <a href="../../disclaimer.html">Disclaimer</a>
+              <a href="../../billing.html">Billing</a>
+              <a href="../../refund-policy.html">Refunds</a>
+            </div>
+          </div>
+
+          <div class="footer-bottom">
+            © 2026 DentAIstudy. All rights reserved.
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
