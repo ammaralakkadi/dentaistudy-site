@@ -26,6 +26,8 @@ document.addEventListener("DOMContentLoaded", () => {
     orthodontics: { category: "ortho", tag: "Ortho" },
     pedo: { category: "pedo", tag: "Pedo" },
     perio: { category: "perio", tag: "Perio" },
+    anatomy: { category: "anatomy", tag: "Anatomy" },
+    surgery: { category: "surgery", tag: "Surgery" },
     general: { category: "general", tag: "General" },
   };
 
@@ -41,6 +43,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (href.includes("blogs/sdle/")) return TAG_META.sdle;
     if (href.includes("blogs/uae/")) return TAG_META.uae;
     if (href.includes("blogs/pediatric-dentistry/")) return TAG_META.pedo;
+    if (href.includes("blogs/oral-anatomy/")) return TAG_META.anatomy;
+    if (href.includes("blogs/oral-surgery/")) return TAG_META.surgery;
 
     if (tag === "operative") return TAG_META.operative;
     if (tag === "endo" || tag === "endodontics") return TAG_META.endo;
@@ -48,6 +52,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (tag === "ortho" || tag === "orthodontics") return TAG_META.ortho;
     if (tag === "pedo") return TAG_META.pedo;
     if (tag === "perio") return TAG_META.perio;
+    if (tag === "anatomy" || tag === "oral anatomy") return TAG_META.anatomy;
+    if (tag === "surgery" || tag === "oral surgery") return TAG_META.surgery;
 
     return TAG_META.general;
   }
@@ -61,6 +67,11 @@ document.addEventListener("DOMContentLoaded", () => {
       .replace(/\bprostho\b/gi, "prostho prosthodontics prosthodontic")
       .replace(/\bpedo\b/gi, "pedo pedodontics pediatric dentistry")
       .replace(/\bperio\b/gi, "perio periodontics periodontology periodontal")
+      .replace(/\banatomy\b/gi, "anatomy oral anatomy dental anatomy head neck")
+      .replace(
+        /\bsurgery\b/gi,
+        "surgery oral surgery oral maxillofacial surgery extraction trauma infection",
+      )
       .toLowerCase()
       .replace(/[-_/]+/g, " ")
       .replace(/\s+/g, " ")
@@ -230,6 +241,11 @@ document.addEventListener("DOMContentLoaded", () => {
     orthodontics: "ortho",
     pedo: "pedo",
     perio: "perio",
+    anatomy: "anatomy",
+    "oral anatomy": "anatomy",
+    surgery: "surgery",
+    "oral surgery": "surgery",
+    "oral maxillofacial surgery": "surgery",
     general: "general",
   };
 

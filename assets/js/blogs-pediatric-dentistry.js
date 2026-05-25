@@ -3,14 +3,25 @@ window.BLOG_REGISTRY = window.BLOG_REGISTRY || [];
 
 window.BLOG_REGISTRY.push(
   {
-    title: "Stainless Steel Crown Preparation for Primary Molars",
-    url: "blogs/pediatric-dentistry/stainless-steel-crown-primary-molar-prep.html",
+    title: "Tell-Show-Do vs Voice Control in Pediatric Dentistry",
+    url: "blogs/pediatric-dentistry/tell-show-do-vs-voice-control.html",
     tag: "Pedo",
     description:
-      "A step-by-step pediatric dentistry guide to stainless steel crown preparation in primary molars, including indications, reduction, crown fit, cementation, and exam mistakes.",
-    meta: "12 min read • Pediatric dentistry",
+      "A practical comparison of Tell-Show-Do and voice control in pediatric dentistry, including indications, parent explanation, cooperation, consent, and common mistakes.",
+    meta: "11 min read • Pediatric dentistry",
     category:
-      "pedo pediatric dentistry stainless steel crown primary molar preparation SSC full coverage primary teeth",
+      "pedo pediatric dentistry tell show do voice control behavior guidance child cooperation dental anxiety",
+  },
+  {
+    title:
+      "Local Anesthesia Dose in Children: How to Calculate Dental Cartridges Safely",
+    url: "blogs/pediatric-dentistry/pediatric-local-anesthesia-dose-cartridge-calculation.html",
+    tag: "Pedo",
+    description:
+      "A pediatric local anesthesia dose guide covering mg/kg limits, cartridge concentration, epinephrine, documentation, and common safety traps.",
+    meta: "11 min read • Pediatric dentistry",
+    category:
+      "pedo pediatric dentistry local anesthesia dose child cartridge calculation mg kg lidocaine safety",
   },
   {
     title: "Formocresol vs MTA Pulpotomy in Primary Molars",
@@ -33,6 +44,17 @@ window.BLOG_REGISTRY.push(
       "pedo pediatric dentistry indirect pulp treatment primary teeth IPT deep caries selective caries removal",
   },
   {
+    title:
+      "Pulpectomy in Primary Molars: Working Length, Filling Material, and Failure Signs",
+    url: "blogs/pediatric-dentistry/primary-molar-pulpectomy-working-length-filling-material.html",
+    tag: "Pedo",
+    description:
+      "A clinical guide to primary molar pulpectomy, including case selection, working length, resorbable filling materials, obturation errors, restoration, and failure signs.",
+    meta: "12 min read • Pediatric dentistry",
+    category:
+      "pedo pediatric dentistry primary molar pulpectomy working length filling material obturation failure signs",
+  },
+  {
     title: "Extraction vs Pulp Therapy for Badly Broken Primary Molars",
     url: "blogs/pediatric-dentistry/extraction-vs-pulp-therapy-primary-molar.html",
     tag: "Pedo",
@@ -41,46 +63,6 @@ window.BLOG_REGISTRY.push(
     meta: "12 min read • Pediatric dentistry",
     category:
       "pedo pediatric dentistry extraction pulp therapy primary molar badly broken tooth pulpotomy pulpectomy restorability",
-  },
-  {
-    title: "Space Maintainer After Early Primary Molar Loss",
-    url: "blogs/pediatric-dentistry/space-maintainer-primary-molar-loss.html",
-    tag: "Pedo",
-    description:
-      "An exam-focused guide to space maintainers after early primary molar loss, including band and loop, distal shoe, lingual arch, Nance, and appliance risks.",
-    meta: "13 min read • Pediatric dentistry",
-    category:
-      "pedo pediatric dentistry space maintainer primary molar loss band and loop distal shoe lingual arch nance",
-  },
-  {
-    title: "Natal and Neonatal Teeth: Diagnosis and Management",
-    url: "blogs/pediatric-dentistry/natal-neonatal-teeth-management.html",
-    tag: "Pedo",
-    description:
-      "A clear guide to natal and neonatal teeth, including diagnosis, mobility, feeding problems, Riga-Fede disease, aspiration risk, smoothing, extraction, and parent advice.",
-    meta: "10 min read • Pediatric dentistry",
-    category:
-      "pedo pediatric dentistry natal teeth neonatal teeth Riga-Fede disease infant oral health extraction mobility",
-  },
-  {
-    title: "Rampant Caries in Children: Exam Diagnosis and Treatment Plan",
-    url: "blogs/pediatric-dentistry/rampant-caries-child-treatment-plan.html",
-    tag: "Pedo",
-    description:
-      "A staged treatment-planning guide for rampant caries in children, including ECC, caries risk, prevention, SDF, pulp therapy, stainless steel crowns, and extraction.",
-    meta: "14 min read • Pediatric dentistry",
-    category:
-      "pedo pediatric dentistry rampant caries children early childhood caries ECC SDF fluoride treatment plan",
-  },
-  {
-    title: "Primary Tooth Intrusion: What to Do in Dental Trauma",
-    url: "blogs/pediatric-dentistry/primary-tooth-intrusion-management.html",
-    tag: "Pedo",
-    description:
-      "A trauma-focused guide to primary tooth intrusion, including diagnosis, radiographs, spontaneous repositioning, extraction decisions, follow-up, and permanent successor risks.",
-    meta: "12 min read • Pediatric dentistry",
-    category:
-      "pedo pediatric dentistry primary tooth intrusion dental trauma luxation spontaneous reeruption permanent successor",
   },
   {
     title: "Apexogenesis vs Apexification in Immature Permanent Teeth",
@@ -93,13 +75,84 @@ window.BLOG_REGISTRY.push(
       "pedo pediatric dentistry apexogenesis apexification immature permanent teeth open apex regenerative endodontics trauma",
   },
   {
-    title: "Tell-Show-Do vs Voice Control in Pediatric Dentistry",
-    url: "blogs/pediatric-dentistry/tell-show-do-vs-voice-control.html",
+    title: "Rampant Caries in Children: Exam Diagnosis and Treatment Plan",
+    url: "blogs/pediatric-dentistry/rampant-caries-child-treatment-plan.html",
     tag: "Pedo",
     description:
-      "A practical comparison of Tell-Show-Do and voice control in pediatric dentistry, including indications, parent explanation, cooperation, consent, and common mistakes.",
+      "A staged treatment-planning guide for rampant caries in children, including ECC, caries risk, prevention, SDF, pulp therapy, stainless steel crowns, and extraction.",
+    meta: "14 min read • Pediatric dentistry",
+    category:
+      "pedo pediatric dentistry rampant caries children early childhood caries ECC SDF fluoride treatment plan",
+  },
+  {
+    title: "Silver Diamine Fluoride vs Hall Technique vs ART in Children",
+    url: "blogs/pediatric-dentistry/sdf-vs-hall-technique-vs-art-primary-teeth.html",
+    tag: "Pedo",
+    description:
+      "A decision guide comparing SDF, Hall Technique, and ART in children, including indications, limitations, esthetics, cooperation, caries control, and follow-up.",
+    meta: "12 min read • Pediatric dentistry",
+    category:
+      "pedo pediatric dentistry SDF silver diamine fluoride Hall technique ART atraumatic restorative treatment primary teeth",
+  },
+  {
+    title: "Stainless Steel Crown Preparation for Primary Molars",
+    url: "blogs/pediatric-dentistry/stainless-steel-crown-primary-molar-prep.html",
+    tag: "Pedo",
+    description:
+      "A step-by-step pediatric dentistry guide to stainless steel crown preparation in primary molars, including indications, reduction, crown fit, cementation, and exam mistakes.",
+    meta: "12 min read • Pediatric dentistry",
+    category:
+      "pedo pediatric dentistry stainless steel crown primary molar preparation SSC full coverage primary teeth",
+  },
+  {
+    title: "Primary Tooth Intrusion: What to Do in Dental Trauma",
+    url: "blogs/pediatric-dentistry/primary-tooth-intrusion-management.html",
+    tag: "Pedo",
+    description:
+      "A trauma-focused guide to primary tooth intrusion, including diagnosis, radiographs, spontaneous repositioning, extraction decisions, follow-up, and permanent successor risks.",
+    meta: "12 min read • Pediatric dentistry",
+    category:
+      "pedo pediatric dentistry primary tooth intrusion dental trauma luxation spontaneous reeruption permanent successor",
+  },
+  {
+    title: "Space Maintainer After Early Primary Molar Loss",
+    url: "blogs/pediatric-dentistry/space-maintainer-primary-molar-loss.html",
+    tag: "Pedo",
+    description:
+      "An exam-focused guide to space maintainers after early primary molar loss, including band and loop, distal shoe, lingual arch, Nance, and appliance risks.",
+    meta: "13 min read • Pediatric dentistry",
+    category:
+      "pedo pediatric dentistry space maintainer primary molar loss band and loop distal shoe lingual arch nance",
+  },
+  {
+    title:
+      "Ectopic Eruption of the First Permanent Molar: Diagnosis and Management",
+    url: "blogs/pediatric-dentistry/ectopic-eruption-first-permanent-molar.html",
+    tag: "Pedo",
+    description:
+      "An exam-focused guide to ectopic eruption of the first permanent molar, including diagnosis, radiographs, self-correction, separators, distalization, and referral.",
     meta: "11 min read • Pediatric dentistry",
     category:
-      "pedo pediatric dentistry tell show do voice control behavior guidance child cooperation dental anxiety",
+      "pedo pediatric dentistry ectopic eruption first permanent molar self correction separator distalization referral",
+  },
+  {
+    title: "Pediatric Dental Abscess: Antibiotic vs Drainage vs Extraction",
+    url: "blogs/pediatric-dentistry/child-dental-abscess-antibiotic-drainage-extraction.html",
+    tag: "Pedo",
+    description:
+      "A clinical guide to pediatric dental abscess decisions, including antibiotics, drainage, pulp therapy, extraction, red flags, parent explanation, and stewardship.",
+    meta: "12 min read • Pediatric dentistry",
+    category:
+      "pedo pediatric dentistry child dental abscess antibiotic drainage extraction swelling cellulitis red flags",
+  },
+  {
+    title: "Natal and Neonatal Teeth: Diagnosis and Management",
+    url: "blogs/pediatric-dentistry/natal-neonatal-teeth-management.html",
+    tag: "Pedo",
+    description:
+      "A clear guide to natal and neonatal teeth, including diagnosis, mobility, feeding problems, Riga-Fede disease, aspiration risk, smoothing, extraction, and parent advice.",
+    meta: "10 min read • Pediatric dentistry",
+    category:
+      "pedo pediatric dentistry natal teeth neonatal teeth Riga-Fede disease infant oral health extraction mobility",
   },
 );

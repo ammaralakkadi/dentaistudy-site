@@ -71,7 +71,7 @@ window.BLOG_REGISTRY.push(
   },
   {
     title:
-      "INBDE High-Yield Foundation Areas — Where to Spend Your Time in 2026",
+      "INBDE High Yield Foundation Areas — Where to Spend Your Time in 2026",
     url: "blogs/inbde/inbde-high-yield-foundation-areas.html",
     tag: "INBDE",
     description:

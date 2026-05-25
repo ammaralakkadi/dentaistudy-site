@@ -56,7 +56,7 @@ window.BLOG_REGISTRY.push(
     category: "theory adex osce",
   },
   {
-    title: "ADEX Radiology OSCE – High-Yield Interpretation Guide",
+    title: "ADEX Radiology OSCE – High Yield Interpretation Guide",
     url: "blogs/adex/adex-radiology-osce.html",
     tag: "ADEX",
     description:
@@ -65,7 +65,7 @@ window.BLOG_REGISTRY.push(
     category: "theory adex osce radiology",
   },
   {
-    title: "ADEX Medical Emergencies OSCE – High-Yield Decision Guide",
+    title: "ADEX Medical Emergencies OSCE – High Yield Decision Guide",
     url: "blogs/adex/adex-emergencies-osce.html",
     tag: "ADEX",
     description:
@@ -83,7 +83,7 @@ window.BLOG_REGISTRY.push(
     category: "theory adex osce treatment",
   },
   {
-    title: "ADEX Ethics & Legal OSCE – High-Yield Decision Guide",
+    title: "ADEX Ethics & Legal OSCE – High Yield Decision Guide",
     url: "blogs/adex/adex-ethics-legal-osce.html",
     tag: "ADEX",
     description:
@@ -92,8 +92,7 @@ window.BLOG_REGISTRY.push(
     category: "theory adex osce ethics",
   },
   {
-    title:
-      "ADEX Periodontal Assessment OSCE – Probing, Charting & Diagnosis",
+    title: "ADEX Periodontal Assessment OSCE – Probing, Charting & Diagnosis",
     url: "blogs/adex/adex-periodontal-assessment-osce.html",
     tag: "ADEX",
     description:
@@ -111,8 +110,7 @@ window.BLOG_REGISTRY.push(
     category: "theory adex osce anesthesia",
   },
   {
-    title:
-      "ADEX Medical History Review OSCE – Red Flags & Modifications",
+    title: "ADEX Medical History Review OSCE – Red Flags & Modifications",
     url: "blogs/adex/adex-medical-history-review-osce.html",
     tag: "ADEX",
     description:
@@ -130,8 +128,7 @@ window.BLOG_REGISTRY.push(
     category: "theory adex osce infection",
   },
   {
-    title:
-      "ADEX Restorative Errors & Fail Points – Mistakes to Avoid",
+    title: "ADEX Restorative Errors & Fail Points – Mistakes to Avoid",
     url: "blogs/adex/adex-restorative-errors-fail-points.html",
     tag: "ADEX",
     description:
@@ -140,8 +137,7 @@ window.BLOG_REGISTRY.push(
     category: "skills adex restorative",
   },
   {
-    title:
-      "ADEX Radiographic Interpretation – Caries, Perio & Endo Patterns",
+    title: "ADEX Radiographic Interpretation – Caries, Perio & Endo Patterns",
     url: "blogs/adex/adex-radiographic-interpretation.html",
     tag: "ADEX",
     description:
@@ -159,8 +155,7 @@ window.BLOG_REGISTRY.push(
     category: "theory adex osce emergencies",
   },
   {
-    title:
-      "ADEX Patient Communication OSCE – Consent, Explanation & Behavior",
+    title: "ADEX Patient Communication OSCE – Consent, Explanation & Behavior",
     url: "blogs/adex/adex-patient-communication-osce.html",
     tag: "ADEX",
     description:
@@ -169,22 +164,21 @@ window.BLOG_REGISTRY.push(
     category: "theory adex osce communication",
   },
   {
-    title:
-      "ADEX Pharmacology Essentials – What You Must Know for the Exam",
+    title: "ADEX Pharmacology Essentials – What You Must Know for the Exam",
     url: "blogs/adex/adex-pharmacology-essentials.html",
     tag: "ADEX",
     description:
-      "High-yield analgesic, antibiotic, and emergency drug facts ADEX commonly tests in OSCE and viva questions.",
+      "High Yield analgesic, antibiotic, and emergency drug facts ADEX commonly tests in OSCE and viva questions.",
     meta: "7 min read • ADEX exam",
     category: "theory adex pharmacology",
   },
   {
-    title: "ADEX Common Viva Questions – High-Yield Short Answers",
+    title: "ADEX Common Viva Questions – High Yield Short Answers",
     url: "blogs/adex/adex-common-viva-questions.html",
     tag: "ADEX",
     description:
       "Short, structured sample answers to common ADEX viva questions in cariology, perio, endo, anesthesia, and emergencies.",
     meta: "8 min read • ADEX exam",
     category: "theory adex viva",
-  }
+  },
 );

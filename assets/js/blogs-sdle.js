@@ -87,7 +87,7 @@ window.BLOG_REGISTRY.push(
     url: "blogs/sdle/sdle-fdi-tooth-numbering-system-guide.html",
     tag: "SDLE",
     description:
-      "A quick and high-yield guide to the FDI tooth numbering system for SDLE candidates who want a cleaner way to memorise it.",
+      "A quick and High Yield guide to the FDI tooth numbering system for SDLE candidates who want a cleaner way to memorise it.",
     meta: "6 min read • SDLE exam",
     category: "study sdle dentistry-basics",
   },
