@@ -320,45 +320,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         profilePlanBadge.textContent = isPaidPlan ? "Pro plan" : "Free plan";
       }
 
-      // Study activity numbers
-      const packsEl = document.getElementById("das-profile-packs-count");
-      const osceEl = document.getElementById("das-profile-osce-count");
-      const flashcardEl = document.getElementById(
-        "das-profile-flashcard-count",
-      );
-      const topModeEl = document.getElementById("das-profile-top-mode");
+      // Profile activity: real saved Study Builder history
+      const chatCountEl = document.getElementById("das-profile-chat-count");
+      const answerCountEl = document.getElementById("das-profile-answer-count");
       const lastActiveEl = document.getElementById("das-profile-last-active");
-      const starredEl = document.getElementById("das-profile-starred-count");
-
-      if (packsEl) packsEl.textContent = packsCount;
-      if (osceEl) osceEl.textContent = osceCount;
-      if (flashcardEl) flashcardEl.textContent = flashcardCount;
-      if (starredEl) starredEl.textContent = starredCount;
-
-      if (topModeEl) {
-        let label = "";
-        switch (topMode) {
-          case "osce":
-            label = "OSCE flows";
-            break;
-          case "viva":
-            label = "Viva questions";
-            break;
-          case "theory":
-            label = "Theory questions";
-            break;
-          case "packs":
-            label = "Study packs";
-            break;
-          case "flashcard":
-          case "flashcards":
-            label = "Flashcard decks";
-            break;
-          default:
-            label = "–";
-        }
-        topModeEl.textContent = label || "–";
-      }
 
       if (lastActiveEl) {
         if (lastActive) {
@@ -374,6 +339,38 @@ document.addEventListener("DOMContentLoaded", async () => {
           }
         } else {
           lastActiveEl.textContent = "–";
+        }
+      }
+
+      if (chatCountEl || answerCountEl) {
+        if (chatCountEl) chatCountEl.textContent = "—";
+        if (answerCountEl) answerCountEl.textContent = "—";
+
+        try {
+          const [chatResult, answerResult] = await Promise.all([
+            supabase
+              .from("conversations")
+              .select("id", { count: "exact", head: true })
+              .eq("user_id", user.id),
+
+            supabase
+              .from("messages")
+              .select("id", { count: "exact", head: true })
+              .eq("user_id", user.id)
+              .eq("role", "assistant"),
+          ]);
+
+          if (chatCountEl && !chatResult.error) {
+            chatCountEl.textContent = chatResult.count ?? 0;
+          }
+
+          if (answerCountEl && !answerResult.error) {
+            answerCountEl.textContent = answerResult.count ?? 0;
+          }
+        } catch (err) {
+          console.warn("[profile] Could not load activity counts:", err);
+          if (chatCountEl) chatCountEl.textContent = "–";
+          if (answerCountEl) answerCountEl.textContent = "–";
         }
       }
 
@@ -494,11 +491,20 @@ document.addEventListener("DOMContentLoaded", async () => {
       const settingsFullNameInput =
         document.getElementById("settings-fullname");
       const settingsEmailInput = document.getElementById("settings-email");
-      const settingsDefaultLevelSelect = document.getElementById(
-        "settings-default-level",
+      const settingsDefaultLevelInputs = document.querySelectorAll(
+        'input[name="settings-default-level"]',
       );
       const settingsNewPasswordInput = document.getElementById(
         "settings-new-password",
+      );
+      const settingsConfirmPasswordInput = document.getElementById(
+        "settings-confirm-password",
+      );
+      const settingsPasswordNote = document.getElementById(
+        "settings-password-note",
+      );
+      const settingsPasswordToggleBtns = document.querySelectorAll(
+        "[data-settings-password-toggle]",
       );
       const settingsSaveBtn = document.getElementById("settings-save-btn");
       const settingsSaveStatus = document.getElementById(
@@ -514,15 +520,58 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
 
       // Pre-select current default level so Settings matches Profile
-      if (settingsDefaultLevelSelect && defaultLevel) {
-        settingsDefaultLevelSelect.value = defaultLevel;
+      if (settingsDefaultLevelInputs.length) {
+        settingsDefaultLevelInputs.forEach((input) => {
+          input.checked = input.value === defaultLevel;
+        });
+      }
+      const isPasswordRecovery =
+        window.location.hash.includes("type=recovery") ||
+        window.location.search.includes("type=recovery");
+
+      if (
+        isPasswordRecovery &&
+        settingsPasswordNote &&
+        settingsNewPasswordInput
+      ) {
+        settingsPasswordNote.textContent =
+          "Enter your new password, confirm it, then save changes.";
+        settingsPasswordNote.style.color = "#0f3c7d";
+        settingsNewPasswordInput.focus();
       }
 
+      settingsPasswordToggleBtns.forEach((btn) => {
+        const input = document.getElementById(
+          btn.dataset.settingsPasswordToggle,
+        );
+
+        if (!input) return;
+
+        btn.addEventListener("click", () => {
+          const shouldShow = input.type === "password";
+
+          input.type = shouldShow ? "text" : "password";
+          btn.textContent = shouldShow ? "Hide" : "Show";
+          btn.setAttribute(
+            "aria-label",
+            shouldShow ? "Hide password" : "Show password",
+          );
+        });
+      });
+
       // Handle Save button: update default_level (+ optional password)
-      if (settingsSaveBtn && settingsDefaultLevelSelect && settingsSaveStatus) {
+      if (
+        settingsSaveBtn &&
+        settingsDefaultLevelInputs.length &&
+        settingsSaveStatus
+      ) {
         settingsSaveBtn.addEventListener("click", async () => {
+          const checkedLevelInput = document.querySelector(
+            'input[name="settings-default-level"]:checked',
+          );
+
           const chosenLevel =
-            settingsDefaultLevelSelect.value === "postgraduate"
+            checkedLevelInput && checkedLevelInput.value === "postgraduate"
               ? "postgraduate"
               : "undergraduate";
 
@@ -530,9 +579,35 @@ document.addEventListener("DOMContentLoaded", async () => {
             ? settingsNewPasswordInput.value.trim()
             : "";
 
+          const confirmPassword = settingsConfirmPasswordInput
+            ? settingsConfirmPasswordInput.value.trim()
+            : "";
+
           settingsSaveStatus.style.opacity = "1";
           settingsSaveStatus.style.color = "#0f3c7d";
           settingsSaveStatus.textContent = "Saving...";
+
+          if (newPassword || confirmPassword) {
+            if (!newPassword || !confirmPassword) {
+              settingsSaveStatus.style.color = "#b91c1c";
+              settingsSaveStatus.textContent =
+                "Enter and confirm your new password.";
+              return;
+            }
+
+            if (newPassword !== confirmPassword) {
+              settingsSaveStatus.style.color = "#b91c1c";
+              settingsSaveStatus.textContent = "Passwords do not match.";
+              return;
+            }
+
+            if (newPassword.length < 8) {
+              settingsSaveStatus.style.color = "#b91c1c";
+              settingsSaveStatus.textContent =
+                "Password must be at least 8 characters.";
+              return;
+            }
+          }
 
           try {
             // Preserve all existing metadata, only change default_level
@@ -560,6 +635,9 @@ document.addEventListener("DOMContentLoaded", async () => {
             // Reflect change locally for this session
             if (settingsNewPasswordInput) {
               settingsNewPasswordInput.value = "";
+            }
+            if (settingsConfirmPasswordInput) {
+              settingsConfirmPasswordInput.value = "";
             }
             settingsSaveStatus.style.color = "#0f3c7d";
             settingsSaveStatus.textContent = "Settings saved.";
@@ -971,7 +1049,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       const topFavorites = favoriteSubjects.slice(0, 3);
 
       subjectPills.forEach((pill) => {
-        const slug = pill.getAttribute("data-das-subject-pill");
+        const slug = (pill.getAttribute("data-das-subject-pill") || "").trim();
 
         pill.style.background = "#f3f4f6";
         pill.style.color = "#4b5563";
@@ -986,7 +1064,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const formatPills = document.querySelectorAll("[data-das-format-pill]");
     if (formatPills.length) {
       formatPills.forEach((pill) => {
-        const slug = pill.getAttribute("data-das-format-pill");
+        const slug = (pill.getAttribute("data-das-format-pill") || "").trim();
 
         pill.style.background = "#f3f4f6";
         pill.style.color = "#4b5563";
