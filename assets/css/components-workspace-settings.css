@@ -242,30 +242,56 @@
 }
 
 .settings-password-field input {
-  padding-right: 70px;
+  padding-right: 52px;
 }
 
 .settings-password-toggle {
   position: absolute;
   top: 50%;
   right: 9px;
+  width: 36px;
+  height: 36px;
   transform: translateY(-50%);
   border: 0;
   background: transparent;
-  color: #0f4c81;
-  font-size: 0.82rem;
-  font-weight: 600;
+  color: #5b677a;
   cursor: pointer;
-  padding: 6px 8px;
+  padding: 0;
   border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .settings-password-toggle:hover {
   background: #eef5fc;
+  color: #0f4c81;
 }
 
 .settings-password-toggle:focus-visible {
   outline: 3px solid rgba(15, 76, 129, 0.18);
+}
+
+.settings-password-icon {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.settings-password-icon-visible {
+  display: none;
+}
+
+.settings-password-toggle.is-visible .settings-password-icon-hidden {
+  display: none;
+}
+
+.settings-password-toggle.is-visible .settings-password-icon-visible {
+  display: block;
 }
 
 /* --- Settings page micro-tweaks (DentAIstudy v3) --- */
