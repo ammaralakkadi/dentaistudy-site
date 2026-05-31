@@ -170,18 +170,17 @@
 }
 
 .settings-level-segment {
-  width: fit-content;
-  max-width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  width: 100%;
+  max-width: 420px;
+  display: grid;
+  gap: 8px;
   margin-top: 8px;
 }
 
 .settings-level-option {
   min-width: 0;
   cursor: pointer;
-  display: inline-flex;
+  display: block;
 }
 
 .settings-level-option input {
@@ -191,17 +190,18 @@
 }
 
 .settings-level-option span {
-  display: inline-flex;
+  width: 100%;
+  min-height: 44px;
+  display: flex;
   align-items: center;
-  justify-content: center;
-  min-height: 38px;
-  min-width: 170px;
-  padding: 0 18px;
-  border: 1px solid rgba(15, 76, 129, 0.16);
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 14px;
+  border: 1px solid #d8e1ea;
   border-radius: 12px;
   background: #ffffff;
-  color: #52606d;
-  font-size: 0.9rem;
+  color: #374151;
+  font-size: 0.92rem;
   font-weight: 650;
   line-height: 1;
   white-space: nowrap;
@@ -212,29 +212,29 @@
     box-shadow 0.18s ease;
 }
 
+.settings-level-option span::after {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: transparent;
+  flex-shrink: 0;
+}
+
 .settings-level-option input:checked + span {
-  background: #0f4c81;
+  background: #eef5fc;
   border-color: #0f4c81;
-  color: #ffffff;
-  box-shadow: 0 8px 18px rgba(15, 76, 129, 0.18);
+  color: #0f4c81;
+  box-shadow: 0 8px 20px rgba(15, 76, 129, 0.08);
+}
+
+.settings-level-option input:checked + span::after {
+  background: #0f4c81;
 }
 
 .settings-level-option input:focus-visible + span {
   outline: 3px solid rgba(15, 76, 129, 0.18);
   outline-offset: 2px;
-}
-
-@media (max-width: 420px) {
-  .settings-level-segment {
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .settings-level-option span {
-    padding: 0 10px;
-    font-size: 0.84rem;
-  }
 }
 
 .settings-password-field {
