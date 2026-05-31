@@ -258,16 +258,5 @@
 
 /* Jump-to-bottom */
 .jump {
-  position: absolute;
-  right: 16px;
-  bottom: 18px;
-  width: 44px;
-  height: 44px;
-  border-radius: 999px;
-  border: 1px solid var(--border);
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  display: grid;
-  place-items: center;
-  box-shadow: var(--shadow-soft);
+  display: none;
 }
