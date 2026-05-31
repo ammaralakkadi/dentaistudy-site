@@ -551,11 +551,12 @@ document.addEventListener("DOMContentLoaded", async () => {
           const shouldShow = input.type === "password";
 
           input.type = shouldShow ? "text" : "password";
-          btn.textContent = shouldShow ? "Hide" : "Show";
+          btn.classList.toggle("is-visible", shouldShow);
           btn.setAttribute(
             "aria-label",
             shouldShow ? "Hide password" : "Show password",
           );
+          btn.setAttribute("aria-pressed", shouldShow ? "true" : "false");
         });
       });
 
