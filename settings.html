@@ -301,22 +301,79 @@
 
                 <div class="form-group">
                   <label>Default level</label>
-                  <select
-                    id="settings-default-level"
-                    class="settings-level-select"
+
+                  <div
+                    class="settings-level-segment"
+                    role="radiogroup"
+                    aria-label="Default level"
                   >
-                    <option value="undergraduate">Undergraduate</option>
-                    <option value="postgraduate">Postgraduate</option>
-                  </select>
+                    <label class="settings-level-option">
+                      <input
+                        type="radio"
+                        name="settings-default-level"
+                        value="undergraduate"
+                      />
+                      <span>Undergraduate</span>
+                    </label>
+
+                    <label class="settings-level-option">
+                      <input
+                        type="radio"
+                        name="settings-default-level"
+                        value="postgraduate"
+                      />
+                      <span>Postgraduate</span>
+                    </label>
+                  </div>
                 </div>
 
                 <div class="form-group">
-                  <label>New password</label>
-                  <input
-                    type="password"
-                    id="settings-new-password"
-                    placeholder="New password"
-                  />
+                  <label>Change password</label>
+
+                  <div class="settings-password-field">
+                    <input
+                      type="password"
+                      id="settings-new-password"
+                      placeholder="New password"
+                      autocomplete="new-password"
+                    />
+                    <button
+                      type="button"
+                      class="settings-password-toggle"
+                      data-settings-password-toggle="settings-new-password"
+                      aria-label="Show password"
+                    >
+                      Show
+                    </button>
+                  </div>
+
+                  <div class="settings-password-field" style="margin-top: 10px">
+                    <input
+                      type="password"
+                      id="settings-confirm-password"
+                      placeholder="Confirm new password"
+                      autocomplete="new-password"
+                    />
+                    <button
+                      type="button"
+                      class="settings-password-toggle"
+                      data-settings-password-toggle="settings-confirm-password"
+                      aria-label="Show password"
+                    >
+                      Show
+                    </button>
+                  </div>
+
+                  <small
+                    id="settings-password-note"
+                    style="
+                      display: block;
+                      margin-top: 8px;
+                      font-size: 0.78rem;
+                      color: #6b7280;
+                    "
+                  >
+                  </small>
                 </div>
 
                 <button

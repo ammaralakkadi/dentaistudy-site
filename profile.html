@@ -374,105 +374,71 @@
 
                 <!-- Stats card -->
                 <section class="study-answer-card">
-                  <h2 style="margin: 0 0 6px; font-size: 0.9rem">
+                  <h2 style="margin: 0 0 10px; font-size: 0.9rem">
                     Study activity
                   </h2>
 
-                  <div style="display: flex; gap: 10px">
-                    <div style="flex: 1">
+                  <div
+                    style="
+                      display: grid;
+                      grid-template-columns: repeat(3, minmax(0, 1fr));
+                      gap: 12px;
+                    "
+                  >
+                    <div>
                       <strong
-                        id="das-profile-packs-count"
+                        id="das-profile-chat-count"
                         style="
                           display: block;
-                          font-size: 0.95rem;
-                          font-weight: 600;
-                        "
-                      >
-                        0
-                      </strong>
-                      <span style="font-size: 0.8rem; color: #6b7280"
-                        >Study packs</span
-                      >
-                    </div>
-                    <div style="flex: 1">
-                      <strong
-                        id="das-profile-osce-count"
-                        style="
-                          display: block;
-                          font-size: 0.95rem;
-                          font-weight: 600;
-                        "
-                      >
-                        0
-                      </strong>
-                      <span style="font-size: 0.8rem; color: #6b7280"
-                        >OSCE flows</span
-                      >
-                    </div>
-                    <div style="flex: 1">
-                      <strong
-                        id="das-profile-flashcard-count"
-                        style="
-                          display: block;
-                          font-size: 0.95rem;
-                          font-weight: 600;
-                        "
-                      >
-                        0
-                      </strong>
-                      <span style="font-size: 0.8rem; color: #6b7280"
-                        >Flashcard decks</span
-                      >
-                    </div>
-                  </div>
-
-                  <div style="display: flex; gap: 10px; margin-top: 10px">
-                    <div style="flex: 1">
-                      <strong
-                        id="das-profile-top-mode"
-                        style="
-                          display: block;
-                          font-size: 0.95rem;
+                          font-size: 1rem;
                           font-weight: 600;
                         "
                       >
                         —
                       </strong>
-                      <span style="font-size: 0.8rem; color: #6b7280"
-                        >Top style</span
-                      >
+                      <span style="font-size: 0.8rem; color: #6b7280">
+                        Saved chats
+                      </span>
                     </div>
-                    <div style="flex: 1">
+
+                    <div>
+                      <strong
+                        id="das-profile-answer-count"
+                        style="
+                          display: block;
+                          font-size: 1rem;
+                          font-weight: 600;
+                        "
+                      >
+                        —
+                      </strong>
+                      <span style="font-size: 0.8rem; color: #6b7280">
+                        AI answers
+                      </span>
+                    </div>
+
+                    <div>
                       <strong
                         id="das-profile-last-active"
                         style="
                           display: block;
-                          font-size: 0.95rem;
+                          font-size: 1rem;
                           font-weight: 600;
                         "
                       >
                         —
                       </strong>
-                      <span style="font-size: 0.8rem; color: #6b7280"
-                        >Last active</span
-                      >
-                    </div>
-                    <div style="flex: 1">
-                      <strong
-                        id="das-profile-starred-count"
-                        style="
-                          display: block;
-                          font-size: 0.95rem;
-                          font-weight: 600;
-                        "
-                      >
-                        0
-                      </strong>
-                      <span style="font-size: 0.8rem; color: #6b7280"
-                        >Starred packs</span
-                      >
+                      <span style="font-size: 0.8rem; color: #6b7280">
+                        Last active
+                      </span>
                     </div>
                   </div>
+
+                  <p
+                    style="margin: 12px 0 0; font-size: 0.78rem; color: #6b7280"
+                  >
+                    Based on your saved Study Builder history.
+                  </p>
                 </section>
 
                 <!-- Preferences card -->
@@ -638,8 +604,7 @@
                     >
                       <!-- JS will highlight preferred styles from metadata -->
                       <span
-                        data-das-format-pill="
-                      bullet_points"
+                        data-das-format-pill="bullet_points"
                         style="
                           padding: 3px 10px;
                           border-radius: 999px;
@@ -651,8 +616,7 @@
                         Bullet points
                       </span>
                       <span
-                        data-das-format-pill="
-                      osce_checklists"
+                        data-das-format-pill="osce_checklists"
                         style="
                           padding: 3px 10px;
                           border-radius: 999px;
@@ -664,8 +628,7 @@
                         OSCE checklists
                       </span>
                       <span
-                        data-das-format-pill="
-                      short_notes"
+                        data-das-format-pill="short_notes"
                         style="
                           padding: 3px 10px;
                           border-radius: 999px;
