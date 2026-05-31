@@ -188,8 +188,10 @@
     },
     addAI(text) {
       hideThinking();
-      renderMessage({ role: "ai", text });
-      scrollToBottom();
+      const aiMessage = renderMessage({ role: "ai", text });
+      requestAnimationFrame(() => {
+        aiMessage.scrollIntoView({ block: "start", behavior: "smooth" });
+      });
       updateJump();
     },
     addUserStatic(text) {
@@ -398,6 +400,7 @@
 
     wrap.appendChild(bubble);
     messagesEl.appendChild(wrap);
+    return wrap;
   }
 
   requestAnimationFrame(scrollToBottom);
