@@ -93,6 +93,22 @@ async function dasSetupGoogleAuth() {
   const loginBtn = document.getElementById("login-google-btn");
   const signupBtn = document.getElementById("signup-google-btn");
 
+  function createOneTapNonce() {
+    const bytes = new Uint8Array(16);
+    window.crypto.getRandomValues(bytes);
+    return Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0")).join(
+      "",
+    );
+  }
+
+  async function hashOneTapNonce(nonce) {
+    const encoded = new TextEncoder().encode(nonce);
+    const hashBuffer = await window.crypto.subtle.digest("SHA-256", encoded);
+    return Array.from(new Uint8Array(hashBuffer), (byte) =>
+      byte.toString(16).padStart(2, "0"),
+    ).join("");
+  }
+
   async function handleGoogleClick(event) {
     event.preventDefault();
 
@@ -111,26 +127,6 @@ async function dasSetupGoogleAuth() {
     } catch (err) {
       console.error("Unexpected Google auth error:", err);
       alert("Could not start Google sign-in. Please try again.");
-    }
-  }
-
-  async function handleGoogleCredential(response) {
-    if (!response?.credential) return;
-
-    try {
-      const { error } = await client.auth.signInWithIdToken({
-        provider: "google",
-        token: response.credential,
-      });
-
-      if (error) {
-        console.error("Google One Tap error:", error);
-        return;
-      }
-
-      window.location.href = "study.html";
-    } catch (err) {
-      console.error("Unexpected Google One Tap error:", err);
     }
   }
 
@@ -156,10 +152,35 @@ async function dasSetupGoogleAuth() {
     return;
   }
 
+  const oneTapNonce = createOneTapNonce();
+  const hashedOneTapNonce = await hashOneTapNonce(oneTapNonce);
+
+  async function handleGoogleCredential(response) {
+    if (!response?.credential) return;
+
+    try {
+      const { error } = await client.auth.signInWithIdToken({
+        provider: "google",
+        token: response.credential,
+        nonce: oneTapNonce,
+      });
+
+      if (error) {
+        console.error("Google One Tap error:", error);
+        return;
+      }
+
+      window.location.href = "study.html";
+    } catch (err) {
+      console.error("Unexpected Google One Tap error:", err);
+    }
+  }
+
   window.google.accounts.id.initialize({
     client_id: DAS_GOOGLE_CLIENT_ID,
     callback: handleGoogleCredential,
     context: oneTapContext,
+    nonce: hashedOneTapNonce,
     ux_mode: "popup",
     auto_select: false,
     cancel_on_tap_outside: true,
