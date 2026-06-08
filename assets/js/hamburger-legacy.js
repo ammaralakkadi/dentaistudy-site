@@ -3,86 +3,62 @@
   const menuToggle = document.querySelector(".menu-toggle");
   const slideNav = document.querySelector(".slide-nav");
   const backdrop = document.querySelector(".slide-nav-backdrop");
+  const studySidebar = document.querySelector(".app > #sidebar.sidebar");
+
+  const useStudySidebar = Boolean(studySidebar) && !slideNav;
+
+  function isMenuOpen() {
+    if (useStudySidebar) return studySidebar.classList.contains("open");
+    return slideNav?.classList.contains("active") || false;
+  }
+
+  function setMenu(open) {
+    if (!menuToggle || !backdrop) return;
+
+    if (useStudySidebar) {
+      studySidebar.classList.toggle("open", open);
+      slideNav?.classList.remove("active");
+    } else if (slideNav) {
+      slideNav.classList.toggle("active", open);
+    }
+
+    backdrop.classList.toggle("active", open);
+    menuToggle.classList.toggle("is-open", open);
+    document.body.classList.toggle("mobile-menu-open", open);
+    menuToggle.setAttribute("aria-expanded", String(open));
+    menuToggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+  }
 
   function closeMenu() {
-    slideNav?.classList.remove("active");
-    backdrop?.classList.remove("active");
-    menuToggle?.classList.remove("is-open");
+    setMenu(false);
   }
 
-  function toggleMenu() {
-    if (!slideNav || !backdrop || !menuToggle) return;
-    const willOpen = !slideNav.classList.contains("active");
-    slideNav.classList.toggle("active", willOpen);
-    backdrop.classList.toggle("active", willOpen);
-    menuToggle.classList.toggle("is-open", willOpen);
-  }
+  if (!menuToggle || !backdrop) return;
+  if (!useStudySidebar && !slideNav) return;
 
-  if (menuToggle && slideNav && backdrop) {
-    menuToggle.addEventListener("click", toggleMenu);
-    backdrop.addEventListener("click", closeMenu);
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") closeMenu();
-    });
-    slideNav.addEventListener("click", (e) => {
-      const a = e.target.closest?.("a");
-      if (a) closeMenu();
-    });
-  }
+  menuToggle.setAttribute("aria-expanded", "false");
 
-  // Header hide/show on scroll (mobile only)
-  const header = document.querySelector(".site-header");
-  const mq = window.matchMedia("(max-width: 900px)");
-  if (!header) return;
+  menuToggle.addEventListener("click", () => {
+    setMenu(!isMenuOpen());
+  });
 
-  let lastY = window.scrollY || 0;
-  let lastToggleY = lastY;
-  let hidden = false;
-  let ticking = false;
+  backdrop.addEventListener("click", closeMenu);
 
-  const HIDE_AFTER_PX = 24;
-  const SHOW_AFTER_PX = 18;
-  const TOP_SAFE_PX = 8;
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeMenu();
+  });
 
-  function setHidden(next) {
-    if (hidden === next) return;
-    hidden = next;
-    header.classList.toggle("is-hidden", next);
-    lastToggleY = window.scrollY || 0;
-  }
+  slideNav?.addEventListener("click", (e) => {
+    if (e.target.closest?.("a, button")) closeMenu();
+  });
 
-  function compute() {
-    if (!mq.matches) {
-      setHidden(false);
-      lastY = window.scrollY || 0;
-      lastToggleY = lastY;
-      ticking = false;
-      return;
+  studySidebar?.addEventListener("click", (e) => {
+    if (window.matchMedia("(max-width: 1024px)").matches) {
+      if (e.target.closest?.("a, button")) closeMenu();
     }
+  });
 
-    const y = window.scrollY || 0;
-    const dy = y - lastY;
-
-    if (y <= TOP_SAFE_PX) {
-      setHidden(false);
-    } else if (dy > 0) {
-      if (!hidden) lastToggleY = y;
-      if (y - lastToggleY >= HIDE_AFTER_PX) setHidden(true);
-    } else if (dy < 0) {
-      setHidden(false);
-    }
-
-    lastY = y;
-    ticking = false;
-  }
-
-  function onScroll() {
-    if (ticking) return;
-    ticking = true;
-    requestAnimationFrame(compute);
-  }
-
-  window.addEventListener("scroll", onScroll, { passive: true });
-  mq.addEventListener?.("change", compute);
-  compute();
+  window
+    .matchMedia("(min-width: 1025px)")
+    .addEventListener("change", closeMenu);
 })();

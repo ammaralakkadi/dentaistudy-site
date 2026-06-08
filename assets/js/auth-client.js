@@ -3,13 +3,16 @@
 
 const SUPABASE_URL = "https://hlvkbqpesiqjxbastxux.supabase.co";
 const SUPABASE_ANON_KEY =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhsdmticXBlc2lxanhiYXN0eHV4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxNjIwNDksImV4cCI6MjA3OTczODA0OX0.9J_wVXWo_ai2v3sXiQUMpts3k6Ak6zWNBPmU0DfB_ZE";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBiYXNLIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxNjIwNDksImV4cCI6MjA3OTczODA0OX0.9J_wVXWo_ai2v3sXiQUMpts3k6Ak6zWNBPmU0DfB_ZE";
+
+const DAS_GOOGLE_CLIENT_ID =
+  "468222375092-vfu0l7mo49mpgcj242vdmgp0939evmjp.apps.googleusercontent.com";
 
 window.dasSupabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 const functionsBaseUrl = SUPABASE_URL.replace(
   ".supabase.co",
-  ".functions.supabase.co"
+  ".functions.supabase.co",
 );
 
 // Expose URLs for other scripts (read-only)
@@ -69,21 +72,26 @@ window.dasSupabaseFunctionsBase = functionsBaseUrl;
 })();
 
 // -----------------------------------------------------------
-// Google OAuth sign-in / sign-up (shared for login + signup)
+// Google OAuth + One Tap sign-in / sign-up
 // -----------------------------------------------------------
-function dasSetupGoogleAuth() {
+async function dasSetupGoogleAuth() {
   const client = window.dasSupabase;
   if (!client || !client.auth) return;
 
-  // Where to send users back after Google completes
-  // Use current origin so it works on localhost / LAN IP and production domain
   const origin = window.location.origin.replace(/\/$/, "");
   const redirectTo = `${origin}/study.html`;
 
+  const fileName =
+    (window.location.pathname || "").split("/").pop() || "index.html";
+
+  const oneTapPages = {
+    "index.html": "signin",
+    "login.html": "signin",
+    "signup.html": "signup",
+  };
+
   const loginBtn = document.getElementById("login-google-btn");
   const signupBtn = document.getElementById("signup-google-btn");
-
-  if (!loginBtn && !signupBtn) return;
 
   async function handleGoogleClick(event) {
     event.preventDefault();
@@ -100,15 +108,66 @@ function dasSetupGoogleAuth() {
         console.error("Google auth error:", error);
         alert("Could not start Google sign-in. Please try again.");
       }
-      // Supabase will redirect automatically on success.
     } catch (err) {
       console.error("Unexpected Google auth error:", err);
       alert("Could not start Google sign-in. Please try again.");
     }
   }
 
+  async function handleGoogleCredential(response) {
+    if (!response?.credential) return;
+
+    try {
+      const { error } = await client.auth.signInWithIdToken({
+        provider: "google",
+        token: response.credential,
+      });
+
+      if (error) {
+        console.error("Google One Tap error:", error);
+        return;
+      }
+
+      window.location.href = "study.html";
+    } catch (err) {
+      console.error("Unexpected Google One Tap error:", err);
+    }
+  }
+
   if (loginBtn) loginBtn.addEventListener("click", handleGoogleClick);
   if (signupBtn) signupBtn.addEventListener("click", handleGoogleClick);
+
+  const oneTapContext = oneTapPages[fileName];
+  if (!oneTapContext) return;
+
+  if (
+    !DAS_GOOGLE_CLIENT_ID ||
+    DAS_GOOGLE_CLIENT_ID.includes("PASTE_YOUR_GOOGLE_WEB_CLIENT_ID_HERE")
+  ) {
+    console.warn("Google One Tap skipped: missing Google Web Client ID.");
+    return;
+  }
+
+  const { data } = await client.auth.getSession();
+  if (data?.session) return;
+
+  if (!window.google?.accounts?.id) {
+    console.warn("Google One Tap skipped: Google Identity script not loaded.");
+    return;
+  }
+
+  window.google.accounts.id.initialize({
+    client_id: DAS_GOOGLE_CLIENT_ID,
+    callback: handleGoogleCredential,
+    context: oneTapContext,
+    ux_mode: "popup",
+    auto_select: false,
+    cancel_on_tap_outside: true,
+    itp_support: true,
+    use_fedcm_for_prompt: true,
+  });
+
+  window.google.accounts.id.prompt();
 }
 
 document.addEventListener("DOMContentLoaded", dasSetupGoogleAuth);

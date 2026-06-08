@@ -1,127 +1,113 @@
 // assets/js/study-builder/sidebar.js
-// Chats panel wiring (mobile + desktop): open/close + backdrop + ESC + search filter.
-// NOTE: This intentionally excludes the NEW hamburger/#sidebar drawer system to avoid conflicts.
+// Study menu panel wiring: open/close + backdrop + ESC.
+// NOTE: This intentionally excludes the hamburger/#sidebar drawer system to avoid conflicts.
 
 (() => {
   const moreBtn = document.getElementById("btnMore");
-  const chatsPanel = document.getElementById("chatsPanel");
-  const chatsPanelBody = document.getElementById("chatsPanelBody");
-  const chatsPanelContent = document.getElementById("chatsPanelContent");
-  const chatsSearch = document.getElementById("chatsSearch");
-  const chatsPanelClose = document.getElementById("chatsPanelClose");
+  const studyPanel = document.getElementById("chatsPanel");
+  const studyPanelBody = document.getElementById("chatsPanelBody");
+  const studyPanelContent = document.getElementById("chatsPanelContent");
+  const studyPanelClose = document.getElementById("chatsPanelClose");
   const backdrop = document.getElementById("backdrop");
 
   const chatsSlot = document.getElementById("sbChatsSlot");
-  const chatsSection = document.querySelector(".sb-section");
+  const studyNav = document.querySelector('.sb-nav[aria-label="Study Suite"]');
+  const sidebar = document.getElementById("sidebar");
 
   let hideTimer = null;
 
-  function filterChats(query) {
-    const q = (query || "").trim().toLowerCase();
-    const list = document.getElementById("chatList");
-    if (!list) return;
+  function ensureStudyMenuInPanel() {
+    const host = studyPanelContent || studyPanelBody;
+    if (!host || !studyNav) return;
 
-    list.querySelectorAll(".sb-chat").forEach((b) => {
-      const label = (b.textContent || "").trim().toLowerCase();
-      b.hidden = Boolean(q) && !label.includes(q);
-    });
+    if (!host.contains(studyNav)) {
+      host.appendChild(studyNav);
+    }
   }
 
-  function ensureChatsInPanel() {
-    if (!chatsSection) return;
-    const host = chatsPanelContent || chatsPanelBody;
-    if (!host) return;
-    if (host.contains(chatsSection)) return;
-    host.appendChild(chatsSection);
-  }
-
-  function ensureChatsInSidebar() {
-    if (!chatsSection || !chatsSlot) return;
-    if (chatsSlot.contains(chatsSection)) return;
-    chatsSlot.appendChild(chatsSection);
+  function ensureStudyMenuInSidebar() {
+    if (studyNav && sidebar && chatsSlot && !sidebar.contains(studyNav)) {
+      sidebar.insertBefore(studyNav, chatsSlot);
+    }
   }
 
   function closeLegacyMenuIfOpen() {
     document.querySelector(".slide-nav")?.classList.remove("active");
     document.querySelector(".slide-nav-backdrop")?.classList.remove("active");
-    document.querySelector(".menu-toggle")?.classList.remove("is-open");
+
+    const menuToggle = document.querySelector(".menu-toggle");
+    menuToggle?.classList.remove("is-open");
+    menuToggle?.setAttribute("aria-expanded", "false");
+    menuToggle?.setAttribute("aria-label", "Open menu");
+
+    document.body.classList.remove("mobile-menu-open");
   }
 
-  function openChats() {
-    if (!chatsPanel) return;
+  function openStudyMenu() {
+    if (!studyPanel) return;
 
     closeLegacyMenuIfOpen();
-    ensureChatsInPanel();
+    ensureStudyMenuInPanel();
 
-    if (chatsSearch) {
-      chatsSearch.value = "";
-      filterChats("");
-    }
+    clearTimeout(hideTimer);
+    studyPanel.classList.remove("open");
+    studyPanel.hidden = false;
 
-    chatsPanel.hidden = false;
-    chatsPanel.classList.add("open");
     if (backdrop) backdrop.hidden = false;
+
     moreBtn?.setAttribute("aria-expanded", "true");
     document.documentElement.style.overflow = "hidden";
+
+    requestAnimationFrame(() => {
+      studyPanel.classList.add("open");
+    });
   }
 
-  function closeChats() {
-    if (!chatsPanel) return;
+  function closeStudyMenu() {
+    if (!studyPanel) return;
 
-    chatsPanel.classList.remove("open");
+    studyPanel.classList.remove("open");
     moreBtn?.setAttribute("aria-expanded", "false");
-
-    if (chatsSearch) {
-      chatsSearch.value = "";
-      filterChats("");
-    }
-
-    ensureChatsInSidebar();
 
     clearTimeout(hideTimer);
     hideTimer = setTimeout(() => {
-      chatsPanel.hidden = true;
+      ensureStudyMenuInSidebar();
+      studyPanel.hidden = true;
+
       if (backdrop) backdrop.hidden = true;
+
       document.documentElement.style.overflow = "";
     }, 220);
   }
 
-  // Topbar "..." (Chats)
   moreBtn?.addEventListener("click", () => {
-    chatsPanel?.classList.contains("open") ? closeChats() : openChats();
+    studyPanel?.classList.contains("open") ? closeStudyMenu() : openStudyMenu();
   });
 
-  // Desktop sidebar "Search chats" button
-  document.addEventListener("click", (e) => {
-    const searchBtn = e.target.closest('[data-action="search"]');
-    if (searchBtn) {
-      chatsPanel?.classList.contains("open") ? closeChats() : openChats();
-      return;
+  studyPanelClose?.addEventListener("click", closeStudyMenu);
+  backdrop?.addEventListener("click", closeStudyMenu);
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeStudyMenu();
+  });
+
+  studyPanel?.addEventListener("click", (event) => {
+    const link = event.target.closest(".sb-btn");
+
+    if (link) {
+      closeStudyMenu();
     }
   });
 
-  chatsPanelClose?.addEventListener("click", closeChats);
-  chatsSearch?.addEventListener("input", (e) => filterChats(e.target.value));
-
-  backdrop?.addEventListener("click", closeChats);
-
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") closeChats();
-  });
-
-  // Close panel after selecting a chat on small screens (keeps UX tidy)
-  chatsPanel?.addEventListener("click", (e) => {
-    const chat = e.target.closest(".sb-chat");
-    if (chat) closeChats();
-  });
-
-  // Ensure panel isn't stuck open when resizing up
   window.addEventListener("resize", () => {
     if (window.matchMedia("(min-width: 1025px)").matches) {
-      closeChats();
-      ensureChatsInSidebar();
+      closeStudyMenu();
+      ensureStudyMenuInSidebar();
     }
   });
 
-  window.ChatsPanelUI = { open: openChats, close: closeChats };
+  window.StudyMenuUI = {
+    open: openStudyMenu,
+    close: closeStudyMenu,
+  };
 })();

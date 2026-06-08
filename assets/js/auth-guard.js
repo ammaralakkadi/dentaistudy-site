@@ -5,7 +5,7 @@ console.log("[auth-guard] LOADED FILE v3.1 on", window.location.href);
 // Responsibilities
 // ---------------------------------------------------------------------
 // - Read Supabase session + fresh user (handles stale JWT / Google re-login)
-// - Derive subscription_tier from app_metadata (then user_metadata)
+// - Derive subscription_tier from app_metadata
 // - Protect profile/settings pages (redirect to login if not authenticated)
 // - Fill profile + settings UI with user information
 // - Lock / unlock Study Preferences cards based on plan
@@ -20,6 +20,138 @@ console.log("[auth-guard] LOADED FILE v3.1 on", window.location.href);
 //     - fallback: user_metadata.avatar_url
 //     - fallback: user_metadata.picture
 
+const DAS_STUDY_IDENTITY_CACHE_KEY = "das.study.identity.v1";
+const DAS_STUDY_FILES = [
+  "study.html",
+  "study-library.html",
+  "study-flashcards.html",
+  "study-quiz.html",
+];
+
+function getDasFileName() {
+  return (window.location.pathname || "").split("/").pop() || "index.html";
+}
+
+function isDasStudyPage() {
+  return DAS_STUDY_FILES.includes(getDasFileName());
+}
+
+function isDasProTier(tier) {
+  return tier === "pro" || tier === "pro_yearly";
+}
+
+function readCachedStudyIdentity() {
+  try {
+    const raw = localStorage.getItem(DAS_STUDY_IDENTITY_CACHE_KEY);
+    if (!raw) return null;
+
+    const cached = JSON.parse(raw);
+    if (!cached || typeof cached !== "object") return null;
+    if (!cached.name && !cached.avatarUrl && !cached.tier) return null;
+
+    return cached;
+  } catch (_) {
+    return null;
+  }
+}
+
+function writeCachedStudyIdentity(identity) {
+  try {
+    localStorage.setItem(
+      DAS_STUDY_IDENTITY_CACHE_KEY,
+      JSON.stringify({
+        userId: identity.userId || "",
+        name: identity.name || "",
+        avatarUrl: identity.avatarUrl || "",
+        tier: identity.tier || "free",
+        updatedAt: Date.now(),
+      }),
+    );
+  } catch (_) {}
+}
+
+function clearCachedStudyIdentity() {
+  try {
+    localStorage.removeItem(DAS_STUDY_IDENTITY_CACHE_KEY);
+  } catch (_) {}
+}
+
+function renderStudyIdentity(identity, options = {}) {
+  if (!isDasStudyPage()) return;
+
+  const userchip = document.querySelector(".userchip");
+  const nameEl = document.getElementById("das-user-name");
+  const planBadge = document.getElementById("das-study-plan-badge");
+  const avatarTargets = document.querySelectorAll("[data-das-avatar]");
+
+  if (nameEl && identity?.name) {
+    nameEl.textContent = identity.name;
+  }
+
+  if (identity?.avatarUrl && avatarTargets.length) {
+    avatarTargets.forEach((el) => {
+      el.src = identity.avatarUrl;
+    });
+  }
+
+  if (identity?.tier) {
+    const isPaidPlan = isDasProTier(identity.tier);
+    document.documentElement.dataset.dasPlan = isPaidPlan ? "pro" : "free";
+
+    if (planBadge) {
+      const planText = planBadge.querySelector(".sb-plan-text");
+      planBadge.dataset.plan = isPaidPlan ? "pro" : "free";
+      if (planText) {
+        planText.textContent = isPaidPlan ? "Pro Member" : "Free Member";
+      }
+      planBadge.hidden = false;
+    }
+  }
+
+  if (options.ready && userchip) {
+    userchip.removeAttribute("data-auth-loading");
+  }
+}
+
+function renderStudySidebarCta(status) {
+  if (!isDasStudyPage()) return;
+
+  const cta = document.querySelector("[data-study-cta]");
+  const userchip = document.querySelector(".userchip");
+  if (!cta) return;
+
+  const title = cta.querySelector("[data-study-cta-title]");
+  const text = cta.querySelector("[data-study-cta-text]");
+
+  if (status === "pro") {
+    if (userchip) userchip.hidden = false;
+    cta.hidden = true;
+    return;
+  }
+
+  if (status === "anonymous") {
+    if (userchip) userchip.hidden = true;
+    cta.href = "signup.html";
+    if (title) title.textContent = "Sign up free";
+    if (text) {
+      text.textContent =
+        "Save your progress and keep your study workflow in one place.";
+    }
+    cta.hidden = false;
+    return;
+  }
+
+  if (status === "free") {
+    if (userchip) userchip.hidden = false;
+    cta.href = "pricing.html";
+    if (title) title.textContent = "Upgrade to Pro";
+    if (text) {
+      text.textContent = "Build without limits across your study workflow.";
+    }
+    cta.hidden = false;
+  }
+}
+
 // Instant auth UI — reads Supabase session from localStorage synchronously
 (function () {
   try {
@@ -27,10 +159,31 @@ console.log("[auth-guard] LOADED FILE v3.1 on", window.location.href);
     const sessionKey = keys.find(
       (k) => k.startsWith("sb-") && k.endsWith("-auth-token"),
     );
+    let instantUserId = "";
+    let hasInstantSession = false;
+
     if (sessionKey) {
       const parsed = JSON.parse(localStorage.getItem(sessionKey));
-      if (parsed?.access_token || parsed?.session?.access_token) {
+      const instantSession = parsed?.session || parsed;
+      instantUserId = instantSession?.user?.id || parsed?.user?.id || "";
+
+      if (instantSession?.access_token) {
+        hasInstantSession = true;
         updateAuthUI({ user: {} }); // logged in: swap to "Log out" instantly
+      }
+    }
+
+    if (isDasStudyPage()) {
+      const cachedIdentity = readCachedStudyIdentity();
+      const sameCachedUser =
+        cachedIdentity &&
+        hasInstantSession &&
+        (!cachedIdentity.userId ||
+          !instantUserId ||
+          cachedIdentity.userId === instantUserId);
+
+      if (sameCachedUser) {
+        renderStudyIdentity(cachedIdentity, { ready: true });
       }
     }
   } catch (_) {}
@@ -41,8 +194,20 @@ document.addEventListener("DOMContentLoaded", async () => {
   const fileName = path.split("/").pop() || "index.html";
   const isProfile = fileName === "profile.html";
   const isSettings = fileName === "settings.html";
-  const isStudy = fileName === "study.html";
+  const isStudyLibrary = fileName === "study-library.html";
+  const isStudy = [
+    "study.html",
+    "study-library.html",
+    "study-flashcards.html",
+    "study-quiz.html",
+  ].includes(fileName);
   const isProtected = isProfile || isSettings;
+  const isAccountPage = isProfile || isSettings;
+  const revealAccountPage = () => {
+    if (isAccountPage) {
+      document.body?.classList.remove("account-auth-loading");
+    }
+  };
   // Desktop-only modal (keeps mobile/iPad using native confirm)
   function isDesktopModal() {
     return (
@@ -132,6 +297,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (!window.dasSupabase || !window.dasSupabase.auth) {
       console.warn("[auth-guard] Supabase client not found on this page");
       updateAuthUI(null);
+      renderStudySidebarCta("anonymous");
       if (isProtected) {
         window.location.replace("login.html");
       }
@@ -195,6 +361,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // If there is no user and this is a protected page → go to login
     if (!effectiveUser) {
+      clearCachedStudyIdentity();
+      renderStudySidebarCta("anonymous");
+
       if (isProtected) {
         window.location.replace("login.html");
       }
@@ -208,9 +377,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     const meta = user.user_metadata || {};
     const appMeta = user.app_metadata || {};
 
-    // Update last_active_at on every protected page load
+    // Update last_active_at on account and Library page loads
     const now = new Date().toISOString();
-    if (isProfile || isSettings) {
+    if (isProfile || isSettings || isStudyLibrary) {
       const needsUpdate =
         !meta.last_active_at ||
         new Date(now).getTime() - new Date(meta.last_active_at).getTime() >
@@ -253,12 +422,13 @@ document.addEventListener("DOMContentLoaded", async () => {
           ? meta.starred_count
           : 0;
     const lastActive =
-      isProfile || isSettings ? now : meta.last_active_at || null;
+      isProfile || isSettings || isStudyLibrary
+        ? now
+        : meta.last_active_at || null;
     const topMode = meta.top_used_category || null;
 
     // Plan / subscription tier (provider-neutral)
-    const subscriptionTier =
-      appMeta.subscription_tier || meta.subscription_tier || "free";
+    const subscriptionTier = appMeta.subscription_tier || "free";
 
     const isPaidPlan =
       subscriptionTier === "pro" || subscriptionTier === "pro_yearly";
@@ -271,7 +441,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       email,
       subscriptionTier,
       fromAppMeta: appMeta.subscription_tier,
-      fromUserMeta: meta.subscription_tier,
       isPaidPlan,
     });
 
@@ -291,12 +460,33 @@ document.addEventListener("DOMContentLoaded", async () => {
       workspaceNameEl.textContent = fullName;
     }
 
-    // Study builder sidebar: plan badge under the logo
+    // Study builder sidebar: plan badge under the user name
     if (isStudy) {
+      document.documentElement.dataset.dasPlan = isPaidPlan ? "pro" : "free";
+
       const studyPlanBadge = document.getElementById("das-study-plan-badge");
       if (studyPlanBadge) {
-        studyPlanBadge.textContent = isPaidPlan ? "Pro" : "Free";
+        const studyPlanText = studyPlanBadge.querySelector(".sb-plan-text");
+        studyPlanBadge.dataset.plan = isPaidPlan ? "pro" : "free";
+        if (studyPlanText) {
+          studyPlanText.textContent = isPaidPlan ? "Pro Member" : "Free Member";
+        } else {
+          studyPlanBadge.textContent = isPaidPlan
+            ? "Pro Member"
+            : "Free Member";
+        }
+        studyPlanBadge.hidden = false;
       }
+
+      const studyIdentity = {
+        userId: user.id,
+        name: fullName,
+        avatarUrl,
+        tier: subscriptionTier,
+      };
+      writeCachedStudyIdentity(studyIdentity);
+      renderStudyIdentity(studyIdentity, { ready: true });
+      renderStudySidebarCta(isPaidPlan ? "pro" : "free");
     }
 
     // -------------------------------------------------------------
@@ -320,10 +510,51 @@ document.addEventListener("DOMContentLoaded", async () => {
         profilePlanBadge.textContent = isPaidPlan ? "Pro plan" : "Free plan";
       }
 
-      // Profile activity: real saved Study Builder history
+      // Profile activity: real saved Study Library totals
       const chatCountEl = document.getElementById("das-profile-chat-count");
       const answerCountEl = document.getElementById("das-profile-answer-count");
+      const deckCountEl = document.getElementById("das-profile-deck-count");
+      const quizCountEl = document.getElementById("das-profile-quiz-count");
       const lastActiveEl = document.getElementById("das-profile-last-active");
+      const profileActivityOverview = document.querySelector(
+        ".profile-library-overview",
+      );
+      const profileDeckStat = document.querySelector(
+        '[data-profile-pro-stat="flashcards"]',
+      );
+      const profileQuizStat = document.querySelector(
+        '[data-profile-pro-stat="quizzes"]',
+      );
+
+      const setProfileProStatState = (card, countEl, state, countLabel) => {
+        if (!card) return;
+        const noteEl = card.querySelector(".profile-library-note");
+
+        card.dataset.profileLockState = state;
+        if (state === "locked") {
+          if (countEl) countEl.textContent = "Pro";
+          if (noteEl) noteEl.textContent = "Pro feature";
+        } else if (noteEl) {
+          noteEl.textContent = countLabel;
+        }
+      };
+
+      if (profileActivityOverview) {
+        profileActivityOverview.dataset.dasPlan = isPaidPlan ? "pro" : "free";
+      }
+
+      setProfileProStatState(
+        profileDeckStat,
+        deckCountEl,
+        isPaidPlan ? "active" : "locked",
+        "decks",
+      );
+      setProfileProStatState(
+        profileQuizStat,
+        quizCountEl,
+        isPaidPlan ? "active" : "locked",
+        "quizzes",
+      );
 
       if (lastActiveEl) {
         if (lastActive) {
@@ -342,12 +573,16 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
       }
 
-      if (chatCountEl || answerCountEl) {
+      revealAccountPage();
+
+      if (chatCountEl || answerCountEl || deckCountEl || quizCountEl) {
         if (chatCountEl) chatCountEl.textContent = "—";
         if (answerCountEl) answerCountEl.textContent = "—";
+        if (isPaidPlan && deckCountEl) deckCountEl.textContent = "—";
+        if (isPaidPlan && quizCountEl) quizCountEl.textContent = "—";
 
         try {
-          const [chatResult, answerResult] = await Promise.all([
+          const countRequests = [
             supabase
               .from("conversations")
               .select("id", { count: "exact", head: true })
@@ -358,7 +593,24 @@ document.addEventListener("DOMContentLoaded", async () => {
               .select("id", { count: "exact", head: true })
               .eq("user_id", user.id)
               .eq("role", "assistant"),
-          ]);
+          ];
+
+          if (isPaidPlan) {
+            countRequests.push(
+              supabase
+                .from("flashcard_decks")
+                .select("id", { count: "exact", head: true })
+                .eq("user_id", user.id),
+
+              supabase
+                .from("study_quizzes")
+                .select("id", { count: "exact", head: true })
+                .eq("user_id", user.id),
+            );
+          }
+
+          const [chatResult, answerResult, deckResult, quizResult] =
+            await Promise.all(countRequests);
 
           if (chatCountEl && !chatResult.error) {
             chatCountEl.textContent = chatResult.count ?? 0;
@@ -367,10 +619,20 @@ document.addEventListener("DOMContentLoaded", async () => {
           if (answerCountEl && !answerResult.error) {
             answerCountEl.textContent = answerResult.count ?? 0;
           }
+
+          if (isPaidPlan && deckCountEl && deckResult && !deckResult.error) {
+            deckCountEl.textContent = deckResult.count ?? 0;
+          }
+
+          if (isPaidPlan && quizCountEl && quizResult && !quizResult.error) {
+            quizCountEl.textContent = quizResult.count ?? 0;
+          }
         } catch (err) {
-          console.warn("[profile] Could not load activity counts:", err);
+          console.warn("[profile] Could not load study library totals:", err);
           if (chatCountEl) chatCountEl.textContent = "–";
           if (answerCountEl) answerCountEl.textContent = "–";
+          if (isPaidPlan && deckCountEl) deckCountEl.textContent = "–";
+          if (isPaidPlan && quizCountEl) quizCountEl.textContent = "–";
         }
       }
 
@@ -518,6 +780,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (settingsEmailInput && email) {
         settingsEmailInput.value = email;
       }
+      document.querySelectorAll("[data-das-settings-name]").forEach((el) => {
+        if (fullName) el.textContent = fullName;
+      });
+      document.querySelectorAll("[data-das-settings-email]").forEach((el) => {
+        if (email) el.textContent = email;
+      });
 
       // Pre-select current default level so Settings matches Profile
       if (settingsDefaultLevelInputs.length) {
@@ -681,6 +949,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (settingsPlanLabel) {
         settingsPlanLabel.textContent = isPaidPlan ? "Pro plan" : "Free plan";
       }
+      document
+        .querySelectorAll("[data-das-settings-plan-label]")
+        .forEach((el) => {
+          el.textContent = isPaidPlan ? "Pro plan" : "Free plan";
+        });
 
       if (settingsPlanNote && settingsPlanUpgrade && settingsPlanManage) {
         if (isPaidPlan) {
@@ -695,6 +968,8 @@ document.addEventListener("DOMContentLoaded", async () => {
           settingsPlanManage.style.display = "none";
         }
       }
+
+      revealAccountPage();
 
       // -------------------------------------------------------------
       // Settings page: Paddle billing + Retain cancellation
@@ -841,7 +1116,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           event.preventDefault();
 
           const confirmed = await dasConfirm({
-            title: "Cancel Pro plan",
+            title: "Cancel plan",
             message:
               "Are you sure you want to cancel your Pro plan? You'll keep access until the end of your billing period.",
             okText: "Cancel plan",
@@ -1095,6 +1370,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   } catch (err) {
     console.error("[auth-guard] Auth guard failed:", err);
+    revealAccountPage();
     updateAuthUI(null);
 
     if (isProtected) {
@@ -1104,54 +1380,129 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 // ---------------------------------------------------------------------
-// Toggle header + slide menu between Log in / Log out
+// Toggle desktop account control + mobile slide menu
 // ---------------------------------------------------------------------
 function updateAuthUI(session) {
   const isLoggedIn = !!session;
 
   const pathname = (window.location.pathname || "").toLowerCase();
-  const isInBlogsFolder = pathname.includes("/blogs/");
-  const loginHref = isInBlogsFolder ? "../login.html" : "login.html";
+  const fileName = pathname.split("/").pop() || "index.html";
+  const isStudyPage = [
+    "study.html",
+    "study-library.html",
+    "study-flashcards.html",
+    "study-quiz.html",
+  ].includes(fileName);
 
-  // Desktop header buttons
-  const headerLogin = document.querySelector(".header-right .header-login");
-  const headerSignup = document.querySelector(".header-right .header-signup");
+  const headerRight = document.querySelector(".header-right");
+  const headerLogin = headerRight?.querySelector(".header-login");
+  const slideNav = document.querySelector(".slide-nav");
+  const slideLoginLink = slideNav?.querySelector(".slide-login-link");
 
-  // Mobile slide menu link
-  const slideLoginLink = document.querySelector(".slide-nav .slide-login-link");
+  const loginHref =
+    headerRight?.dataset.dasLoginHref ||
+    headerLogin?.getAttribute("href") ||
+    slideLoginLink?.getAttribute("href") ||
+    "login.html";
 
-  // Header (desktop)
-  if (headerLogin) {
-    if (isLoggedIn) {
-      headerLogin.textContent = "Log out";
-      headerLogin.removeAttribute("href");
-      headerLogin.setAttribute("data-das-logout", "true");
+  const rootPrefix = loginHref.includes("login.html")
+    ? loginHref.replace(/login\.html.*$/, "")
+    : "";
+
+  const signupHref = `${rootPrefix}signup.html`;
+
+  const studyHref =
+    headerRight?.dataset.dasStudyHref ||
+    document
+      .querySelector('.header-nav a[href$="study.html"]')
+      ?.getAttribute("href") ||
+    `${rootPrefix}study.html`;
+
+  if (headerRight) {
+    headerRight.dataset.dasLoginHref = loginHref;
+    headerRight.dataset.dasStudyHref = studyHref;
+  }
+
+  // Desktop header
+  if (headerRight) {
+    if (isStudyPage) {
+      headerRight.innerHTML = "";
+      headerRight.hidden = true;
     } else {
-      headerLogin.textContent = "Log in";
-      headerLogin.setAttribute("href", loginHref);
-      headerLogin.removeAttribute("data-das-logout");
+      headerRight.hidden = false;
+
+      if (isLoggedIn) {
+        headerRight.innerHTML = `
+          <details class="das-account-menu">
+            <summary class="das-account-trigger" aria-label="Account menu">
+              <span class="das-account-dot" aria-hidden="true"></span>
+              <span>Account</span>
+            </summary>
+
+            <div class="das-account-dropdown" role="menu">
+              <a href="${studyHref}" role="menuitem">Study Builder</a>
+              <a href="${rootPrefix}profile.html" role="menuitem">Profile</a>
+              <a href="${rootPrefix}settings.html" role="menuitem">Settings</a>
+              <button type="button" role="menuitem" data-das-logout>
+                Log out
+              </button>
+            </div>
+          </details>
+        `;
+      } else {
+        headerRight.innerHTML = `
+          <div class="das-auth-actions">
+            <a href="${loginHref}" class="das-login-link">Sign in</a>
+            <a href="${signupHref}" class="das-start-link">Start free</a>
+          </div>
+        `;
+      }
     }
   }
 
-  if (headerSignup) {
-    if (isLoggedIn) {
-      headerSignup.style.display = "none";
-    } else {
-      headerSignup.style.display = "";
-      headerSignup.setAttribute("href", "signup.html");
-    }
+  if (!window.__dasAccountMenuOutsideClickBound) {
+    window.__dasAccountMenuOutsideClickBound = true;
+
+    document.addEventListener("click", (event) => {
+      const openMenu = document.querySelector(".das-account-menu[open]");
+      if (!openMenu) return;
+
+      if (!openMenu.contains(event.target)) {
+        openMenu.removeAttribute("open");
+      }
+    });
   }
 
-  // Slide menu (mobile)
-  if (slideLoginLink) {
-    if (isLoggedIn) {
-      slideLoginLink.textContent = "Log out";
-      slideLoginLink.setAttribute("href", "#");
-      slideLoginLink.setAttribute("data-das-logout", "true");
-    } else {
-      slideLoginLink.textContent = "Log in";
-      slideLoginLink.setAttribute("href", loginHref);
-      slideLoginLink.removeAttribute("data-das-logout");
+  // Mobile menu
+  if (slideNav) {
+    slideNav
+      .querySelectorAll('a[href$="profile.html"], a[href$="settings.html"]')
+      .forEach((link) => {
+        link.hidden = !isLoggedIn;
+      });
+
+    const currentAuthSlot =
+      slideNav.querySelector(".das-mobile-auth") || slideLoginLink;
+
+    if (currentAuthSlot) {
+      const holder = document.createElement("div");
+
+      holder.innerHTML = isLoggedIn
+        ? `
+          <div class="das-mobile-auth das-mobile-auth--logged-in">
+            <button type="button" class="das-mobile-logout" data-das-logout>
+              Log out
+            </button>
+          </div>
+        `
+        : `
+          <div class="das-mobile-auth">
+            <a href="${loginHref}" class="das-mobile-secondary">Sign in</a>
+            <a href="${signupHref}" class="das-mobile-primary">Start free</a>
+          </div>
+        `;
+
+      currentAuthSlot.replaceWith(holder.firstElementChild);
     }
   }
 }

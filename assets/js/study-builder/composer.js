@@ -7,6 +7,7 @@
   const ta = document.getElementById("prompt");
   const send = document.getElementById("send");
   const add = document.getElementById("btnAdd");
+  const messages = document.getElementById("messages");
 
   const addMenu = document.getElementById("addMenu");
   const attachBar = document.getElementById("attachBar");
@@ -19,19 +20,44 @@
     send.disabled = ta.value.trim().length === 0;
   }
 
+  function getTextareaMaxHeight() {
+    const max = Number.parseFloat(getComputedStyle(ta).maxHeight);
+    return Number.isFinite(max) && max > 0 ? max : 320;
+  }
+
+  function keepLatestVisible() {
+    if (!messages) return;
+    messages.scrollTop = messages.scrollHeight;
+  }
+
   function autoGrow() {
     ta.style.height = "auto";
-    const max = 220;
-    ta.style.height = Math.min(ta.scrollHeight, max) + "px";
+
+    const max = getTextareaMaxHeight();
+    const nextHeight = Math.min(ta.scrollHeight, max);
+
+    ta.style.height = `${nextHeight}px`;
+    ta.style.overflowY = ta.scrollHeight > max ? "auto" : "hidden";
   }
 
   ta.addEventListener("input", () => {
+    const prevH = ta.offsetHeight;
     autoGrow();
     setSendState();
+
+    if (
+      document.activeElement === ta &&
+      window.matchMedia("(max-width: 899px)").matches &&
+      ta.offsetHeight > prevH
+    ) {
+      requestAnimationFrame(keepLatestVisible);
+    }
   });
 
   ta.addEventListener("keydown", (e) => {
-    if (e.key === "Enter" && !e.shiftKey) {
+    const isMobile = window.matchMedia("(max-width: 640px)").matches;
+
+    if (e.key === "Enter" && !e.shiftKey && !isMobile) {
       e.preventDefault();
       form.requestSubmit();
     }
@@ -78,7 +104,34 @@
 
   add?.addEventListener("click", (e) => {
     e.preventDefault();
-    toggleAddMenu();
+    triggerPdfPick();
+  });
+
+  // Mode pill toggle (always-visible inline switcher)
+  window.DentAIstudyTask = window.DentAIstudyTask || "qa";
+
+  document.querySelectorAll(".mode-pill[data-task]").forEach((pill) => {
+    pill.addEventListener("click", () => {
+      document.querySelectorAll(".mode-pill[data-task]").forEach((p) => {
+        p.classList.remove("is-active");
+        p.setAttribute("aria-pressed", "false");
+      });
+
+      pill.classList.add("is-active");
+      pill.setAttribute("aria-pressed", "true");
+      window.DentAIstudyTask = pill.dataset.task || "qa";
+    });
+  });
+
+  document.addEventListener("click", (e) => {
+    const starter = e.target.closest?.(".starter-card[data-prompt]");
+    if (!starter) return;
+
+    ta.value = starter.dataset.prompt || "";
+    autoGrow();
+    setSendState();
+    ta.focus({ preventScroll: true });
+    ta.setSelectionRange(ta.value.length, ta.value.length);
   });
 
   document.addEventListener("click", (e) => {
@@ -115,6 +168,7 @@
 
   /** @type {Map<string, Promise<void>>} */
   const pdfPending = new Map();
+  const MIN_PDF_READING_MS = 1900;
 
   function safeLoadPdfCache() {
     try {
@@ -215,6 +269,8 @@
 
     // start parsing
     const p = (async () => {
+      const startedAt = performance.now();
+
       try {
         const res = await extractPdfTextWithPdfjs(file, {
           maxPages: Infinity,
@@ -240,6 +296,13 @@
           updatedAt: Date.now(),
         };
         safeSavePdfCache();
+      } finally {
+        const elapsed = performance.now() - startedAt;
+        const remaining = MIN_PDF_READING_MS - elapsed;
+
+        if (remaining > 0) {
+          await new Promise((resolve) => window.setTimeout(resolve, remaining));
+        }
       }
     })();
 
@@ -253,9 +316,11 @@
   }
 
   // API used by study-builder.js (network layer)
-  function resetPdfContext() {
+  function resetPdfContext(options = {}) {
     attached.length = 0;
-    pdfCache.activeIds = [];
+    if (!options.keepActiveContext) {
+      pdfCache.activeIds = [];
+    }
     safeSavePdfCache();
 
     if (pdfInput) pdfInput.value = "";
@@ -263,6 +328,18 @@
   }
 
   let pendingSendDocs = [];
+
+  function buildAttachmentMeta(file) {
+    const id = pdfFileId(file);
+    const cached = pdfCache.docs?.[id] || {};
+    return {
+      name: file.name || cached.name || "PDF",
+      size: Number(file.size || cached.size || 0),
+      type: file.type || "application/pdf",
+      pages: cached.pages || null,
+      status: cached.text ? "ready" : getPdfStatus(id),
+    };
+  }
 
   function sealForSend() {
     safeLoadPdfCache();
@@ -285,7 +362,7 @@
       })
       .filter(Boolean);
 
-    resetPdfContext(); // clears UI chips (your requirement)
+    resetPdfContext({ keepActiveContext: true }); // clears UI chips only
   }
 
   window.DentAIPDF = window.DentAIPDF || {};
@@ -296,6 +373,8 @@
     pendingSendDocs = [];
     return out;
   };
+  window.DentAIPDF.getAttachedMetadata = () =>
+    attached.map(buildAttachmentMeta);
 
   window.DentAIPDF.getActiveContext = (maxChars = 120000) => {
     safeLoadPdfCache();
@@ -337,13 +416,52 @@
 
     return trimmed.length > maxChars ? trimmed.slice(0, maxChars) : trimmed;
   };
+  function restoreActiveFromAttachments(attachments = []) {
+    safeLoadPdfCache();
+
+    const items = Array.isArray(attachments) ? attachments : [];
+    const docs = pdfCache.docs || {};
+    const active = new Set(pdfCache.activeIds || []);
+
+    for (const item of items) {
+      const name = String(item?.name || "").trim();
+      const size = Number(item?.size || 0);
+
+      if (!name) continue;
+
+      const matchId = Object.keys(docs).find((id) => {
+        const doc = docs[id];
+        if (!doc?.text) return false;
+        if (String(doc.name || "") !== name) return false;
+        if (size && Number(doc.size || 0) !== size) return false;
+        return true;
+      });
+
+      if (matchId) active.add(matchId);
+    }
+
+    pdfCache.activeIds = Array.from(active);
+    safeSavePdfCache();
+    renderActivePdfContext();
+  }
+
   window.DentAIPDF.setActiveByFile = (file, on) => {
     const id = pdfFileId(file);
     setPdfActive(id, !!on);
   };
 
+  window.DentAIPDF.restoreActiveFromAttachments = restoreActiveFromAttachments;
+
+  document.addEventListener("dentai:restore-pdf-context", (event) => {
+    restoreActiveFromAttachments(event.detail?.attachments || []);
+  });
+
   // init cache once
   safeLoadPdfCache();
+  if (!new URL(window.location.href).searchParams.get("chat")) {
+    pdfCache.activeIds = [];
+    safeSavePdfCache();
+  }
 
   function isPdf(file) {
     const name = (file.name || "").toLowerCase();
@@ -378,20 +496,26 @@
     return svgWrap([path("M18 6L6 18"), path("M6 6l12 12")]);
   }
 
+  function renderActivePdfContext() {}
+
   function renderAttachments() {
     if (!attachBar) return;
 
     attachBar.innerHTML = "";
     // Keep active PDF context aligned with what the user actually attached in this chat.
-    pdfCache.activeIds = attached.map((f) => pdfFileId(f));
-    safeSavePdfCache();
+    if (attached.length) {
+      pdfCache.activeIds = attached.map((f) => pdfFileId(f));
+      safeSavePdfCache();
+    }
 
     if (!attached.length) {
       attachBar.hidden = true;
+      renderActivePdfContext();
       return;
     }
 
     attachBar.hidden = false;
+    renderActivePdfContext();
 
     attached.forEach((file, idx) => {
       const id = pdfFileId(file);
@@ -411,6 +535,10 @@
       ico.className = "pdfico";
       ico.appendChild(iconPdf());
 
+      const name = document.createElement("span");
+      name.className = "name";
+      name.textContent = file.name || "PDF";
+
       const x = document.createElement("button");
       x.type = "button";
       x.className = "x";
@@ -424,6 +552,7 @@
 
       chip.setAttribute("title", file.name + suffix);
       chip.appendChild(ico);
+      chip.appendChild(name);
       chip.appendChild(x);
 
       attachBar.appendChild(chip);
@@ -551,11 +680,12 @@
   pdfInput?.addEventListener("change", () => {
     addFiles(pdfInput.files);
     closeAddMenu();
-    ta.focus({ preventScroll: true });
-    setTimeout(
-      () => ta.scrollIntoView({ block: "center", behavior: "smooth" }),
-      350,
-    );
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        ta.focus();
+      });
+    });
   });
 
   // ========= Add menu actions =========
@@ -604,7 +734,7 @@
           .promise;
         thumb = c.toDataURL("image/jpeg", 0.6);
       } catch (_) {}
-      pdfMeta.push({ name: f.name, thumb });
+      pdfMeta.push({ ...buildAttachmentMeta(f), thumb });
     }
 
     window.ChatUI?.addUser(text, pdfMeta.length ? pdfMeta : null);
@@ -614,9 +744,13 @@
     autoGrow();
     setSendState();
 
-    sealForSend();
+    if (attached.length) {
+      pdfCache.activeIds = attached.map((f) => pdfFileId(f));
+      safeSavePdfCache();
+    }
 
-    closeAddMenu();
+    sealForSend();
+    renderActivePdfContext();
 
     // AI reply is handled by assets/js/study-builder.js (Supabase Edge Function).
   });
@@ -656,21 +790,13 @@
   setSendState();
   renderAttachments();
 
-  // Fix: sticky composer clipped by virtual keyboard on Android Chrome
-  if (window.visualViewport) {
-    const wrap = document.querySelector(".composer-wrap");
-    if (wrap) {
-      const repin = () => {
-        const offset = Math.max(
-          0,
-          window.innerHeight -
-            window.visualViewport.height -
-            window.visualViewport.offsetTop,
-        );
-        wrap.style.transform = offset > 0 ? `translateY(-${offset}px)` : "";
-      };
-      window.visualViewport.addEventListener("resize", repin);
-      window.visualViewport.addEventListener("scroll", repin);
-    }
+  if (
+    Array.isArray(window.DentAIPendingPdfRestore) &&
+    window.DentAIPendingPdfRestore.length
+  ) {
+    restoreActiveFromAttachments(window.DentAIPendingPdfRestore);
+    window.DentAIPendingPdfRestore = [];
+  } else {
+    renderActivePdfContext();
   }
 })();

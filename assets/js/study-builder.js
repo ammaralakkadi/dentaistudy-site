@@ -340,6 +340,27 @@
       return t.length > 200 ? t.slice(0, 200) : t;
     }
 
+    function normalizeAttachments(value) {
+      if (!Array.isArray(value)) return [];
+      return value
+        .map((item) => {
+          if (!item || typeof item !== "object") return null;
+          const name = String(item.name || "").trim();
+          if (!name) return null;
+          return {
+            name: name.slice(0, 240),
+            size: Number.isFinite(Number(item.size)) ? Number(item.size) : 0,
+            type: String(item.type || "application/pdf").slice(0, 80),
+            pages: Number.isFinite(Number(item.pages))
+              ? Number(item.pages)
+              : null,
+            status: String(item.status || "ready").slice(0, 40),
+          };
+        })
+        .filter(Boolean)
+        .slice(0, 10);
+    }
+
     // Desktop-only modal (keeps mobile/iPad using native prompt/confirm)
     function isDesktopModal() {
       return (
@@ -568,7 +589,7 @@
         .select("id,title,updated_at,created_at")
         .order("updated_at", { ascending: false })
         .order("created_at", { ascending: false })
-        .limit(10);
+        .limit(30);
 
       if (error || !Array.isArray(data)) return [];
       return data;
@@ -750,7 +771,7 @@
 
       const { data, error } = await supa
         .from("messages")
-        .select("role,content,created_at")
+        .select("role,content,created_at,attachments")
         .eq("conversation_id", id)
         .order("created_at", { ascending: true });
 
@@ -761,14 +782,35 @@
       }
 
       window.ChatUI?.clear?.();
-      thread = data.map((m) => ({ role: m.role, content: m.content }));
+      thread = data.map((m) => ({
+        role: m.role,
+        content: m.content,
+        attachments: normalizeAttachments(m.attachments),
+      }));
 
       for (const m of thread) {
-        if (m.role === "user") window.ChatUI?.addUserStatic?.(m.content);
+        if (m.role === "user")
+          window.ChatUI?.addUserStatic?.(m.content, m.attachments);
         else {
           window.ChatUI?.addAIStatic?.(m.content);
           postProcessLastAiBubble(m.content);
         }
+      }
+
+      const restoredAttachments = thread
+        .filter((m) => m.role === "user")
+        .flatMap((m) => normalizeAttachments(m.attachments));
+
+      if (restoredAttachments.length) {
+        window.DentAIPendingPdfRestore = restoredAttachments;
+
+        window.DentAIPDF?.restoreActiveFromAttachments?.(restoredAttachments);
+
+        document.dispatchEvent(
+          new CustomEvent("dentai:restore-pdf-context", {
+            detail: { attachments: restoredAttachments },
+          }),
+        );
       }
     }
 
@@ -795,12 +837,13 @@
       await refreshChatList();
     }
 
-    async function insertMessage(role, content) {
+    async function insertMessage(role, content, attachments = []) {
       const { error } = await supa.from("messages").insert({
         conversation_id: activeConversationId,
         user_id: userId,
         role,
         content,
+        attachments: normalizeAttachments(attachments),
       });
       if (error) throw error;
     }
@@ -819,7 +862,9 @@
         if (thread.length && window.ChatUI) {
           window.ChatUI?.clear?.();
           for (const m of thread) {
-            if (m.role === "user") window.ChatUI?.addUserStatic?.(m.content);
+            const attachments = normalizeAttachments(m.attachments);
+            if (m.role === "user")
+              window.ChatUI?.addUserStatic?.(m.content, attachments);
             else {
               window.ChatUI?.addAIStatic?.(m.content);
               postProcessLastAiBubble(m.content);
@@ -858,11 +903,14 @@
       if (!form || !ta) return;
 
       let pendingSubmitText = null;
+      let pendingSubmitAttachments = [];
 
       form.addEventListener(
         "submit",
         (e) => {
           pendingSubmitText = (ta.value || "").trim();
+          pendingSubmitAttachments =
+            window.DentAIPDF?.getAttachedMetadata?.() || [];
           if (!pendingSubmitText) return;
 
           // Let composer.js run first (it draws the user bubble + thinking)
@@ -891,19 +939,36 @@
               postProcessLastAiBubble(msg);
 
               if (!isAuthed) {
-                thread.push({ role: "assistant", content: msg });
+                thread.push({
+                  role: "assistant",
+                  content: msg,
+                  attachments: [],
+                });
                 saveThread(thread);
               }
               return;
             }
 
             try {
+              const attachments = normalizeAttachments(
+                pendingSubmitAttachments,
+              );
+              pendingSubmitAttachments = [];
+
               if (isAuthed) {
                 await ensureConversationForFirstMessage(text);
-                await insertMessage("user", text);
-                thread.push({ role: "user", content: text });
+                await insertMessage("user", text, attachments);
+                thread.push({
+                  role: "user",
+                  content: text,
+                  attachments: normalizeAttachments(attachments),
+                });
               } else {
-                thread.push({ role: "user", content: text });
+                thread.push({
+                  role: "user",
+                  content: text,
+                  attachments: normalizeAttachments(attachments),
+                });
                 saveThread(thread);
               }
 
@@ -974,11 +1039,11 @@
                 postProcessLastAiBubble(content);
 
                 if (isAuthed) {
-                  await insertMessage("assistant", content);
-                  thread.push({ role: "assistant", content });
+                  await insertMessage("assistant", content, []);
+                  thread.push({ role: "assistant", content, attachments: [] });
                   await refreshChatList();
                 } else {
-                  thread.push({ role: "assistant", content });
+                  thread.push({ role: "assistant", content, attachments: [] });
                   saveThread(thread);
                 }
                 return;
@@ -995,11 +1060,19 @@
                 postProcessLastAiBubble(msg);
 
                 if (isAuthed) {
-                  await insertMessage("assistant", msg);
-                  thread.push({ role: "assistant", content: msg });
+                  await insertMessage("assistant", msg, []);
+                  thread.push({
+                    role: "assistant",
+                    content: msg,
+                    attachments: [],
+                  });
                   await refreshChatList();
                 } else {
-                  thread.push({ role: "assistant", content: msg });
+                  thread.push({
+                    role: "assistant",
+                    content: msg,
+                    attachments: [],
+                  });
                   saveThread(thread);
                 }
                 return;
@@ -1016,11 +1089,19 @@
               postProcessLastAiBubble(msg);
 
               if (isAuthed) {
-                await insertMessage("assistant", msg);
-                thread.push({ role: "assistant", content: msg });
+                await insertMessage("assistant", msg, []);
+                thread.push({
+                  role: "assistant",
+                  content: msg,
+                  attachments: [],
+                });
                 await refreshChatList();
               } else {
-                thread.push({ role: "assistant", content: msg });
+                thread.push({
+                  role: "assistant",
+                  content: msg,
+                  attachments: [],
+                });
                 saveThread(thread);
               }
             } catch (err) {
@@ -1032,12 +1113,20 @@
 
               if (isAuthed && activeConversationId) {
                 try {
-                  await insertMessage("assistant", msg);
-                  thread.push({ role: "assistant", content: msg });
+                  await insertMessage("assistant", msg, []);
+                  thread.push({
+                    role: "assistant",
+                    content: msg,
+                    attachments: [],
+                  });
                   await refreshChatList();
                 } catch {}
               } else {
-                thread.push({ role: "assistant", content: msg });
+                thread.push({
+                  role: "assistant",
+                  content: msg,
+                  attachments: [],
+                });
                 saveThread(thread);
               }
             }

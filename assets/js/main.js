@@ -1,152 +1,48 @@
-// Slide-out menu
+// Mobile menu panel
 const menuToggle = document.querySelector(".menu-toggle");
 const slideNav = document.querySelector(".slide-nav");
 const slideNavBackdrop = document.querySelector(".slide-nav-backdrop");
 const slideNavClose = document.querySelector(".slide-nav-close");
 
+function setMobileMenu(open) {
+  if (!menuToggle || !slideNav || !slideNavBackdrop) return;
+
+  slideNav.classList.toggle("active", open);
+  slideNavBackdrop.classList.toggle("active", open);
+  menuToggle.classList.toggle("is-open", open);
+  document.body.classList.toggle("mobile-menu-open", open);
+  menuToggle.setAttribute("aria-expanded", String(open));
+  menuToggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+}
+
+function closeMobileMenu() {
+  setMobileMenu(false);
+}
+
 if (menuToggle && slideNav && slideNavBackdrop) {
+  menuToggle.setAttribute("aria-expanded", "false");
+
   menuToggle.addEventListener("click", () => {
-    const willOpen = !slideNav.classList.contains("active");
-
-    slideNav.classList.toggle("active", willOpen);
-    slideNavBackdrop.classList.toggle("active", willOpen);
-
-    /* ✅ drives the morph */
-    menuToggle.classList.toggle("is-open", willOpen);
+    setMobileMenu(!slideNav.classList.contains("active"));
   });
+
+  slideNavBackdrop.addEventListener("click", closeMobileMenu);
+  slideNavClose?.addEventListener("click", closeMobileMenu);
+
+  slideNav.addEventListener("click", (event) => {
+    if (event.target.closest("a, button")) closeMobileMenu();
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeMobileMenu();
+  });
+
+  window
+    .matchMedia("(min-width: 901px)")
+    .addEventListener("change", closeMobileMenu);
 }
 
-if (slideNavClose && slideNav && slideNavBackdrop) {
-  slideNavClose.addEventListener("click", () => {
-    slideNav.classList.remove("active");
-    slideNavBackdrop.classList.remove("active");
-    if (menuToggle) menuToggle.classList.remove("is-open");
-  });
-}
-
-if (slideNavBackdrop && slideNav) {
-  slideNavBackdrop.addEventListener("click", () => {
-    slideNav.classList.remove("active");
-    slideNavBackdrop.classList.remove("active");
-    if (menuToggle) menuToggle.classList.remove("is-open");
-  });
-}
-
-// Close menu on ESC (desktop/power users)
-document.addEventListener("keydown", (e) => {
-  if (e.key !== "Escape") return;
-  if (!slideNav || !slideNavBackdrop) return;
-
-  slideNav.classList.remove("active");
-  slideNavBackdrop.classList.remove("active");
-  if (menuToggle) menuToggle.classList.remove("is-open");
-});
-
-// Mobile/iPad header auto-hide (professional standard)
-// - scroll DOWN => hide header
-// - scroll UP   => show header
-(() => {
-  const header = document.querySelector(".site-header");
-  if (!header) return;
-
-  const mq = window.matchMedia("(max-width: 900px)");
-
-  let lastY = window.scrollY || 0;
-  let lastToggleY = lastY;
-  let hidden = false;
-  let ticking = false;
-
-  // Tune these if you want:
-  const HIDE_AFTER_PX = 24; // distance needed to hide after last toggle
-  const SHOW_AFTER_PX = 18; // distance needed to show after last toggle
-  const TOP_SAFE_PX = 8; // always show header near top
-
-  function setHidden(nextHidden) {
-    if (hidden === nextHidden) return;
-    hidden = nextHidden;
-    header.classList.toggle("is-hidden", nextHidden);
-    lastToggleY = lastY;
-  }
-
-  function compute() {
-    // Desktop: always visible
-    if (!mq.matches) {
-      setHidden(false);
-      lastY = window.scrollY || 0;
-      lastToggleY = lastY;
-      return;
-    }
-
-    // If slide menu is open, keep header visible
-    if (
-      typeof slideNav !== "undefined" &&
-      slideNav &&
-      slideNav.classList.contains("active")
-    ) {
-      setHidden(false);
-      lastY = window.scrollY || 0;
-      lastToggleY = lastY;
-      return;
-    }
-
-    const y = window.scrollY || 0;
-    const dy = y - lastY;
-
-    // Always show at the very top
-    if (y <= TOP_SAFE_PX) {
-      lastY = y;
-      lastToggleY = y;
-      setHidden(false);
-      return;
-    }
-
-    // Ignore tiny jitter
-    if (Math.abs(dy) < 2) {
-      lastY = y;
-      return;
-    }
-
-    // Scroll DOWN => hide (after enough distance)
-    if (dy > 0) {
-      if (!hidden && y - lastToggleY >= HIDE_AFTER_PX) {
-        setHidden(true);
-      }
-    }
-
-    // Scroll UP => show (after enough distance)
-    if (dy < 0) {
-      if (hidden && lastToggleY - y >= SHOW_AFTER_PX) {
-        setHidden(false);
-      }
-    }
-
-    lastY = y;
-  }
-
-  function onScroll() {
-    if (ticking) return;
-    ticking = true;
-    window.requestAnimationFrame(() => {
-      compute();
-      ticking = false;
-    });
-  }
-
-  window.addEventListener("scroll", onScroll, { passive: true });
-
-  // Reset properly when crossing breakpoint
-  const onMqChange = () => {
-    setHidden(false);
-    lastY = window.scrollY || 0;
-    lastToggleY = lastY;
-  };
-
-  if (mq.addEventListener) mq.addEventListener("change", onMqChange);
-  else if (mq.addListener) mq.addListener(onMqChange);
-
-  // Run once
-  compute();
-})();
+// Header intentionally scrolls with the page.
 
 // FAQ toggle
 document.querySelectorAll(".faq-item").forEach((item) => {

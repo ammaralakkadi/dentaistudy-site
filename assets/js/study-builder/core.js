@@ -5,16 +5,81 @@
   const messagesEl = document.getElementById("messages");
   const jumpBtn = document.getElementById("jump");
 
+  const mainEl = document.querySelector(".main");
   const emptyStateEl = document.createElement("div");
+
+  function getGreeting() {
+    const hour = new Date().getHours();
+    if (hour < 12) return "Good morning";
+    if (hour < 18) return "Good afternoon";
+    return "Good evening";
+  }
+
   emptyStateEl.className = "empty-state is-hidden";
-  emptyStateEl.innerHTML =
-    '<div class="empty-state-title">Start with a topic or question</div>';
+  emptyStateEl.innerHTML = `
+  <div class="empty-state-inner" aria-label="Get started">
+    <p class="empty-state-kicker">DentAIstudy workspace</p>
+    <h1 class="empty-state-title">${getGreeting()}, ready to study?</h1>
+    <p class="empty-state-subtitle">Start with a high-yield dental workflow or ask your own question.</p>
+
+    <div class="starter-grid">
+    <button class="starter-card" type="button" data-prompt="Explain this PDF like a dental exam mentor. Start with the high-yield summary, then list exam traps and what I should memorize: ">
+    <span class="starter-ico" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none">
+        <path d="M11 17a4 4 0 0 1-8 0V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M16.7 13H19a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M7 17h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="m11 8 2.3-2.3a2.4 2.4 0 0 1 3.404.004L18.6 7.6a2.4 2.4 0 0 1 .026 3.434L9.9 19.8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </span>
+    <span class="starter-text">Explain this PDF</span>
+  </button>
+
+  <button class="starter-card" type="button" data-prompt="Make clean high-yield dental exam notes on this topic. Use headings, key facts, clinical signs, treatment, and common traps: ">
+  <span class="starter-ico" aria-hidden="true">
+    <svg viewBox="0 0 24 24" fill="none">
+      <path d="M10 8a2.4 2.4 0 0 1 1.706.706l3.588 3.588A2.4 2.4 0 0 1 16 14v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V10a2 2 0 0 1 2-2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M10 8v5a1 1 0 0 0 1 1h5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M8 4a2 2 0 0 1 2-2h6a2.4 2.4 0 0 1 1.706.706l3.588 3.588A2.4 2.4 0 0 1 22 8v6a2 2 0 0 1-2 2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M16 2v5a1 1 0 0 0 1 1h5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </span>
+  <span class="starter-text">Make exam notes</span>
+</button>
+
+<button class="starter-card" type="button" data-prompt="Test me with 10 clinical dental MCQs on this topic. Make them exam-style, include the correct answer, and explain why: ">
+<span class="starter-ico" aria-hidden="true">
+  <svg viewBox="0 0 24 24" fill="none">
+    <path d="M3 5h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M3 12h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M3 19h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M8 5h13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M8 12h13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M8 19h13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+</span>
+<span class="starter-text">Test me with MCQs</span>
+</button>
+
+<button class="starter-card" type="button" data-prompt="Compare these two dental topics in a simple exam table. Focus on diagnosis, key signs, treatment, and common traps: ">
+<span class="starter-ico" aria-hidden="true">
+  <svg viewBox="0 0 24 24" fill="none">
+    <rect width="13" height="7" x="3" y="3" rx="1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="m22 15-3-3 3-3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect width="13" height="7" x="3" y="14" rx="1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+</span>
+<span class="starter-text">Compare two topics</span>
+</button>
+    </div>
+  </div>`;
 
   messagesEl.parentElement.insertBefore(emptyStateEl, messagesEl);
 
   function syncEmptyState() {
     const hasMsgs = messagesEl.children.length > 0;
     emptyStateEl.classList.toggle("is-hidden", hasMsgs);
+    mainEl?.classList.toggle("is-empty-chat", !hasMsgs);
   }
 
   new MutationObserver(syncEmptyState).observe(messagesEl, { childList: true });
@@ -148,7 +213,11 @@
       thinkingTimer = null;
     }
     if (!thinkingEl) return;
-    thinkingEl.remove();
+    const current = thinkingEl;
+    current.classList.add("is-leaving");
+    window.setTimeout(() => {
+      if (current.isConnected) current.remove();
+    }, 160);
     thinkingEl = null;
   }
 
@@ -194,8 +263,10 @@
       });
       updateJump();
     },
-    addUserStatic(text) {
-      renderMessage({ role: "user", text });
+    addUserStatic(text, attachments = []) {
+      const pdfMeta =
+        Array.isArray(attachments) && attachments.length ? attachments : null;
+      renderMessage({ role: "user", text, pdfMeta });
       scrollToBottom();
       updateJump();
     },
@@ -346,7 +417,7 @@
 
   function renderMessage({ role, text, pdfMeta }) {
     const wrap = document.createElement("div");
-    wrap.className = `msg ${role}`;
+    wrap.className = `msg ${role} is-entering`;
 
     // Extract PDF lines from user text (history fallback)
     let cleanText = text;
@@ -400,6 +471,9 @@
 
     wrap.appendChild(bubble);
     messagesEl.appendChild(wrap);
+    window.requestAnimationFrame(() => {
+      wrap.classList.remove("is-entering");
+    });
     return wrap;
   }
 
