@@ -5,7 +5,7 @@
   position: sticky;
   top: 0;
   height: 100dvh;
-  background: #e8f1fb;
+  background: #fafafa;
   color: #0b0f19;
 
   font-family:
@@ -15,18 +15,39 @@
     "Segoe UI",
     sans-serif;
 
-  border-right: 1px solid rgba(15, 76, 129, 0.16);
+  border-right: 1px solid rgba(17, 24, 39, 0.08);
   display: flex;
   flex-direction: column;
   padding: 14px 14px 12px;
   gap: 14px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(17, 24, 39, 0.22) transparent;
+}
+
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: rgba(17, 24, 39, 0.22);
+  border-radius: 999px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: rgba(17, 24, 39, 0.32);
 }
 
 .sb-top {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 3px 15px; /* gives the brand the same comfortable inset */
+  padding: 3px 15px;
 }
 
 .sb-logo {
@@ -41,8 +62,7 @@
 .sb-title {
   min-width: 0;
   display: flex;
-  flex-direction: column;
-  gap: 2px;
+  align-items: center;
 }
 .sb-appname {
   font-weight: 650;
@@ -51,8 +71,42 @@
   opacity: 0.95;
 }
 .sb-plan {
-  font-size: 13px;
-  color: rgba(11, 15, 25, 0.62);
+  width: fit-content;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 2px;
+  font-size: 12px;
+  font-weight: 650;
+  line-height: 1.2;
+  color: rgba(11, 15, 25, 0.56);
+}
+
+.sb-plan[data-plan="pro"] {
+  color: #1976d2;
+}
+
+.sb-plan-icon {
+  flex: 0 0 auto;
+}
+
+.sb-plan-icon path:first-child {
+  fill: currentColor;
+  stroke: currentColor;
+}
+
+.sb-plan-icon path:last-child {
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 2.4;
+}
+
+.sb-plan[data-plan="free"] .sb-plan-icon {
+  display: none;
+}
+
+.sb-plan[hidden] {
+  display: none !important;
 }
 
 .sb-nav {
@@ -62,14 +116,73 @@
 }
 
 #sbChatsSlot {
+  flex: 0 0 auto;
+}
+
+#sbChatsSlot[hidden] {
+  display: none !important;
+}
+
+.sb-upgrade-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 86px;
+  padding: 16px 12px;
+  color: #111827;
+  text-decoration: none;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+
+.sb-upgrade-card[hidden] {
+  display: none !important;
+}
+
+.sb-upgrade-card:hover {
+  border-color: #d7dce3;
+  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.08);
+}
+
+.sb-upgrade-card-icon {
+  flex: 0 0 auto;
+  color: #2d7ff9;
+  display: inline-flex;
+}
+
+.sb-upgrade-card-copy {
+  min-width: 0;
   flex: 1 1 auto;
-  min-height: 0;
   display: flex;
   flex-direction: column;
+  gap: 5px;
+}
+
+.sb-upgrade-card-title {
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.25;
+  color: #111827;
+}
+
+.sb-upgrade-card-text {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.45;
+  color: #4b5563;
+}
+
+.sb-upgrade-card-arrow {
+  flex: 0 0 auto;
+  color: #6b7280;
+  display: inline-flex;
 }
 
 .sb-btn {
   width: 100%;
+  min-height: 42px;
   border: 1px solid transparent;
   background: transparent;
   color: #0b0f19;
@@ -80,6 +193,10 @@
   gap: 10px;
   text-align: left;
   font-size: 14px;
+  font-weight: 600;
+  line-height: 1.2;
+  text-decoration: none;
+  cursor: pointer;
 }
 .sb-btn:hover {
   background: rgba(10, 61, 98, 0.06);
@@ -91,31 +208,35 @@
 }
 
 .ico {
+  flex: 0 0 20px;
   width: 20px;
+  height: 20px;
   display: grid;
   place-items: center;
-  opacity: 0.55;
+  color: currentColor;
+  opacity: 0.56;
+}
+
+.ico svg {
+  width: 18px;
+  height: 18px;
+  display: block;
 }
 
 .sb-section {
   margin-top: 6px;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  flex: 1 1 auto;
+  display: block;
 }
 .sb-section-title {
+  margin-bottom: 10px;
   font-size: 12px;
   color: #0b0f19;
   padding: 0 6px;
 }
 
 .sb-chatlist {
-  min-height: 0;
-  overflow: auto;
-  padding-right: 6px;
-  flex: 1 1 auto;
+  overflow: visible;
+  padding-right: 0;
 }
 
 .sb-chatrow {
@@ -124,12 +245,26 @@
   gap: 6px;
   position: relative;
   margin-bottom: 6px;
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease;
 }
 
 .sb-chatrow .sb-chat {
-  transition: padding-right 0.18s ease;
+  transition:
+    padding-right 0.18s ease,
+    background 0.16s ease,
+    border-color 0.16s ease,
+    color 0.16s ease;
   -webkit-mask-image: linear-gradient(to right, #000 80%, transparent 100%);
   mask-image: linear-gradient(to right, #000 80%, transparent 100%);
+}
+
+.sb-chatrow.is-entering {
+  opacity: 0;
+  transform: translateY(5px);
 }
 
 .sb-chatrow:hover .sb-chat,
@@ -159,33 +294,46 @@
 
 .sb-chatmenu {
   flex: 0 0 auto;
-  height: 28px;
-  width: 28px;
-  border-radius: 50%;
-  border: none;
+  height: 26px;
+  width: 30px;
+  border-radius: 8px;
+  border: 1px solid transparent;
   background: transparent;
   cursor: pointer;
-  font-size: 18px;
+  font-size: 0;
   display: grid;
   place-items: center;
-  color: rgba(11, 15, 25, 0.6);
+  color: rgba(15, 23, 42, 0.56);
   padding: 0;
   -webkit-tap-highlight-color: transparent;
   opacity: 0;
   transition:
     opacity 0.15s ease,
     color 0.15s ease,
-    background 0.15s ease;
+    background 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.sb-chatmenu::before {
+  content: "";
+  width: 3px;
+  height: 3px;
+  border-radius: 999px;
+  background: currentColor;
+  box-shadow:
+    -6px 0 0 currentColor,
+    6px 0 0 currentColor;
 }
 
 .sb-chatmenu:hover {
-  background: rgba(2, 6, 23, 0.06);
-  color: rgba(11, 15, 25, 0.92);
+  background: rgba(15, 23, 42, 0.055);
+  border-color: rgba(15, 23, 42, 0.06);
+  color: rgba(15, 23, 42, 0.82);
   opacity: 1;
 }
 
 .sb-chatmenu:active {
-  background: rgba(2, 6, 23, 0.1);
+  background: rgba(15, 23, 42, 0.09);
 }
 
 .sb-chatmenu:focus {
@@ -193,7 +341,8 @@
 }
 
 .sb-chatmenu:focus-visible {
-  box-shadow: 0 0 0 3px rgba(10, 61, 98, 0.25);
+  outline: 2px solid rgba(10, 61, 98, 0.22);
+  outline-offset: 2px;
 }
 
 .sb-chatmenu-pop {
@@ -204,27 +353,17 @@
   min-width: 170px;
   border-radius: 14px;
 
-  /* more transparent glass */
-  background: rgba(255, 255, 255, 0.35);
+  background: #ffffff;
   border: 1px solid rgba(15, 23, 42, 0.1);
-  box-shadow:
-    0 16px 44px rgba(15, 23, 42, 0.14),
-    0 2px 10px rgba(15, 23, 42, 0.06);
-
-  backdrop-filter: saturate(180%) blur(22px);
-  -webkit-backdrop-filter: saturate(180%) blur(22px);
 
   padding: 6px;
-  z-index: 90;
+  z-index: 140;
 
   display: flex;
   flex-direction: column;
   gap: 2px;
 
   overflow: hidden;
-
-  animation: sbMenuIn 120ms ease-out;
-  transform-origin: top right;
 }
 
 .sb-chatmenu-pop[hidden] {
@@ -286,18 +425,37 @@
   border: 1px solid transparent;
   border-radius: 12px;
   padding: 10px 10px;
+  display: block;
   font-size: 14px;
+  text-decoration: none;
   white-space: nowrap;
   overflow: hidden;
   position: relative;
+  transition:
+    background 0.16s ease,
+    border-color 0.16s ease,
+    color 0.16s ease;
 }
 
 .sb-chat:hover {
   background: rgba(15, 76, 129, 0.08);
 }
 .sb-chat.active {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(15, 76, 129, 0.08);
   border-color: rgba(15, 76, 129, 0.12);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sb-chatrow,
+  .sb-chatrow .sb-chat,
+  .sb-chat {
+    transition: none;
+  }
+
+  .sb-chatrow.is-entering {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 .userchip {
@@ -307,6 +465,27 @@
   padding: 10px 8px;
   border-radius: 14px;
 }
+
+.userchip[data-auth-loading] .avatar {
+  background: #e9edf3;
+}
+
+.userchip[data-auth-loading] .avatar img {
+  opacity: 0;
+}
+
+.userchip[data-auth-loading] .user-name {
+  width: 128px;
+  height: 14px;
+  color: transparent;
+  background: #e9edf3;
+  border-radius: 999px;
+}
+
+.userchip[data-auth-loading] .sb-plan {
+  display: none !important;
+}
+
 .avatar {
   width: 34px;
   height: 34px;
@@ -317,9 +496,16 @@
   font-weight: 700;
   font-size: 12px;
 }
+.user-meta {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
 .user-name {
   font-size: 13px;
   font-weight: 650;
+  line-height: 1.2;
 }
 .user-plan {
   font-size: 12px;
@@ -341,4 +527,10 @@
   border-radius: 999px;
   object-fit: cover;
   display: block;
+}
+
+@media (max-width: 1024px) {
+  .sb-chatmenu {
+    opacity: 1;
+  }
 }

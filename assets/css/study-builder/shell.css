@@ -1,7 +1,7 @@
 /* shell.css
    App + main layout wrappers (no media queries)
 */
-.app{
+.app {
   height: 100dvh;
   display: grid;
   grid-template-columns: var(--sb-w) minmax(0, 1fr);
@@ -9,10 +9,29 @@
 }
 
 /* ===== Main wrapper ===== */
-.main{
+.main {
   min-width: 0;
   height: 100dvh;
+  position: relative;
   display: grid;
   grid-template-rows: var(--topbar-h) minmax(0, 1fr) auto;
   background: var(--bg);
+}
+
+.main.is-empty-chat {
+  grid-template-rows: var(--topbar-h) auto auto;
+  align-content: start;
+  overflow-y: auto;
+}
+
+.study-app {
+  height: auto;
+  min-height: 100dvh;
+}
+
+.study-main {
+  height: auto;
+  min-height: 100dvh;
+  display: block;
+  overflow-x: clip;
 }

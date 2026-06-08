@@ -20,10 +20,11 @@
 .empty-state {
   position: absolute;
   inset: 0;
-  display: grid;
-  place-items: center;
-  padding: 0 18px 140px; /* lifts it above the composer */
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 18px 140px;
+  text-align: left;
 
   opacity: 1;
   transform: translateY(0);
@@ -38,11 +39,111 @@
   pointer-events: none;
 }
 
+.main.is-empty-chat .thread {
+  overflow: visible;
+}
+
+.main.is-empty-chat .thread-inner {
+  height: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.main.is-empty-chat .empty-state {
+  position: static;
+  justify-content: flex-start;
+  padding: clamp(42px, 8vh, 78px) 20px 12px;
+}
+
+.empty-state-inner {
+  width: min(720px, 100%);
+  margin: 0 auto;
+}
+
+.empty-state-kicker {
+  margin: 0 0 10px;
+  color: rgba(71, 85, 105, 0.78);
+  font-size: 12px;
+  font-weight: 750;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
 .empty-state-title {
-  font-weight: 200;
-  font-size: clamp(18px, 2.2vw, 26px);
-  color: rgba(0, 0, 0, 0.5);
-  letter-spacing: 0.35px;
+  margin: 0;
+  color: rgba(11, 15, 25, 0.94);
+  font-size: clamp(24px, 3vw, 36px);
+  font-weight: 680;
+  letter-spacing: -0.04em;
+  line-height: 1.08;
+}
+
+.empty-state-subtitle {
+  margin: 8px 0 26px;
+  color: rgba(15, 23, 42, 0.52);
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+.starter-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.starter-card {
+  min-height: 92px;
+  border: 1px solid rgba(15, 23, 42, 0.09);
+  border-radius: 18px;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 13px 8px;
+  color: #111827;
+  text-align: center;
+  cursor: pointer;
+  transition:
+    border-color 140ms ease,
+    background 140ms ease,
+    box-shadow 140ms ease,
+    transform 140ms ease;
+}
+
+.starter-card:hover {
+  border-color: rgba(15, 76, 129, 0.24);
+  background: rgba(15, 76, 129, 0.025);
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.04);
+  transform: translateY(-1px);
+}
+
+.starter-card:focus-visible {
+  outline: 3px solid rgba(15, 76, 129, 0.16);
+  outline-offset: 3px;
+}
+
+.starter-ico {
+  width: 34px;
+  height: 34px;
+  border-radius: 12px;
+  background: rgba(15, 76, 129, 0.06);
+  color: #0f4c81;
+  display: grid;
+  place-items: center;
+  line-height: 1;
+}
+
+.starter-ico svg {
+  width: 18px;
+  height: 18px;
+}
+
+.starter-text {
+  font-size: 12px;
+  font-weight: 680;
+  letter-spacing: -0.02em;
 }
 
 /* Thinking (subtle shimmer) */
@@ -86,6 +187,11 @@
   transition: opacity 200ms ease;
 }
 
+.msg.thinking.is-leaving {
+  opacity: 0;
+  transform: translateY(-4px);
+}
+
 /* Messages */
 
 .msg {
@@ -94,7 +200,18 @@
   display: flex;
   gap: 10px;
   align-items: flex-start;
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease;
 }
+
+.msg.is-entering {
+  opacity: 0;
+  transform: translateY(6px);
+}
+
 .bubble {
   padding: 14px 16px;
   border-radius: 18px;
@@ -105,6 +222,9 @@
   font-size: 15px;
   white-space: pre-wrap;
   word-break: break-word;
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease;
 }
 .msg.user {
   justify-content: flex-end;
@@ -205,6 +325,10 @@
 
   color: rgba(15, 23, 42, 0.55);
   cursor: pointer;
+  transition:
+    background 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
 }
 
 .copied-pill {
@@ -239,6 +363,7 @@
 .msg-act:hover {
   background: rgba(15, 76, 129, 0.06);
   color: rgba(15, 23, 42, 0.78);
+  transform: translateY(-1px);
 }
 
 .msg-act:active {
@@ -259,4 +384,26 @@
 /* Jump-to-bottom */
 .jump {
   display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .thread-inner,
+  .starter-card,
+  .thinking-logo,
+  .thinking-text,
+  .msg,
+  .bubble,
+  .msg-act {
+    animation: none;
+    scroll-behavior: auto;
+    transition: none;
+  }
+
+  .starter-card:hover,
+  .msg.thinking.is-leaving,
+  .msg.is-entering,
+  .msg-act:hover {
+    opacity: 1;
+    transform: none;
+  }
 }

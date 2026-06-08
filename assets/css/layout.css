@@ -6,12 +6,12 @@
    Global page spacing
 --------------------------------*/
 .section {
-  padding: 4rem 0;
+  padding: 5rem 0;
 }
 
 @media (max-width: 768px) {
   .section {
-    padding: 2.5rem 0;
+    padding: 3rem 0;
   }
 }
 
@@ -20,7 +20,7 @@
 --------------------------------*/
 .container {
   width: 100%;
-  max-width: 1200px;
+  max-width: 1280px;
   margin: 0 auto;
   padding: 0 1.5rem;
 }

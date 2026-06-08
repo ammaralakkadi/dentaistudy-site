@@ -10,23 +10,45 @@
 --------------------------------*/
 :root {
   /* Brand */
-  --color-primary: #0f4c81;
-  --color-primary-soft: #e8f1fb;
-  --color-accent: #10b981;
+  --color-primary: #111827;
+  --color-primary-soft: #f4f4f5;
+  --color-accent: #0f4c81;
+  --color-accent-hover: #0a3d62;
+  --color-accent-soft: rgba(15, 76, 129, 0.08);
+  --color-accent-soft-strong: rgba(15, 76, 129, 0.12);
+  --color-accent-border: rgba(15, 76, 129, 0.2);
+  --color-accent-ring: rgba(15, 76, 129, 0.18);
 
-  /* Neutrals (optional helpers for future use) */
-  --gray-50: #f9fafb;
-  --gray-100: #f3f4f6;
-  --gray-200: #e5e7eb;
-  --gray-300: #d1d5db;
-  --gray-600: #4b5563;
-  --gray-800: #1f2933;
+  /* Core text */
+  --color-ink: #111827;
+  --color-muted: #52525b;
+  --color-subtle: #71717a;
+
+  /* Page surfaces */
+  --page-background:
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(15, 76, 129, 0.055),
+      transparent 34%
+    ),
+    #ffffff;
+  --surface-card: rgba(255, 255, 255, 0.94);
+  --border-soft: rgba(17, 24, 39, 0.08);
+
+  /* Neutrals */
+  --gray-50: #fafafa;
+  --gray-100: #f4f4f5;
+  --gray-200: #e4e4e7;
+  --gray-300: #d4d4d8;
+  --gray-600: #52525b;
+  --gray-800: #18181b;
 
   /* Shadows */
-  --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.15);
+  --shadow-soft: 0 18px 45px rgba(17, 24, 39, 0.08);
+  --shadow-card: 0 10px 30px rgba(17, 24, 39, 0.06);
 
   /* Radii */
-  --radius-lg: 20px;
+  --radius-lg: 24px;
 }
 
 /* No global layout or typography here on purpose.
