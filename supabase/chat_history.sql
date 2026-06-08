@@ -1,4 +1,4 @@
--- DentAIstudy: chat history tables (max 10 conversations per user)
+-- DentAIstudy: chat history tables (max 30 conversations per user)
 -- Run in Supabase Dashboard → SQL Editor
 -- Safe to run multiple times (idempotent-ish).
 
@@ -52,9 +52,9 @@ after insert on public.messages
 for each row execute function public.touch_conversation_updated_at();
 
 -- =========================
--- Enforce max 10 conversations per user (SPAM-SAFE)
+-- Enforce max 30 conversations per user (SPAM-SAFE)
 -- =========================
-create or replace function public.prune_conversations_to_10()
+create or replace function public.prune_conversations_to_30()
 returns trigger
 language plpgsql
 as $$
@@ -69,7 +69,7 @@ begin
       from public.conversations
       where user_id = new.user_id
       order by updated_at desc, created_at desc, id desc
-      offset 10
+      offset 30
     );
 
   return new;
@@ -79,7 +79,7 @@ $$;
 drop trigger if exists conversations_prune on public.conversations;
 create trigger conversations_prune
 after insert on public.conversations
-for each row execute function public.prune_conversations_to_10();
+for each row execute function public.prune_conversations_to_30();
 
 -- =========================
 -- RLS

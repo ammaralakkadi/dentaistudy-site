@@ -283,6 +283,74 @@ function formatBatch(rows: any[]) {
   return out.trim();
 }
 
+function clampInt(value: unknown, min: number, max: number, fallback: number) {
+  const n = Number(value);
+  if (!Number.isFinite(n)) return fallback;
+  return Math.max(min, Math.min(max, Math.round(n)));
+}
+
+function parseJsonObject(text: string): any {
+  const raw = String(text || "").trim();
+  if (!raw) return null;
+
+  try {
+    return JSON.parse(raw);
+  } catch (_) {
+    const start = raw.indexOf("{");
+    const end = raw.lastIndexOf("}");
+    if (start >= 0 && end > start) {
+      try {
+        return JSON.parse(raw.slice(start, end + 1));
+      } catch (_) {
+        return null;
+      }
+    }
+  }
+
+  return null;
+}
+
+function normalizeFlashcards(value: any): Array<{ front: string; back: string }> {
+  const arr = Array.isArray(value) ? value : [];
+  return arr
+    .map((card: any) => ({
+      front: String(card?.front ?? card?.question ?? "").trim(),
+      back: String(card?.back ?? card?.answer ?? "").trim(),
+    }))
+    .filter((card) => card.front && card.back)
+    .slice(0, 30);
+}
+
+function normalizeQuizQuestions(value: any) {
+  const arr = Array.isArray(value) ? value : [];
+  return arr
+    .map((item: any) => {
+      const options = Array.isArray(item?.options)
+        ? item.options
+            .map((option: unknown) => String(option ?? "").trim())
+            .filter(Boolean)
+            .slice(0, 5)
+        : [];
+
+      const correctIndex = Number(item?.correct_index ?? item?.answer_index ?? 0);
+
+      return {
+        question: String(item?.question ?? "").trim(),
+        options,
+        correct_index: Number.isInteger(correctIndex) ? correctIndex : 0,
+        explanation: String(item?.explanation ?? "").trim(),
+      };
+    })
+    .filter(
+      (item) =>
+        item.question &&
+        item.options.length >= 3 &&
+        item.correct_index >= 0 &&
+        item.correct_index < item.options.length,
+    )
+    .slice(0, 25);
+}
+
 serve(async (req: Request): Promise<Response> => {
   if (req.method === "OPTIONS")
     return new Response("ok", { headers: corsHeaders });
@@ -314,7 +382,7 @@ serve(async (req: Request): Promise<Response> => {
     const conversationId = String(body?.conversation_id ?? "").trim();
 
     // NEW: controls behavior without changing UI much
-    const task = String(body?.task ?? "qa").trim(); // "qa" | "chapter_notes"
+    const task = String(body?.task ?? "qa").trim(); // "qa" | "chapter_notes" | "flashcards" | "quiz"
     const activeFileId =
       String(body?.file_id ?? "").trim() ||
       String(body?.pdf_docs?.[0]?.file_id ?? "").trim();
@@ -374,6 +442,9 @@ serve(async (req: Request): Promise<Response> => {
     // Enforce signed-in for PDF indexing/retrieval
     const canUsePdf = Boolean(userId && conversationId);
 
+    let subscriptionTier = "free";
+    let isProUser = false;
+
     // Rate limit (your existing logic)
     if (userId) {
       const today = getTodayUTC();
@@ -381,9 +452,10 @@ serve(async (req: Request): Promise<Response> => {
       if (data?.user) {
         const userMeta: any = data.user.user_metadata ?? {};
         const appMeta: any = data.user.app_metadata ?? {};
-        const tier =
-          appMeta.subscription_tier || userMeta.subscription_tier || "free";
+        const tier = appMeta.subscription_tier || "free";
         const isPro = tier === "pro" || tier === "pro_yearly";
+        subscriptionTier = tier;
+        isProUser = isPro;
         const limit = isPro ? PRO_DAILY_LIMIT : FREE_DAILY_LIMIT;
 
         let used =
@@ -412,9 +484,168 @@ serve(async (req: Request): Promise<Response> => {
       }
     }
 
+    if ((task === "flashcards" || task === "quiz") && !isProUser) {
+      return new Response(
+        JSON.stringify({ error: "PRO_REQUIRED", tier: subscriptionTier }),
+        {
+          status: 403,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        },
+      );
+    }
+
     // If PDFs arrived with this message: index them now (chat-scoped via conversation_id)
     if (canUsePdf && pdfDocs.length) {
       await indexPdfDocs(supabaseAdmin, userId!, conversationId, pdfDocs);
+    }
+
+
+
+    if (task === "flashcards") {
+      const cardCount = clampInt(body?.card_count, 6, 30, 12);
+      const sourceText = truncateText(
+        [
+          topic,
+          ...(messagesFromClient || []).map((m) => `${m.role}: ${m.content}`),
+        ]
+          .filter(Boolean)
+          .join("\n\n"),
+        18000,
+      );
+
+      if (sourceText.length < 30) {
+        return new Response(JSON.stringify({ error: "SOURCE_REQUIRED" }), {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+
+      const aiRes = await fetchOpenAIWithBackoff(
+        "https://api.openai.com/v1/chat/completions",
+        {
+          model: "gpt-4.1-mini",
+          temperature: 0.25,
+          max_tokens: 2600,
+          response_format: { type: "json_object" },
+          messages: [
+            {
+              role: "system",
+              content:
+                "You are DentAIstudy, an expert dental tutor. Generate high-yield dental study flashcards. Output valid JSON only.",
+            },
+            {
+              role: "user",
+              content:
+                `Create exactly ${cardCount} active-recall flashcards from the source. ` +
+                "Avoid duplicates. Keep questions specific and answers concise but useful. " +
+                'Return this schema: {"title":"short deck title","cards":[{"front":"question","back":"answer"}]}\n\n' +
+                `Source:\n${sourceText}`,
+            },
+          ],
+        },
+        OPENAI_API_KEY,
+      );
+
+      const aiText = await aiRes.text();
+      const aiJson = aiText ? JSON.parse(aiText) : null;
+
+      if (!aiRes.ok) {
+        return new Response(
+          JSON.stringify({ error: "OPENAI_ERROR", details: aiJson?.error ?? aiText }),
+          {
+            status: aiRes.status,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          },
+        );
+      }
+
+      const parsed = parseJsonObject(
+        aiJson?.choices?.[0]?.message?.content?.toString() ?? "",
+      );
+      const cards = normalizeFlashcards(parsed?.cards);
+
+      return new Response(
+        JSON.stringify({ title: String(parsed?.title || "Study deck").slice(0, 90), cards }),
+        {
+          status: 200,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        },
+      );
+    }
+
+    if (task === "quiz") {
+      const questionCount = clampInt(body?.question_count, 5, 25, 10);
+      const difficulty = ["easy", "normal", "hard"].includes(String(body?.difficulty))
+        ? String(body?.difficulty)
+        : "normal";
+      const sourceText = truncateText(
+        [
+          topic,
+          ...(messagesFromClient || []).map((m) => `${m.role}: ${m.content}`),
+        ]
+          .filter(Boolean)
+          .join("\n\n"),
+        18000,
+      );
+
+      if (sourceText.length < 30) {
+        return new Response(JSON.stringify({ error: "SOURCE_REQUIRED" }), {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+
+      const aiRes = await fetchOpenAIWithBackoff(
+        "https://api.openai.com/v1/chat/completions",
+        {
+          model: "gpt-4.1-mini",
+          temperature: difficulty === "hard" ? 0.35 : 0.25,
+          max_tokens: 3600,
+          response_format: { type: "json_object" },
+          messages: [
+            {
+              role: "system",
+              content:
+                "You are DentAIstudy, an expert dental tutor and exam writer. Generate dental exam-style MCQs. Output valid JSON only.",
+            },
+            {
+              role: "user",
+              content:
+                `Create exactly ${questionCount} ${difficulty} multiple-choice questions from the source. ` +
+                "Each question needs 4 options, one correct answer, and a short explanation. Avoid duplicates. " +
+                'Return this schema: {"title":"short quiz title","questions":[{"question":"...","options":["A","B","C","D"],"correct_index":0,"explanation":"..."}]}\n\n' +
+                `Source:\n${sourceText}`,
+            },
+          ],
+        },
+        OPENAI_API_KEY,
+      );
+
+      const aiText = await aiRes.text();
+      const aiJson = aiText ? JSON.parse(aiText) : null;
+
+      if (!aiRes.ok) {
+        return new Response(
+          JSON.stringify({ error: "OPENAI_ERROR", details: aiJson?.error ?? aiText }),
+          {
+            status: aiRes.status,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          },
+        );
+      }
+
+      const parsed = parseJsonObject(
+        aiJson?.choices?.[0]?.message?.content?.toString() ?? "",
+      );
+      const questions = normalizeQuizQuestions(parsed?.questions);
+
+      return new Response(
+        JSON.stringify({ title: String(parsed?.title || "Study quiz").slice(0, 90), questions }),
+        {
+          status: 200,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        },
+      );
     }
 
     // Retrieve top-k relevant chunks unless we are building full PDF chapter notes
