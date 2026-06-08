@@ -25,7 +25,9 @@
     <script src="assets/js/main.js" defer></script>
   </head>
 
-  <body class="page-account page-spacing--wide">
+  <body
+    class="page-account page-settings page-spacing--wide account-auth-loading"
+  >
     <div class="main-wrapper">
       <!-- HEADER -->
       <header class="site-header">
@@ -68,10 +70,10 @@
               stroke-linecap="round"
               stroke-linejoin="round"
             >
-              <rect x="3" y="3" width="7" height="7" rx="1.5" />
-              <rect x="14" y="3" width="7" height="7" rx="1.5" />
-              <rect x="3" y="14" width="7" height="7" rx="1.5" />
-              <rect x="14" y="14" width="7" height="7" rx="1.5" />
+              <path d="M12 6v8l3-3 3 3V6" />
+              <path
+                d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2z"
+              />
             </svg>
             <span>Subjects</span>
           </a>
@@ -86,11 +88,14 @@
               stroke-linecap="round"
               stroke-linejoin="round"
             >
+              <path d="M12 7v14" />
+              <path d="M16 12h2" />
+              <path d="M16 8h2" />
               <path
-                d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"
+                d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"
               />
-              <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
-              <path d="M9 14l2 2 4-4" />
+              <path d="M6 12h2" />
+              <path d="M6 8h2" />
             </svg>
             <span>Exams</span>
           </a>
@@ -215,345 +220,453 @@
       <!-- MAIN -->
       <main>
         <div class="container">
-          <div class="workspace-header-row">
-            <div class="workspace-title-row">
-              <div>
-                <div class="workspace-breadcrumb">
-                  <span>DentAIstudy</span>
-                  <span>Account</span>
-                </div>
-                <h1>Account settings</h1>
-                <p class="workspace-subtitle">
-                  Update your information and account settings.
-                </p>
-              </div>
-            </div>
+          <div class="section-header account-section-header">
+            <div class="section-kicker">Settings</div>
+            <h1 class="section-title">Control your study account</h1>
+            <p class="section-subtitle">
+              Update your level, security, plan controls, and account
+              preferences without leaving your workspace.
+            </p>
           </div>
 
-          <div class="workspace-shell">
-            <!-- SIDEBAR -->
-            <aside class="workspace-sidebar">
-              <div class="sidebar-card">
-                <div class="sidebar-card-header">
-                  <div class="sidebar-avatar">
-                    <img
-                      src="assets/img/default-avatar.png"
-                      alt="Your avatar"
-                      data-das-avatar
-                    />
-                  </div>
-                  <div>
-                    <div class="workspace-card-title">
-                      <span id="das-user-name">Your workspace</span>
+          <div class="workspace-shell settings-shell">
+            <section class="workspace-main settings-main">
+              <div class="settings-layout">
+                <aside class="settings-rail" aria-label="Account overview">
+                  <section
+                    class="study-form-card settings-card settings-overview-card"
+                  >
+                    <div class="settings-overview-row">
+                      <div class="settings-overview-avatar">
+                        <img
+                          src="assets/img/default-avatar.png"
+                          alt=""
+                          data-das-avatar
+                        />
+                      </div>
+                      <div class="settings-overview-copy">
+                        <h2 data-das-settings-name>Your workspace</h2>
+                        <p data-das-settings-email>you@example.com</p>
+                        <span
+                          class="settings-overview-plan"
+                          data-das-settings-plan-label
+                        >
+                          Free plan
+                        </span>
+                      </div>
                     </div>
-                    <div class="sidebar-card-subtitle">Account settings</div>
-                  </div>
-                </div>
+                    <p class="settings-help">
+                      Manage your profile, security, and account access.
+                    </p>
+                  </section>
 
-                <nav class="sidebar-nav">
-                  <a href="study.html" class="sidebar-nav-item"
-                    >Study Builder</a
+                  <section
+                    class="study-form-card settings-card settings-quick-card"
                   >
-                  <a href="profile.html" class="sidebar-nav-item">Profile</a>
-                  <a href="settings.html" class="sidebar-nav-item is-active">
-                    <span><strong>Settings</strong></span>
-                  </a>
-                </nav>
+                    <div class="settings-card-heading">
+                      <p class="settings-kicker">Quick Links</p>
+                      <h2>Account shortcuts</h2>
+                    </div>
+
+                    <div class="settings-quick-list">
+                      <a class="settings-quick-row" href="profile.html">
+                        <span class="settings-quick-icon" aria-hidden="true">
+                          <svg
+                            width="18"
+                            height="18"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          >
+                            <path
+                              d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"
+                            />
+                            <circle cx="12" cy="7" r="4" />
+                          </svg>
+                        </span>
+                        <span class="settings-quick-copy">
+                          <span>My profile</span>
+                          <small>View your study dashboard.</small>
+                        </span>
+                        <span class="settings-quick-chevron" aria-hidden="true">
+                          <svg
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.9"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          >
+                            <path d="m9 18 6-6-6-6" />
+                          </svg>
+                        </span>
+                      </a>
+
+                      <a class="settings-quick-row" href="study-library.html">
+                        <span class="settings-quick-icon" aria-hidden="true">
+                          <svg
+                            width="18"
+                            height="18"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          >
+                            <rect x="4" y="4" width="6" height="6" rx="1.5" />
+                            <rect x="14" y="4" width="6" height="6" rx="1.5" />
+                            <rect x="4" y="14" width="6" height="6" rx="1.5" />
+                            <rect x="14" y="14" width="6" height="6" rx="1.5" />
+                          </svg>
+                        </span>
+                        <span class="settings-quick-copy">
+                          <span>Study library</span>
+                          <small>Open saved study work.</small>
+                        </span>
+                        <span class="settings-quick-chevron" aria-hidden="true">
+                          <svg
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.9"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          >
+                            <path d="m9 18 6-6-6-6" />
+                          </svg>
+                        </span>
+                      </a>
+
+                      <a class="settings-quick-row" href="study.html">
+                        <span class="settings-quick-icon" aria-hidden="true">
+                          <svg
+                            width="18"
+                            height="18"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          >
+                            <path
+                              d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"
+                            />
+                            <path
+                              d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"
+                            />
+                          </svg>
+                        </span>
+                        <span class="settings-quick-copy">
+                          <span>Study Builder</span>
+                          <small>Start a new AI study session.</small>
+                        </span>
+                        <span class="settings-quick-chevron" aria-hidden="true">
+                          <svg
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.9"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          >
+                            <path d="m9 18 6-6-6-6" />
+                          </svg>
+                        </span>
+                      </a>
+                    </div>
+                  </section>
+                </aside>
+
+                <section class="settings-stack">
+                  <section class="study-form-card settings-card">
+                    <div class="settings-card-heading">
+                      <p class="settings-kicker">Profile Details</p>
+                      <h2>Identity</h2>
+                    </div>
+
+                    <div class="settings-form-grid">
+                      <div class="form-group">
+                        <label for="settings-fullname">Full name</label>
+                        <input
+                          type="text"
+                          id="settings-fullname"
+                          placeholder="Your name"
+                          readonly
+                        />
+                      </div>
+
+                      <div class="form-group">
+                        <label for="settings-email">Email</label>
+                        <input
+                          type="email"
+                          id="settings-email"
+                          placeholder="you@example.com"
+                          readonly
+                        />
+                      </div>
+                    </div>
+                  </section>
+
+                  <section
+                    class="study-form-card settings-card settings-account-card"
+                  >
+                    <div class="settings-card-heading">
+                      <p class="settings-kicker">Account controls</p>
+                      <h2>Study level &amp; password</h2>
+                    </div>
+
+                    <div class="settings-control-group">
+                      <div class="settings-control-heading">
+                        <h3>Academic level</h3>
+                        <p>
+                          This helps DentAIstudy keep study wording aligned with
+                          your training level.
+                        </p>
+                      </div>
+
+                      <div
+                        class="settings-level-segment"
+                        role="radiogroup"
+                        aria-label="Default level"
+                      >
+                        <label class="settings-level-option">
+                          <input
+                            type="radio"
+                            name="settings-default-level"
+                            value="undergraduate"
+                          />
+                          <span>Undergraduate</span>
+                        </label>
+
+                        <label class="settings-level-option">
+                          <input
+                            type="radio"
+                            name="settings-default-level"
+                            value="postgraduate"
+                          />
+                          <span>Postgraduate</span>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div class="settings-control-group">
+                      <div class="settings-control-heading">
+                        <h3>Password</h3>
+                        <p>
+                          Leave these fields empty if you only want to save your
+                          level.
+                        </p>
+                      </div>
+
+                      <div class="settings-password-stack">
+                        <div class="settings-password-field">
+                          <input
+                            type="password"
+                            id="settings-new-password"
+                            placeholder="New password"
+                            autocomplete="new-password"
+                          />
+                          <button
+                            type="button"
+                            class="settings-password-toggle"
+                            data-settings-password-toggle="settings-new-password"
+                            aria-label="Show password"
+                            aria-pressed="false"
+                          >
+                            <svg
+                              class="settings-password-icon settings-password-icon-hidden"
+                              viewBox="0 0 24 24"
+                              aria-hidden="true"
+                            >
+                              <path d="M3 3l18 18" />
+                              <path d="M10.58 10.58a2 2 0 0 0 2.84 2.84" />
+                              <path
+                                d="M9.88 5.08A10.89 10.89 0 0 1 12 5c5 0 9 5 9 7a11.74 11.74 0 0 1-3.23 3.94"
+                              />
+                              <path
+                                d="M6.61 6.61C4.42 8.04 3 10.14 3 12c0 2 4 7 9 7a10.7 10.7 0 0 0 4.37-.93"
+                              />
+                            </svg>
+
+                            <svg
+                              class="settings-password-icon settings-password-icon-visible"
+                              viewBox="0 0 24 24"
+                              aria-hidden="true"
+                            >
+                              <path
+                                d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6z"
+                              />
+                              <circle cx="12" cy="12" r="3" />
+                            </svg>
+                          </button>
+                        </div>
+
+                        <div class="settings-password-field">
+                          <input
+                            type="password"
+                            id="settings-confirm-password"
+                            placeholder="Confirm new password"
+                            autocomplete="new-password"
+                          />
+                          <button
+                            type="button"
+                            class="settings-password-toggle"
+                            data-settings-password-toggle="settings-confirm-password"
+                            aria-label="Show password"
+                            aria-pressed="false"
+                          >
+                            <svg
+                              class="settings-password-icon settings-password-icon-hidden"
+                              viewBox="0 0 24 24"
+                              aria-hidden="true"
+                            >
+                              <path d="M3 3l18 18" />
+                              <path d="M10.58 10.58a2 2 0 0 0 2.84 2.84" />
+                              <path
+                                d="M9.88 5.08A10.89 10.89 0 0 1 12 5c5 0 9 5 9 7a11.74 11.74 0 0 1-3.23 3.94"
+                              />
+                              <path
+                                d="M6.61 6.61C4.42 8.04 3 10.14 3 12c0 2 4 7 9 7a10.7 10.7 0 0 0 4.37-.93"
+                              />
+                            </svg>
+
+                            <svg
+                              class="settings-password-icon settings-password-icon-visible"
+                              viewBox="0 0 24 24"
+                              aria-hidden="true"
+                            >
+                              <path
+                                d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6z"
+                              />
+                              <circle cx="12" cy="12" r="3" />
+                            </svg>
+                          </button>
+                        </div>
+
+                        <small
+                          id="settings-password-note"
+                          class="settings-help"
+                        >
+                        </small>
+                      </div>
+                    </div>
+
+                    <div class="settings-save-row">
+                      <button
+                        class="btn btn-primary settings-save-btn"
+                        type="button"
+                        id="settings-save-btn"
+                      >
+                        Save changes
+                      </button>
+                      <p
+                        id="settings-save-status"
+                        class="settings-save-status"
+                      ></p>
+                    </div>
+                  </section>
+
+                  <section
+                    class="study-form-card settings-card settings-plan-card"
+                  >
+                    <div class="settings-card-heading">
+                      <p class="settings-kicker">Plan &amp; Billing</p>
+                      <h2>DentAIstudy plan</h2>
+                    </div>
+
+                    <div class="settings-plan-layout">
+                      <div class="settings-plan-copy">
+                        <p class="settings-plan-current">
+                          Current plan:
+                          <span id="das-settings-plan-label">free plan</span>
+                        </p>
+
+                        <p id="das-settings-plan-note" class="settings-help">
+                          Upgrade to Pro for higher daily limits and more
+                          focused OSCE / Viva study flows.
+                        </p>
+                      </div>
+
+                      <div class="settings-plan-actions">
+                        <div
+                          id="das-settings-plan-upgrade-actions"
+                          class="settings-action-row"
+                        >
+                          <a
+                            href="pricing.html"
+                            class="btn btn-outline settings-link-btn"
+                          >
+                            See Pro options
+                          </a>
+                        </div>
+
+                        <div
+                          id="das-settings-plan-manage-actions"
+                          class="settings-action-row settings-action-row--hidden"
+                        >
+                          <button
+                            type="button"
+                            class="btn btn-outline settings-link-btn"
+                            data-das-manage-plan="billing"
+                          >
+                            Manage billing
+                          </button>
+                          <button
+                            type="button"
+                            class="btn btn-outline settings-link-btn"
+                            data-das-manage-plan="cancel"
+                          >
+                            Cancel plan
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <small
+                      id="das-settings-plan-manage-status"
+                      class="settings-help settings-plan-status"
+                    >
+                      Manage billing: update your payment method or request
+                      cancellation. We’ll process it immediately.
+                    </small>
+                  </section>
+
+                  <section
+                    class="study-form-card settings-card settings-danger-card"
+                  >
+                    <div class="settings-card-heading">
+                      <p class="settings-kicker">Danger Zone</p>
+                      <h2>Delete account</h2>
+                    </div>
+                    <p class="settings-help">
+                      If you delete your DentAIstudy account, your study
+                      activity, preferences and saved AI outputs will be
+                      permanently removed. This action cannot be undone.
+                    </p>
+                    <button
+                      id="delete-account-btn"
+                      class="btn btn-outline settings-danger-btn"
+                    >
+                      Delete my account
+                    </button>
+                    <p
+                      id="delete-account-status"
+                      class="settings-danger-status"
+                    ></p>
+                  </section>
+                </section>
               </div>
-            </aside>
-
-            <!-- SETTINGS CONTENT -->
-            <section class="workspace-main">
-              <!-- Profile details -->
-              <section class="study-form-card">
-                <h2>Profile details</h2>
-
-                <div class="form-group">
-                  <label>Full name</label>
-                  <input
-                    type="text"
-                    id="settings-fullname"
-                    placeholder="Your name"
-                    disabled
-                  />
-                </div>
-
-                <div class="form-group">
-                  <label>Email</label>
-                  <input
-                    type="email"
-                    id="settings-email"
-                    placeholder="you@example.com"
-                    disabled
-                  />
-                </div>
-
-                <div class="form-group">
-                  <label>Tips &amp; study reminders</label>
-
-                  <label class="settings-checkbox-row">
-                    <input id="email-tips" type="checkbox" />
-                    <span class="settings-checkbox-label"
-                      >Send me email tips</span
-                    >
-                  </label>
-                </div>
-
-                <div class="form-group">
-                  <label>Default level</label>
-
-                  <div
-                    class="settings-level-segment"
-                    role="radiogroup"
-                    aria-label="Default level"
-                  >
-                    <label class="settings-level-option">
-                      <input
-                        type="radio"
-                        name="settings-default-level"
-                        value="undergraduate"
-                      />
-                      <span>Undergraduate</span>
-                    </label>
-
-                    <label class="settings-level-option">
-                      <input
-                        type="radio"
-                        name="settings-default-level"
-                        value="postgraduate"
-                      />
-                      <span>Postgraduate</span>
-                    </label>
-                  </div>
-                </div>
-
-                <div class="form-group">
-                  <label>Change password</label>
-
-                  <div class="settings-password-field">
-                    <input
-                      type="password"
-                      id="settings-new-password"
-                      placeholder="New password"
-                      autocomplete="new-password"
-                    />
-                    <button
-                      type="button"
-                      class="settings-password-toggle"
-                      data-settings-password-toggle="settings-new-password"
-                      aria-label="Show password"
-                      aria-pressed="false"
-                    >
-                      <svg
-                        class="settings-password-icon settings-password-icon-hidden"
-                        viewBox="0 0 24 24"
-                        aria-hidden="true"
-                      >
-                        <path d="M3 3l18 18" />
-                        <path d="M10.58 10.58a2 2 0 0 0 2.84 2.84" />
-                        <path
-                          d="M9.88 5.08A10.89 10.89 0 0 1 12 5c5 0 9 5 9 7a11.74 11.74 0 0 1-3.23 3.94"
-                        />
-                        <path
-                          d="M6.61 6.61C4.42 8.04 3 10.14 3 12c0 2 4 7 9 7a10.7 10.7 0 0 0 4.37-.93"
-                        />
-                      </svg>
-
-                      <svg
-                        class="settings-password-icon settings-password-icon-visible"
-                        viewBox="0 0 24 24"
-                        aria-hidden="true"
-                      >
-                        <path
-                          d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6z"
-                        />
-                        <circle cx="12" cy="12" r="3" />
-                      </svg>
-                    </button>
-                  </div>
-
-                  <div class="settings-password-field" style="margin-top: 10px">
-                    <input
-                      type="password"
-                      id="settings-confirm-password"
-                      placeholder="Confirm new password"
-                      autocomplete="new-password"
-                    />
-                    <button
-                      type="button"
-                      class="settings-password-toggle"
-                      data-settings-password-toggle="settings-confirm-password"
-                      aria-label="Show password"
-                      aria-pressed="false"
-                    >
-                      <svg
-                        class="settings-password-icon settings-password-icon-hidden"
-                        viewBox="0 0 24 24"
-                        aria-hidden="true"
-                      >
-                        <path d="M3 3l18 18" />
-                        <path d="M10.58 10.58a2 2 0 0 0 2.84 2.84" />
-                        <path
-                          d="M9.88 5.08A10.89 10.89 0 0 1 12 5c5 0 9 5 9 7a11.74 11.74 0 0 1-3.23 3.94"
-                        />
-                        <path
-                          d="M6.61 6.61C4.42 8.04 3 10.14 3 12c0 2 4 7 9 7a10.7 10.7 0 0 0 4.37-.93"
-                        />
-                      </svg>
-
-                      <svg
-                        class="settings-password-icon settings-password-icon-visible"
-                        viewBox="0 0 24 24"
-                        aria-hidden="true"
-                      >
-                        <path
-                          d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6z"
-                        />
-                        <circle cx="12" cy="12" r="3" />
-                      </svg>
-                    </button>
-                  </div>
-
-                  <small
-                    id="settings-password-note"
-                    style="
-                      display: block;
-                      margin-top: 8px;
-                      font-size: 0.78rem;
-                      color: #6b7280;
-                    "
-                  >
-                  </small>
-                </div>
-
-                <button
-                  class="btn btn-primary"
-                  type="button"
-                  id="settings-save-btn"
-                >
-                  Save changes
-                </button>
-                <p
-                  id="settings-save-status"
-                  style="
-                    margin-top: 8px;
-                    font-size: 0.85rem;
-                    color: #0f3c7d;
-                    opacity: 0;
-                    transition: opacity 0.25s ease;
-                  "
-                ></p>
-              </section>
-
-              <!-- DentAIstudy plan -->
-              <section class="study-form-card">
-                <h2>DentAIstudy plan</h2>
-
-                <p style="margin-top: 6px; font-size: 0.85rem; color: #4b5563">
-                  Current plan:
-                  <span id="das-settings-plan-label">free plan</span>
-                </p>
-
-                <p
-                  id="das-settings-plan-note"
-                  style="margin-top: 6px; font-size: 0.8rem; color: #6b7280"
-                >
-                  Upgrade to Pro for higher daily limits and more focused OSCE /
-                  Viva study flows.
-                </p>
-
-                <div
-                  id="das-settings-plan-upgrade-actions"
-                  style="
-                    margin-top: 10px;
-                    display: flex;
-                    flex-wrap: wrap;
-                    gap: 8px;
-                  "
-                >
-                  <a
-                    href="pricing.html"
-                    class="btn btn-outline"
-                    style="
-                      width: auto;
-                      min-width: 0;
-                      line-height: 1.15;
-                      padding: 9px 16px;
-                      height: 34px;
-                      display: inline-flex;
-                      align-items: center;
-                      justify-content: center;
-                    "
-                  >
-                    See Pro options
-                  </a>
-                </div>
-
-                <div
-                  id="das-settings-plan-manage-actions"
-                  style="
-                    margin-top: 10px;
-                    display: none;
-                    flex-wrap: wrap;
-                    gap: 8px;
-                  "
-                >
-                  <button
-                    type="button"
-                    class="btn btn-outline"
-                    style="font-size: 0.85rem"
-                    data-das-manage-plan="billing"
-                  >
-                    Manage payment details
-                  </button>
-                  <button
-                    type="button"
-                    class="btn btn-outline"
-                    style="font-size: 0.85rem"
-                    data-das-manage-plan="cancel"
-                  >
-                    Cancel Pro plan
-                  </button>
-                  <small
-                    id="das-settings-plan-manage-status"
-                    style="
-                      display: block;
-                      margin-top: 6px;
-                      font-size: 0.78rem;
-                      color: #6b7280;
-                    "
-                  >
-                    Manage billing: update your payment method or request
-                    cancellation. We’ll process it immediately.
-                  </small>
-                </div>
-              </section>
-
-              <!-- Delete Account -->
-              <section
-                class="study-form-card"
-                style="border-color: #fecaca; background: #fff1f2"
-              >
-                <h2 style="color: #b91c1c">Delete Account</h2>
-                <p
-                  style="margin: 4px 0 10px; font-size: 0.85rem; color: #6b7280"
-                >
-                  If you delete your DentAIstudy account, your study activity,
-                  preferences and saved AI outputs will be permanently removed.
-                  This action cannot be undone.
-                </p>
-                <button
-                  id="delete-account-btn"
-                  class="btn btn-outline"
-                  style="border-color: #b91c1c; color: #b91c1c"
-                >
-                  Delete my account
-                </button>
-                <p
-                  id="delete-account-status"
-                  style="margin-top: 8px; font-size: 0.85rem; color: #b91c1c"
-                ></p>
-              </section>
             </section>
           </div>
         </div>

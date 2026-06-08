@@ -88,10 +88,10 @@
               stroke-linecap="round"
               stroke-linejoin="round"
             >
-              <rect x="3" y="3" width="7" height="7" rx="1.5" />
-              <rect x="14" y="3" width="7" height="7" rx="1.5" />
-              <rect x="3" y="14" width="7" height="7" rx="1.5" />
-              <rect x="14" y="14" width="7" height="7" rx="1.5" />
+              <path d="M12 6v8l3-3 3 3V6" />
+              <path
+                d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2z"
+              />
             </svg>
             <span>Subjects</span>
           </a>
@@ -106,11 +106,14 @@
               stroke-linecap="round"
               stroke-linejoin="round"
             >
+              <path d="M12 7v14" />
+              <path d="M16 12h2" />
+              <path d="M16 8h2" />
               <path
-                d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"
+                d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"
               />
-              <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
-              <path d="M9 14l2 2 4-4" />
+              <path d="M6 12h2" />
+              <path d="M6 8h2" />
             </svg>
             <span>Exams</span>
           </a>
@@ -232,16 +235,19 @@
         </div>
       </nav>
 
-      <div class="subjects-shell">
+      <div class="subjects-shell exams-shell">
         <!-- Page hero -->
-        <section class="page-hero page-hero-subjects">
+        <section class="section page-hero-subjects">
           <div class="container">
-            <h1>Exams</h1>
-            <p>
-              Focused study guides for major dental licensing exams — OSCE
-              stations, scoring criteria, fail points, and everything you need
-              to pass.
-            </p>
+            <div class="section-header">
+              <div class="section-kicker">Exams</div>
+              <h1 class="section-title">Dental exam preparation hubs</h1>
+              <p class="section-subtitle">
+                Study focused guides for licensing exams, OSCE stations,
+                clinical reasoning, scoring criteria, and common mistakes
+                candidates need to avoid.
+              </p>
+            </div>
           </div>
         </section>
 
@@ -268,7 +274,8 @@
                   stations, and scoring criteria.
                 </p>
                 <div class="subject-ai">
-                  20 articles covering every ADEX section and fail point.
+                  OSCE, operative, viva, and practical exam content for
+                  candidates who want structured prep
                 </div>
               </a>
 
@@ -437,10 +444,10 @@
                   stroke-linejoin="round"
                   aria-hidden="true"
                 >
-                  <rect x="3" y="3" width="7" height="7" rx="1.5" />
-                  <rect x="14" y="3" width="7" height="7" rx="1.5" />
-                  <rect x="3" y="14" width="7" height="7" rx="1.5" />
-                  <rect x="14" y="14" width="7" height="7" rx="1.5" />
+                  <path d="M12 6v8l3-3 3 3V6" />
+                  <path
+                    d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2z"
+                  />
                 </svg>
                 Browse Subjects
               </a>
@@ -481,6 +488,10 @@
                   />
                 </a>
               </div>
+
+              <div class="footer-bottom">
+                © 2026 DentAIstudy. All rights reserved.
+              </div>
             </div>
 
             <div class="footer-column">
@@ -508,10 +519,6 @@
               <a href="billing.html">Billing</a>
               <a href="refund-policy.html">Refunds</a>
             </div>
-          </div>
-
-          <div class="footer-bottom">
-            © 2026 DentAIstudy. All rights reserved.
           </div>
         </div>
       </footer>
