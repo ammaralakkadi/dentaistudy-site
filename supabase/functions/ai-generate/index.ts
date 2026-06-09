@@ -1,7 +1,7 @@
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const OPENAI_API_KEY = Deno.env.get("OPENAI_API_KEY") ?? "";
+const GEMINI_API_KEY = Deno.env.get("GEMINI_API_KEY") ?? "";
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "";
 const SUPABASE_SERVICE_ROLE_KEY =
   Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
@@ -23,7 +23,10 @@ const MAX_OUTPUT_TOKENS_QA = 1600;
 const MAX_OUTPUT_TOKENS_DEEP = 2600;
 
 // RAG settings
-const EMBEDDING_MODEL = "text-embedding-3-small"; // 1536 dims
+const GEMINI_QUICK_MODEL = "gemini-2.5-flash-lite";
+const GEMINI_DEEP_MODEL = "gemini-2.5-flash";
+const EMBEDDING_MODEL = "gemini-embedding-001";
+const EMBEDDING_DIMENSIONS = 1536;
 const RETRIEVE_TOP_K = 8;
 const MAX_CONTEXT_CHARS = 14000;
 
@@ -41,7 +44,7 @@ function truncateText(text: string, maxChars: number): string {
   return text.length > maxChars ? text.slice(0, maxChars) : text;
 }
 
-async function fetchOpenAIWithBackoff(
+async function fetchGeminiWithBackoff(
   url: string,
   body: unknown,
   apiKey: string,
@@ -52,13 +55,13 @@ async function fetchOpenAIWithBackoff(
     res = await fetch(url, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${apiKey}`,
+        "x-goog-api-key": apiKey,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(body),
     });
 
-    if (res.status !== 429) return res;
+    if (res.status !== 429 && res.status < 500) return res;
 
     const delayMs = Math.min(8000, 500 * 2 ** attempt);
     await new Promise((r) => setTimeout(r, delayMs));
@@ -67,25 +70,100 @@ async function fetchOpenAIWithBackoff(
   return res!;
 }
 
-async function embedTexts(texts: string[]): Promise<number[][]> {
-  const res = await fetchOpenAIWithBackoff(
-    "https://api.openai.com/v1/embeddings",
-    {
-      model: EMBEDDING_MODEL,
-      input: texts,
+type GeminiMessage = {
+  role: "system" | "user" | "assistant";
+  content: string;
+};
+
+async function generateGeminiText(options: {
+  model: string;
+  messages: GeminiMessage[];
+  temperature: number;
+  maxOutputTokens: number;
+  responseMimeType?: string;
+}): Promise<string> {
+  const systemText = options.messages
+    .filter((m) => m.role === "system")
+    .map((m) => m.content)
+    .filter(Boolean)
+    .join("\n\n");
+
+  const contents = options.messages
+    .filter((m) => m.role !== "system")
+    .map((m) => ({
+      role: m.role === "assistant" ? "model" : "user",
+      parts: [{ text: m.content || " " }],
+    }));
+
+  const requestBody: any = {
+    contents: contents.length
+      ? contents
+      : [{ role: "user", parts: [{ text: "Continue." }] }],
+    generationConfig: {
+      temperature: options.temperature,
+      maxOutputTokens: options.maxOutputTokens,
     },
-    OPENAI_API_KEY,
+  };
+
+  if (systemText) {
+    requestBody.systemInstruction = { parts: [{ text: systemText }] };
+  }
+
+  if (options.responseMimeType) {
+    requestBody.generationConfig.responseMimeType = options.responseMimeType;
+  }
+
+  const res = await fetchGeminiWithBackoff(
+    `https://generativelanguage.googleapis.com/v1beta/models/${options.model}:generateContent`,
+    requestBody,
+    GEMINI_API_KEY,
   );
 
   const raw = await res.text();
   const json = raw ? JSON.parse(raw) : null;
 
   if (!res.ok) {
-    throw new Error(`EMBEDDINGS_ERROR ${res.status}: ${raw.slice(0, 300)}`);
+    throw new Error(`GEMINI_ERROR ${res.status}: ${raw.slice(0, 500)}`);
   }
 
-  const data = Array.isArray(json?.data) ? json.data : [];
-  return data.map((d: any) => d.embedding as number[]);
+  const parts = json?.candidates?.[0]?.content?.parts;
+  if (!Array.isArray(parts)) return "";
+
+  return parts
+    .map((part: any) => String(part?.text ?? ""))
+    .join("")
+    .trim();
+}
+
+async function embedTexts(texts: string[]): Promise<number[][]> {
+  const cleanTexts = texts.map((text) => String(text || "").trim());
+  if (!cleanTexts.length) return [];
+
+  const res = await fetchGeminiWithBackoff(
+    `https://generativelanguage.googleapis.com/v1beta/models/${EMBEDDING_MODEL}:batchEmbedContents`,
+    {
+      requests: cleanTexts.map((text) => ({
+        model: `models/${EMBEDDING_MODEL}`,
+        content: { parts: [{ text }] },
+        embedContentConfig: {
+          outputDimensionality: EMBEDDING_DIMENSIONS,
+        },
+      })),
+    },
+    GEMINI_API_KEY,
+  );
+
+  const raw = await res.text();
+  const json = raw ? JSON.parse(raw) : null;
+
+  if (!res.ok) {
+    throw new Error(`EMBEDDINGS_ERROR ${res.status}: ${raw.slice(0, 500)}`);
+  }
+
+  const embeddings = Array.isArray(json?.embeddings) ? json.embeddings : [];
+  return embeddings
+    .map((item: any) => item?.values as number[])
+    .filter(Boolean);
 }
 
 // Parses text that contains page markers like: [Page 3]
@@ -310,7 +388,9 @@ function parseJsonObject(text: string): any {
   return null;
 }
 
-function normalizeFlashcards(value: any): Array<{ front: string; back: string }> {
+function normalizeFlashcards(
+  value: any,
+): Array<{ front: string; back: string }> {
   const arr = Array.isArray(value) ? value : [];
   return arr
     .map((card: any) => ({
@@ -332,7 +412,9 @@ function normalizeQuizQuestions(value: any) {
             .slice(0, 5)
         : [];
 
-      const correctIndex = Number(item?.correct_index ?? item?.answer_index ?? 0);
+      const correctIndex = Number(
+        item?.correct_index ?? item?.answer_index ?? 0,
+      );
 
       return {
         question: String(item?.question ?? "").trim(),
@@ -362,7 +444,7 @@ serve(async (req: Request): Promise<Response> => {
   }
 
   if (
-    !OPENAI_API_KEY ||
+    !GEMINI_API_KEY ||
     !SUPABASE_URL ||
     !SUPABASE_SERVICE_ROLE_KEY ||
     !SUPABASE_ANON_KEY
@@ -499,8 +581,6 @@ serve(async (req: Request): Promise<Response> => {
       await indexPdfDocs(supabaseAdmin, userId!, conversationId, pdfDocs);
     }
 
-
-
     if (task === "flashcards") {
       const cardCount = clampInt(body?.card_count, 6, 30, 12);
       const sourceText = truncateText(
@@ -520,52 +600,36 @@ serve(async (req: Request): Promise<Response> => {
         });
       }
 
-      const aiRes = await fetchOpenAIWithBackoff(
-        "https://api.openai.com/v1/chat/completions",
-        {
-          model: "gpt-4.1-mini",
-          temperature: 0.25,
-          max_tokens: 2600,
-          response_format: { type: "json_object" },
-          messages: [
-            {
-              role: "system",
-              content:
-                "You are DentAIstudy, an expert dental tutor. Generate high-yield dental study flashcards. Output valid JSON only.",
-            },
-            {
-              role: "user",
-              content:
-                `Create exactly ${cardCount} active-recall flashcards from the source. ` +
-                "Avoid duplicates. Keep questions specific and answers concise but useful. " +
-                'Return this schema: {"title":"short deck title","cards":[{"front":"question","back":"answer"}]}\n\n' +
-                `Source:\n${sourceText}`,
-            },
-          ],
-        },
-        OPENAI_API_KEY,
-      );
-
-      const aiText = await aiRes.text();
-      const aiJson = aiText ? JSON.parse(aiText) : null;
-
-      if (!aiRes.ok) {
-        return new Response(
-          JSON.stringify({ error: "OPENAI_ERROR", details: aiJson?.error ?? aiText }),
+      const aiText = await generateGeminiText({
+        model: GEMINI_QUICK_MODEL,
+        temperature: 0.25,
+        maxOutputTokens: 2600,
+        responseMimeType: "application/json",
+        messages: [
           {
-            status: aiRes.status,
-            headers: { ...corsHeaders, "Content-Type": "application/json" },
+            role: "system",
+            content:
+              "You are DentAIstudy, an expert dental tutor. Generate high-yield dental study flashcards. Output valid JSON only.",
           },
-        );
-      }
+          {
+            role: "user",
+            content:
+              `Create exactly ${cardCount} active-recall flashcards from the source. ` +
+              "Avoid duplicates. Keep questions specific and answers concise but useful. " +
+              'Return this schema: {"title":"short deck title","cards":[{"front":"question","back":"answer"}]}\n\n' +
+              `Source:\n${sourceText}`,
+          },
+        ],
+      });
 
-      const parsed = parseJsonObject(
-        aiJson?.choices?.[0]?.message?.content?.toString() ?? "",
-      );
+      const parsed = parseJsonObject(aiText);
       const cards = normalizeFlashcards(parsed?.cards);
 
       return new Response(
-        JSON.stringify({ title: String(parsed?.title || "Study deck").slice(0, 90), cards }),
+        JSON.stringify({
+          title: String(parsed?.title || "Study deck").slice(0, 90),
+          cards,
+        }),
         {
           status: 200,
           headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -575,7 +639,9 @@ serve(async (req: Request): Promise<Response> => {
 
     if (task === "quiz") {
       const questionCount = clampInt(body?.question_count, 5, 25, 10);
-      const difficulty = ["easy", "normal", "hard"].includes(String(body?.difficulty))
+      const difficulty = ["easy", "normal", "hard"].includes(
+        String(body?.difficulty),
+      )
         ? String(body?.difficulty)
         : "normal";
       const sourceText = truncateText(
@@ -595,52 +661,36 @@ serve(async (req: Request): Promise<Response> => {
         });
       }
 
-      const aiRes = await fetchOpenAIWithBackoff(
-        "https://api.openai.com/v1/chat/completions",
-        {
-          model: "gpt-4.1-mini",
-          temperature: difficulty === "hard" ? 0.35 : 0.25,
-          max_tokens: 3600,
-          response_format: { type: "json_object" },
-          messages: [
-            {
-              role: "system",
-              content:
-                "You are DentAIstudy, an expert dental tutor and exam writer. Generate dental exam-style MCQs. Output valid JSON only.",
-            },
-            {
-              role: "user",
-              content:
-                `Create exactly ${questionCount} ${difficulty} multiple-choice questions from the source. ` +
-                "Each question needs 4 options, one correct answer, and a short explanation. Avoid duplicates. " +
-                'Return this schema: {"title":"short quiz title","questions":[{"question":"...","options":["A","B","C","D"],"correct_index":0,"explanation":"..."}]}\n\n' +
-                `Source:\n${sourceText}`,
-            },
-          ],
-        },
-        OPENAI_API_KEY,
-      );
-
-      const aiText = await aiRes.text();
-      const aiJson = aiText ? JSON.parse(aiText) : null;
-
-      if (!aiRes.ok) {
-        return new Response(
-          JSON.stringify({ error: "OPENAI_ERROR", details: aiJson?.error ?? aiText }),
+      const aiText = await generateGeminiText({
+        model: GEMINI_QUICK_MODEL,
+        temperature: difficulty === "hard" ? 0.35 : 0.25,
+        maxOutputTokens: 3600,
+        responseMimeType: "application/json",
+        messages: [
           {
-            status: aiRes.status,
-            headers: { ...corsHeaders, "Content-Type": "application/json" },
+            role: "system",
+            content:
+              "You are DentAIstudy, an expert dental tutor and exam writer. Generate dental exam-style MCQs. Output valid JSON only.",
           },
-        );
-      }
+          {
+            role: "user",
+            content:
+              `Create exactly ${questionCount} ${difficulty} multiple-choice questions from the source. ` +
+              "Each question needs 4 options, one correct answer, and a short explanation. Avoid duplicates. " +
+              'Return this schema: {"title":"short quiz title","questions":[{"question":"...","options":["A","B","C","D"],"correct_index":0,"explanation":"..."}]}\n\n' +
+              `Source:\n${sourceText}`,
+          },
+        ],
+      });
 
-      const parsed = parseJsonObject(
-        aiJson?.choices?.[0]?.message?.content?.toString() ?? "",
-      );
+      const parsed = parseJsonObject(aiText);
       const questions = normalizeQuizQuestions(parsed?.questions);
 
       return new Response(
-        JSON.stringify({ title: String(parsed?.title || "Study quiz").slice(0, 90), questions }),
+        JSON.stringify({
+          title: String(parsed?.title || "Study quiz").slice(0, 90),
+          questions,
+        }),
         {
           status: 200,
           headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -702,10 +752,10 @@ serve(async (req: Request): Promise<Response> => {
       for (let i = 0; i < batches.length; i++) {
         const batchText = formatBatch(batches[i]);
 
-        const body1 = {
-          model: "gpt-4.1-mini",
+        const sectionText = await generateGeminiText({
+          model: GEMINI_DEEP_MODEL,
           temperature: 0.2,
-          max_tokens: MAX_OUTPUT_TOKENS_QA,
+          maxOutputTokens: MAX_OUTPUT_TOKENS_QA,
           messages: [
             {
               role: "system",
@@ -723,35 +773,15 @@ serve(async (req: Request): Promise<Response> => {
                 batchText,
             },
           ],
-        };
+        });
 
-        const r1 = await fetchOpenAIWithBackoff(
-          "https://api.openai.com/v1/chat/completions",
-          body1,
-          OPENAI_API_KEY,
-        );
-        const t1 = await r1.text();
-        const j1 = t1 ? JSON.parse(t1) : null;
-
-        if (!r1.ok) {
-          console.error("OPENAI_ERROR_SECTION", r1.status, t1);
-          return new Response(
-            JSON.stringify({ error: "OPENAI_ERROR", details: t1 }),
-            {
-              status: 500,
-              headers: { ...corsHeaders, "Content-Type": "application/json" },
-            },
-          );
-        }
-
-        const s = String(j1?.choices?.[0]?.message?.content ?? "").trim();
-        if (s) partials.push(s);
+        if (sectionText) partials.push(sectionText);
       }
 
-      const body2 = {
-        model: "gpt-4.1-mini",
+      const merged = await generateGeminiText({
+        model: GEMINI_DEEP_MODEL,
         temperature: 0.2,
-        max_tokens: MAX_OUTPUT_TOKENS_DEEP,
+        maxOutputTokens: MAX_OUTPUT_TOKENS_DEEP,
         messages: [
           {
             role: "system",
@@ -771,28 +801,8 @@ serve(async (req: Request): Promise<Response> => {
                 .join("\n\n"),
           },
         ],
-      };
+      });
 
-      const r2 = await fetchOpenAIWithBackoff(
-        "https://api.openai.com/v1/chat/completions",
-        body2,
-        OPENAI_API_KEY,
-      );
-      const t2 = await r2.text();
-      const j2 = t2 ? JSON.parse(t2) : null;
-
-      if (!r2.ok) {
-        console.error("OPENAI_ERROR_MERGE", r2.status, t2);
-        return new Response(
-          JSON.stringify({ error: "OPENAI_ERROR", details: t2 }),
-          {
-            status: 500,
-            headers: { ...corsHeaders, "Content-Type": "application/json" },
-          },
-        );
-      }
-
-      const merged = String(j2?.choices?.[0]?.message?.content ?? "").trim();
       return new Response(JSON.stringify({ output: merged }), {
         status: 200,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -854,46 +864,22 @@ serve(async (req: Request): Promise<Response> => {
       ...safeHistory,
     ];
 
-    const openAiBody = {
-      model: "gpt-4.1-mini",
+    const content = await generateGeminiText({
+      model: isDeepStudy ? GEMINI_DEEP_MODEL : GEMINI_QUICK_MODEL,
       messages: finalMessages,
       temperature: isDeepStudy ? 0.35 : 0.3,
-      max_tokens: isDeepStudy ? MAX_OUTPUT_TOKENS_DEEP : MAX_OUTPUT_TOKENS_QA,
-    };
+      maxOutputTokens: isDeepStudy
+        ? MAX_OUTPUT_TOKENS_DEEP
+        : MAX_OUTPUT_TOKENS_QA,
+    });
 
-    const aiRes = await fetchOpenAIWithBackoff(
-      "https://api.openai.com/v1/chat/completions",
-      openAiBody,
-      OPENAI_API_KEY,
-    );
-
-    const aiText = await aiRes.text();
-    const aiJson = aiText ? JSON.parse(aiText) : null;
-
-    if (!aiRes.ok) {
-      console.error("OPENAI_ERROR", aiRes.status, aiText);
-      return new Response(
-        JSON.stringify({
-          error: "OPENAI_ERROR",
-          status: aiRes.status,
-          details: aiJson?.error ?? aiText,
-        }),
-        {
-          status: aiRes.status,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        },
-      );
-    }
-
-    const content =
-      aiJson?.choices?.[0]?.message?.content?.toString().trim() ?? "";
     return new Response(JSON.stringify({ content }), {
       status: 200,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (e) {
-    console.error("AI_NETWORK_ERROR", e);
-    return new Response(JSON.stringify({ error: "AI_NETWORK_ERROR" }), {
+    console.error("AI_GENERATION_ERROR", e);
+    return new Response(JSON.stringify({ error: "AI_GENERATION_ERROR" }), {
       status: 500,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
