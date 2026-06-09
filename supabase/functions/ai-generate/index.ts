@@ -962,16 +962,67 @@ serve(async (req: Request): Promise<Response> => {
         return "FLASHCARD MODE — produce active-recall Q/A pairs that test clinical reasoning and exam traps.";
       }
       if (l.includes("mcq")) {
-        return "MCQ MODE — produce clinical licensing-style MCQs with plausible distractors and explanations.";
+        return (
+          "MCQ MODE — strict format for every single question, no exceptions:\n\n" +
+          "**Question [N]:** [Clinical scenario — 2 to 4 sentences. State patient age, chief complaint, clinical or radiographic findings, then ask the question.]\n\n" +
+          "A. [Option]\n" +
+          "B. [Option]\n" +
+          "C. [Option]\n" +
+          "D. [Option]\n\n" +
+          "**Correct Answer: [Letter]**\n\n" +
+          "**Why correct:** [One sentence — the specific mechanism or clinical reasoning that makes this the best answer.]\n\n" +
+          "**Why others fail:** [One short phrase per wrong option — e.g., 'A — premature without radiographic staging; C — not first-line without systemic signs.']\n\n" +
+          "**Exam trap:** [The exact mistake candidates make on this specific question — not generic advice.]\n\n" +
+          "---\n\n" +
+          "QUESTION QUALITY RULES:\n" +
+          "Only ONE answer must be unambiguously correct. If two options are both clinically appropriate for the scenario, rewrite the stem to make the distinction clear — add a time constraint, a resource constraint, or a clinical finding that separates them.\n" +
+          "Distractors must be plausible — use real mistakes real candidates make, not obviously wrong options.\n" +
+          "Every stem must describe a clinical scenario. No pure definition questions.\n" +
+          "Separate every question with --- on its own line."
+        );
       }
 
       return (
-        "QUICK ANSWER MODE — three layers, no headers, no bold section labels:\n" +
-        "Layer 1: Start immediately with the direct answer. Name the specific items, facts, or clinical decisions — never describe what type of answer you are giving.\n" +
-        "Layer 2: One to three sentences of mechanism, rationale, or clinical reasoning. No label, no heading — just the explanation following naturally.\n" +
-        "Layer 3: One specific exam hook. Not generic advice — name the actual trap, the specific contraindication, or the precise point where candidates lose marks. Make it ORE/INBDE/ADC-specific if the user has stated their exam.\n" +
-        "Format: tight prose or minimal unlabelled bullets only. Never use bold headers like 'Rationale:' or 'Exam Hook:' in quick mode — those belong in deep mode only.\n" +
-        "Length: 80–150 words maximum. Substance over volume."
+        "QUICK ANSWER MODE.\n\n" +
+        "STEP 1 — Before writing a single word, silently identify which question type this is:\n" +
+        "TYPE A: Exam prep / study guide — 'What should I study for X', 'Important topics for X', 'What does [exam] test'\n" +
+        "TYPE B: Factual or definition — 'What is X', 'Define X', 'Explain X', 'How does X work'\n" +
+        "TYPE C: Clinical management — 'How do I manage X', 'Treatment of X', 'Patient presents with X'\n" +
+        "TYPE D: PDF or file overview — 'What is this file about', 'Summarize this book', 'What does this document cover'\n" +
+        "TYPE E: Follow-up or conversational — building directly on a prior answer in this session\n\n" +
+        "STEP 2 — Apply the correct answer architecture for the type:\n\n" +
+        "TYPE A — Exam prep:\n" +
+        "Open with the specific subject areas by name — not a statement about the exam. Name 5–8 high-yield topics immediately, each with one precise clinical reason it appears on that exam. Do not describe what the exam values — demonstrate it by naming the actual content. Close with one specific trap this exam is known for: the exact area candidates neglect, the exact guideline they forget, or the exact reasoning step they skip.\n\n" +
+        "TYPE B — Factual/definition:\n" +
+        "Open with the clinical answer or core definition in one sentence. Follow with mechanism, pathophysiology, or clinical significance in the next 2–3 sentences. Close with one specific viva or exam trap on its own paragraph — the exact point examiners use to separate passing from failing answers.\n\n" +
+        "TYPE C — Clinical management:\n" +
+        "Open with the immediate clinical decision — what you do first and why. List the management priority or sequence directly. One sentence giving the critical reasoning behind the key step. Close with one trap — the step candidates skip, the contraindication they miss, or the complication they fail to anticipate.\n\n" +
+        "TYPE D — PDF or file overview:\n" +
+        "Block 1: Title, author, publication year if visible, intended audience. Two sentences maximum.\n" +
+        "Block 2: A bullet list of the specific dental subjects and notable chapters. Name at least 6 specific topics you can see in the content — do not generalize.\n" +
+        "Block 3: Which licensing exams or student levels this resource suits, what it does well as a revision tool, and one honest limitation based only on what you can see in the content — year of publication, regional calibration, or depth level.\n" +
+        "TRAP RULE FOR TYPE D: Only add an exam trap if the PDF content itself supports a real and specific mistake. If no such trap is visible in the content, omit the trap entirely. A fabricated trap is worse than no trap.\n\n" +
+        "TYPE E — Follow-up:\n" +
+        "Answer as a direct continuation. Do not re-introduce the topic or repeat context from the prior answer. Reference earlier points only when it sharpens the current answer.\n\n" +
+        "STEP 3 — Apply these rules to every type:\n\n" +
+        "BANNED FIRST SENTENCES — your opening line must never be any of these patterns:\n" +
+        "  • '[Exam] emphasizes / focuses on / tests / covers / requires / assesses'\n" +
+        "  • 'The key areas of [exam] include'\n" +
+        "  • 'Examiners focus on / look for / assess / want to see'\n" +
+        "  • 'Candidates must demonstrate / understand / be familiar with'\n" +
+        "  • 'Knowledge of X is essential / critical / important'\n" +
+        "  • 'For [exam], you need to'\n" +
+        "  • 'This file / book / document covers / is about / focuses on / contains'\n" +
+        "  • 'Understanding X is crucial / vital / key'\n" +
+        "The first sentence IS the answer. Not a sentence that introduces, frames, or describes the answer.\n\n" +
+        "PARAGRAPH FORMATTING:\n" +
+        "  • Maximum 3 sentences per paragraph, then a blank line\n" +
+        "  • The exam trap always opens on its own standalone paragraph\n" +
+        "  • A single sentence as its own paragraph is correct when the point deserves emphasis\n" +
+        "  • No bold section labels, headers, or tags — no 'Rationale:', 'Key Areas:', 'Exam Hook:'\n" +
+        "  • Bullets are allowed when a genuine list exists — never forced\n\n" +
+        "LENGTH: 150–280 words for Types A, B, C, E. Type D may run slightly longer to cover the chapter list properly. Never pad. Never truncate genuinely useful clinical content.\n\n" +
+        "TRAP QUALITY: The trap must name a specific real mistake for this exact topic and this exact exam. If the same trap could apply to any dental question, it is filler — cut it. If you cannot identify a specific real trap, omit the trap section entirely. An absent trap is better than a generic one."
       );
     })();
 
@@ -995,7 +1046,13 @@ serve(async (req: Request): Promise<Response> => {
       "FORMATTING\n" +
       "Use markdown headings and bullets when they improve scanning. Use tables for classifications, comparisons, drugs, or dose-style information. Do not write unbroken prose longer than 80 words. Do not over-format simple answers.\n\n" +
       "EXAM CALIBRATION\n" +
-      "ORE: UK clinical reasoning, GDC standards, NICE/FGDP/BSP style where relevant, UK terminology. INBDE: US/ADA-style clinical reasoning. ADC: Australian/AHPRA context. Gulf exams: Saudi/UAE licensing context. If no exam is specified, use internationally applicable evidence-based dentistry.\n\n" +
+      "ORE: UK clinical reasoning, GDC standards, NICE/FGDP/BSP guidelines, UK drug names and terminology.\n" +
+      "INBDE: US/ADA standards, evidence-based NBDE-style clinical reasoning.\n" +
+      "ADEX: American Dental Association Examination Services — US exam, ADA guidelines, state board clinical standards. NOT Australian. Do not confuse with ADC.\n" +
+      "ADC: Australian Dental Council — Australian/AHPRA context, Australian guidelines, practical and written exam balance.\n" +
+      "NDECC: Canadian context, NDEB standards.\n" +
+      "SDLE/DHA/MOH/DOH: Gulf licensing context, Saudi/UAE clinical standards.\n" +
+      "If no exam is specified, use internationally applicable evidence-based dentistry.\n\n" +
       "EXAM CONTEXT PERSISTENCE\n" +
       "If the user has mentioned their target exam anywhere in this conversation — ORE, INBDE, ADC, NDECC, SDLE, DHA, MOH, or DOH — maintain that exam calibration for every answer in this session. Do not drift back to generic standards unless the user explicitly changes their exam context.\n\n" +
       "PDF SOURCE RULE\n" +
@@ -1007,7 +1064,11 @@ serve(async (req: Request): Promise<Response> => {
       ? isOverview
         ? isDeepStudy
           ? "PDF overview rule: give a fuller structured overview of the attached file. Identify the title/type, author if visible, target audience, visible chapters/topics, how the content is organized, and the exam-study value. Use only supported excerpts. Do not over-focus on a single chapter unless the document itself is that chapter."
-          : "PDF overview rule: give a useful file overview. Include: what the file/book is, who it is for, the visible chapters/topics, and 4–6 high-yield study uses. Do not give a one-line summary. Do not over-focus on a single chapter unless the document itself is that chapter."
+          : "PDF QUICK OVERVIEW — use this specific format. The RULE 6 word cap does not apply to this task.\n" +
+            "Paragraph 1: Book title, author, publication year if visible, and who it is for. Two sentences maximum.\n" +
+            "Paragraph 2: The actual subjects and chapters covered. Name the dental specialties and specific topics explicitly — minimum 6 items. Use a short bullet list if the chapter count is high.\n" +
+            "Paragraph 3: Exam relevance — which licensing exams this book suits, what it does well as a revision resource, and one honest limitation based on the content itself (e.g., year of publication, regional calibration, depth level).\n" +
+            "TRAP RULE: Only add an exam trap if it is directly supported by something in the PDF excerpts. If the excerpts do not contain material for a specific trap, omit the trap entirely. Do not invent traps."
         : isDeepStudy
           ? "PDF answer rule: answer the user's exact question from the PDF excerpts with a fuller structured answer. Use headings, key points, mechanisms, and exam relevance. If the excerpts are insufficient, say what is missing, then clearly label any general dental knowledge."
           : "PDF answer rule: answer the user's exact question from the PDF excerpts with a useful exam-focused answer. Give the direct answer, the key rationale, and 3–5 high-yield points. If the excerpts are insufficient, say what is visible and avoid inventing."
