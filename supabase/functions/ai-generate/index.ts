@@ -17,10 +17,10 @@ const FREE_DAILY_LIMIT = 20;
 const PRO_DAILY_LIMIT = 200;
 
 // Safety nets
-const HISTORY_WINDOW = 10;
+const HISTORY_WINDOW = 14;
 const MAX_MESSAGE_CHARS = 6000;
-const MAX_OUTPUT_TOKENS_QA = 1600;
-const MAX_OUTPUT_TOKENS_DEEP = 2600;
+const MAX_OUTPUT_TOKENS_QA = 2000;
+const MAX_OUTPUT_TOKENS_DEEP = 4000;
 
 // RAG settings
 const GEMINI_QUICK_MODEL = "gemini-2.5-flash-lite";
@@ -42,6 +42,12 @@ function getTodayUTC(): string {
 function truncateText(text: string, maxChars: number): string {
   if (!text) return "";
   return text.length > maxChars ? text.slice(0, maxChars) : text;
+}
+
+function isGeminiRateOrTransient(status: number | null | undefined): boolean {
+  if (!status) return false;
+  // retry on rate-limit / transient overload
+  return status === 429 || status === 503 || (status >= 500 && status <= 599);
 }
 
 async function fetchGeminiWithBackoff(
@@ -81,6 +87,7 @@ async function generateGeminiText(options: {
   temperature: number;
   maxOutputTokens: number;
   responseMimeType?: string;
+  enableThinking?: boolean;
 }): Promise<string> {
   const systemText = options.messages
     .filter((m) => m.role === "system")
@@ -105,6 +112,10 @@ async function generateGeminiText(options: {
     },
   };
 
+  if (options.enableThinking) {
+    requestBody.generationConfig.thinkingConfig = { thinkingBudget: 8000 };
+  }
+
   if (systemText) {
     requestBody.systemInstruction = { parts: [{ text: systemText }] };
   }
@@ -123,7 +134,14 @@ async function generateGeminiText(options: {
   const json = raw ? JSON.parse(raw) : null;
 
   if (!res.ok) {
-    throw new Error(`GEMINI_ERROR ${res.status}: ${raw.slice(0, 500)}`);
+    // Keep existing error shape but include status for fallback decisions
+    throw Object.assign(
+      new Error(`GEMINI_ERROR ${res.status}: ${raw.slice(0, 500)}`),
+      {
+        status: res.status,
+        raw: raw.slice(0, 500),
+      },
+    );
   }
 
   const parts = json?.candidates?.[0]?.content?.parts;
@@ -133,6 +151,69 @@ async function generateGeminiText(options: {
     .map((part: any) => String(part?.text ?? ""))
     .join("")
     .trim();
+}
+
+async function generateGeminiTextWithDeepFallback(options: {
+  // If deep model errors with 429/503/5xx, fallback to lite.
+  // Keep frontend response shapes identical (only content changes).
+  deepModel: string;
+  liteModel: string;
+  isDeep: boolean;
+  messages: GeminiMessage[];
+  temperature: number;
+  maxOutputTokens: number;
+  responseMimeType?: string;
+  enableThinking?: boolean;
+}): Promise<string> {
+  if (!options.isDeep) {
+    return generateGeminiText({
+      model: options.liteModel,
+      messages: options.messages,
+      temperature: options.temperature,
+      maxOutputTokens: options.maxOutputTokens,
+      responseMimeType: options.responseMimeType,
+    });
+  }
+
+  try {
+    return await generateGeminiText({
+      model: options.deepModel,
+      messages: options.messages,
+      temperature: options.temperature,
+      maxOutputTokens: options.maxOutputTokens,
+      responseMimeType: options.responseMimeType,
+      enableThinking: options.enableThinking,
+    });
+  } catch (e: any) {
+    const status = Number(e?.status ?? null);
+    if (isGeminiRateOrTransient(Number.isFinite(status) ? status : null)) {
+      return await generateGeminiText({
+        model: options.liteModel,
+        messages: options.messages,
+        temperature: options.temperature,
+        maxOutputTokens: options.maxOutputTokens,
+        responseMimeType: options.responseMimeType,
+      });
+    }
+    throw e;
+  }
+}
+
+function forceEmbeddingTo1536(values: unknown): number[] {
+  // We must guarantee the DB insert matches EMBEDDING_DIMENSIONS.
+  const arr = Array.isArray(values) ? values : [];
+  const nums = arr.map((v) => (Number.isFinite(Number(v)) ? Number(v) : 0));
+
+  if (nums.length === EMBEDDING_DIMENSIONS) return nums;
+  if (nums.length > EMBEDDING_DIMENSIONS) {
+    // deterministic truncation
+    return nums.slice(0, EMBEDDING_DIMENSIONS);
+  }
+
+  // pad with zeros
+  const out = nums.slice();
+  while (out.length < EMBEDDING_DIMENSIONS) out.push(0);
+  return out;
 }
 
 async function embedTexts(texts: string[]): Promise<number[][]> {
@@ -162,8 +243,8 @@ async function embedTexts(texts: string[]): Promise<number[][]> {
 
   const embeddings = Array.isArray(json?.embeddings) ? json.embeddings : [];
   return embeddings
-    .map((item: any) => item?.values as number[])
-    .filter(Boolean);
+    .map((item: any) => forceEmbeddingTo1536(item?.values))
+    .slice(0, cleanTexts.length);
 }
 
 // Parses text that contains page markers like: [Page 3]
@@ -280,7 +361,8 @@ async function indexPdfDocs(
       const batchTexts = batchRows.map((r) => r.content);
       const embeds = await embedTexts(batchTexts);
       for (let j = 0; j < batchRows.length; j++) {
-        batchRows[j].embedding = embeds[j];
+        // Ensure each row embeds exactly 1536 dims
+        batchRows[j].embedding = forceEmbeddingTo1536(embeds[j]);
       }
     }
 
@@ -431,6 +513,15 @@ function normalizeQuizQuestions(value: any) {
         item.correct_index < item.options.length,
     )
     .slice(0, 25);
+}
+
+function isPdfOverviewIntent(text: string): boolean {
+  const t = String(text || "").toLowerCase();
+  return (
+    /\b(what is this file|what is this document|what is this talking about|overview|summar(y|ize)|high[- ]level|big picture|what does it cover|what is it about)\b/.test(
+      t,
+    ) || /^\s*(what\s+is\s+this\s+file\s+about\??)\s*$/i.test(t)
+  );
 }
 
 serve(async (req: Request): Promise<Response> => {
@@ -586,7 +677,9 @@ serve(async (req: Request): Promise<Response> => {
       const sourceText = truncateText(
         [
           topic,
-          ...(messagesFromClient || []).map((m) => `${m.role}: ${m.content}`),
+          ...(messagesFromClient || []).map(
+            (m: any) => `${m.role}: ${m.content}`,
+          ),
         ]
           .filter(Boolean)
           .join("\n\n"),
@@ -602,14 +695,19 @@ serve(async (req: Request): Promise<Response> => {
 
       const aiText = await generateGeminiText({
         model: GEMINI_QUICK_MODEL,
-        temperature: 0.25,
+        temperature: 0.38,
         maxOutputTokens: 2600,
         responseMimeType: "application/json",
         messages: [
           {
             role: "system",
             content:
-              "You are DentAIstudy, an expert dental tutor. Generate high-yield dental study flashcards. Output valid JSON only.",
+              "You are the DentAIstudy exam tutor — a senior dental educator and licensing exam coach. " +
+              "Generate active-recall flashcards that train exam thinking, not passive memorisation. " +
+              "Front: a specific clinical or exam-style question, hard enough to be useful. " +
+              "Back: a direct complete answer with any exam-critical nuance and the reason behind the fact. " +
+              "Prioritise high-yield clinical facts, classifications, contraindications, viva traps, and common student errors. " +
+              "Output valid JSON only. No preamble. No markdown.",
           },
           {
             role: "user",
@@ -647,7 +745,9 @@ serve(async (req: Request): Promise<Response> => {
       const sourceText = truncateText(
         [
           topic,
-          ...(messagesFromClient || []).map((m) => `${m.role}: ${m.content}`),
+          ...(messagesFromClient || []).map(
+            (m: any) => `${m.role}: ${m.content}`,
+          ),
         ]
           .filter(Boolean)
           .join("\n\n"),
@@ -670,7 +770,11 @@ serve(async (req: Request): Promise<Response> => {
           {
             role: "system",
             content:
-              "You are DentAIstudy, an expert dental tutor and exam writer. Generate dental exam-style MCQs. Output valid JSON only.",
+              "You are the DentAIstudy exam writer — a senior dental educator who writes licensing-style dental questions. " +
+              "Generate MCQs that test clinical reasoning and decision-making, not isolated fact recall. " +
+              "Use realistic clinical stems and plausible distractors based on mistakes real students make. " +
+              "Explanations must state why the correct answer is correct and why the distractors fail. " +
+              "Output valid JSON only. No preamble. No markdown.",
           },
           {
             role: "user",
@@ -698,29 +802,57 @@ serve(async (req: Request): Promise<Response> => {
       );
     }
 
-    // Retrieve top-k relevant chunks unless we are building full PDF chapter notes
+    // Retrieve top-k relevant chunks unless the user clearly asks for full PDF notes
     const isDeepStudy = task === "chapter_notes";
+    const latestUserQuestion =
+      topic ||
+      (messagesFromClient
+        ?.slice()
+        .reverse()
+        .find((m: any) => m.role === "user")?.content ??
+        "");
+
+    const questionLine = topic ? `Current user question: ${topic}` : "";
+
+    const wantsFullPdfNotes =
+      /\b(full chapter notes|complete chapter notes|full pdf notes|whole pdf notes|entire pdf notes|complete exam sheet|study sheet from the full pdf|make notes from the full pdf)\b/i.test(
+        latestUserQuestion,
+      );
+
     const canBuildPdfChapterNotes = Boolean(
-      canUsePdf && isDeepStudy && activeFileId,
+      canUsePdf && isDeepStudy && activeFileId && wantsFullPdfNotes,
     );
+
+    const isOverview = canUsePdf && isPdfOverviewIntent(latestUserQuestion);
 
     let ragContext = "";
     if (canUsePdf && !canBuildPdfChapterNotes) {
       try {
-        const question =
-          topic ||
-          (messagesFromClient
-            ?.slice()
-            .reverse()
-            .find((m) => m.role === "user")?.content ??
-            "");
+        if (isOverview && activeFileId) {
+          const overviewChunks = await fetchAllChunksForFile(
+            supabaseAdmin,
+            userId!,
+            conversationId,
+            activeFileId,
+          );
 
-        if (question) {
-          const [qEmbed] = await embedTexts([question]);
+          // File overview should come from the document front matter and contents,
+          // not from one semantically similar chapter hit.
+          ragContext = buildRagContext(overviewChunks.slice(0, 14));
+        }
+
+        if (!ragContext && latestUserQuestion) {
+          const retrievalQuestion = isOverview
+            ? "title author preface foreword contents chapters sections dental specialties exam preparation overview"
+            : latestUserQuestion;
+          const [qEmbed] = await embedTexts([retrievalQuestion]);
+
           const { data } = await supabaseUser.rpc("match_pdf_chunks", {
             p_conversation_id: conversationId,
             p_query_embedding: qEmbed,
-            p_match_count: RETRIEVE_TOP_K,
+            p_match_count: isOverview
+              ? Math.max(RETRIEVE_TOP_K * 2, 12)
+              : RETRIEVE_TOP_K,
           });
 
           ragContext = buildRagContext(Array.isArray(data) ? data : []);
@@ -752,17 +884,19 @@ serve(async (req: Request): Promise<Response> => {
       for (let i = 0; i < batches.length; i++) {
         const batchText = formatBatch(batches[i]);
 
-        const sectionText = await generateGeminiText({
-          model: GEMINI_DEEP_MODEL,
-          temperature: 0.2,
+        const sectionText = await generateGeminiTextWithDeepFallback({
+          deepModel: GEMINI_DEEP_MODEL,
+          liteModel: GEMINI_QUICK_MODEL,
+          isDeep: true,
+          temperature: 0.25,
           maxOutputTokens: MAX_OUTPUT_TOKENS_QA,
           messages: [
             {
               role: "system",
               content:
-                "You are DentAIstudy, an expert dental tutor. Create exam-ready notes from the provided text ONLY. " +
-                "Keep the notes High Yield, structured, and accurate. Use short headings and bullets only when they help. " +
-                "Do NOT invent missing content.",
+                "You are the DentAIstudy exam tutor — a senior dental educator and licensing exam coach. Create exam-ready notes from the provided text ONLY. " +
+                "Use direct headings, high-yield bullets, mechanisms, clinical relevance, and exam traps where supported. " +
+                "No greeting. No filler. Do NOT invent missing content.",
             },
             {
               role: "user",
@@ -778,18 +912,20 @@ serve(async (req: Request): Promise<Response> => {
         if (sectionText) partials.push(sectionText);
       }
 
-      const merged = await generateGeminiText({
-        model: GEMINI_DEEP_MODEL,
-        temperature: 0.2,
+      const merged = await generateGeminiTextWithDeepFallback({
+        deepModel: GEMINI_DEEP_MODEL,
+        liteModel: GEMINI_QUICK_MODEL,
+        isDeep: true,
+        temperature: 0.35,
         maxOutputTokens: MAX_OUTPUT_TOKENS_DEEP,
         messages: [
           {
             role: "system",
             content:
-              "You are DentAIstudy, an expert dental tutor and clinical teaching professor. " +
+              "You are the DentAIstudy exam tutor — a senior dental educator and licensing exam coach. " +
               "Create one polished deep-study chapter sheet from the section notes. " +
-              "Start with a short warm intro, then structure the answer with concise headings, core concepts, definitions, red flags, tables when useful, and likely exam questions. " +
-              "No filler. No repeated points.",
+              "Start directly with the topic, then structure the answer with concise headings, core concepts, definitions, red flags, tables when useful, and likely exam questions. " +
+              "No greeting. No filler. No repeated points.",
           },
           {
             role: "user",
@@ -811,42 +947,88 @@ serve(async (req: Request): Promise<Response> => {
 
     const modeExplanation = (() => {
       if (isDeepStudy) {
-        return "Give a fuller deep-study answer: direct answer, concept breakdown, mechanism or rationale, clinical relevance, exam traps, memory aids, and a short recap.";
+        return (
+          "DEEP STUDY MODE — full teaching answer with examiner-level structure. " +
+          "Use the relevant sections only: direct answer, definition, classification, mechanism/pathophysiology, clinical features, investigations, management, high-yield exam notes, and common traps. " +
+          "Do not pad. Depth means mechanism, clinical reasoning, and exam relevance — not filler."
+        );
       }
 
       const l = mode.toLowerCase();
       if (l.includes("osce")) {
-        return "Produce an OSCE-style checklist or station flow with key examiner points.";
+        return "OSCE MODE — answer in examiner checklist format: introduction, history, examination, investigations, diagnosis/differential, management, follow-up, and mark-scoring points.";
       }
       if (l.includes("flashcard")) {
-        return "Produce concise but useful exam flashcards with answers.";
+        return "FLASHCARD MODE — produce active-recall Q/A pairs that test clinical reasoning and exam traps.";
       }
       if (l.includes("mcq")) {
-        return "Produce exam-style MCQs with answers and short explanations.";
+        return "MCQ MODE — produce clinical licensing-style MCQs with plausible distractors and explanations.";
       }
 
-      return "Give a clear exam focused answer with the direct answer first, then fuller High Yield teaching points. Do not be too brief.";
+      return (
+        "QUICK ANSWER MODE — three layers, no headers, no bold section labels:\n" +
+        "Layer 1: Start immediately with the direct answer. Name the specific items, facts, or clinical decisions — never describe what type of answer you are giving.\n" +
+        "Layer 2: One to three sentences of mechanism, rationale, or clinical reasoning. No label, no heading — just the explanation following naturally.\n" +
+        "Layer 3: One specific exam hook. Not generic advice — name the actual trap, the specific contraindication, or the precise point where candidates lose marks. Make it ORE/INBDE/ADC-specific if the user has stated their exam.\n" +
+        "Format: tight prose or minimal unlabelled bullets only. Never use bold headers like 'Rationale:' or 'Exam Hook:' in quick mode — those belong in deep mode only.\n" +
+        "Length: 80–150 words maximum. Substance over volume."
+      );
     })();
 
     const systemPrompt =
-      "You are DentAIstudy, an expert dental tutor and clinical teaching professor.\n" +
-      "Your domain is dentistry, oral health, dental school learning, dental exams, and closely related medical topics used in dental training.\n" +
-      "If the user asks about a clearly unrelated field, reply politely in 1–2 sentences that DentAIstudy is built for dental learning and invite a dental or oral-health question instead.\n" +
-      "Start with a brief natural acknowledgement, then answer clearly and teach like a strong professor: accurate, structured, High Yield, and easy to revise.\n" +
-      "When the request is in deep study mode, give a fuller layered explanation instead of a short reply.\n" +
-      "Avoid filler, avoid repeating the same point twice, and do not invent facts.\n" +
-      "If PDF excerpts are provided, use them as the primary source. If the excerpts do not contain the answer, say so clearly.";
+      "You are the DentAIstudy tutor — a senior dental educator and licensing exam coach for INBDE, ORE, ADC, NDECC, SDLE, DHA, MOH, and DOH candidates. You answer with the standard of a viva examiner: precise, structured, clinically grounded, and high-yield.\n\n" +
+      "IDENTITY & STANDARD\n" +
+      "Think like an examiner, teach like an excellent clinical professor, and answer like a confident senior colleague briefing a junior dentist. The user should leave with exam-ready understanding, not a generic summary.\n\n" +
+      "AUDIENCE\n" +
+      "Users are dental students, interns, residents, and qualified dentists. They have dental training. Do not explain basic dentistry at patient level unless asked. If the user asks a clearly unrelated question, redirect in one sentence to dental learning.\n\n" +
+      "TONE — NON-NEGOTIABLE\n" +
+      "Never open with: Certainly, Of course, Hello, Great question, Sure, Absolutely, I'd be happy to help, Glad you asked, That's a great topic.\n" +
+      "Never close with: I hope this helps, Feel free to ask more, Let me know if you have questions.\n" +
+      "No hollow acknowledgement. No corporate filler. Start with the answer. Every word must earn its place.\n\n" +
+      "ANSWER ARCHITECTURE\n" +
+      "Layer 1: Direct answer — state the core fact or clinical decision immediately.\n" +
+      "Layer 2: The why — mechanism, rationale, pathophysiology, or clinical reasoning.\n" +
+      "Layer 3: The exam hook — what examiners test, the common trap, or the clinical consequence.\n" +
+      "Quick mode compresses this structure. Deep mode expands it with headings.\n\n" +
+      "ANTICIPATE THE REAL NEED\n" +
+      "Answer the question asked, then ask yourself what a good examiner expects the student to know adjacent to this topic. If there is a high-value insight the student clearly needs but did not ask for — a clinical consequence, contraindication, viva trap, or common student error — include it at the end under **Examiner note:**. Use this sparingly, only when genuinely valuable. Do not pad.\n\n" +
+      "FORMATTING\n" +
+      "Use markdown headings and bullets when they improve scanning. Use tables for classifications, comparisons, drugs, or dose-style information. Do not write unbroken prose longer than 80 words. Do not over-format simple answers.\n\n" +
+      "EXAM CALIBRATION\n" +
+      "ORE: UK clinical reasoning, GDC standards, NICE/FGDP/BSP style where relevant, UK terminology. INBDE: US/ADA-style clinical reasoning. ADC: Australian/AHPRA context. Gulf exams: Saudi/UAE licensing context. If no exam is specified, use internationally applicable evidence-based dentistry.\n\n" +
+      "EXAM CONTEXT PERSISTENCE\n" +
+      "If the user has mentioned their target exam anywhere in this conversation — ORE, INBDE, ADC, NDECC, SDLE, DHA, MOH, or DOH — maintain that exam calibration for every answer in this session. Do not drift back to generic standards unless the user explicitly changes their exam context.\n\n" +
+      "PDF SOURCE RULE\n" +
+      "If PDF excerpts are provided, they are the primary source. Never claim the PDF is mainly about one topic unless the excerpts support that as the main theme. For a PDF overview, identify the document title/type, target audience, visible chapters/topics, and study value. If excerpts do not contain enough detail, say what is visible first, then clearly label any added clinical knowledge.\n\n" +
+      "CLINICAL BOUNDARY\n" +
+      "DentAIstudy is a study and exam-prep tool. For acute real patient emergencies, direct the user to a supervising clinician or emergency care. For exam prep and clinical case discussion, answer fully and clinically without unnecessary disclaimers.";
+
+    const pdfAnswerRule = ragContext
+      ? isOverview
+        ? isDeepStudy
+          ? "PDF overview rule: give a fuller structured overview of the attached file. Identify the title/type, author if visible, target audience, visible chapters/topics, how the content is organized, and the exam-study value. Use only supported excerpts. Do not over-focus on a single chapter unless the document itself is that chapter."
+          : "PDF overview rule: give a useful file overview. Include: what the file/book is, who it is for, the visible chapters/topics, and 4–6 high-yield study uses. Do not give a one-line summary. Do not over-focus on a single chapter unless the document itself is that chapter."
+        : isDeepStudy
+          ? "PDF answer rule: answer the user's exact question from the PDF excerpts with a fuller structured answer. Use headings, key points, mechanisms, and exam relevance. If the excerpts are insufficient, say what is missing, then clearly label any general dental knowledge."
+          : "PDF answer rule: answer the user's exact question from the PDF excerpts with a useful exam-focused answer. Give the direct answer, the key rationale, and 3–5 high-yield points. If the excerpts are insufficient, say what is visible and avoid inventing."
+      : "";
 
     const baseUserPrompt = [
       `Subject: ${subject}`,
       `Study mode: ${isDeepStudy ? "Deep study" : mode}`,
+      questionLine,
       `Instruction: ${modeExplanation}`,
       isDeepStudy
-        ? "Target depth: fuller teaching answer, not a short quick reply."
-        : "Target depth: concise but still useful, not thin.",
+        ? "Target depth: detailed teaching with clinical reasoning and exam hooks."
+        : "Target depth: concise exam-point answer with substance.",
+      pdfAnswerRule,
       ragContext ? `\nRelevant PDF excerpts:\n${ragContext}` : "",
-      "\nUse the chat context below. Keep it exam-relevant and student-friendly.",
-    ].join("\n");
+      isOverview
+        ? "\nTask: PDF overview request. Synthesize the document-level picture from visible excerpts. Ignore earlier assistant claims if they conflict with the excerpts."
+        : "\nKeep the answer exam-relevant, clinical, and direct.",
+    ]
+      .filter(Boolean)
+      .join("\n");
 
     const safeHistory = (
       Array.isArray(messagesFromClient) ? messagesFromClient : []
@@ -859,18 +1041,23 @@ serve(async (req: Request): Promise<Response> => {
       }));
 
     const finalMessages = [
-      { role: "system", content: systemPrompt },
-      { role: "user", content: baseUserPrompt },
+      {
+        role: "system",
+        content: systemPrompt + "\n\n---\nSESSION CONTEXT\n" + baseUserPrompt,
+      },
       ...safeHistory,
     ];
 
-    const content = await generateGeminiText({
-      model: isDeepStudy ? GEMINI_DEEP_MODEL : GEMINI_QUICK_MODEL,
+    const content = await generateGeminiTextWithDeepFallback({
+      deepModel: GEMINI_DEEP_MODEL,
+      liteModel: GEMINI_QUICK_MODEL,
+      isDeep: isDeepStudy,
       messages: finalMessages,
-      temperature: isDeepStudy ? 0.35 : 0.3,
+      temperature: isDeepStudy ? 0.45 : 0.4,
       maxOutputTokens: isDeepStudy
         ? MAX_OUTPUT_TOKENS_DEEP
         : MAX_OUTPUT_TOKENS_QA,
+      enableThinking: isDeepStudy,
     });
 
     return new Response(JSON.stringify({ content }), {
