@@ -13,8 +13,8 @@ const corsHeaders: Record<string, string> = {
     "authorization, x-client-info, apikey, content-type",
 };
 
-const FREE_DAILY_LIMIT = 20;
-const PRO_DAILY_LIMIT = 200;
+const FREE_DAILY_LIMIT = 12;
+const PRO_DAILY_LIMIT = 100;
 
 // Safety nets
 const HISTORY_WINDOW = 14;
@@ -618,42 +618,21 @@ serve(async (req: Request): Promise<Response> => {
     let subscriptionTier = "free";
     let isProUser = false;
 
-    // Rate limit (your existing logic)
+    // Plan lookup + daily AI credit limit
+    let quotaUserMeta: any = null;
+
     if (userId) {
-      const today = getTodayUTC();
       const { data } = await supabaseAdmin.auth.admin.getUserById(userId);
+
       if (data?.user) {
-        const userMeta: any = data.user.user_metadata ?? {};
+        quotaUserMeta = data.user.user_metadata ?? {};
+
         const appMeta: any = data.user.app_metadata ?? {};
         const tier = appMeta.subscription_tier || "free";
         const isPro = tier === "pro" || tier === "pro_yearly";
+
         subscriptionTier = tier;
         isProUser = isPro;
-        const limit = isPro ? PRO_DAILY_LIMIT : FREE_DAILY_LIMIT;
-
-        let used =
-          typeof userMeta.ai_count === "number" ? userMeta.ai_count : 0;
-        let date =
-          typeof userMeta.ai_date === "string" ? userMeta.ai_date : null;
-
-        if (date !== today) {
-          used = 0;
-          date = today;
-        }
-
-        if (used >= limit) {
-          return new Response(
-            JSON.stringify({ error: "LIMIT_REACHED", tier, limit }),
-            {
-              status: 429,
-              headers: { ...corsHeaders, "Content-Type": "application/json" },
-            },
-          );
-        }
-
-        await supabaseAdmin.auth.admin.updateUserById(userId, {
-          user_metadata: { ...userMeta, ai_date: today, ai_count: used + 1 },
-        });
       }
     }
 
@@ -665,6 +644,71 @@ serve(async (req: Request): Promise<Response> => {
           headers: { ...corsHeaders, "Content-Type": "application/json" },
         },
       );
+    }
+
+    const maxPdfDocs = isProUser ? 5 : userId ? 1 : 0;
+
+    if (pdfDocs.length > maxPdfDocs) {
+      return new Response(
+        JSON.stringify({
+          error: "PDF_LIMIT_REACHED",
+          tier: subscriptionTier,
+          maxPdfs: maxPdfDocs,
+        }),
+        {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        },
+      );
+    }
+
+    if (userId && quotaUserMeta) {
+      const today = getTodayUTC();
+      const limit = isProUser ? PRO_DAILY_LIMIT : FREE_DAILY_LIMIT;
+      const requestCost =
+        task === "flashcards" ||
+        task === "quiz" ||
+        task === "chapter_notes" ||
+        Boolean(activeFileId) ||
+        pdfDocs.length > 0
+          ? 2
+          : 1;
+
+      let used =
+        typeof quotaUserMeta.ai_count === "number" ? quotaUserMeta.ai_count : 0;
+      let date =
+        typeof quotaUserMeta.ai_date === "string"
+          ? quotaUserMeta.ai_date
+          : null;
+
+      if (date !== today) {
+        used = 0;
+        date = today;
+      }
+
+      if (used + requestCost > limit) {
+        return new Response(
+          JSON.stringify({
+            error: "LIMIT_REACHED",
+            tier: subscriptionTier,
+            limit,
+            used,
+            requestCost,
+          }),
+          {
+            status: 429,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          },
+        );
+      }
+
+      await supabaseAdmin.auth.admin.updateUserById(userId, {
+        user_metadata: {
+          ...quotaUserMeta,
+          ai_date: today,
+          ai_count: used + requestCost,
+        },
+      });
     }
 
     // If PDFs arrived with this message: index them now (chat-scoped via conversation_id)
