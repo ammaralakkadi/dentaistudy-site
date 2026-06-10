@@ -124,6 +124,66 @@
   background-color: #ffffff;
 }
 
+.auth-password-field {
+  position: relative;
+  margin-bottom: 0.85rem;
+}
+
+.auth-password-field input {
+  padding-right: 3.1rem;
+  margin-bottom: 0;
+}
+
+.auth-password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  width: 34px;
+  height: 34px;
+  transform: translateY(-50%);
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: #5b677a;
+  cursor: pointer;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  line-height: 0;
+}
+
+.auth-password-toggle:hover {
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+}
+
+.auth-password-toggle:focus-visible {
+  outline: 3px solid var(--color-accent-ring);
+}
+
+.auth-password-icon {
+  width: 18px;
+  height: 18px;
+  display: block;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.auth-password-icon-visible {
+  display: none;
+}
+
+.auth-password-toggle.is-visible .auth-password-icon-hidden {
+  display: none;
+}
+
+.auth-password-toggle.is-visible .auth-password-icon-visible {
+  display: block;
+}
+
 .form-check {
   display: flex;
   align-items: flex-start;
@@ -251,6 +311,224 @@
   .auth-card {
     padding: 2rem 1.6rem;
     border-radius: 20px;
+  }
+}
+
+/* ------------------------------
+   OUTCOME PAGES
+--------------------------------*/
+
+.page-outcome .outcome-page-main {
+  padding: 56px 0 76px;
+}
+
+.page-outcome .outcome-shell {
+  width: 100%;
+  max-width: 820px;
+  margin: 0 auto;
+}
+
+.page-outcome .outcome-card {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(15, 23, 42, 0.09);
+  border-radius: 30px;
+  background: #ffffff;
+  padding: 34px;
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.07);
+}
+
+.page-outcome .outcome-card--quiet {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.page-outcome .outcome-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 18px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 22px;
+}
+
+.page-outcome .outcome-icon--success {
+  background: rgba(15, 76, 129, 0.09);
+  color: var(--color-accent);
+}
+
+.page-outcome .outcome-icon--quiet {
+  background: #f4f4f5;
+  color: #18181b;
+}
+
+.page-outcome .outcome-copy {
+  min-width: 0;
+}
+
+.page-outcome .outcome-eyebrow {
+  margin: 0 0 8px;
+  font-size: 12px;
+  font-weight: 760;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-subtle);
+}
+
+.page-outcome .outcome-heading-row {
+  display: grid;
+  gap: 16px;
+  align-items: start;
+}
+
+.page-outcome .outcome-card h1 {
+  margin: 0;
+  max-width: 580px;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.03;
+  letter-spacing: -0.055em;
+  color: var(--color-ink);
+}
+
+.page-outcome .outcome-lead {
+  max-width: 620px;
+  margin: 14px 0 0;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--color-muted);
+}
+
+.page-outcome .outcome-status-pill {
+  width: fit-content;
+  max-width: 100%;
+  min-height: 34px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid rgba(15, 76, 129, 0.14);
+  border-radius: 999px;
+  background: rgba(15, 76, 129, 0.055);
+  padding: 7px 12px;
+  color: var(--color-accent);
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1.35;
+  white-space: normal;
+}
+
+.page-outcome .outcome-status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: currentColor;
+}
+
+.page-outcome .outcome-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.page-outcome .outcome-summary-item {
+  min-width: 0;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 18px;
+  background: #fafafa;
+  padding: 15px 16px;
+}
+
+.page-outcome .outcome-summary-item span {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-subtle);
+}
+
+.page-outcome .outcome-summary-item strong {
+  display: block;
+  overflow-wrap: anywhere;
+  font-size: 0.98rem;
+  font-weight: 760;
+  line-height: 1.35;
+  color: var(--color-ink);
+}
+
+.page-outcome .outcome-note {
+  margin: 12px 0 0;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: var(--color-muted);
+}
+
+.page-outcome .outcome-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 26px;
+}
+
+.page-outcome .outcome-actions .btn {
+  min-height: 42px;
+  box-shadow: none;
+}
+
+.page-outcome .outcome-actions .btn-primary {
+  background: var(--color-ink);
+  border-color: var(--color-ink);
+}
+
+.page-outcome .outcome-actions .btn-primary:hover {
+  background: #000000;
+  border-color: #000000;
+}
+
+.page-outcome .outcome-footnote {
+  max-width: 650px;
+  margin: 22px 0 0;
+  font-size: 0.9rem;
+  line-height: 1.65;
+  color: var(--color-subtle);
+}
+
+@media (max-width: 760px) {
+  .page-outcome .outcome-page-main {
+    padding: 34px 0 56px;
+  }
+
+  .page-outcome .outcome-card {
+    border-radius: 24px;
+    padding: 24px 18px;
+  }
+
+  .page-outcome .outcome-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 16px;
+    margin-bottom: 18px;
+  }
+
+  .page-outcome .outcome-heading-row {
+    gap: 14px;
+  }
+
+  .page-outcome .outcome-status-pill {
+    width: 100%;
+  }
+
+  .page-outcome .outcome-summary-grid {
+    grid-template-columns: 1fr;
+    margin-top: 22px;
+  }
+
+  .page-outcome .outcome-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .page-outcome .outcome-actions .btn {
+    width: 100%;
   }
 }
 

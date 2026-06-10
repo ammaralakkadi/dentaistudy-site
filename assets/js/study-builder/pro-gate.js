@@ -555,6 +555,7 @@
     ready,
     ai,
     toast,
+    askModal: askChatModal,
     escapeHtml,
     formatRelativeTime,
     fetchConversations,

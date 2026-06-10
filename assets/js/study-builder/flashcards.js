@@ -101,14 +101,23 @@
   let cards = [];
   let currentIndex = 0;
   let isRevealed = false;
+  let sessionFinished = false;
   let activeDeckId = null;
   let suppressNextClick = false;
   let drag = null;
   let knownCards = new Set();
   let reviewCards = new Set();
   let cardMotionTimer = null;
+  let generatePhraseTimer = null;
   const customSelects = new Map();
   let customSelectEventsBound = false;
+
+  const GENERATING_PHRASES = [
+    "Generating flashcards…",
+    "Finding high-yield points…",
+    "Turning notes into cards…",
+    "Saving your deck…",
+  ];
 
   function qs(id) {
     return document.getElementById(id);
@@ -134,8 +143,27 @@
     if (els.generate) els.generate.textContent = label;
   }
 
+  function startGeneratePhrases() {
+    let phraseIndex = 0;
+
+    window.clearInterval(generatePhraseTimer);
+    setGenerateLabel(GENERATING_PHRASES[phraseIndex]);
+
+    generatePhraseTimer = window.setInterval(() => {
+      phraseIndex = (phraseIndex + 1) % GENERATING_PHRASES.length;
+      setGenerateLabel(GENERATING_PHRASES[phraseIndex]);
+    }, 1300);
+  }
+
+  function stopGeneratePhrases() {
+    window.clearInterval(generatePhraseTimer);
+    generatePhraseTimer = null;
+    setGenerateLabel("Generate flashcards");
+  }
+
   function cacheEls() {
     els.layout = document.querySelector(".flashcards-layout");
+    els.stage = document.querySelector(".deck-stage");
     els.title = qs("deckTitleInput");
     els.count = qs("cardCountInput");
     els.source = qs("flashcardSourceInput");
@@ -288,12 +316,15 @@
     cards = [];
     currentIndex = 0;
     isRevealed = false;
+    sessionFinished = false;
     knownCards = new Set();
     reviewCards = new Set();
     setFlowMode("normal");
     els.layout?.classList.add("is-empty");
+    els.stage?.classList.remove("is-complete");
     els.card?.classList.add("is-empty");
     els.card?.classList.remove(
+      "is-complete",
       "is-flipped",
       "is-dragging",
       "is-swipe-next",
@@ -322,6 +353,8 @@
     isRevealed = Boolean(value);
     els.card?.classList.toggle("is-flipped", isRevealed);
     if (els.reveal) els.reveal.textContent = isRevealed ? "Hide" : "Reveal";
+
+    if (isRevealed) saveFlashcardProgress();
   }
 
   function cardKey(card, index) {
@@ -342,6 +375,47 @@
       .filter((value) => validKeys.has(value));
   }
 
+  function reviewedKeys() {
+    return new Set([...knownCards, ...reviewCards]);
+  }
+
+  function reviewedCount() {
+    return Math.min(reviewedKeys().size, cards.length);
+  }
+
+  function cardIsReviewed(card, index) {
+    const key = cardKey(card, index);
+    return knownCards.has(key) || reviewCards.has(key);
+  }
+
+  function nextUnreviewedIndex(fromIndex) {
+    if (!cards.length) return -1;
+
+    for (let step = 1; step <= cards.length; step += 1) {
+      const index = (fromIndex + step) % cards.length;
+      if (!cardIsReviewed(cards[index], index)) return index;
+    }
+
+    return -1;
+  }
+
+  function firstReviewIndex() {
+    return cards.findIndex((card, index) =>
+      reviewCards.has(cardKey(card, index)),
+    );
+  }
+
+  function syncTextDensity(element, value) {
+    if (!element) return;
+
+    const length = String(value || "")
+      .replace(/\s+/g, " ")
+      .trim().length;
+
+    element.classList.toggle("is-long", length > 170);
+    element.classList.toggle("is-very-long", length > 270);
+  }
+
   async function saveFlashcardProgress() {
     if (!activeDeckId || !cards.length) return;
 
@@ -356,11 +430,16 @@
           ? meta.study_flashcard_progress
           : {}),
       };
+      const viewedCount = sessionProgressCount();
 
       progress[activeDeckId] = {
         known_ids: Array.from(knownCards),
         review_ids: Array.from(reviewCards),
+        viewed_count: viewedCount,
         total: cards.length,
+        percent: cards.length
+          ? Math.round((viewedCount / cards.length) * 100)
+          : 0,
         updated_at: new Date().toISOString(),
       };
 
@@ -419,13 +498,60 @@
     });
   }
 
+  function sessionProgressCount() {
+    if (!cards.length) return 0;
+    return Math.min(Math.max(reviewedCount(), currentIndex + 1), cards.length);
+  }
+
   function updateProgress() {
+    const sessionCount = sessionProgressCount();
     const percent = cards.length
-      ? Math.round(((currentIndex + 1) / cards.length) * 100)
+      ? Math.round((sessionCount / cards.length) * 100)
       : 0;
 
     if (els.progressValue) els.progressValue.textContent = `${percent}%`;
     if (els.progressBar) els.progressBar.style.width = `${percent}%`;
+  }
+
+  function renderCompletionCard() {
+    els.stage?.classList.add("is-complete");
+    els.card?.classList.remove(
+      "is-empty",
+      "is-flipped",
+      "is-swipe-next",
+      "is-swipe-prev",
+    );
+    els.card?.classList.add("is-complete");
+    els.layout?.classList.remove("is-empty");
+    if (els.card) els.card.style.transform = "";
+    if (els.deckName) els.deckName.textContent = "Flashcards complete";
+    if (els.deckMeta)
+      els.deckMeta.textContent = `${knownCards.size} known - ${reviewCards.size} need another round.`;
+    if (els.counter)
+      els.counter.textContent = `${cards.length} of ${cards.length}`;
+    if (els.label) els.label.textContent = "Done";
+    if (els.frontText) {
+      const completeText = `Deck reviewed\n${knownCards.size} known · ${reviewCards.size} review again`;
+      els.frontText.textContent = completeText;
+      syncTextDensity(els.frontText, completeText);
+    }
+    if (els.backText) {
+      els.backText.textContent = "";
+      syncTextDensity(els.backText, "");
+    }
+    if (els.hint)
+      els.hint.textContent = reviewCards.size
+        ? "Review the hard cards now before starting another deck."
+        : "Clean round. You can restart if you want one more pass.";
+    if (els.reveal) els.reveal.textContent = "Restart";
+    if (els.review)
+      els.review.textContent = reviewCards.size
+        ? "Review again"
+        : "Review deck";
+    if (els.know) els.know.textContent = "Finished";
+    if (els.next) els.next.textContent = "Next";
+    if (els.prev) els.prev.textContent = "Previous";
+    updateProgress();
   }
 
   function renderCard() {
@@ -434,7 +560,18 @@
       return;
     }
 
-    els.card?.classList.remove("is-empty", "is-swipe-next", "is-swipe-prev");
+    if (sessionFinished) {
+      renderCompletionCard();
+      return;
+    }
+
+    els.stage?.classList.remove("is-complete");
+    els.card?.classList.remove(
+      "is-complete",
+      "is-empty",
+      "is-swipe-next",
+      "is-swipe-prev",
+    );
     els.layout?.classList.remove("is-empty");
     els.card?.classList.toggle("is-flipped", isRevealed);
     if (els.card) els.card.style.transform = "";
@@ -446,10 +583,20 @@
     if (els.counter)
       els.counter.textContent = `${currentIndex + 1} of ${cards.length}`;
     if (els.label) els.label.textContent = "Question";
-    if (els.frontText) els.frontText.textContent = card.front;
-    if (els.backText) els.backText.textContent = card.back;
+    if (els.frontText) {
+      els.frontText.textContent = card.front;
+      syncTextDensity(els.frontText, card.front);
+    }
+    if (els.backText) {
+      els.backText.textContent = card.back;
+      syncTextDensity(els.backText, card.back);
+    }
     if (els.hint) els.hint.textContent = "Click the card to reveal the answer.";
+    if (els.prev) els.prev.textContent = "Previous";
     if (els.reveal) els.reveal.textContent = isRevealed ? "Hide" : "Reveal";
+    if (els.review) els.review.textContent = "Review again";
+    if (els.know) els.know.textContent = "Know it";
+    if (els.next) els.next.textContent = "Next";
     els.know?.classList.toggle("is-active", knownCards.has(key));
     els.review?.classList.toggle("is-active", reviewCards.has(key));
     updateProgress();
@@ -458,10 +605,12 @@
 
   function goToCard(index) {
     if (!cards.length) return;
+    sessionFinished = false;
     const previousIndex = currentIndex;
     currentIndex = (index + cards.length) % cards.length;
     setFlipped(false);
     renderCard();
+    saveFlashcardProgress();
     if (currentIndex === previousIndex || !els.card) return;
 
     const direction = index > previousIndex ? "is-step-next" : "is-step-prev";
@@ -476,11 +625,31 @@
 
   function flipCard() {
     if (!cards.length) return;
+
+    if (sessionFinished) {
+      goToCard(0);
+      return;
+    }
+
     setFlipped(!isRevealed);
   }
 
-  function markCard(status) {
+  function finishSession() {
     if (!cards.length) return;
+    sessionFinished = true;
+    isRevealed = false;
+    saveFlashcardProgress();
+    renderCard();
+  }
+
+  function reviewAgain() {
+    if (!cards.length) return;
+    const index = firstReviewIndex();
+    goToCard(index >= 0 ? index : 0);
+  }
+
+  function markCard(status) {
+    if (!cards.length || sessionFinished) return;
 
     const key = cardKey(cards[currentIndex], currentIndex);
     if (status === "known") {
@@ -493,12 +662,13 @@
 
     saveFlashcardProgress();
 
-    if (cards.length > 1) {
-      goToCard(currentIndex + 1);
+    const nextIndex = nextUnreviewedIndex(currentIndex);
+    if (nextIndex >= 0) {
+      goToCard(nextIndex);
       return;
     }
 
-    renderCard();
+    finishSession();
   }
 
   function snapCard() {
@@ -728,6 +898,13 @@
     }));
     currentIndex = 0;
     isRevealed = false;
+    sessionFinished = false;
+
+    try {
+      const { data: refreshed } = await state.supabase.auth.getUser();
+      if (refreshed?.user) state.user = refreshed.user;
+    } catch {}
+
     const validKeys = new Set(cards.map((card, index) => cardKey(card, index)));
     const saved = readFlashcardProgress(state.user?.user_metadata, deckId);
     knownCards = new Set(validCardKeys(saved?.known_ids, validKeys));
@@ -837,7 +1014,7 @@
 
     els.generate.disabled = true;
     els.generate.classList.add("is-loading");
-    setGenerateLabel("Generating...");
+    startGeneratePhrases();
 
     try {
       const data = await tools.ai({
@@ -864,7 +1041,7 @@
     } finally {
       els.generate.disabled = false;
       els.generate.classList.remove("is-loading");
-      setGenerateLabel("Generate flashcards");
+      stopGeneratePhrases();
     }
   }
 
@@ -932,6 +1109,11 @@
 
     els.reveal?.addEventListener("click", flipCard);
     els.review?.addEventListener("click", () => {
+      if (sessionFinished) {
+        reviewAgain();
+        return;
+      }
+
       markCard("review");
     });
     els.know?.addEventListener("click", () => {
@@ -939,10 +1121,25 @@
     });
 
     els.prev?.addEventListener("click", () => {
+      if (sessionFinished) {
+        goToCard(0);
+        return;
+      }
+
       goToCard(currentIndex - 1);
     });
 
     els.next?.addEventListener("click", () => {
+      if (sessionFinished) {
+        goToCard(0);
+        return;
+      }
+
+      if (currentIndex >= cards.length - 1) {
+        finishSession();
+        return;
+      }
+
       goToCard(currentIndex + 1);
     });
 

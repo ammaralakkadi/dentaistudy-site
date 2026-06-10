@@ -153,12 +153,12 @@
   function getPlanLimits() {
     const tier = window.DentAIUser?.tier || "anon";
     if (tier === "pro" || tier === "pro_yearly")
-      return { maxPdfs: 10, maxMb: 60 };
-    if (tier === "free") return { maxPdfs: 5, maxMb: 20 };
+      return { maxPdfs: 5, maxMb: 50 };
+    if (tier === "free") return { maxPdfs: 1, maxMb: 20 };
     return { maxPdfs: 0, maxMb: 0 }; // anon
   }
 
-  const MAX_PDFS = 10; // hard ceiling, real limit enforced via getPlanLimits()
+  const MAX_PDFS = 5; // hard ceiling, real limit enforced via getPlanLimits()
 
   // Sticky PDF context cache (no visible chat pollution)
   const PDF_CACHE_KEY = "dentai_pdf_cache_v1";

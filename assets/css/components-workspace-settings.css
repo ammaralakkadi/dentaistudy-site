@@ -458,7 +458,7 @@
   font-weight: 700;
   letter-spacing: -0.02em;
   margin-bottom: 0.4rem;
-  color: #0a3d62;
+  color: #111827;
 }
 
 .auth-container .auth-subtext {
@@ -480,9 +480,9 @@
   margin-bottom: 0.35rem;
 }
 
-.auth-container form input[type="text"],
-.auth-container form input[type="email"],
-.auth-container form input[type="password"] {
+.auth-container form > input[type="text"],
+.auth-container form > input[type="email"],
+.auth-container form > input[type="password"] {
   width: 100%;
   border-radius: 0.75rem;
   border: 1px solid #d1d5db;
@@ -497,9 +497,9 @@
   margin-bottom: 0.85rem;
 }
 
-.auth-container form input[type="text"]:focus,
-.auth-container form input[type="email"]:focus,
-.auth-container form input[type="password"]:focus {
+.auth-container form > input[type="text"]:focus,
+.auth-container form > input[type="email"]:focus,
+.auth-container form > input[type="password"]:focus {
   border-color: #4f46e5;
   box-shadow: 0 0 0 1px rgba(79, 70, 229, 0.2);
   background-color: #ffffff;
@@ -513,8 +513,9 @@
   padding: 0.7rem 1rem;
   font-size: 0.95rem;
   font-weight: 600;
-  background: #0a3d62;
+  background: #111827;
   color: #ffffff;
+  box-shadow: 0 10px 24px rgba(17, 24, 39, 0.12);
   cursor: pointer;
   transition:
     background-color 0.15s ease,
@@ -523,7 +524,8 @@
 }
 
 .auth-container .auth-submit:hover {
-  background: #062a44;
+  background: #000000;
+  box-shadow: 0 12px 28px rgba(17, 24, 39, 0.14);
 }
 
 .auth-container .auth-submit:active {
@@ -556,8 +558,8 @@
 }
 
 .auth-container .auth-switch a {
-  color: #0a3d62;
-  font-weight: 600;
+  color: #111827;
+  font-weight: 650;
 }
 
 /* Simple navbar for auth pages */

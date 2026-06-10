@@ -6,6 +6,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const emailInput = document.getElementById("signup-email");
   const passwordInput = document.getElementById("signup-password");
   const messageEl = document.getElementById("signup-message");
+  const passwordToggleButtons = document.querySelectorAll(
+    "[data-auth-password-toggle]",
+  );
 
   function showMessage(text, type = "info") {
     if (!messageEl) return;
@@ -13,6 +16,27 @@ document.addEventListener("DOMContentLoaded", () => {
     messageEl.style.color =
       type === "error" ? "#b91c1c" : type === "success" ? "#15803d" : "#4b5563";
   }
+
+  function bindPasswordToggles() {
+    passwordToggleButtons.forEach((btn) => {
+      const input = document.getElementById(btn.dataset.authPasswordToggle);
+      if (!input) return;
+
+      btn.addEventListener("click", () => {
+        const shouldShow = input.type === "password";
+
+        input.type = shouldShow ? "text" : "password";
+        btn.classList.toggle("is-visible", shouldShow);
+        btn.setAttribute(
+          "aria-label",
+          shouldShow ? "Hide password" : "Show password",
+        );
+        btn.setAttribute("aria-pressed", shouldShow ? "true" : "false");
+      });
+    });
+  }
+
+  bindPasswordToggles();
 
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -81,7 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Email confirmation is OFF → user is already logged in.
         showMessage(
           "Account created. Redirecting to your study workspace...",
-          "success"
+          "success",
         );
         setTimeout(() => {
           window.location.href = "study.html";
@@ -90,7 +114,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Email confirmation is ON → tell user to check email.
         showMessage(
           "Account created. Please check your email to confirm your account.",
-          "success"
+          "success",
         );
       }
     } catch (err) {

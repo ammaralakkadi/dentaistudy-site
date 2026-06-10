@@ -8,6 +8,11 @@
   const mainEl = document.querySelector(".main");
   const emptyStateEl = document.createElement("div");
 
+  if (new URL(window.location.href).searchParams.get("chat")) {
+    window.DentAIChatHydrationStartedAt = Date.now();
+    document.body.classList.add("study-chat-hydrating");
+  }
+
   function getGreeting() {
     const hour = new Date().getHours();
     if (hour < 12) return "Good morning";
@@ -136,26 +141,32 @@
 
   const THINKING_PHASES = [
     "Reading your question…",
-    "Scanning the material…",
-    "Connecting the concepts…",
-    "Structuring the answer…",
-    "Almost there…",
+    "Finding the key point…",
+    "Connecting the clinical concepts…",
+    "Checking what matters for exams…",
+    "Building a clear answer…",
+    "Tightening the explanation…",
+    "Almost ready…",
   ];
 
   const THINKING_PHASES_PDF = [
     "Reading the PDF…",
-    "Extracting key concepts…",
-    "Mapping the clinical points…",
-    "Structuring exam notes…",
-    "Almost there…",
+    "Finding the high-yield sections…",
+    "Extracting key dental concepts…",
+    "Connecting notes to your question…",
+    "Structuring the answer clearly…",
+    "Preparing exam-focused points…",
+    "Almost ready…",
   ];
 
   const THINKING_PHASES_DEEP = [
-    "Analysing the full chapter…",
-    "Identifying core themes…",
-    "Building structured notes…",
-    "Formatting for your exam…",
-    "Almost there…",
+    "Reading the full chapter…",
+    "Finding the core themes…",
+    "Separating high-yield from extra detail…",
+    "Organizing the clinical concepts…",
+    "Building structured study notes…",
+    "Formatting this for revision…",
+    "Almost ready…",
   ];
 
   function getThinkingPhases() {

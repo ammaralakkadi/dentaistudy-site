@@ -46,7 +46,9 @@
     els.search = qs("librarySearch");
     els.refresh = qs("libraryRefresh");
     els.sort = qs("librarySort");
-    els.viewButtons = Array.from(document.querySelectorAll("[data-library-view]"));
+    els.viewButtons = Array.from(
+      document.querySelectorAll("[data-library-view]"),
+    );
     els.tabs = Array.from(document.querySelectorAll("[data-library-filter]"));
     els.countAll = qs("libraryCountAll");
     els.countChats = qs("libraryCountChats");
@@ -144,7 +146,9 @@
   }
 
   function selectedOption(select) {
-    return select?.selectedOptions?.[0] || select?.options?.[select.selectedIndex];
+    return (
+      select?.selectedOptions?.[0] || select?.options?.[select.selectedIndex]
+    );
   }
 
   function closeCustomSelects(except) {
@@ -283,19 +287,28 @@
   function updateCounts(items = []) {
     syncLockedStats();
 
-    if (els.countChats) els.countChats.textContent = String(conversations.length);
+    if (els.countChats)
+      els.countChats.textContent = String(conversations.length);
     if (els.countDecks) {
-      els.countDecks.textContent = canUseProLibrary ? String(decks.length) : "-";
+      els.countDecks.textContent = canUseProLibrary
+        ? String(decks.length)
+        : "Pro";
     }
     if (els.countQuizzes) {
-      els.countQuizzes.textContent = canUseProLibrary ? String(quizzes.length) : "-";
+      els.countQuizzes.textContent = canUseProLibrary
+        ? String(quizzes.length)
+        : "Pro";
     }
     if (els.statChats) els.statChats.textContent = String(conversations.length);
     if (els.statDecks) {
-      els.statDecks.textContent = canUseProLibrary ? String(decks.length) : "-";
+      els.statDecks.textContent = canUseProLibrary
+        ? String(decks.length)
+        : "Pro";
     }
     if (els.statQuizzes) {
-      els.statQuizzes.textContent = canUseProLibrary ? String(quizzes.length) : "-";
+      els.statQuizzes.textContent = canUseProLibrary
+        ? String(quizzes.length)
+        : "Pro";
     }
     if (els.countAll) {
       els.countAll.textContent = String(
@@ -314,8 +327,14 @@
       tab.classList.toggle("is-active", filter === activeFilter);
     });
 
-    const active = els.tabs?.find((tab) => tab.dataset.libraryFilter === activeFilter);
-    active?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "start" });
+    const active = els.tabs?.find(
+      (tab) => tab.dataset.libraryFilter === activeFilter,
+    );
+    active?.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest",
+      inline: "start",
+    });
   }
 
   function setActiveView() {
@@ -365,7 +384,8 @@
 
   function previewForItem(item) {
     if (item.kind === "deck") return "Review this saved flashcard deck.";
-    if (item.kind === "quiz") return "Practice this saved quiz when you are ready.";
+    if (item.kind === "quiz")
+      return "Practice this saved quiz when you are ready.";
     return "Continue this saved study chat.";
   }
 
@@ -378,7 +398,6 @@
     if (!item.progress || item.kind === "chat") return "";
 
     const percent = clampPercent(item.progress.percent);
-    if (percent <= 0) return "";
 
     return `
       <div class="library-progress is-${item.kind}" aria-label="${tools.escapeHtml(item.progress.label)}">
@@ -535,7 +554,8 @@
       const percent = clampPercent((answered / total) * 100);
       map.set(attempt.quiz_id, {
         percent,
-        label: answered >= total ? "Complete" : `${answered} of ${total} answered`,
+        label:
+          answered >= total ? "Complete" : `${answered} of ${total} answered`,
       });
     });
 
@@ -576,9 +596,12 @@
     });
 
     const savedProgress = readFlashcardProgress(state.user?.user_metadata);
+
     deckRows.forEach((deck) => {
-      const saved = savedProgress[deck.id];
-      if (!saved || typeof saved !== "object") return;
+      const saved =
+        savedProgress[deck.id] && typeof savedProgress[deck.id] === "object"
+          ? savedProgress[deck.id]
+          : {};
 
       const validCards = cardsByDeck.get(deck.id) || new Set();
       const known = Array.isArray(saved.known_ids) ? saved.known_ids : [];
@@ -589,10 +612,15 @@
           .filter((id) => !validCards.size || validCards.has(id)),
       );
       const total = validCards.size || Number(saved.total || 0);
-      if (!total || !reviewed.size) return;
+      if (!total) return;
 
-      const reviewedCount = Math.min(reviewed.size, total);
+      const viewedCount = Number(saved.viewed_count || 0);
+      const reviewedCount = Math.min(
+        Math.max(reviewed.size, viewedCount),
+        total,
+      );
       const percent = clampPercent((reviewedCount / total) * 100);
+
       map.set(deck.id, {
         percent,
         label:
@@ -651,7 +679,12 @@
 
   async function renameItem(item) {
     const current = cleanTitle(item?.title);
-    const next = window.prompt("Rename this item", current);
+    const next = await tools.askModal({
+      title: "Rename item",
+      message: "Name this saved study item.",
+      value: current,
+      input: true,
+    });
     if (!next || !next.trim() || next.trim() === current) return;
 
     const s = await tools.ready();
@@ -670,11 +703,18 @@
   }
 
   async function deleteItem(item) {
-    const ok = window.confirm(item.deleteMessage);
+    const ok = await tools.askModal({
+      title: "Delete item",
+      message: item.deleteMessage,
+      danger: true,
+    });
     if (!ok) return;
 
     const s = await tools.ready();
-    const { error } = await s.supabase.from(item.table).delete().eq("id", item.id);
+    const { error } = await s.supabase
+      .from(item.table)
+      .delete()
+      .eq("id", item.id);
 
     if (error) {
       tools.toast("Could not delete this item.", "error");
@@ -740,7 +780,10 @@
     const state = await tools.ready();
     if (!state.user) return;
     canUseProLibrary = Boolean(state.isPro);
-    if (!canUseProLibrary && (activeFilter === "deck" || activeFilter === "quiz")) {
+    if (
+      !canUseProLibrary &&
+      (activeFilter === "deck" || activeFilter === "quiz")
+    ) {
       activeFilter = "all";
     }
 

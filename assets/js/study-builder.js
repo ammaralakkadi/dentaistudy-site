@@ -324,6 +324,18 @@
       window.history.replaceState({}, "", url.toString());
     }
 
+    function revealChatRoute() {
+      if (!document.body.classList.contains("study-chat-hydrating")) return;
+
+      const startedAt = Number(window.DentAIChatHydrationStartedAt || 0);
+      const elapsed = startedAt ? Date.now() - startedAt : 999;
+      const wait = Math.max(0, 220 - elapsed);
+
+      window.setTimeout(() => {
+        document.body.classList.remove("study-chat-hydrating");
+      }, wait);
+    }
+
     function setChatListEmptyState(hasItems) {
       if (!emptyEl) return;
       emptyEl.hidden = Boolean(hasItems);
@@ -853,24 +865,29 @@
       isAuthed = Boolean(userId);
       activeConversationId = getUrlChatId();
 
-      if (isAuthed) {
-        await refreshChatList();
-        if (activeConversationId) await loadConversation(activeConversationId);
-        else window.ChatUI?.clear?.();
-      } else {
-        thread = loadThread();
-        if (thread.length && window.ChatUI) {
-          window.ChatUI?.clear?.();
-          for (const m of thread) {
-            const attachments = normalizeAttachments(m.attachments);
-            if (m.role === "user")
-              window.ChatUI?.addUserStatic?.(m.content, attachments);
-            else {
-              window.ChatUI?.addAIStatic?.(m.content);
-              postProcessLastAiBubble(m.content);
+      try {
+        if (isAuthed) {
+          await refreshChatList();
+          if (activeConversationId)
+            await loadConversation(activeConversationId);
+          else window.ChatUI?.clear?.();
+        } else {
+          thread = loadThread();
+          if (thread.length && window.ChatUI) {
+            window.ChatUI?.clear?.();
+            for (const m of thread) {
+              const attachments = normalizeAttachments(m.attachments);
+              if (m.role === "user")
+                window.ChatUI?.addUserStatic?.(m.content, attachments);
+              else {
+                window.ChatUI?.addAIStatic?.(m.content);
+                postProcessLastAiBubble(m.content);
+              }
             }
           }
         }
+      } finally {
+        revealChatRoute();
       }
 
       document.querySelectorAll('[data-action="newChat"]').forEach((btn) => {

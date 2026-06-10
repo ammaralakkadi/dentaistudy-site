@@ -5,6 +5,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const emailInput = document.getElementById("login-email");
   const passwordInput = document.getElementById("login-password");
   const messageEl = document.getElementById("login-message");
+  const passwordToggleButtons = document.querySelectorAll(
+    "[data-auth-password-toggle]",
+  );
 
   function showMessage(text, type = "info") {
     if (!messageEl) return;
@@ -12,6 +15,27 @@ document.addEventListener("DOMContentLoaded", () => {
     messageEl.style.color =
       type === "error" ? "#b91c1c" : type === "success" ? "#15803d" : "#4b5563";
   }
+
+  function bindPasswordToggles() {
+    passwordToggleButtons.forEach((btn) => {
+      const input = document.getElementById(btn.dataset.authPasswordToggle);
+      if (!input) return;
+
+      btn.addEventListener("click", () => {
+        const shouldShow = input.type === "password";
+
+        input.type = shouldShow ? "text" : "password";
+        btn.classList.toggle("is-visible", shouldShow);
+        btn.setAttribute(
+          "aria-label",
+          shouldShow ? "Hide password" : "Show password",
+        );
+        btn.setAttribute("aria-pressed", shouldShow ? "true" : "false");
+      });
+    });
+  }
+
+  bindPasswordToggles();
 
   function mapLoginError(error) {
     if (!error || !error.message) {
@@ -79,7 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!email) {
         showMessage(
           "Enter your email first and we'll send you a reset link.",
-          "error"
+          "error",
         );
         emailInput.focus();
         return;
@@ -94,27 +118,27 @@ document.addEventListener("DOMContentLoaded", () => {
           email,
           {
             redirectTo,
-          }
+          },
         );
 
         if (error) {
           console.error("resetPasswordForEmail error:", error);
           showMessage(
             "We couldn't send a reset email. Please try again in a moment.",
-            "error"
+            "error",
           );
           return;
         }
 
         showMessage(
           "Check your inbox for a DentAIstudy password reset link.",
-          "success"
+          "success",
         );
       } catch (err) {
         console.error("resetPasswordForEmail failed:", err);
         showMessage(
           "We couldn't send a reset email. Please try again in a moment.",
-          "error"
+          "error",
         );
       }
     });

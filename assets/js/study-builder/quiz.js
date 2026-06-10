@@ -123,8 +123,16 @@
   let showingResult = false;
   let quizProgressSavePromise = Promise.resolve();
   let questionMotionTimer = null;
+  let generatePhraseTimer = null;
   const customSelects = new Map();
   let customSelectEventsBound = false;
+
+  const GENERATING_PHRASES = [
+    "Generating quiz…",
+    "Writing clinical questions…",
+    "Building answer options…",
+    "Saving your quiz…",
+  ];
 
   function qs(id) {
     return document.getElementById(id);
@@ -148,6 +156,24 @@
     }
 
     if (els.generate) els.generate.textContent = label;
+  }
+
+  function startGeneratePhrases() {
+    let phraseIndex = 0;
+
+    window.clearInterval(generatePhraseTimer);
+    setGenerateLabel(GENERATING_PHRASES[phraseIndex]);
+
+    generatePhraseTimer = window.setInterval(() => {
+      phraseIndex = (phraseIndex + 1) % GENERATING_PHRASES.length;
+      setGenerateLabel(GENERATING_PHRASES[phraseIndex]);
+    }, 1300);
+  }
+
+  function stopGeneratePhrases() {
+    window.clearInterval(generatePhraseTimer);
+    generatePhraseTimer = null;
+    setGenerateLabel("Generate quiz");
   }
 
   function cacheEls() {
@@ -481,6 +507,20 @@
   function saveQuizProgress() {
     quizProgressSavePromise = quizProgressSavePromise.then(saveQuizProgressNow);
     return quizProgressSavePromise;
+  }
+
+  async function askQuizConfirm({ title, message, danger = false }) {
+    if (typeof tools.askModal === "function") {
+      return Boolean(
+        await tools.askModal({
+          title,
+          message,
+          danger,
+        }),
+      );
+    }
+
+    return window.confirm(message);
   }
 
   function scoreMessage(percent) {
@@ -903,7 +943,7 @@
 
     els.generate.disabled = true;
     els.generate.classList.add("is-loading");
-    setGenerateLabel("Generating...");
+    startGeneratePhrases();
 
     try {
       const data = await tools.ai({
@@ -931,13 +971,18 @@
     } finally {
       els.generate.disabled = false;
       els.generate.classList.remove("is-loading");
-      setGenerateLabel("Generate quiz");
+      stopGeneratePhrases();
     }
   }
 
   async function deleteQuiz() {
     if (!activeQuizId) return;
-    const ok = window.confirm("Delete this quiz? This can't be undone.");
+
+    const ok = await askQuizConfirm({
+      title: "Delete quiz?",
+      message: "This saved quiz will be removed permanently.",
+      danger: true,
+    });
     if (!ok) return;
 
     const state = await tools.ready();
@@ -962,9 +1007,11 @@
 
     const unanswered = answers.some((answer) => answer === null);
     if (unanswered) {
-      const ok = window.confirm(
-        "Some questions are unanswered. Finish anyway?",
-      );
+      const ok = await askQuizConfirm({
+        title: "Finish quiz?",
+        message:
+          "Some questions are still unanswered. Finish now and review the missed ones?",
+      });
       if (!ok) return;
     }
 

@@ -18,6 +18,19 @@
   background: var(--bg);
 }
 
+body.study-chat-hydrating .main {
+  overflow: hidden;
+}
+
+body.study-chat-hydrating .main::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 220;
+  background: #ffffff;
+  pointer-events: auto;
+}
+
 .main.is-empty-chat {
   grid-template-rows: var(--topbar-h) auto auto;
   align-content: start;

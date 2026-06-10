@@ -199,12 +199,13 @@
   cursor: pointer;
 }
 .sb-btn:hover {
-  background: rgba(10, 61, 98, 0.06);
+  background: rgba(11, 99, 206, 0.055);
   border-color: transparent;
 }
 
 .sb-btn:hover .ico {
-  opacity: 0.85;
+  color: #0b63ce;
+  opacity: 0.9;
 }
 
 .ico {

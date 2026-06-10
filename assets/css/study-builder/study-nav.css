@@ -2,15 +2,16 @@
 
 .sb-btn.is-active,
 .sb-btn[aria-current="page"] {
-  background: rgba(15, 23, 42, 0.045);
-  border-color: rgba(15, 23, 42, 0.08);
-  color: #0b0f19;
+  background: rgba(11, 99, 206, 0.07);
+  border-color: rgba(11, 99, 206, 0.12);
+  color: #07111f;
   font-weight: 650;
 }
 
 .sb-btn.is-active .ico,
 .sb-btn[aria-current="page"] .ico {
-  opacity: 0.78;
+  color: #0b63ce;
+  opacity: 1;
 }
 
 .sb-btn .mini-badge {
@@ -93,6 +94,19 @@ html[data-das-plan="loading"] [data-pro-panel] {
   gap: 10px;
   margin-top: 22px;
   flex-wrap: wrap;
+}
+
+.pro-lock-actions .study-primary-btn {
+  background: #111827;
+  border-color: #111827;
+  color: #ffffff;
+  box-shadow: 0 10px 24px rgba(17, 24, 39, 0.14);
+}
+
+.pro-lock-actions .study-primary-btn:hover {
+  background: #000000;
+  border-color: #000000;
+  transform: translateY(-1px);
 }
 
 .study-primary-btn,

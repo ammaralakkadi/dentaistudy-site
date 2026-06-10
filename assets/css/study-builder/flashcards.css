@@ -232,19 +232,6 @@
   line-height: 1;
 }
 
-.pro-lock-actions .study-primary-btn {
-  background: #111827;
-  border-color: #111827;
-  color: #ffffff;
-  box-shadow: 0 10px 24px rgba(17, 24, 39, 0.14);
-}
-
-.pro-lock-actions .study-primary-btn:hover {
-  background: #000000;
-  border-color: #000000;
-  transform: translateY(-1px);
-}
-
 .study-field {
   margin-top: 14px;
 }
@@ -1033,12 +1020,15 @@
   max-width: 720px;
   margin: 0 auto;
   color: #0b0f19;
-  font-size: clamp(25px, 2.9vw, 38px);
-  line-height: 1.18;
+  font-size: clamp(22px, 2.4vw, 32px);
+  line-height: 1.22;
   letter-spacing: -0.025em;
   font-weight: 700;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
+  transition:
+    font-size 160ms ease,
+    line-height 160ms ease;
 }
 
 .flashcard-hint {
@@ -1240,6 +1230,24 @@
   color: #15803d;
 }
 
+.deck-stage.is-complete .flashcard-strip,
+.deck-stage.is-complete #prevCardBtn,
+.deck-stage.is-complete #nextCardBtn,
+.deck-stage.is-complete #knowCardBtn {
+  display: none;
+}
+
+.deck-stage.is-complete .flashcard-controls {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  max-width: 560px;
+  margin-inline: auto;
+}
+
+.deck-stage.is-complete .flashcard-text {
+  font-size: clamp(24px, 2.3vw, 32px);
+  line-height: 1.2;
+}
+
 @media (min-width: 1025px) {
   .study-page:has(.flashcards-layout:not(.is-empty)) {
     padding-top: 24px;
@@ -1361,7 +1369,8 @@
   }
 
   .flashcard-text {
-    font-size: clamp(24px, 2.5vw, 34px);
+    font-size: clamp(22px, 2.1vw, 30px);
+    line-height: 1.22;
   }
 
   .flashcard-hint {
@@ -1693,9 +1702,22 @@
   }
 
   .flashcard-text {
-    font-size: clamp(20px, 5.8vw, 25px);
-    line-height: 1.22;
-    letter-spacing: -0.025em;
+    font-size: clamp(18px, 5.1vw, 22px);
+    line-height: 1.24;
+    letter-spacing: -0.02em;
+  }
+
+  .flashcard-text.is-long {
+    font-size: clamp(16px, 4.4vw, 19px);
+    line-height: 1.25;
+    letter-spacing: -0.018em;
+  }
+
+  .flashcard-text.is-very-long {
+    font-size: clamp(14.5px, 3.9vw, 17px);
+    line-height: 1.27;
+    letter-spacing: -0.012em;
+    font-weight: 680;
   }
 
   .flashcard-hint {
@@ -1740,19 +1762,19 @@
     order: 1;
   }
 
-  #nextCardBtn {
+  #reviewCardBtn {
     order: 2;
   }
 
-  #reviewCardBtn {
+  #knowCardBtn {
     order: 3;
   }
 
-  #knowCardBtn {
+  #prevCardBtn {
     order: 4;
   }
 
-  #prevCardBtn {
+  #nextCardBtn {
     order: 5;
   }
 
@@ -1801,6 +1823,10 @@
 
   .flashcard-face {
     padding: 18px 14px;
+  }
+
+  .flashcard-text {
+    font-size: clamp(17px, 4.9vw, 20px);
   }
 
   .flashcard-label,

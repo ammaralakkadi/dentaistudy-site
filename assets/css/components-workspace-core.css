@@ -348,29 +348,26 @@
   flex-shrink: 0;
 }
 
+.hero-cta-label-mobile {
+  display: none;
+}
+
 @media (max-width: 640px) {
   .hero-actions-main {
     flex-wrap: nowrap;
-    gap: 8px;
+    gap: 9px;
   }
 
   .hero-actions-main .hero-cta-btn {
     flex: 1 1 0;
     min-width: 0;
-    min-height: 48px;
-    padding: 0 12px;
+    min-height: 46px;
+    padding: 0 13px;
     font-size: 13px;
-    gap: 5px;
+    gap: 6px;
     border-radius: 999px;
-    line-height: 1.1;
-  }
-
-  .hero-actions-main .hero-cta-btn-primary {
-    flex: 1.06 1 0;
-  }
-
-  .hero-actions-main .hero-cta-btn-secondary {
-    flex: 0.94 1 0;
+    line-height: 1;
+    white-space: nowrap;
   }
 
   .hero-actions-main .hero-cta-btn svg {
@@ -378,48 +375,30 @@
     height: 14px;
   }
 
-  .hero-actions-main .hero-cta-btn span {
-    min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    letter-spacing: -0.01em;
+  .hero-cta-label-desktop {
+    display: none;
+  }
+
+  .hero-cta-label-mobile {
+    display: inline;
   }
 }
 
 @media (max-width: 400px) {
   .hero-actions-main {
-    flex-wrap: nowrap;
-    gap: 8px;
+    gap: 7px;
   }
 
   .hero-actions-main .hero-cta-btn {
-    min-height: 50px;
-    padding: 0 8px;
+    min-height: 44px;
+    padding: 0 10px;
     font-size: 12px;
-    gap: 4px;
-  }
-
-  .hero-actions-main .hero-cta-btn-primary {
-    flex: 1.08 1 0;
-  }
-
-  .hero-actions-main .hero-cta-btn-secondary {
-    flex: 0.92 1 0;
+    gap: 5px;
   }
 
   .hero-actions-main .hero-cta-btn svg {
     width: 13px;
     height: 13px;
-  }
-
-  .hero-actions-main .hero-cta-btn span {
-    min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    line-height: 1;
-    text-align: center;
   }
 }
 
