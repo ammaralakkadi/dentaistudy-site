@@ -90,7 +90,9 @@
               stroke-linejoin="round"
             >
               <path d="M12 6v8l3-3 3 3V6" />
-              <path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2z" />
+              <path
+                d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2z"
+              />
             </svg>
             <span>Subjects</span>
           </a>
@@ -108,7 +110,9 @@
               <path d="M12 7v14" />
               <path d="M16 12h2" />
               <path d="M16 8h2" />
-              <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" />
+              <path
+                d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"
+              />
               <path d="M6 12h2" />
               <path d="M6 8h2" />
             </svg>
@@ -237,33 +241,66 @@
           <div class="section-header pricing-header">
             <div class="section-kicker">Pricing</div>
             <h1 class="section-title">
-              Simple pricing for focused dental study
+              Pricing for serious dental exam preparation
             </h1>
             <p class="section-subtitle">
-              Start free, upgrade only when you’re ready. No contracts, cancel
-              anytime.
+              Start free, try Pro for 3 days, and turn PDFs, weak topics, and
+              board-style questions into focused answers, flashcards, and
+              quizzes.
             </p>
           </div>
 
           <main class="page-content pricing-page-main">
+            <div class="pricing-exam-strip" aria-label="Supported exam paths">
+              <span class="pricing-exam-strip-label">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"
+                  />
+                  <path d="m9 12 2 2 4-4" />
+                </svg>
+                Built for
+              </span>
+
+              <span>ORE</span>
+              <span>ADC</span>
+              <span>ADEX</span>
+              <span>NDECC</span>
+              <span>SDLE</span>
+              <span>INBDE</span>
+              <span>Clinical Exams</span>
+              <span>Subject Finals</span>
+            </div>
+
             <section class="pricing-grid">
               <!-- Free plan -->
               <div class="pricing-card">
                 <div class="pricing-card-header">
                   <h2>Free</h2>
                   <p class="pricing-subtitle">
-                    For students exploring the platform and basic study tools.
+                    For testing DentAIstudy before serious exam preparation.
                   </p>
                   <p class="pricing-price">$0 <span>/ forever</span></p>
                 </div>
 
                 <ul class="pricing-features">
-                  <li>Limited daily AI generations</li>
-                  <li>Basic OSCE, Viva, and theory modes</li>
-                  <li>Notes, flashcards, and summaries</li>
-                  <li>Access to core dental subjects only</li>
-                  <li>Single-device usage</li>
-                  <li>Platform updates and announcements</li>
+                  <li>Light daily AI study limit</li>
+                  <li>1 PDF per chat, up to 20MB</li>
+                  <li>Save up to 30 study chats</li>
+                  <li>Ask about dental subjects and exam topics</li>
+                  <li>Upgrade for flashcards and quiz mode</li>
+                  <li>Best for trying the workflow first</li>
                 </ul>
 
                 <a
@@ -274,7 +311,7 @@
                   Start free
                 </a>
                 <p class="pricing-note">
-                  Ideal if you are trying DentAIstudy for the first time.
+                  A simple way to test the AI study flow before upgrading.
                 </p>
               </div>
 
@@ -287,19 +324,18 @@
                   </div>
 
                   <p class="pricing-subtitle">
-                    For students who want advanced AI tools and faster study
-                    workflows.
+                    For active board prep, clinical exams, and course revision.
                   </p>
-                  <p class="pricing-price">$4.99 <span>/ month</span></p>
+                  <p class="pricing-price">$9.99 <span>/ month</span></p>
                 </div>
 
                 <ul class="pricing-features">
-                  <li>Higher daily AI generation limits</li>
-                  <li>Advanced OSCE, Viva, and theory modes</li>
-                  <li>PDF upload with smart content extraction</li>
-                  <li>Faster processing in busy hours</li>
-                  <li>Access to all subjects</li>
-                  <li>Early access to new features</li>
+                  <li>100 daily AI study credits</li>
+                  <li>5 PDFs per chat, up to 50MB each</li>
+                  <li>Turn lecture notes into flashcards</li>
+                  <li>Generate quiz practice for weak topics</li>
+                  <li>Save up to 30 study chats in your library</li>
+                  <li>3 day free trial before billing</li>
                 </ul>
 
                 <a
@@ -307,10 +343,10 @@
                   class="btn btn-primary"
                   data-pricing-plan="pro"
                 >
-                  Get Pro monthly
+                  Start 3-day free trial
                 </a>
                 <p class="pricing-note">
-                  Refunds follow our
+                  Cancel anytime. Refunds follow our
                   <a href="refund-policy.html">Refund Policy</a>.
                 </p>
               </div>
@@ -318,21 +354,27 @@
               <!-- Pro Yearly -->
               <div class="pricing-card">
                 <div class="pricing-card-header">
-                  <h2>Pro Yearly</h2>
+                  <div class="pricing-title-row">
+                    <h2>Pro Yearly</h2>
+                    <span class="pricing-save-badge">
+                      Save ~34%
+                      <small>vs monthly</small>
+                    </span>
+                  </div>
+
                   <p class="pricing-subtitle">
-                    For long-term learners who want full access with the best
-                    value.
+                    For long exam preparation with the lowest yearly cost.
                   </p>
-                  <p class="pricing-price">$49 <span>/ year</span></p>
+                  <p class="pricing-price">$79 <span>/ year</span></p>
                 </div>
 
                 <ul class="pricing-features">
-                  <li>All Pro Monthly features included</li>
-                  <li>Lowest effective monthly price</li>
-                  <li>Stable long-term access for exam seasons</li>
-                  <li>Bonus study optimizations</li>
-                  <li>Ideal for long-term preparation</li>
-                  <li>One simple yearly payment</li>
+                  <li>Everything in Pro Monthly</li>
+                  <li>Save about 34% vs monthly</li>
+                  <li>Built for months of board preparation</li>
+                  <li>Create flashcards from your own notes</li>
+                  <li>Practice with quiz mode across weak topics</li>
+                  <li>3 day free trial before billing</li>
                 </ul>
 
                 <a
@@ -340,14 +382,261 @@
                   class="btn btn-primary"
                   data-pricing-plan="pro_yearly"
                 >
-                  Get Pro yearly
+                  Start 3-day free trial
                 </a>
                 <p class="pricing-note">
-                  Refunds follow our
+                  Best value for long study seasons. Refunds follow our
                   <a href="refund-policy.html">Refund Policy</a>.
                 </p>
               </div>
             </section>
+
+            <section class="pricing-proof" aria-label="What Pro helps you do">
+              <div class="pricing-proof-intro">
+                <span class="pricing-proof-kicker">Why upgrade</span>
+                <h2>Built for the way dental students actually prepare</h2>
+                <p>
+                  Pro helps you move from passive reading to active exam
+                  practice using your own PDFs, weak topics, and saved study
+                  work.
+                </p>
+              </div>
+
+              <div class="pricing-proof-grid">
+                <article class="pricing-proof-card">
+                  <span class="pricing-proof-icon" aria-hidden="true">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path d="M12 13v8l-4-4" />
+                      <path d="m12 21 4-4" />
+                      <path
+                        d="M4.393 15.269A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.436 8.284"
+                      />
+                    </svg>
+                  </span>
+
+                  <div>
+                    <strong>Study from your own PDFs</strong>
+                    <span>
+                      Upload lecture files, notes, or revision documents and ask
+                      focused dental questions.
+                    </span>
+                  </div>
+                </article>
+
+                <article class="pricing-proof-card">
+                  <span class="pricing-proof-icon" aria-hidden="true">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path d="M5 7a2 2 0 0 0-2 2v11" />
+                      <path
+                        d="M5.803 18H5a2 2 0 0 0 0 4h9.5a.5.5 0 0 0 .5-.5V21"
+                      />
+                      <path
+                        d="M9 15V4a2 2 0 0 1 2-2h9.5a.5.5 0 0 1 .5.5v14a.5.5 0 0 1-.5.5H11a2 2 0 0 1 0-4h10"
+                      />
+                    </svg>
+                  </span>
+
+                  <div>
+                    <strong>Turn weak topics into practice</strong>
+                    <span>
+                      Create flashcards and quizzes from oral surgery,
+                      endodontics, perio, prostho, and more.
+                    </span>
+                  </div>
+                </article>
+
+                <article class="pricing-proof-card">
+                  <span class="pricing-proof-icon" aria-hidden="true">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <circle cx="12" cy="12" r="10" />
+                      <circle cx="12" cy="12" r="6" />
+                      <circle cx="12" cy="12" r="2" />
+                    </svg>
+                  </span>
+
+                  <div>
+                    <strong>Practice active recall</strong>
+                    <span>
+                      Generate board-style questions and review instant
+                      explanations before exams.
+                    </span>
+                  </div>
+                </article>
+
+                <article class="pricing-proof-card">
+                  <span class="pricing-proof-icon" aria-hidden="true">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <rect width="18" height="18" x="3" y="3" rx="2" />
+                      <path d="M7 7v10" />
+                      <path d="M11 7v10" />
+                      <path d="m15 7 2 10" />
+                    </svg>
+                  </span>
+
+                  <div>
+                    <strong>Keep your work organized</strong>
+                    <span>
+                      Save chats in your library so explanations, notes, and
+                      practice sets stay easy to revisit.
+                    </span>
+                  </div>
+                </article>
+              </div>
+            </section>
+
+            <section class="pricing-trust-strip" aria-label="Pricing notes">
+              <article class="pricing-trust-item">
+                <span class="pricing-trust-icon" aria-hidden="true">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <circle cx="12" cy="12" r="10" />
+                    <path
+                      d="M11.051 7.616a1 1 0 0 1 1.909.024l.737 1.452a1 1 0 0 0 .737.535l1.634.256a1 1 0 0 1 .588 1.806l-1.172 1.168a1 1 0 0 0-.282.866l.259 1.613a1 1 0 0 1-1.541 1.134l-1.465-.75a1 1 0 0 0-.912 0l-1.465.75a1 1 0 0 1-1.539-1.133l.258-1.613a1 1 0 0 0-.282-.867l-1.156-1.152a1 1 0 0 1 .572-1.822l1.633-.256a1 1 0 0 0 .737-.535z"
+                    />
+                  </svg>
+                </span>
+
+                <div>
+                  <strong>3 day free trial</strong>
+                  <span>Try Pro risk-free.</span>
+                </div>
+              </article>
+
+              <article class="pricing-trust-item">
+                <span class="pricing-trust-icon" aria-hidden="true">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="m2 2 20 20" />
+                    <path
+                      d="M5 5a1 1 0 0 0-1 1v7c0 5 3.5 7.5 7.67 8.94a1 1 0 0 0 .67.01c2.35-.82 4.48-1.97 5.9-3.71"
+                    />
+                    <path
+                      d="M9.309 3.652A12.252 12.252 0 0 0 11.24 2.28a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1v7a9.784 9.784 0 0 1-.08 1.264"
+                    />
+                  </svg>
+                </span>
+
+                <div>
+                  <strong>Cancel anytime</strong>
+                  <span>Downgrade or cancel whenever you want.</span>
+                </div>
+              </article>
+
+              <article class="pricing-trust-item">
+                <span
+                  class="pricing-trust-icon pricing-trust-icon-warm"
+                  aria-hidden="true"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path
+                      d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"
+                    />
+                  </svg>
+                </span>
+
+                <div>
+                  <strong>Daily credits reset</strong>
+                  <span>Your AI study credits refresh every day.</span>
+                </div>
+              </article>
+
+              <article class="pricing-trust-item">
+                <span class="pricing-trust-icon" aria-hidden="true">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path
+                      d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"
+                    />
+                  </svg>
+                </span>
+
+                <div>
+                  <strong>Study support, not a pass guarantee</strong>
+                  <span
+                    >DentAIstudy helps you study better. Results come from your
+                    effort.</span
+                  >
+                </div>
+              </article>
+            </section>
+
             <p class="pricing-powered">
               Secure checkout by <strong>Paddle</strong>
             </p>

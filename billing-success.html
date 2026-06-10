@@ -39,7 +39,7 @@
     <script src="assets/js/billing-success.js" defer></script>
   </head>
 
-  <body>
+  <body class="page-outcome page-billing-success">
     <div class="main-wrapper">
       <!-- HEADER -->
       <header class="site-header">
@@ -85,7 +85,9 @@
               stroke-linejoin="round"
             >
               <path d="M12 6v8l3-3 3 3V6" />
-              <path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2z" />
+              <path
+                d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2z"
+              />
             </svg>
             <span>Subjects</span>
           </a>
@@ -103,7 +105,9 @@
               <path d="M12 7v14" />
               <path d="M16 12h2" />
               <path d="M16 8h2" />
-              <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" />
+              <path
+                d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"
+              />
               <path d="M6 12h2" />
               <path d="M6 8h2" />
             </svg>
@@ -228,102 +232,75 @@
       </nav>
 
       <!-- MAIN -->
-      <main class="page-main">
+      <main class="page-main outcome-page-main">
         <div class="container">
-          <section class="study-layout">
-            <div class="study-main">
+          <section class="outcome-shell" aria-labelledby="billingSuccessTitle">
+            <article class="outcome-card">
               <div
-                class="study-form-card"
-                style="max-width: 720px; margin: 40px auto"
+                class="outcome-icon outcome-icon--success"
+                aria-hidden="true"
               >
-                <div
-                  style="
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-between;
-                    gap: 12px;
-                    flex-wrap: wrap;
-                  "
+                <svg
+                  width="26"
+                  height="26"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
                 >
-                  <h1 style="margin: 0">Payment successful</h1>
-                  <span
-                    class="pill"
-                    style="display: inline-flex; align-items: center; gap: 8px"
-                  >
-                    <span aria-hidden="true" style="font-size: 16px">✅</span>
+                  <path d="M20 6 9 17l-5-5" />
+                </svg>
+              </div>
+
+              <div class="outcome-copy">
+                <p class="outcome-eyebrow">Payment received</p>
+                <div class="outcome-heading-row">
+                  <h1 id="billingSuccessTitle">Payment successful</h1>
+                  <span class="outcome-status-pill" aria-live="polite">
+                    <span class="outcome-status-dot" aria-hidden="true"></span>
                     <span id="billingStatusText">Processing…</span>
                   </span>
                 </div>
-
-                <p style="margin-top: 10px; color: #4b5563">
-                  Thanks! Your subscription is being activated now. This page
-                  will update automatically.
-                </p>
-
-                <div
-                  style="
-                    margin-top: 18px;
-                    padding: 14px;
-                    border: 1px solid rgba(15, 60, 125, 0.12);
-                    border-radius: 14px;
-                    background: #fff;
-                  "
-                >
-                  <div
-                    style="
-                      display: grid;
-                      grid-template-columns: 1fr 1fr;
-                      gap: 12px;
-                    "
-                  >
-                    <div>
-                      <div style="font-size: 12px; color: #6b7280">Plan</div>
-                      <div id="billingPlanText" style="font-weight: 600">
-                        DentAIstudy Pro
-                      </div>
-                    </div>
-                    <div>
-                      <div style="font-size: 12px; color: #6b7280">
-                        Reference
-                      </div>
-                      <div id="billingRefText" style="font-weight: 600">—</div>
-                    </div>
-                  </div>
-
-                  <div
-                    style="margin-top: 10px; font-size: 13px; color: #6b7280"
-                  >
-                    If your account doesn’t upgrade within a minute, refresh
-                    this page once.
-                  </div>
-                </div>
-
-                <div
-                  style="
-                    display: flex;
-                    gap: 12px;
-                    flex-wrap: wrap;
-                    margin-top: 18px;
-                  "
-                >
-                  <a href="study.html" class="btn btn-primary"
-                    >Go to Study builder</a
-                  >
-                  <a href="profile.html" class="btn btn-outline"
-                    >Open Profile</a
-                  >
-                  <a href="pricing.html" class="btn btn-outline"
-                    >Back to Pricing</a
-                  >
-                </div>
-
-                <p style="margin-top: 18px; font-size: 0.9rem; color: #6b7280">
-                  Note: If you paid while logged out, the system can’t link the
-                  payment to your account. In that case, contact support and
-                  include the reference shown above.
+                <p class="outcome-lead">
+                  Your subscription is being activated now. This page will
+                  update automatically.
                 </p>
               </div>
-            </div>
+
+              <div class="outcome-summary-grid">
+                <div class="outcome-summary-item">
+                  <span>Plan</span>
+                  <strong id="billingPlanText">DentAIstudy Pro</strong>
+                </div>
+                <div class="outcome-summary-item">
+                  <span>Reference</span>
+                  <strong id="billingRefText">—</strong>
+                </div>
+              </div>
+
+              <p class="outcome-note">
+                If your account doesn’t upgrade within a minute, refresh this
+                page once.
+              </p>
+
+              <div class="outcome-actions">
+                <a href="study.html" class="btn btn-primary">
+                  Open Study Builder
+                </a>
+                <a href="profile.html" class="btn btn-outline">Open Profile</a>
+                <a href="pricing.html" class="btn btn-outline">
+                  Back to Pricing
+                </a>
+              </div>
+
+              <p class="outcome-footnote">
+                If you paid while logged out, the system can’t link the payment
+                to your account. Contact support and include the reference shown
+                above.
+              </p>
+            </article>
           </section>
         </div>
       </main>

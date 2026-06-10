@@ -21,7 +21,7 @@
     <script defer src="assets/js/main.js"></script>
   </head>
 
-  <body>
+  <body class="page-outcome page-goodbye">
     <div class="main-wrapper">
       <!-- HEADER -->
       <header class="site-header">
@@ -67,7 +67,9 @@
               stroke-linejoin="round"
             >
               <path d="M12 6v8l3-3 3 3V6" />
-              <path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2z" />
+              <path
+                d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2z"
+              />
             </svg>
             <span>Subjects</span>
           </a>
@@ -85,7 +87,9 @@
               <path d="M12 7v14" />
               <path d="M16 12h2" />
               <path d="M16 8h2" />
-              <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" />
+              <path
+                d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"
+              />
               <path d="M6 12h2" />
               <path d="M6 8h2" />
             </svg>
@@ -210,38 +214,53 @@
       </nav>
 
       <!-- MAIN -->
-      <main class="page-main">
+      <main class="page-main outcome-page-main">
         <div class="container">
-          <section class="study-layout">
-            <div class="study-main">
-              <div
-                class="study-form-card"
-                style="max-width: 640px; margin: 40px auto"
-              >
-                <h1 style="margin-bottom: 8px">
+          <section class="outcome-shell" aria-labelledby="goodbyeTitle">
+            <article class="outcome-card outcome-card--quiet">
+              <div class="outcome-icon outcome-icon--quiet" aria-hidden="true">
+                <svg
+                  width="26"
+                  height="26"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.9"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                  <path
+                    d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"
+                  />
+                </svg>
+              </div>
+
+              <div class="outcome-copy">
+                <p class="outcome-eyebrow">Account closed</p>
+                <h1 id="goodbyeTitle">
                   Your DentAIstudy account has been deleted
                 </h1>
-                <p style="margin-bottom: 20px; color: #4b5563">
-                  We’re sorry to see you go. Your account and study activity
-                  have been removed. You’re always welcome to come back and
-                  create a new workspace in the future.
-                </p>
-
-                <div style="display: flex; gap: 12px; flex-wrap: wrap">
-                  <a href="index.html" class="btn btn-primary"
-                    >Back to homepage</a
-                  >
-                  <a href="contact.html" class="btn btn-outline">
-                    Contact support
-                  </a>
-                </div>
-
-                <p style="margin-top: 24px; font-size: 0.9rem; color: #6b7280">
-                  If you deleted your account by mistake, contact us as soon as
-                  possible. In most cases, deleted data cannot be restored.
+                <p class="outcome-lead">
+                  Your account and study activity have been removed. You’re
+                  always welcome to return and create a new workspace.
                 </p>
               </div>
-            </div>
+
+              <div class="outcome-actions">
+                <a href="index.html" class="btn btn-primary">
+                  Back to homepage
+                </a>
+                <a href="contact.html" class="btn btn-outline">
+                  Contact support
+                </a>
+              </div>
+
+              <p class="outcome-footnote">
+                If you deleted your account by mistake, contact us as soon as
+                possible. In most cases, deleted data cannot be restored.
+              </p>
+            </article>
           </section>
         </div>
       </main>
