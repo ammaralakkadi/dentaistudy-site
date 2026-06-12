@@ -1026,6 +1026,12 @@
   height: 21px;
 }
 
+.pricing-trust-icon-green {
+  border-color: rgba(34, 197, 94, 0.22);
+  background: linear-gradient(180deg, #ffffff 0%, #f0fdf4 100%);
+  color: #16a34a;
+}
+
 .pricing-trust-icon-warm {
   border-color: rgba(245, 158, 11, 0.24);
   background: linear-gradient(180deg, #ffffff 0%, #fffbeb 100%);
