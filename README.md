@@ -1,37 +1,39 @@
 # DentAIstudy
 
-Turn any dental topic or PDF into clear, exam focused study help.
+Dental study from your PDFs, weak topics, and exam questions.
 
-DentAIstudy is an AI powered dental study platform built for students, postgraduates, and dental professionals who want faster revision, better structure, and less time wasted turning raw material into usable notes.
+DentAIstudy is an AI-powered dental study workspace built for students, postgraduates, and dental professionals who want clearer revision, better structure, and less time wasted turning raw material into usable study work.
 
-With Study Builder, users can start with a topic or upload their file and generate structured notes, flashcards, high yield study sheets, and OSCE style study flows in minutes.
+With Study Builder, users can start from a topic or upload their own material, then create focused answers, cleaner notes, flashcards, quizzes, and saved study sessions in one place.
 
 🔗 **[dentaistudy.com](https://dentaistudy.com)**
 
 ## What DentAIstudy helps users do
 
-- Turn scattered dental material into clear, structured study outputs
-- Study faster with notes designed for revision, not just reading
-- Generate flashcards and high yield summaries from one workflow
-- Break down complex topics into simpler, exam ready formats
-- Move from raw content to useful study material with less friction
+- Turn dental PDFs, lecture files, and dense notes into clearer study material
+- Ask focused questions from topics, weak areas, and uploaded files
+- Create flashcards for active recall instead of only rereading notes
+- Generate quiz practice for board prep, clinical exams, and subject revision
+- Save study chats and return to useful explanations inside the library
+- Study with a dental-focused workspace instead of scattered tabs
 
 ## Core platform areas
 
-- **Study Builder** — start with a dental topic or upload a file to generate focused study material
-- **Exam Hubs** — structured exam focused pages and resources for pathways such as INBDE, ADEX, ORE, ADC, NDECC, SDLE, and UAE licensing routes
-- **Subject Library** — browse study content organised by dental specialty
-- **Flashcard Decks** — build recall friendly sets for active revision
-- **High Yield Notes** — generate condensed summaries for faster review
-- **OSCE Flows** — practise structured clinical thinking and scenario based preparation
+- **Study Builder** — ask dental questions, use PDFs, and generate focused study outputs
+- **Flashcards** — create recall-friendly decks from weak topics and study material
+- **Quiz Mode** — generate practice questions with exam-focused explanations
+- **Study Library** — keep saved chats, flashcards, and quizzes organized
+- **Exam Hubs** — explore structured guidance for dental exam pathways and board prep
+- **Subject Hubs** — browse dental study content by specialty and topic
 
 ## Built for
 
 - Dental students
 - Postgraduate trainees
-- International exam candidates
-- Clinicians reviewing core topics
-- Anyone who wants clearer dental study workflows
+- Board and licensing exam candidates
+- Clinical exam preparation
+- Subject finals and viva practice
+- Dentists reviewing core topics
 
 ## Stack
 
