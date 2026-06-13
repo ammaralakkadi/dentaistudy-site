@@ -251,7 +251,7 @@
               <div class="hero-badge-row">
                 <span>
                   <span class="hero-badge-dot"></span>
-                  <span>Dental-only AI • Study Builder • Exam hubs</span>
+                  <span>Dental only AI • Study Builder • Exam hubs</span>
                 </span>
               </div>
 
@@ -321,20 +321,28 @@
             </div>
 
             <aside class="hero-visual-col">
-              <div class="hero-preview-wrap hero-preview-wrap--showcase">
-                <div class="hero-preview-bar">
-                  <span class="dot red"></span>
-                  <span class="dot yellow"></span>
-                  <span class="dot green"></span>
-                  <span class="hero-preview-title">Live Study Builder</span>
+              <div
+                class="hero-product-stage"
+                aria-label="DentAIstudy Study Builder preview"
+              >
+                <img
+                  class="hero-product-img"
+                  src="assets/img/study-builder-hero-ui.png"
+                  alt="DentAIstudy Study Builder workspace preview"
+                  width="2048"
+                  height="1280"
+                  loading="eager"
+                  decoding="async"
+                  fetchpriority="high"
+                />
+
+                <div class="hero-product-cue hero-product-cue--top">
+                  PDF to exam ready notes
                 </div>
 
-                <img
-                  class="hero-preview-img"
-                  src="assets/img/dashboard-preview.png"
-                  alt="DentAIstudy Study Builder interface"
-                  loading="lazy"
-                />
+                <div class="hero-product-cue hero-product-cue--bottom">
+                  Quick and Deep study modes
+                </div>
               </div>
             </aside>
             <div class="hero-proof-list">
@@ -371,70 +379,232 @@
           <div class="section-header">
             <div class="section-kicker">How Study Builder works</div>
             <h2 class="section-title">
-              Turn any topic or PDF into clear exam focused study help
+              From messy material to exam ready study work
             </h2>
             <p class="section-subtitle">
-              Choose how you want to study, start with your topic or file, and
-              get structured answers and notes built for faster dental revision
+              Move from a topic or PDF into notes, flashcards, quizzes, and a
+              saved study library without changing tools.
             </p>
           </div>
 
-          <div class="workflow-steps-grid">
-            <article class="workflow-step-card">
-              <div class="workflow-step-shot">
-                <img
-                  src="assets/img/step-mode.png"
-                  alt="Choose quick answer or deep study in Study Builder"
-                  loading="lazy"
-                />
-              </div>
-              <div class="workflow-step-body">
-                <div class="workflow-step-number">Step 1</div>
-                <h3>Choose how you want to study</h3>
-                <p>
-                  Need a fast answer, deeper notes, or focused revision? Pick
-                  the study mode that matches exactly what you need right now
-                </p>
-              </div>
-            </article>
+          <div class="workflow-walkthrough" data-workflow-walkthrough>
+            <div
+              class="workflow-walk-nav"
+              role="tablist"
+              aria-label="DentAIstudy workflow steps"
+            >
+              <button
+                class="workflow-walk-tab is-active"
+                type="button"
+                role="tab"
+                aria-selected="true"
+                aria-controls="workflow-panel-1"
+                id="workflow-tab-1"
+                data-workflow-step="1"
+              >
+                <span class="workflow-walk-index">1</span>
+                <span>
+                  <strong>Start with your material</strong>
+                  <small>Ask a topic or upload a PDF</small>
+                </span>
+              </button>
 
-            <article class="workflow-step-card">
-              <div class="workflow-step-shot">
-                <img
-                  src="assets/img/step-upload.png"
-                  alt="Attach PDF or start with a topic in Study Builder"
-                  loading="lazy"
-                />
-              </div>
-              <div class="workflow-step-body">
-                <div class="workflow-step-number">Step 2</div>
-                <h3>Start with your topic or upload your PDF</h3>
-                <p>
-                  Paste a topic, upload your lecture file, or drop in study
-                  material you already have and let the platform do the heavy
-                  lifting
-                </p>
-              </div>
-            </article>
+              <button
+                class="workflow-walk-tab"
+                type="button"
+                role="tab"
+                aria-selected="false"
+                aria-controls="workflow-panel-2"
+                id="workflow-tab-2"
+                data-workflow-step="2"
+              >
+                <span class="workflow-walk-index">2</span>
+                <span>
+                  <strong>Generate cleaner notes</strong>
+                  <small>Turn dense content into study points</small>
+                </span>
+              </button>
 
-            <article class="workflow-step-card">
-              <div class="workflow-step-shot">
-                <img
-                  src="assets/img/step-output.png"
-                  alt="Generated dental answer or notes in Study Builder"
-                  loading="lazy"
-                />
-              </div>
-              <div class="workflow-step-body">
-                <div class="workflow-step-number">Step 3</div>
-                <h3>Get clear answers and exam-ready notes</h3>
-                <p>
-                  Receive structured explanations, study notes, and useful
-                  outputs you can review faster, remember better, and use with
-                  more confidence
-                </p>
-              </div>
-            </article>
+              <button
+                class="workflow-walk-tab"
+                type="button"
+                role="tab"
+                aria-selected="false"
+                aria-controls="workflow-panel-3"
+                id="workflow-tab-3"
+                data-workflow-step="3"
+              >
+                <span class="workflow-walk-index">3</span>
+                <span>
+                  <strong>Build flashcards</strong>
+                  <small>Review weak topics faster</small>
+                </span>
+              </button>
+
+              <button
+                class="workflow-walk-tab"
+                type="button"
+                role="tab"
+                aria-selected="false"
+                aria-controls="workflow-panel-4"
+                id="workflow-tab-4"
+                data-workflow-step="4"
+              >
+                <span class="workflow-walk-index">4</span>
+                <span>
+                  <strong>Practice with quizzes</strong>
+                  <small>Test recall before exams</small>
+                </span>
+              </button>
+
+              <button
+                class="workflow-walk-tab"
+                type="button"
+                role="tab"
+                aria-selected="false"
+                aria-controls="workflow-panel-5"
+                id="workflow-tab-5"
+                data-workflow-step="5"
+              >
+                <span class="workflow-walk-index">5</span>
+                <span>
+                  <strong>Save your study work</strong>
+                  <small>Keep notes, decks, and quizzes together</small>
+                </span>
+              </button>
+            </div>
+
+            <div class="workflow-walk-stage">
+              <article
+                class="workflow-walk-panel is-active"
+                id="workflow-panel-1"
+                role="tabpanel"
+                aria-labelledby="workflow-tab-1"
+                data-workflow-panel="1"
+              >
+                <div class="workflow-walk-copy">
+                  <p class="workflow-walk-eyebrow">Step 1</p>
+                  <h3>Start with the exact thing you need to understand.</h3>
+                  <p>
+                    Ask a dental question, paste a topic, or upload your own
+                    lecture PDF so the answer starts from your real study
+                    material.
+                  </p>
+                </div>
+
+                <div class="workflow-walk-image">
+                  <img
+                    src="assets/img/landing/pdf-prompt.png"
+                    alt="DentAIstudy turning a PDF into study notes"
+                    loading="lazy"
+                  />
+                </div>
+              </article>
+
+              <article
+                class="workflow-walk-panel"
+                id="workflow-panel-2"
+                role="tabpanel"
+                aria-labelledby="workflow-tab-2"
+                data-workflow-panel="2"
+                hidden
+              >
+                <div class="workflow-walk-copy">
+                  <p class="workflow-walk-eyebrow">Step 2</p>
+                  <h3>Convert dense material into notes you can revise.</h3>
+                  <p>
+                    DentAIstudy helps compress long explanations into clearer
+                    exam focused notes without losing the clinical meaning.
+                  </p>
+                </div>
+
+                <div class="workflow-walk-image">
+                  <img
+                    src="assets/img/landing/answer-to-pdf.png"
+                    alt="Generated PDF note inside DentAIstudy"
+                    loading="lazy"
+                  />
+                </div>
+              </article>
+
+              <article
+                class="workflow-walk-panel"
+                id="workflow-panel-3"
+                role="tabpanel"
+                aria-labelledby="workflow-tab-3"
+                data-workflow-panel="3"
+                hidden
+              >
+                <div class="workflow-walk-copy">
+                  <p class="workflow-walk-eyebrow">Step 3</p>
+                  <h3>Turn weak topics into flashcards.</h3>
+                  <p>
+                    Create focused decks from the material you are studying so
+                    you can review faster and keep repeating what matters.
+                  </p>
+                </div>
+
+                <div class="workflow-walk-image">
+                  <img
+                    src="assets/img/landing/create-deck.png"
+                    alt="Create flashcard deck in DentAIstudy"
+                    loading="lazy"
+                  />
+                </div>
+              </article>
+
+              <article
+                class="workflow-walk-panel"
+                id="workflow-panel-4"
+                role="tabpanel"
+                aria-labelledby="workflow-tab-4"
+                data-workflow-panel="4"
+                hidden
+              >
+                <div class="workflow-walk-copy">
+                  <p class="workflow-walk-eyebrow">Step 4</p>
+                  <h3>Test yourself before the exam tests you.</h3>
+                  <p>
+                    Generate quiz practice from your own topic or notes and
+                    check whether you can actually recall the answer.
+                  </p>
+                </div>
+
+                <div class="workflow-walk-image">
+                  <img
+                    src="assets/img/landing/create-quiz.png"
+                    alt="Create quiz in DentAIstudy"
+                    loading="lazy"
+                  />
+                </div>
+              </article>
+
+              <article
+                class="workflow-walk-panel"
+                id="workflow-panel-5"
+                role="tabpanel"
+                aria-labelledby="workflow-tab-5"
+                data-workflow-panel="5"
+                hidden
+              >
+                <div class="workflow-walk-copy">
+                  <p class="workflow-walk-eyebrow">Step 5</p>
+                  <h3>Keep your study work organized.</h3>
+                  <p>
+                    Saved chats, flashcards, and quizzes stay inside your study
+                    library so you can return to them without starting again.
+                  </p>
+                </div>
+
+                <div class="workflow-walk-image">
+                  <img
+                    src="assets/img/landing/your-study-library.png"
+                    alt="DentAIstudy study library"
+                    loading="lazy"
+                  />
+                </div>
+              </article>
+            </div>
           </div>
         </div>
       </section>
@@ -498,8 +668,8 @@
               </div>
               <h3>ORE</h3>
               <p>
-                Entry point for ORE Part 1, Part 2, booking, timelines, and
-                exam-specific article paths
+                Entry point for ORE Part 1, Part 2, booking, timelines, and exam
+                specific article paths
               </p>
               <div style="margin-top: 16px">
                 <a href="exams/ore.html" class="btn btn-outline">Open hub</a>
@@ -552,7 +722,7 @@
               </div>
               <h3>SDLE</h3>
               <p>
-                Saudi exam prep content, route guidance, and linked long-tail
+                Saudi exam prep content, route guidance, and linked long tail
                 study articles for faster navigation
               </p>
               <div style="margin-top: 16px">
@@ -582,137 +752,282 @@
       </section>
 
       <!-- STUDY OUTPUTS -->
-      <section class="section">
+      <section class="section output-studio-section">
         <div class="container">
-          <div class="section-header">
-            <div class="section-kicker">Study outputs</div>
-            <h2 class="section-title">What DentAIstudy helps you generate</h2>
-            <p class="section-subtitle">
-              Built for actual dental revision, not generic chatbot replies
-            </p>
-          </div>
-
-          <div class="features-modern">
-            <div class="feature-item">
-              <div class="feature-icon">
-                <img
-                  src="assets/img/OSCE flows.png"
-                  alt="OSCE flows"
-                  style="width: 64px; height: 64px; object-fit: contain"
-                />
-              </div>
-              <h3>OSCE flows</h3>
-              <p>
-                Structured station style answers with history, examination,
-                investigations, and management
+          <div class="output-studio" data-output-studio>
+            <div class="output-studio-copy">
+              <div class="section-kicker">Study outputs</div>
+              <h2 class="section-title">
+                Generate the study work you actually need
+              </h2>
+              <p class="section-subtitle">
+                Start with a topic or PDF, then turn it into exam ready notes,
+                OSCE flows, flashcards, and quiz practice without switching
+                tools.
               </p>
-            </div>
 
-            <div class="feature-item">
-              <div class="feature-icon">
-                <img
-                  src="assets/img/high-yield-sheets.png"
-                  alt="High Yield sheets"
-                  style="width: 64px; height: 64px; object-fit: contain"
-                />
-              </div>
-              <h3>High yield sheets</h3>
-              <p>
-                Compressed revision material for fast review before clinics,
-                vivas, and exam sessions
-              </p>
-            </div>
-
-            <div class="feature-item">
-              <div class="feature-icon">
-                <img
-                  src="assets/img/Flashcard decks.png"
-                  alt="Flashcard decks"
-                  style="width: 64px; height: 64px; object-fit: contain"
-                />
-              </div>
-              <h3>Flashcard decks</h3>
-              <p>
-                Clean question and-answer cards you can study directly or move
-                into your own system
-              </p>
-            </div>
-
-            <div class="feature-item">
-              <div class="feature-icon">
-                <img
-                  src="assets/img/why-choose-us-icons/exam-focused-outputs.png"
-                  alt="exam focused notes"
-                  style="width: 64px; height: 64px; object-fit: contain"
-                />
-              </div>
-              <h3>Exam focused notes</h3>
-              <p>
-                Organized dental explanations and study notes shaped for exam
-                style understanding.
-              </p>
-            </div>
-
-            <div class="feature-item">
-              <div class="feature-icon">
-                <img
-                  src="assets/img/why-choose-us-icons/High-quality-explanations.png"
-                  alt="Quick answers"
-                  style="width: 64px; height: 64px; object-fit: contain"
-                />
-              </div>
-              <h3>Quick answers</h3>
-              <p>
-                Fast focused responses when you need a clean answer without
-                getting lost in long output.
-              </p>
-            </div>
-
-            <div class="feature-item">
-              <div class="feature-icon">
-                <img
-                  src="assets/img/why-choose-us-icons/Fast & distraction-free.png"
-                  alt="Deep study mode"
-                  style="width: 64px; height: 64px; object-fit: contain"
-                />
-              </div>
-              <h3>Deep study</h3>
-              <p>
-                Longer structured output for fuller revision when a topic needs
-                more depth and coverage.
-              </p>
-            </div>
-          </div>
-
-          <div style="text-align: center; margin-top: 40px">
-            <a
-              href="study.html"
-              class="btn btn-primary"
-              style="
-                display: inline-flex;
-                align-items: center;
-                gap: 8px;
-                padding: 12px 24px;
-                font-size: 16px;
-                font-weight: 600;
-              "
-            >
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
+              <div
+                class="output-tabs"
+                role="tablist"
+                aria-label="DentAIstudy output types"
               >
-                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
-                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
-              </svg>
-              Try Study Builder
-            </a>
+                <button
+                  class="output-tab is-active"
+                  type="button"
+                  role="tab"
+                  aria-selected="true"
+                  aria-controls="output-panel-notes"
+                  id="output-tab-notes"
+                  data-output-tab="notes"
+                >
+                  <span>Exam ready notes</span>
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="m9 18 6-6-6-6" />
+                  </svg>
+                </button>
+
+                <button
+                  class="output-tab"
+                  type="button"
+                  role="tab"
+                  aria-selected="false"
+                  aria-controls="output-panel-osce"
+                  id="output-tab-osce"
+                  data-output-tab="osce"
+                >
+                  <span>OSCE flows</span>
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="m9 18 6-6-6-6" />
+                  </svg>
+                </button>
+
+                <button
+                  class="output-tab"
+                  type="button"
+                  role="tab"
+                  aria-selected="false"
+                  aria-controls="output-panel-flashcards"
+                  id="output-tab-flashcards"
+                  data-output-tab="flashcards"
+                >
+                  <span>Flashcard decks</span>
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="m9 18 6-6-6-6" />
+                  </svg>
+                </button>
+
+                <button
+                  class="output-tab"
+                  type="button"
+                  role="tab"
+                  aria-selected="false"
+                  aria-controls="output-panel-quiz"
+                  id="output-tab-quiz"
+                  data-output-tab="quiz"
+                >
+                  <span>Quiz practice</span>
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="m9 18 6-6-6-6" />
+                  </svg>
+                </button>
+              </div>
+
+              <div class="output-studio-actions">
+                <a href="study.html" class="btn btn-primary">
+                  Try Study Builder
+                </a>
+              </div>
+            </div>
+
+            <div class="output-stage" aria-live="polite">
+              <div class="output-float-label output-float-label--top">
+                From topic or PDF
+              </div>
+              <div class="output-float-label output-float-label--bottom">
+                Built for recall
+              </div>
+
+              <article
+                class="output-panel is-active"
+                id="output-panel-notes"
+                role="tabpanel"
+                aria-labelledby="output-tab-notes"
+                data-output-panel="notes"
+              >
+                <div class="output-preview-card">
+                  <div class="output-preview-bar">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </div>
+
+                  <div class="output-preview-body">
+                    <div class="output-preview-kicker">Deep Study output</div>
+                    <h3>Exam ready notes</h3>
+                    <p>
+                      Ameloblastoma is a benign but locally aggressive
+                      odontogenic tumour. Revision should focus on origin,
+                      radiographic pattern, management, and recurrence risk.
+                    </p>
+
+                    <div class="output-bullet-list">
+                      <span>Definition</span>
+                      <span>Clinical features</span>
+                      <span>Radiographic signs</span>
+                      <span>Management</span>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              <article
+                class="output-panel"
+                id="output-panel-osce"
+                role="tabpanel"
+                aria-labelledby="output-tab-osce"
+                data-output-panel="osce"
+                hidden
+              >
+                <div class="output-preview-card">
+                  <div class="output-preview-bar">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </div>
+
+                  <div class="output-preview-body">
+                    <div class="output-preview-kicker">Clinical station</div>
+                    <h3>OSCE answer flow</h3>
+                    <p>
+                      Build a station ready structure so you know what to ask,
+                      what to examine, and how to present management clearly.
+                    </p>
+
+                    <div class="output-flow-list">
+                      <div>
+                        <strong>History prompts</strong>
+                        <small>pain, swelling, duration, red flags</small>
+                      </div>
+                      <div>
+                        <strong>Clinical exam</strong>
+                        <small>extraoral, intraoral, lymph nodes</small>
+                      </div>
+                      <div>
+                        <strong>Management plan</strong>
+                        <small>urgent care, referral, follow up</small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              <article
+                class="output-panel"
+                id="output-panel-flashcards"
+                role="tabpanel"
+                aria-labelledby="output-tab-flashcards"
+                data-output-panel="flashcards"
+                hidden
+              >
+                <div class="output-preview-card">
+                  <div class="output-preview-bar">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </div>
+
+                  <div class="output-preview-body">
+                    <div class="output-preview-kicker">Active recall</div>
+                    <h3>Flashcard deck</h3>
+
+                    <div class="output-flashcard-stack">
+                      <div>
+                        <span>Q</span>
+                        What radiographic pattern is classically linked with
+                        ameloblastoma?
+                      </div>
+                      <div>
+                        <span>A</span>
+                        Multilocular radiolucency, often described as soap
+                        bubble or honeycomb.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              <article
+                class="output-panel"
+                id="output-panel-quiz"
+                role="tabpanel"
+                aria-labelledby="output-tab-quiz"
+                data-output-panel="quiz"
+                hidden
+              >
+                <div class="output-preview-card">
+                  <div class="output-preview-bar">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </div>
+
+                  <div class="output-preview-body">
+                    <div class="output-preview-kicker">Quiz mode</div>
+                    <h3>Test recall</h3>
+                    <p class="output-question">
+                      Which feature best explains why ameloblastoma often needs
+                      surgical management?
+                    </p>
+
+                    <div class="output-options">
+                      <span>High metastatic rate</span>
+                      <span class="is-correct">Local aggressiveness</span>
+                      <span>Viral origin</span>
+                    </div>
+                  </div>
+                </div>
+              </article>
+            </div>
           </div>
         </div>
       </section>
@@ -891,132 +1206,514 @@
       </section>
 
       <!-- REAL TESTIMONIALS -->
-      <section class="section">
+      <section class="section testimonials-section">
         <div class="container">
           <div class="section-header">
             <div class="section-kicker">Real testimonials</div>
             <h2 class="section-title">What dental learners are saying</h2>
             <p class="section-subtitle">
-              Real feedback from users using DentAIstudy for clinics, residency,
-              and board prep
+              Feedback from dental students, candidates, and residents using
+              DentAIstudy for clinical revision, board prep, and deep study.
             </p>
           </div>
+        </div>
 
-          <div class="reviews-grid">
-            <div class="review-card">
-              <div class="review-header">
-                <div class="review-icon" aria-hidden="true">
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <path
-                      d="M10 11H6.8A3.8 3.8 0 0 1 10.6 7.2V5A6 6 0 0 0 4.6 11v6H10z"
-                    />
-                    <path
-                      d="M20 11h-3.2a3.8 3.8 0 0 1 3.8-3.8V5a6 6 0 0 0-6 6v6H20z"
-                    />
-                  </svg>
-                </div>
-                <div>
-                  <div class="review-name">Priya Patel</div>
-                  <div class="review-role">Dental Intern • United Kingdom</div>
-                </div>
-              </div>
-
-              <div class="stars">★★★★★</div>
-
-              <div class="review-text">
-                “I used to get lost in dense textbooks right before clinics. Now
-                I use the Study Builder to turn heavy topics into clean, station
-                style OSCE flows, History, Exam, Investigations, and Management.
-                It gives me exactly what I need to review in minutes before
-                seeing a patient”
-              </div>
-            </div>
-
-            <div class="review-card">
-              <div class="review-header">
-                <div class="review-icon" aria-hidden="true">
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <path
-                      d="M10 11H6.8A3.8 3.8 0 0 1 10.6 7.2V5A6 6 0 0 0 4.6 11v6H10z"
-                    />
-                    <path
-                      d="M20 11h-3.2a3.8 3.8 0 0 1 3.8-3.8V5a6 6 0 0 0-6 6v6H20z"
-                    />
-                  </svg>
-                </div>
-                <div>
-                  <div class="review-name">Dr. David Chen</div>
-                  <div class="review-role">Orthodontic Resident • Canada</div>
-                </div>
-              </div>
-
-              <div class="stars">★★★★★</div>
-
-              <div class="review-text">
-                “Residency seminars require a completely different level of
-                depth. I use Deep Study mode to unpack complex mechanics and
-                turn them into organized, high yield notes. It strips away the
-                fluff and leaves the exact structured answers I need for
-                specialty-level discussions”
-              </div>
-            </div>
-
-            <div class="review-card">
-              <div class="review-header">
-                <div class="review-icon" aria-hidden="true">
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <path
-                      d="M10 11H6.8A3.8 3.8 0 0 1 10.6 7.2V5A6 6 0 0 0 4.6 11v6H10z"
-                    />
-                    <path
-                      d="M20 11h-3.2a3.8 3.8 0 0 1 3.8-3.8V5a6 6 0 0 0-6 6v6H20z"
-                    />
-                  </svg>
-                </div>
-                <div>
-                  <div class="review-name">Dr. Isabella Rossi</div>
-                  <div class="review-role">
-                    General Dentist • Australia • ADC Board Prep
+        <div class="testimonials-marquee" aria-label="Dental learner feedback">
+          <div class="testimonials-row">
+            <div class="testimonials-track">
+              <article class="testimonial-card">
+                <div class="testimonial-header">
+                  <div class="testimonial-quote-icon" aria-hidden="true">
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path
+                        d="M10 11H6.8A3.8 3.8 0 0 1 10.6 7.2V5A6 6 0 0 0 4.6 11v6H10z"
+                      />
+                      <path
+                        d="M20 11h-3.2a3.8 3.8 0 0 1 3.8-3.8V5a6 6 0 0 0-6 6v6H20z"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <strong>Priya Patel</strong>
+                    <small>Dental Intern • United Kingdom</small>
                   </div>
                 </div>
-              </div>
 
-              <div class="stars">★★★★★</div>
+                <div class="testimonial-stars">★★★★★</div>
 
-              <div class="review-text">
-                “Balancing a busy schedule with ADC exam prep felt overwhelming
-                until I found the Exam Hubs. I find my route first, then use the
-                flashcards and quick answers between patients. It feels like
-                having a tutor that understands exactly which high yield dental
-                details examiners care about”
-              </div>
+                <p>
+                  “I used to get lost in dense textbooks right before clinics.
+                  Now I use Study Builder to turn heavy topics into clean OSCE
+                  flows I can review before seeing a patient.”
+                </p>
+              </article>
+
+              <article class="testimonial-card">
+                <div class="testimonial-header">
+                  <div class="testimonial-quote-icon" aria-hidden="true">
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path
+                        d="M10 11H6.8A3.8 3.8 0 0 1 10.6 7.2V5A6 6 0 0 0 4.6 11v6H10z"
+                      />
+                      <path
+                        d="M20 11h-3.2a3.8 3.8 0 0 1 3.8-3.8V5a6 6 0 0 0-6 6v6H20z"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <strong>Dr. David Chen</strong>
+                    <small>Orthodontic Resident • Canada</small>
+                  </div>
+                </div>
+
+                <div class="testimonial-stars">★★★★★</div>
+
+                <p>
+                  “Residency seminars need a different level of depth. Deep
+                  Study helps me unpack complex mechanics into organized, high
+                  yield notes without the fluff.”
+                </p>
+              </article>
+
+              <article class="testimonial-card">
+                <div class="testimonial-header">
+                  <div class="testimonial-quote-icon" aria-hidden="true">
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path
+                        d="M10 11H6.8A3.8 3.8 0 0 1 10.6 7.2V5A6 6 0 0 0 4.6 11v6H10z"
+                      />
+                      <path
+                        d="M20 11h-3.2a3.8 3.8 0 0 1 3.8-3.8V5a6 6 0 0 0-6 6v6H20z"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <strong>Dr. Isabella Rossi</strong>
+                    <small>General Dentist • Australia • ADC Board Prep</small>
+                  </div>
+                </div>
+
+                <div class="testimonial-stars">★★★★★</div>
+
+                <p>
+                  “ADC prep felt overwhelming until I found the Exam Hubs. It
+                  feels like having a tutor that understands what examiners care
+                  about.”
+                </p>
+              </article>
+
+              <article class="testimonial-card">
+                <div class="testimonial-header">
+                  <div class="testimonial-quote-icon" aria-hidden="true">
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path
+                        d="M10 11H6.8A3.8 3.8 0 0 1 10.6 7.2V5A6 6 0 0 0 4.6 11v6H10z"
+                      />
+                      <path
+                        d="M20 11h-3.2a3.8 3.8 0 0 1 3.8-3.8V5a6 6 0 0 0-6 6v6H20z"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <strong>Liam Mc.</strong>
+                    <small>4th Year Dental Student • Ireland</small>
+                  </div>
+                </div>
+
+                <div class="testimonial-stars">★★★★★</div>
+
+                <p>
+                  “Reading notes gave me false confidence. Quiz Mode turns any
+                  topic into an active test, so I know what I understand versus
+                  what I only memorized.”
+                </p>
+              </article>
+
+              <article class="testimonial-card" aria-hidden="true">
+                <div class="testimonial-header">
+                  <div class="testimonial-quote-icon" aria-hidden="true">
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path
+                        d="M10 11H6.8A3.8 3.8 0 0 1 10.6 7.2V5A6 6 0 0 0 4.6 11v6H10z"
+                      />
+                      <path
+                        d="M20 11h-3.2a3.8 3.8 0 0 1 3.8-3.8V5a6 6 0 0 0-6 6v6H20z"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <strong>Priya Patel</strong>
+                    <small>Dental Intern • United Kingdom</small>
+                  </div>
+                </div>
+                <div class="testimonial-stars">★★★★★</div>
+                <p>
+                  “I used to get lost in dense textbooks right before clinics.
+                  Now I use Study Builder to turn heavy topics into clean OSCE
+                  flows I can review before seeing a patient.”
+                </p>
+              </article>
+
+              <article class="testimonial-card" aria-hidden="true">
+                <div class="testimonial-header">
+                  <div class="testimonial-quote-icon" aria-hidden="true">
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path
+                        d="M10 11H6.8A3.8 3.8 0 0 1 10.6 7.2V5A6 6 0 0 0 4.6 11v6H10z"
+                      />
+                      <path
+                        d="M20 11h-3.2a3.8 3.8 0 0 1 3.8-3.8V5a6 6 0 0 0-6 6v6H20z"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <strong>Dr. David Chen</strong>
+                    <small>Orthodontic Resident • Canada</small>
+                  </div>
+                </div>
+                <div class="testimonial-stars">★★★★★</div>
+                <p>
+                  “Residency seminars need a different level of depth. Deep
+                  Study helps me unpack complex mechanics into organized, high
+                  yield notes without the fluff.”
+                </p>
+              </article>
+
+              <article class="testimonial-card" aria-hidden="true">
+                <div class="testimonial-header">
+                  <div class="testimonial-quote-icon" aria-hidden="true">
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path
+                        d="M10 11H6.8A3.8 3.8 0 0 1 10.6 7.2V5A6 6 0 0 0 4.6 11v6H10z"
+                      />
+                      <path
+                        d="M20 11h-3.2a3.8 3.8 0 0 1 3.8-3.8V5a6 6 0 0 0-6 6v6H20z"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <strong>Dr. Isabella Rossi</strong>
+                    <small>General Dentist • Australia • ADC Board Prep</small>
+                  </div>
+                </div>
+                <div class="testimonial-stars">★★★★★</div>
+                <p>
+                  “ADC prep felt overwhelming until I found the Exam Hubs. It
+                  feels like having a tutor that understands what examiners care
+                  about.”
+                </p>
+              </article>
+
+              <article class="testimonial-card" aria-hidden="true">
+                <div class="testimonial-header">
+                  <div class="testimonial-quote-icon" aria-hidden="true">
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path
+                        d="M10 11H6.8A3.8 3.8 0 0 1 10.6 7.2V5A6 6 0 0 0 4.6 11v6H10z"
+                      />
+                      <path
+                        d="M20 11h-3.2a3.8 3.8 0 0 1 3.8-3.8V5a6 6 0 0 0-6 6v6H20z"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <strong>Liam Mc.</strong>
+                    <small>4th Year Dental Student • Ireland</small>
+                  </div>
+                </div>
+                <div class="testimonial-stars">★★★★★</div>
+                <p>
+                  “Reading notes gave me false confidence. Quiz Mode turns any
+                  topic into an active test, so I know what I understand versus
+                  what I only memorized.”
+                </p>
+              </article>
+            </div>
+          </div>
+
+          <div class="testimonials-row testimonials-row--reverse">
+            <div class="testimonials-track">
+              <article class="testimonial-card">
+                <div class="testimonial-header">
+                  <div class="testimonial-quote-icon" aria-hidden="true">
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path
+                        d="M10 11H6.8A3.8 3.8 0 0 1 10.6 7.2V5A6 6 0 0 0 4.6 11v6H10z"
+                      />
+                      <path
+                        d="M20 11h-3.2a3.8 3.8 0 0 1 3.8-3.8V5a6 6 0 0 0-6 6v6H20z"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <strong>Dr. Priya R.</strong>
+                    <small>INBDE Candidate • United States</small>
+                  </div>
+                </div>
+
+                <div class="testimonial-stars">★★★★★</div>
+
+                <p>
+                  “The INBDE volume is paralyzing. I use the Exam Hub and high
+                  yield Flashcards in 10-minute blocks, which keeps my prep
+                  consistent.”
+                </p>
+              </article>
+
+              <article class="testimonial-card">
+                <div class="testimonial-header">
+                  <div class="testimonial-quote-icon" aria-hidden="true">
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path
+                        d="M10 11H6.8A3.8 3.8 0 0 1 10.6 7.2V5A6 6 0 0 0 4.6 11v6H10z"
+                      />
+                      <path
+                        d="M20 11h-3.2a3.8 3.8 0 0 1 3.8-3.8V5a6 6 0 0 0-6 6v6H20z"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <strong>Chloe W.</strong>
+                    <small>3rd Year Dental Student • New Zealand</small>
+                  </div>
+                </div>
+
+                <div class="testimonial-stars">★★★★★</div>
+
+                <p>
+                  “Oral Pathology felt like another language. Chat helps me talk
+                  through lesion presentations until the histology finally
+                  clicks.”
+                </p>
+              </article>
+
+              <article class="testimonial-card">
+                <div class="testimonial-header">
+                  <div class="testimonial-quote-icon" aria-hidden="true">
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path
+                        d="M10 11H6.8A3.8 3.8 0 0 1 10.6 7.2V5A6 6 0 0 0 4.6 11v6H10z"
+                      />
+                      <path
+                        d="M20 11h-3.2a3.8 3.8 0 0 1 3.8-3.8V5a6 6 0 0 0-6 6v6H20z"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <strong>Dr. Ahmed M.</strong>
+                    <small>MSc Resident • United Arab Emirates</small>
+                  </div>
+                </div>
+
+                <div class="testimonial-stars">★★★★★</div>
+
+                <p>
+                  “Seminar literature reviews used to take days. Deep Study
+                  helps strip the fluff and organize evidence into structured
+                  insights.”
+                </p>
+              </article>
+
+              <article class="testimonial-card" aria-hidden="true">
+                <div class="testimonial-header">
+                  <div class="testimonial-quote-icon" aria-hidden="true">
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path
+                        d="M10 11H6.8A3.8 3.8 0 0 1 10.6 7.2V5A6 6 0 0 0 4.6 11v6H10z"
+                      />
+                      <path
+                        d="M20 11h-3.2a3.8 3.8 0 0 1 3.8-3.8V5a6 6 0 0 0-6 6v6H20z"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <strong>Dr. Priya R.</strong>
+                    <small>INBDE Candidate • United States</small>
+                  </div>
+                </div>
+                <div class="testimonial-stars">★★★★★</div>
+                <p>
+                  “The INBDE volume is paralyzing. I use the Exam Hub and high
+                  yield Flashcards in 10-minute blocks, which keeps my prep
+                  consistent.”
+                </p>
+              </article>
+
+              <article class="testimonial-card" aria-hidden="true">
+                <div class="testimonial-header">
+                  <div class="testimonial-quote-icon" aria-hidden="true">
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path
+                        d="M10 11H6.8A3.8 3.8 0 0 1 10.6 7.2V5A6 6 0 0 0 4.6 11v6H10z"
+                      />
+                      <path
+                        d="M20 11h-3.2a3.8 3.8 0 0 1 3.8-3.8V5a6 6 0 0 0-6 6v6H20z"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <strong>Chloe W.</strong>
+                    <small>3rd Year Dental Student • New Zealand</small>
+                  </div>
+                </div>
+                <div class="testimonial-stars">★★★★★</div>
+                <p>
+                  “Oral Pathology felt like another language. Chat helps me talk
+                  through lesion presentations until the histology finally
+                  clicks.”
+                </p>
+              </article>
+
+              <article class="testimonial-card" aria-hidden="true">
+                <div class="testimonial-header">
+                  <div class="testimonial-quote-icon" aria-hidden="true">
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path
+                        d="M10 11H6.8A3.8 3.8 0 0 1 10.6 7.2V5A6 6 0 0 0 4.6 11v6H10z"
+                      />
+                      <path
+                        d="M20 11h-3.2a3.8 3.8 0 0 1 3.8-3.8V5a6 6 0 0 0-6 6v6H20z"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <strong>Dr. Ahmed M.</strong>
+                    <small>MSc Resident • United Arab Emirates</small>
+                  </div>
+                </div>
+                <div class="testimonial-stars">★★★★★</div>
+                <p>
+                  “Seminar literature reviews used to take days. Deep Study
+                  helps strip the fluff and organize evidence into structured
+                  insights.”
+                </p>
+              </article>
             </div>
           </div>
         </div>
@@ -1053,9 +1750,9 @@
                 ><span>⌄</span>
               </button>
               <div class="faq-answer">
-                DentAIstudy is focused on dental study, not general chatting. It
-                helps you work from topics, PDFs, weak areas, and exam-style
-                questions inside one study workspace.
+                DentAIstudy is a dental study workspace, not just a chat box. It
+                connects PDFs, focused answers, flashcards, quizzes, and saved
+                study work so your revision feels more structured.
               </div>
             </div>
 
