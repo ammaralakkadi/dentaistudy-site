@@ -410,10 +410,6 @@
   min-width: 0;
 }
 
-.hero-preview-wrap--showcase {
-  margin: 0;
-}
-
 @media (max-width: 900px) {
   .hero-proof-list {
     margin-top: 20px;
@@ -430,68 +426,162 @@
   color: #6b7280;
 }
 
-/* --- Hero dashboard preview --- */
-.hero-preview-wrap {
-  margin: 22px 0 24px;
-  border-radius: 20px;
-  overflow: hidden;
-  background: #ffffff;
-  border: 1px solid #dbe5f0;
-  box-shadow: 0 18px 44px rgba(15, 23, 42, 0.1);
+/* --- Hero product stage --- */
+.hero-product-stage {
+  position: relative;
+  margin: 0;
+  border-radius: 28px;
+  isolation: isolate;
+  transform: translateZ(0);
 }
 
-.hero-preview-bar {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 12px 14px;
-  background: rgba(248, 250, 252, 0.96);
-  border-bottom: 1px solid #e5e7eb;
+.hero-product-stage::before {
+  content: "";
+  position: absolute;
+  inset: 8% 9% 2%;
+  z-index: -1;
+  border-radius: 34px;
+  background: rgba(15, 23, 42, 0.1);
+  filter: blur(34px);
+  opacity: 0.65;
 }
 
-.hero-preview-bar .dot {
-  width: 9px;
-  height: 9px;
-  border-radius: 999px;
-  display: inline-block;
-}
-.hero-preview-bar .red {
-  background: #ef4444;
-}
-.hero-preview-bar .yellow {
-  background: #f59e0b;
-}
-.hero-preview-bar .green {
-  background: #10b981;
-}
-
-.hero-preview-title {
-  margin-left: 6px;
-  font-size: 12px;
-  color: #64748b;
-  letter-spacing: 0.04em;
-  text-transform: none;
-  font-weight: 600;
-}
-
-.hero-preview-img {
+.hero-product-img {
+  display: block;
   width: 100%;
   height: auto;
-  display: block;
-  object-fit: cover;
-  object-position: center top;
-  background: #ffffff;
-  aspect-ratio: 16 / 10;
+  border-radius: 26px;
   image-rendering: auto;
+  transform: translateY(0);
+  animation: heroProductFloat 5.8s ease-in-out infinite;
 }
 
-@media (max-width: 480px) {
-  .hero-preview-wrap {
-    margin: 16px 0 20px;
+.hero-product-cue {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 13px;
+  border-radius: 999px;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 16px 34px rgba(15, 23, 42, 0.1);
+  color: #102a43;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+  backdrop-filter: blur(14px);
+  transform: translateX(0);
+  animation: heroCueDriftRight 5.8s ease-in-out infinite;
+  will-change: transform;
+}
+
+.hero-product-cue::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: #0a3d62;
+}
+
+.hero-product-cue--top {
+  top: 16%;
+  right: 8%;
+  animation-name: heroCueDriftLeft;
+}
+
+.hero-product-cue--bottom {
+  left: 10%;
+  bottom: 13%;
+  animation-name: heroCueDriftRight;
+}
+
+@keyframes heroProductFloat {
+  0%,
+  100% {
+    transform: translateY(0);
   }
 
-  .hero-preview-title {
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes heroCueDriftLeft {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  50% {
+    transform: translateX(-9px);
+  }
+}
+
+@keyframes heroCueDriftRight {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  50% {
+    transform: translateX(9px);
+  }
+}
+
+@media (max-width: 900px) {
+  .hero-product-stage {
+    max-width: 760px;
+    margin-inline: auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-product-stage {
+    border-radius: 22px;
+  }
+
+  .hero-product-stage::before {
+    inset: 10% 8% 3%;
+    border-radius: 24px;
+    filter: blur(24px);
+    opacity: 0.48;
+  }
+
+  .hero-product-img {
+    border-radius: 22px;
+    animation: heroProductFloat 5.8s ease-in-out infinite;
+  }
+
+  .hero-product-cue {
+    display: inline-flex;
+    padding: 8px 10px;
+    gap: 7px;
     font-size: 11px;
+    box-shadow: 0 12px 26px rgba(15, 23, 42, 0.1);
+    animation-duration: 5.8s;
+  }
+
+  .hero-product-cue::before {
+    width: 6px;
+    height: 6px;
+  }
+
+  .hero-product-cue--top {
+    top: 10%;
+    right: 2%;
+  }
+
+  .hero-product-cue--bottom {
+    left: 3%;
+    bottom: 10%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-product-img,
+  .hero-product-cue {
+    animation: none;
   }
 }
 

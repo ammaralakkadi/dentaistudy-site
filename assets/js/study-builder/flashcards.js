@@ -6,94 +6,94 @@
   const SWIPE_THRESHOLD = 90;
   const QUICK_PRESETS = {
     ore: {
-      title: "ORE Part 1 flashcards",
+      title: "ORE emergency drug deck",
       count: 18,
       source:
-        "Generate high-yield ORE Part 1 dental flashcards covering diagnosis, treatment planning, medical emergencies, pharmacology, radiology, ethics, and common clinical reasoning traps.",
+        "Generate high-yield flashcards for ORE-style UK dental medical emergency stations. Focus on adult emergency drug names, indications, dose ranges, administration route, sequence of actions, oxygen use, calling emergency help, and common OSCE mistakes. Include seizure/status epilepticus, anaphylaxis, asthma, hypoglycemia, syncope, angina/MI, adrenal crisis, and local anesthetic toxicity.",
     },
     adex: {
-      title: "ADEX OSCE prompt deck",
+      title: "ADEX critical error deck",
       count: 18,
       source:
-        "Generate ADEX OSCE flashcards for patient communication, medical history review, infection control, emergency drugs, local anesthesia, radiographic interpretation, and restorative decision-making.",
+        "Generate ADEX-style flashcards focused on clinical failure traps and critical deficiencies. Cover anterior endodontic access errors, lateral perforation risk, crown preparation over-taper, reduction mistakes, margin errors, restorative isolation, typodont grading logic, and how to recognize unsafe preparation patterns before submission.",
     },
     inbde: {
-      title: "INBDE case basics deck",
+      title: "INBDE patient box deck",
       count: 18,
       source:
-        "Generate INBDE flashcards focused on case-based dental reasoning, high-yield foundation areas, diagnosis, risk factors, prevention, pharmacology, oral pathology, and treatment planning.",
+        "Generate INBDE case-based flashcards for medically complex Patient Box scenarios. Focus on pharmacology, uncontrolled diabetes, warfarin and INR, antiplatelet therapy, antibiotic prophylaxis, prosthetic heart valve considerations, facial space infection triage, ethics, autonomy, beneficence, non-maleficence, justice, and treatment sequencing.",
     },
     adc: {
-      title: "ADC written flashcards",
+      title: "ADC scenario logic deck",
       count: 18,
       source:
-        "Generate ADC written exam flashcards covering general dentistry, clinical judgment, operative dentistry, endodontics, periodontics, prosthodontics, oral surgery, and patient safety.",
+        "Generate ADC-style flashcards for scenario-based dental decision making. Focus on infection control failures, autoclave cycle issues, professional boundaries, informed consent, cultural safety, patient safety, referral decisions, emergency triage, and choosing the safest answer when multiple options look correct.",
     },
     ndecc: {
-      title: "NDECC clinical skills deck",
+      title: "NDECC judgment deck",
       count: 18,
       source:
-        "Generate NDECC flashcards for clinical skills, situational judgment, procedure protocols, diagnosis, communication, infection control, and examiner-style decision points.",
+        "Generate NDECC-style flashcards for situational judgment, patient communication, consent, refusal of ideal treatment, autonomy, ethical compliance, documentation, infection control, and examiner-style clinical decision points. Include scenarios where a patient demands unnecessary extraction or refuses a salvageable root canal.",
     },
     sdle: {
-      title: "SDLE high-yield deck",
+      title: "SDLE trauma recall deck",
       count: 18,
       source:
-        "Generate SDLE dental flashcards covering Saudi licensing exam high-yield topics, restorative dentistry, oral surgery, endodontics, periodontics, prosthodontics, pediatric dentistry, and prevention.",
+        "Generate SDLE-style flashcards focused on pediatric dental trauma, community dentistry, prevention, emergency timelines, immature permanent teeth, complicated crown-root fractures, avulsion, luxation injuries, DMFT interpretation, fluoride, caries risk, and high-yield Saudi licensing recall points.",
     },
     uae: {
-      title: "UAE licensing deck",
+      title: "UAE medical risk deck",
       count: 18,
       source:
-        "Generate UAE DHA MOH DOH dental licensing flashcards covering Prometric-style general dentistry, oral surgery, periodontics, endodontics, prosthodontics, pediatric dentistry, and emergency care.",
+        "Generate UAE DHA MOH DOH Prometric-style flashcards focused on medical risk in dental practice. Cover antibiotic prophylaxis, prosthetic heart valve considerations, penicillin allergy alternatives, anticoagulants, dual antiplatelet therapy, hypertension, diabetes, medical emergencies, pediatric local anesthetic maximum dose, and safe referral decisions.",
     },
     endodontics: {
-      title: "Endodontics recall deck",
+      title: "Pulp diagnosis deck",
       count: 16,
       source:
-        "Generate high-yield endodontics flashcards covering pulp diagnosis, periapical diagnosis, working length, irrigation, obturation, missed canals, retreatment, trauma, and antibiotic decisions.",
+        "Generate high-yield endodontics flashcards that differentiate reversible pulpitis, symptomatic irreversible pulpitis, necrotic pulp, symptomatic apical periodontitis, acute apical abscess, and chronic apical lesions. Use pain history, cold test, percussion, palpation, radiographs, diagnosis, and first-line treatment.",
     },
     operative: {
-      title: "Operative dentistry deck",
+      title: "Deep caries decision deck",
       count: 16,
       source:
-        "Generate operative dentistry flashcards covering caries removal, bonding, matrix and wedging, composite placement, postoperative sensitivity, rubber dam isolation, deep margin elevation, and restoration repair.",
+        "Generate operative dentistry flashcards for deep caries and pulp protection decisions. Compare direct pulp cap, indirect pulp cap, selective caries removal, stepwise excavation, restoration repair, postoperative sensitivity, bonding failures, rubber dam isolation, matrix and wedge decisions, and exam traps.",
     },
     prosthodontics: {
-      title: "Prosthodontics recall deck",
+      title: "Crown preparation deck",
       count: 16,
       source:
-        "Generate prosthodontics flashcards covering complete dentures, RPD design, crown preparation, ferrule effect, bridges, implant prosthodontics, occlusion, impressions, and common exam mistakes.",
+        "Generate prosthodontics flashcards on crown preparation and fixed prosthodontic failure traps. Cover ferrule effect, finish lines, taper, occlusal reduction, path of insertion, biologic width, impression errors, temporary crowns, pontic design, RPD design basics, occlusion, and common exam mistakes.",
     },
     periodontology: {
-      title: "Periodontology recall deck",
+      title: "AAP classification deck",
       count: 16,
       source:
-        "Generate periodontology flashcards covering staging and grading, probing, CAL, BOP, furcation, SRP, reevaluation, periodontal abscess, peri-implant disease, and maintenance decisions.",
+        "Generate periodontology flashcards comparing the 1999 periodontal classification with the current staging and grading system. Cover CAL, RBL, probing depth, BOP, furcation, mobility, complexity factors, grade modifiers, diabetes, smoking, periodontal abscess, peri-implant disease, and maintenance decisions.",
     },
     "oral-surgery": {
-      title: "Oral surgery recall deck",
+      title: "MRONJ and extraction deck",
       count: 16,
       source:
-        "Generate oral surgery flashcards covering extraction decisions, third molars, dry socket, infection spread, bleeding control, anticoagulants, MRONJ, oroantral communication, and trauma triage.",
+        "Generate oral surgery flashcards focused on extraction risk decisions. Cover MRONJ/BRONJ risk, bisphosphonates, antiresorptives, anticoagulants, dual antiplatelet therapy, bleeding control, dry socket, oroantral communication, odontogenic infection spread, third molars, and referral red flags.",
     },
     "oral-anatomy": {
-      title: "Oral anatomy recall deck",
+      title: "Fascial space anatomy deck",
       count: 16,
       source:
-        "Generate oral anatomy flashcards covering trigeminal nerve branches, local anesthesia landmarks, muscles of mastication, TMJ, maxillary sinus, fascial spaces, lymph drainage, and tooth morphology.",
+        "Generate oral anatomy flashcards focused on fascial spaces and Ludwig’s angina. Cover submandibular, sublingual, submental, buccal, canine, pterygomandibular, parapharyngeal spaces, anatomical borders, infection spread, airway warning signs, local anesthesia landmarks, trigeminal branches, and maxillary sinus relevance.",
     },
     orthodontics: {
-      title: "Orthodontics recall deck",
+      title: "Class II diagnosis deck",
       count: 16,
       source:
-        "Generate orthodontics flashcards covering classifications, space analysis, anchorage, growth modification, crossbite, open bite, deep bite, extractions, retainers, and impacted canines.",
+        "Generate orthodontics flashcards comparing Class II Division 1 and Class II Division 2 malocclusion. Cover clinical features, incisor inclination, overjet, overbite, lip competence, cephalometric clues, facial profile, radiographic features, growth pattern, treatment timing, and exam differentiation traps.",
     },
     pediatric: {
-      title: "Pediatric dentistry deck",
+      title: "Pediatric emergency deck",
       count: 16,
       source:
-        "Generate pediatric dentistry flashcards covering behavior guidance, pulp therapy, primary molar crowns, space maintainers, dental trauma, local anesthesia dosing, SDF, Hall technique, and child abscess care.",
+        "Generate pediatric dentistry flashcards focused on trauma and safety decisions. Cover immature permanent tooth trauma, complicated crown-root fracture, avulsion timing, pulp therapy, stainless steel crowns, space maintainers, pediatric local anesthetic maximum doses, behavior guidance, SDF, Hall technique, and child abscess care.",
     },
   };
   const els = {};

@@ -53,6 +53,266 @@ document.querySelectorAll(".faq-item").forEach((item) => {
   });
 });
 
+const prefersReducedMotion = window.matchMedia(
+  "(prefers-reduced-motion: reduce)",
+).matches;
+
+// Landing workflow walkthrough
+document.querySelectorAll("[data-workflow-walkthrough]").forEach((block) => {
+  const tabs = Array.from(block.querySelectorAll("[data-workflow-step]"));
+  const panels = Array.from(block.querySelectorAll("[data-workflow-panel]"));
+
+  let activeIndex = 0;
+
+  function activateWorkflowStep(step, shouldScrollTab = false) {
+    const nextIndex = tabs.findIndex(
+      (tab) => tab.dataset.workflowStep === step,
+    );
+    activeIndex = nextIndex >= 0 ? nextIndex : 0;
+
+    tabs.forEach((tab, index) => {
+      const isActive = index === activeIndex;
+
+      tab.classList.toggle("is-active", isActive);
+      tab.setAttribute("aria-selected", String(isActive));
+      tab.tabIndex = isActive ? 0 : -1;
+    });
+
+    panels.forEach((panel) => {
+      const isActive = panel.dataset.workflowPanel === step;
+
+      panel.classList.toggle("is-active", isActive);
+      panel.hidden = !isActive;
+    });
+
+    if (shouldScrollTab) {
+      tabs[activeIndex]?.scrollIntoView({
+        behavior: prefersReducedMotion ? "auto" : "smooth",
+        block: "nearest",
+        inline: "center",
+      });
+    }
+  }
+
+  tabs.forEach((tab, index) => {
+    tab.addEventListener("click", () => {
+      activateWorkflowStep(tab.dataset.workflowStep, true);
+    });
+
+    tab.addEventListener("keydown", (event) => {
+      if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") return;
+
+      event.preventDefault();
+
+      const direction = event.key === "ArrowRight" ? 1 : -1;
+      const nextIndex = (index + direction + tabs.length) % tabs.length;
+      tabs[nextIndex].focus();
+      activateWorkflowStep(tabs[nextIndex].dataset.workflowStep, true);
+    });
+  });
+
+  activateWorkflowStep(tabs[0]?.dataset.workflowStep || "1");
+});
+
+// Landing output studio
+document.querySelectorAll("[data-output-studio]").forEach((studio) => {
+  const tabs = Array.from(studio.querySelectorAll("[data-output-tab]"));
+  const panels = Array.from(studio.querySelectorAll("[data-output-panel]"));
+
+  function activateOutputPanel(target, shouldScrollTab = false) {
+    const activeTab = tabs.find((tab) => tab.dataset.outputTab === target);
+
+    tabs.forEach((tab) => {
+      const isActive = tab.dataset.outputTab === target;
+
+      tab.classList.toggle("is-active", isActive);
+      tab.setAttribute("aria-selected", String(isActive));
+      tab.tabIndex = isActive ? 0 : -1;
+    });
+
+    panels.forEach((panel) => {
+      const isActive = panel.dataset.outputPanel === target;
+
+      panel.classList.toggle("is-active", isActive);
+      panel.hidden = !isActive;
+    });
+
+    if (shouldScrollTab && activeTab?.parentElement) {
+      const rail = activeTab.parentElement;
+      const targetLeft =
+        activeTab.offsetLeft - (rail.clientWidth - activeTab.clientWidth) / 2;
+
+      rail.scrollTo({
+        left: targetLeft,
+        behavior: prefersReducedMotion ? "auto" : "smooth",
+      });
+    }
+  }
+
+  tabs.forEach((tab, index) => {
+    tab.addEventListener("click", () => {
+      activateOutputPanel(tab.dataset.outputTab, true);
+    });
+
+    tab.addEventListener("keydown", (event) => {
+      if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") return;
+
+      event.preventDefault();
+
+      const direction = event.key === "ArrowRight" ? 1 : -1;
+      const nextIndex = (index + direction + tabs.length) % tabs.length;
+
+      tabs[nextIndex].focus();
+      activateOutputPanel(tabs[nextIndex].dataset.outputTab, true);
+    });
+  });
+
+  activateOutputPanel(tabs[0]?.dataset.outputTab || "notes");
+});
+
+// Landing testimonial drag
+document.querySelectorAll(".testimonials-row").forEach((row) => {
+  const marquee = row.closest(".testimonials-marquee");
+
+  let isPointerDown = false;
+  let isDragging = false;
+  let startX = 0;
+  let startY = 0;
+  let dragStartX = 0;
+  let dragStartScrollLeft = 0;
+  let resumeTimerId = null;
+
+  function pauseTestimonials() {
+    clearTimeout(resumeTimerId);
+    marquee?.classList.add("is-paused");
+  }
+
+  function resumeTestimonialsSoon() {
+    clearTimeout(resumeTimerId);
+
+    resumeTimerId = window.setTimeout(() => {
+      row.scrollLeft = 0;
+      row.classList.remove("is-manual");
+      marquee?.classList.remove("is-paused");
+    }, 1600);
+  }
+
+  function keepTestimonialsLooped() {
+    const loopWidth = row.scrollWidth / 2;
+
+    if (!loopWidth) return;
+
+    if (row.scrollLeft >= loopWidth) {
+      row.scrollLeft -= loopWidth;
+      dragStartScrollLeft -= loopWidth;
+    }
+
+    if (row.scrollLeft <= 4) {
+      row.scrollLeft += loopWidth;
+      dragStartScrollLeft += loopWidth;
+    }
+  }
+
+  function startManualDrag(event) {
+    const loopWidth = row.scrollWidth / 2;
+
+    pauseTestimonials();
+
+    row.classList.add("is-manual", "is-dragging");
+
+    if (loopWidth && row.scrollLeft <= 4) {
+      row.scrollLeft = loopWidth;
+    }
+
+    isDragging = true;
+    dragStartX = event.clientX;
+    dragStartScrollLeft = row.scrollLeft;
+    row.setPointerCapture?.(event.pointerId);
+  }
+
+  row.addEventListener("pointerdown", (event) => {
+    if (event.button !== undefined && event.button !== 0) return;
+
+    isPointerDown = true;
+    isDragging = false;
+    startX = event.clientX;
+    startY = event.clientY;
+  });
+
+  row.addEventListener("pointermove", (event) => {
+    if (!isPointerDown) return;
+
+    const moveX = event.clientX - startX;
+    const moveY = event.clientY - startY;
+
+    if (!isDragging) {
+      if (Math.abs(moveY) > Math.abs(moveX) && Math.abs(moveY) > 8) {
+        return;
+      }
+
+      if (Math.abs(moveX) < 8) return;
+
+      startManualDrag(event);
+    }
+
+    const dragDistance = event.clientX - dragStartX;
+    row.scrollLeft = dragStartScrollLeft - dragDistance;
+    keepTestimonialsLooped();
+  });
+
+  function stopDragging(event) {
+    if (!isPointerDown) return;
+
+    isPointerDown = false;
+
+    if (isDragging) {
+      isDragging = false;
+      row.classList.remove("is-dragging");
+      row.releasePointerCapture?.(event.pointerId);
+      resumeTestimonialsSoon();
+    }
+  }
+
+  row.addEventListener("pointerup", stopDragging);
+  row.addEventListener("pointercancel", stopDragging);
+});
+
+// Landing reveal motion
+(() => {
+  const revealItems = document.querySelectorAll(
+    ".hero-grid, [data-workflow-walkthrough], .output-studio-section, .testimonials-section, .faq-item",
+  );
+
+  if (!revealItems.length) return;
+
+  revealItems.forEach((item) => {
+    item.classList.add("landing-reveal");
+  });
+
+  if (prefersReducedMotion || !("IntersectionObserver" in window)) {
+    revealItems.forEach((item) => {
+      item.classList.add("is-visible");
+    });
+    return;
+  }
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+
+        entry.target.classList.add("is-visible");
+        observer.unobserve(entry.target);
+      });
+    },
+    { threshold: 0.16 },
+  );
+
+  revealItems.forEach((item) => {
+    observer.observe(item);
+  });
+})();
+
 // Copy buttons (for result cards)
 document.querySelectorAll(".copy-btn").forEach((btn) => {
   btn.addEventListener("click", () => {

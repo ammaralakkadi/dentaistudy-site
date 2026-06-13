@@ -5,109 +5,109 @@
   const tools = window.DentAIStudyTools;
   const QUICK_PRESETS = {
     ore: {
-      title: "ORE Part 1 MCQs",
+      title: "ORE emergency OSCE quiz",
       count: 12,
       difficulty: "hard",
       source:
-        "Generate ORE Part 1 board-style dental MCQs with explanations covering diagnosis, treatment planning, medical emergencies, pharmacology, radiology, ethics, and common clinical reasoning traps.",
+        "Generate ORE Part 2 style dental medical emergency MCQs and OSCE decision questions with explanations. Focus on adult drug administration, dose ranges, oxygen, sequence of actions, status epilepticus, anaphylaxis, asthma, hypoglycemia, syncope, angina/MI, adrenal crisis, local anesthetic toxicity, and common UK dental practice station mistakes.",
     },
     adex: {
-      title: "ADEX OSCE judgment quiz",
-      count: 10,
+      title: "ADEX critical error quiz",
+      count: 12,
       difficulty: "hard",
       source:
-        "Generate ADEX OSCE-style dental MCQs testing patient communication, medical history review, infection control, emergency drugs, local anesthesia, radiographic interpretation, and restorative decision-making.",
+        "Generate ADEX-style exam questions with explanations focused on critical failure traps. Cover anterior endodontic access on tooth #8, lateral perforation risk, crown preparation over-taper, under-reduction, margin errors, restorative decision-making, typodont grading risk, and recognizing automatic-failure patterns.",
     },
     inbde: {
-      title: "INBDE case MCQs",
+      title: "INBDE patient box quiz",
       count: 12,
       difficulty: "hard",
       source:
-        "Generate INBDE case-based dental MCQs with explanations focused on diagnosis, risk factors, prevention, pharmacology, oral pathology, treatment planning, and high-yield foundation areas.",
+        "Generate INBDE Patient Box style MCQs with explanations. Include medically complex cases involving uncontrolled diabetes, warfarin and INR, dual antiplatelet therapy, prosthetic heart valves, antibiotic prophylaxis, penicillin allergy, facial space infection, pharmacology, pathology, ethics, autonomy, and treatment sequencing.",
     },
     adc: {
-      title: "ADC written MCQs",
+      title: "ADC guideline scenario quiz",
       count: 12,
       difficulty: "hard",
       source:
-        "Generate ADC written exam dental MCQs covering general dentistry, clinical judgment, operative dentistry, endodontics, periodontics, prosthodontics, oral surgery, and patient safety.",
+        "Generate ADC-style scenario-based MCQs with explanations. Focus on infection control failures, failed autoclave cycle/data logging, professional boundaries, cultural safety, consent, patient safety, referral, emergency triage, and best-answer reasoning when several choices seem acceptable.",
     },
     ndecc: {
-      title: "NDECC clinical tasks quiz",
-      count: 10,
+      title: "NDECC situational quiz",
+      count: 12,
       difficulty: "hard",
       source:
-        "Generate NDECC-style dental MCQs for clinical skills, situational judgment, procedure protocols, diagnosis, communication, infection control, and examiner-style decision points.",
+        "Generate NDECC-style situational judgment MCQs with explanations. Focus on patient refusal, unnecessary extraction requests, salvageable root canal communication, informed consent, autonomy, ethical compliance, documentation, infection control, and examiner-style Canadian clinical reasoning.",
     },
     sdle: {
-      title: "SDLE high-yield quiz",
+      title: "SDLE trauma quiz",
       count: 12,
-      difficulty: "normal",
+      difficulty: "hard",
       source:
-        "Generate SDLE dental licensing MCQs with explanations covering restorative dentistry, oral surgery, endodontics, periodontics, prosthodontics, pediatric dentistry, prevention, and emergency care.",
+        "Generate SDLE-style MCQs with explanations focused on pediatric trauma, immature permanent teeth, complicated crown-root fracture timing, avulsion and luxation management, community dentistry, DMFT calculations, prevention, fluoride, and high-yield Saudi licensing exam traps.",
     },
     uae: {
-      title: "UAE licensing MCQs",
+      title: "UAE medical risk quiz",
       count: 12,
       difficulty: "normal",
       source:
-        "Generate UAE DHA MOH DOH Prometric-style dental MCQs covering general dentistry, oral surgery, periodontics, endodontics, prosthodontics, pediatric dentistry, prevention, and emergency care.",
+        "Generate UAE DHA MOH DOH Prometric-style MCQs with explanations focused on dental medical risk. Include antibiotic prophylaxis, prosthetic heart valves, penicillin allergy, anticoagulants, aspirin and clopidogrel, diabetes, hypertension, local anesthetic maximum dose, pediatric dosing, syncope, hypoglycemia, and LA toxicity.",
     },
     endodontics: {
-      title: "Endodontics MCQ drill",
+      title: "Pulp diagnosis quiz",
       count: 10,
       difficulty: "normal",
       source:
-        "Generate high-yield endodontics MCQs with explanations covering pulp diagnosis, periapical diagnosis, working length, irrigation, obturation, missed canals, retreatment, trauma, and antibiotic decisions.",
+        "Generate endodontics MCQs with explanations that test differentiation between reversible pulpitis, symptomatic irreversible pulpitis, necrotic pulp, symptomatic apical periodontitis, acute apical abscess, cracked tooth, horizontal root fracture, vertical root fracture, and trauma-related endodontic decisions.",
     },
     operative: {
-      title: "Operative dentistry MCQs",
+      title: "Deep caries decision quiz",
       count: 10,
       difficulty: "normal",
       source:
-        "Generate operative dentistry MCQs with explanations covering caries removal, bonding, matrix and wedging, composite placement, postoperative sensitivity, rubber dam isolation, deep margin elevation, and restoration repair.",
+        "Generate operative dentistry MCQs with explanations focused on deep caries decision-making. Test direct pulp cap vs indirect pulp cap, selective caries removal, stepwise excavation, bonding failure, postoperative sensitivity, rubber dam isolation, matrix and wedge selection, restoration repair, and caries risk.",
     },
     prosthodontics: {
-      title: "Prosthodontics MCQ drill",
+      title: "Crown preparation quiz",
       count: 10,
       difficulty: "normal",
       source:
-        "Generate prosthodontics MCQs with explanations covering complete dentures, RPD design, crown preparation, ferrule effect, bridges, implant prosthodontics, occlusion, impressions, and common exam mistakes.",
+        "Generate prosthodontics MCQs with explanations focused on crown preparation and prostho reasoning. Include ferrule, finish line selection, taper, occlusal clearance, biologic width, impression errors, temporary crowns, RPD design basics, pontic design, occlusion, and common failure traps.",
     },
     periodontology: {
-      title: "Periodontology MCQ drill",
+      title: "AAP classification quiz",
       count: 10,
       difficulty: "normal",
       source:
-        "Generate periodontology MCQs with explanations covering staging and grading, probing, CAL, BOP, furcation, SRP, reevaluation, periodontal abscess, peri-implant disease, and maintenance decisions.",
+        "Generate periodontology MCQs with explanations comparing 1999 periodontal classification with current staging and grading. Test CAL, RBL, probing depth, BOP, furcation, mobility, grade modifiers, diabetes, smoking, periodontal abscess, peri-implant disease, treatment planning, and maintenance.",
     },
     "oral-surgery": {
-      title: "Oral surgery MCQ drill",
+      title: "MRONJ and bleeding quiz",
       count: 10,
       difficulty: "normal",
       source:
-        "Generate oral surgery MCQs with explanations covering extraction decisions, third molars, dry socket, infection spread, bleeding control, anticoagulants, MRONJ, oroantral communication, and trauma triage.",
+        "Generate oral surgery MCQs with explanations focused on extraction risk. Include MRONJ/BRONJ, bisphosphonate history, antiresorptive therapy, anticoagulants, aspirin and clopidogrel, bleeding control, dry socket, oroantral communication, odontogenic infection spread, third molars, and referral red flags.",
     },
     "oral-anatomy": {
-      title: "Oral anatomy MCQ drill",
+      title: "Fascial space quiz",
       count: 10,
-      difficulty: "easy",
+      difficulty: "normal",
       source:
-        "Generate oral anatomy MCQs with explanations covering trigeminal nerve branches, local anesthesia landmarks, muscles of mastication, TMJ, maxillary sinus, fascial spaces, lymph drainage, and tooth morphology.",
+        "Generate oral anatomy MCQs with explanations focused on fascial space infections and Ludwig’s angina. Test anatomical borders, submandibular/sublingual/submental spaces, airway risk, infection spread, local anesthesia landmarks, trigeminal nerve branches, TMJ, maxillary sinus, and lymph drainage.",
     },
     orthodontics: {
-      title: "Orthodontics MCQ drill",
+      title: "Class II diagnosis quiz",
       count: 10,
       difficulty: "normal",
       source:
-        "Generate orthodontics MCQs with explanations covering classifications, space analysis, anchorage, growth modification, crossbite, open bite, deep bite, extractions, retainers, and impacted canines.",
+        "Generate orthodontics MCQs with explanations comparing Class II Division 1 and Class II Division 2 malocclusion. Test clinical features, incisor inclination, overjet, overbite, lip competence, cephalometric clues, facial profile, radiographic features, treatment timing, and exam traps.",
     },
     pediatric: {
-      title: "Pediatric dentistry MCQs",
+      title: "Pediatric emergency quiz",
       count: 10,
       difficulty: "normal",
       source:
-        "Generate pediatric dentistry MCQs with explanations covering behavior guidance, pulp therapy, primary molar crowns, space maintainers, dental trauma, local anesthesia dosing, SDF, Hall technique, and child abscess care.",
+        "Generate pediatric dentistry MCQs with explanations focused on trauma and safety. Include immature permanent teeth, complicated crown-root fracture timing, avulsion, luxation injuries, pulp therapy, stainless steel crowns, space maintainers, local anesthetic maximum dose, SDF, Hall technique, and child abscess care.",
     },
   };
   const els = {};
