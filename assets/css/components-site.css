@@ -993,28 +993,14 @@
 }
 
 .testimonials-row {
-  overflow-x: auto;
-  overflow-y: hidden;
+  overflow: hidden;
   cursor: grab;
-  scrollbar-width: none;
-  overscroll-behavior-inline: contain;
   touch-action: pan-y;
-  -webkit-overflow-scrolling: touch;
-}
-
-.testimonials-row::-webkit-scrollbar {
-  display: none;
 }
 
 .testimonials-row.is-dragging {
   cursor: grabbing;
   user-select: none;
-  scroll-behavior: auto;
-}
-
-.testimonials-row.is-manual .testimonials-track {
-  animation: none;
-  transform: none !important;
 }
 
 .testimonials-row.is-dragging .testimonial-card {
@@ -1025,19 +1011,7 @@
   width: max-content;
   display: flex;
   gap: 18px;
-  animation: testimonialsRail 56s linear infinite;
   will-change: transform;
-}
-
-.testimonials-row--reverse .testimonials-track {
-  animation-name: testimonialsRailReverse;
-  animation-duration: 64s;
-}
-
-.testimonials-marquee:hover .testimonials-track,
-.testimonials-marquee:focus-within .testimonials-track,
-.testimonials-marquee.is-paused .testimonials-track {
-  animation-play-state: paused;
 }
 
 .testimonial-card {
@@ -1109,26 +1083,6 @@
   letter-spacing: -0.018em;
 }
 
-@keyframes testimonialsRail {
-  from {
-    transform: translateX(0);
-  }
-
-  to {
-    transform: translateX(-50%);
-  }
-}
-
-@keyframes testimonialsRailReverse {
-  from {
-    transform: translateX(-50%);
-  }
-
-  to {
-    transform: translateX(0);
-  }
-}
-
 @media (max-width: 900px) {
   .testimonials-marquee {
     margin-top: 32px;
@@ -1137,11 +1091,6 @@
 
   .testimonials-track {
     gap: 14px;
-    animation-duration: 64s;
-  }
-
-  .testimonials-row--reverse .testimonials-track {
-    animation-duration: 72s;
   }
 
   .testimonial-card {
@@ -1213,8 +1162,8 @@
     mask-image: none;
   }
 
-  .testimonials-track {
-    animation: none;
+  .testimonials-row {
+    overflow-x: auto;
   }
 }
 

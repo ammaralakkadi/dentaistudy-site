@@ -170,112 +170,78 @@ document.querySelectorAll("[data-output-studio]").forEach((studio) => {
   activateOutputPanel(tabs[0]?.dataset.outputTab || "notes");
 });
 
-// Landing testimonial drag
-document.querySelectorAll(".testimonials-row").forEach((row) => {
-  const marquee = row.closest(".testimonials-marquee");
+// Landing testimonial marquee
+(() => {
+  if (prefersReducedMotion) return;
 
-  let isPointerDown = false;
-  let isDragging = false;
-  let startX = 0;
-  let startY = 0;
-  let dragStartX = 0;
-  let dragStartScrollLeft = 0;
-  let resumeTimerId = null;
+  const SPEED = 0.5;
 
-  function pauseTestimonials() {
-    clearTimeout(resumeTimerId);
-    marquee?.classList.add("is-paused");
-  }
+  document.querySelectorAll(".testimonials-row").forEach((row) => {
+    const track = row.querySelector(".testimonials-track");
+    if (!track) return;
 
-  function resumeTestimonialsSoon() {
-    clearTimeout(resumeTimerId);
+    const isReverse = row.classList.contains("testimonials-row--reverse");
+    let pos = 0;
+    let rafId = null;
+    let isDragging = false;
+    let dragStartX = 0;
+    let dragStartPos = 0;
 
-    resumeTimerId = window.setTimeout(() => {
-      row.scrollLeft = 0;
-      row.classList.remove("is-manual");
-      marquee?.classList.remove("is-paused");
-    }, 1600);
-  }
-
-  function keepTestimonialsLooped() {
-    const loopWidth = row.scrollWidth / 2;
-
-    if (!loopWidth) return;
-
-    if (row.scrollLeft >= loopWidth) {
-      row.scrollLeft -= loopWidth;
-      dragStartScrollLeft -= loopWidth;
+    function loopWidth() {
+      return track.scrollWidth / 2;
     }
 
-    if (row.scrollLeft <= 4) {
-      row.scrollLeft += loopWidth;
-      dragStartScrollLeft += loopWidth;
-    }
-  }
-
-  function startManualDrag(event) {
-    const loopWidth = row.scrollWidth / 2;
-
-    pauseTestimonials();
-
-    row.classList.add("is-manual", "is-dragging");
-
-    if (loopWidth && row.scrollLeft <= 4) {
-      row.scrollLeft = loopWidth;
+    function wrapPos(p) {
+      const lw = loopWidth();
+      if (!lw) return p;
+      return ((p % lw) + lw) % lw;
     }
 
-    isDragging = true;
-    dragStartX = event.clientX;
-    dragStartScrollLeft = row.scrollLeft;
-    row.setPointerCapture?.(event.pointerId);
-  }
-
-  row.addEventListener("pointerdown", (event) => {
-    if (event.button !== undefined && event.button !== 0) return;
-
-    isPointerDown = true;
-    isDragging = false;
-    startX = event.clientX;
-    startY = event.clientY;
-  });
-
-  row.addEventListener("pointermove", (event) => {
-    if (!isPointerDown) return;
-
-    const moveX = event.clientX - startX;
-    const moveY = event.clientY - startY;
-
-    if (!isDragging) {
-      if (Math.abs(moveY) > Math.abs(moveX) && Math.abs(moveY) > 8) {
-        return;
-      }
-
-      if (Math.abs(moveX) < 8) return;
-
-      startManualDrag(event);
+    function applyPos() {
+      track.style.transform = `translateX(${-pos}px)`;
     }
 
-    const dragDistance = event.clientX - dragStartX;
-    row.scrollLeft = dragStartScrollLeft - dragDistance;
-    keepTestimonialsLooped();
-  });
+    function tick() {
+      pos = wrapPos(pos + (isReverse ? -SPEED : SPEED));
+      applyPos();
+      rafId = requestAnimationFrame(tick);
+    }
 
-  function stopDragging(event) {
-    if (!isPointerDown) return;
+    requestAnimationFrame(() => {
+      pos = isReverse ? loopWidth() : 0;
+      applyPos();
+      rafId = requestAnimationFrame(tick);
+    });
 
-    isPointerDown = false;
+    row.addEventListener("pointerdown", (e) => {
+      if (e.button !== 0) return;
+      cancelAnimationFrame(rafId);
+      rafId = null;
+      isDragging = true;
+      dragStartX = e.clientX;
+      dragStartPos = pos;
+      row.classList.add("is-dragging");
+      row.setPointerCapture(e.pointerId);
+    });
 
-    if (isDragging) {
+    row.addEventListener("pointermove", (e) => {
+      if (!isDragging) return;
+      pos = wrapPos(dragStartPos + (dragStartX - e.clientX));
+      applyPos();
+    });
+
+    function stopDrag(e) {
+      if (!isDragging) return;
       isDragging = false;
       row.classList.remove("is-dragging");
-      row.releasePointerCapture?.(event.pointerId);
-      resumeTestimonialsSoon();
+      row.releasePointerCapture(e.pointerId);
+      rafId = requestAnimationFrame(tick);
     }
-  }
 
-  row.addEventListener("pointerup", stopDragging);
-  row.addEventListener("pointercancel", stopDragging);
-});
+    row.addEventListener("pointerup", stopDrag);
+    row.addEventListener("pointercancel", stopDrag);
+  });
+})();
 
 // Landing reveal motion
 (() => {
