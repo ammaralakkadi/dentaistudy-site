@@ -19,8 +19,8 @@ const PRO_DAILY_LIMIT = 100;
 // Safety nets
 const HISTORY_WINDOW = 14;
 const MAX_MESSAGE_CHARS = 6000;
-const MAX_OUTPUT_TOKENS_QA = 2000;
-const MAX_OUTPUT_TOKENS_DEEP = 4000;
+const MAX_OUTPUT_TOKENS_QA = 3500;
+const MAX_OUTPUT_TOKENS_DEEP = 7000;
 
 // RAG settings
 const GEMINI_QUICK_MODEL = "gemini-2.5-flash-lite";
@@ -1070,7 +1070,14 @@ serve(async (req: Request): Promise<Response> => {
         "  • A single sentence as its own paragraph is correct when the point deserves emphasis\n" +
         "  • No bold section labels, headers, or tags — no 'Rationale:', 'Key Areas:', 'Exam Hook:'\n" +
         "  • Bullets are allowed when a genuine list exists — never forced\n\n" +
-        "LENGTH: 150–280 words for Types A, B, C, E. Type D may run slightly longer to cover the chapter list properly. Never pad. Never truncate genuinely useful clinical content.\n\n" +
+        "LENGTH — scale to question complexity, not to a fixed cap:\n" +
+        "  • Single concept question (TYPE B, one topic): 150–220 words\n" +
+        "  • Multi-topic or exam prep question (TYPE A, or any question covering 3+ areas): 350–550 words — name every relevant area, do not stop early\n" +
+        "  • Complex multi-part question ('walk me through X AND Y', 'explain X and how it relates to Y'): answer every part fully, no word ceiling — truncating a multi-part answer is a failure\n" +
+        "  • Clinical management TYPE C: 200–350 words depending on condition complexity\n" +
+        "  • TYPE D file overview: cover all visible chapters — no ceiling\n" +
+        "  • TYPE E follow-up: match the depth of what was already established\n" +
+        "Never pad with filler sentences to reach a minimum. Never stop before finishing a genuine answer to reach a maximum. The right length is: every part of the question answered, every high-yield point included, nothing that doesn't earn its place.\n\n" +
         "TRAP QUALITY: The trap must name a specific real mistake for this exact topic and this exact exam. If the same trap could apply to any dental question, it is filler — cut it. If you cannot identify a specific real trap, omit the trap section entirely. An absent trap is better than a generic one."
       );
     })();
