@@ -5,7 +5,6 @@ const GEMINI_API_KEY = Deno.env.get("GEMINI_API_KEY") ?? "";
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "";
 const SUPABASE_SERVICE_ROLE_KEY =
   Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
-const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY") ?? "";
 
 const corsHeaders: Record<string, string> = {
   "Access-Control-Allow-Origin": "*",
@@ -22,16 +21,19 @@ const MAX_MESSAGE_CHARS = 6000;
 const MAX_OUTPUT_TOKENS_QA = 3500;
 const MAX_OUTPUT_TOKENS_DEEP = 7000;
 
-// RAG settings
-const GEMINI_QUICK_MODEL = "gemini-2.5-flash-lite";
-const GEMINI_DEEP_MODEL = "gemini-2.5-flash";
-const EMBEDDING_MODEL = "gemini-embedding-001";
-const EMBEDDING_DIMENSIONS = 1536;
-const RETRIEVE_TOP_K = 8;
-const MAX_CONTEXT_CHARS = 14000;
+// Model routing
+const GEMINI_EXAM_COACH_MODEL = "gemini-2.5-flash-lite";
+const GEMINI_STUDY_MODEL = "gemini-2.5-flash";
 
-// Indexing caps (cost control)
-const MAX_INDEX_CHARS_PER_FILE = 60_000;
+// Notes strategy
+const NOTES_SINGLE_PASS_CHAR_LIMIT = 150_000;
+const NOTES_HARD_SAFETY_CAP = 220_000;
+const LARGE_NOTES_MAX_CONTEXT_CHARS = 150_000;
+const LARGE_NOTES_OUTPUT_TOKENS = 10_000;
+const LARGE_NOTES_PAGE_THRESHOLD = 150;
+const MAX_NOTES_PDF_PAGES = 900;
+const CHARS_PER_PAGE_ESTIMATE = 2000;
+
 const CHUNK_CHARS = 2500;
 const CHUNK_OVERLAP = 150;
 
@@ -87,6 +89,7 @@ async function generateGeminiText(options: {
   temperature: number;
   maxOutputTokens: number;
   responseMimeType?: string;
+  responseSchema?: unknown;
   enableThinking?: boolean;
 }): Promise<string> {
   const systemText = options.messages
@@ -124,6 +127,10 @@ async function generateGeminiText(options: {
     requestBody.generationConfig.responseMimeType = options.responseMimeType;
   }
 
+  if (options.responseSchema) {
+    requestBody.generationConfig.responseSchema = options.responseSchema;
+  }
+
   const res = await fetchGeminiWithBackoff(
     `https://generativelanguage.googleapis.com/v1beta/models/${options.model}:generateContent`,
     requestBody,
@@ -134,7 +141,6 @@ async function generateGeminiText(options: {
   const json = raw ? JSON.parse(raw) : null;
 
   if (!res.ok) {
-    // Keep existing error shape but include status for fallback decisions
     throw Object.assign(
       new Error(`GEMINI_ERROR ${res.status}: ${raw.slice(0, 500)}`),
       {
@@ -153,107 +159,51 @@ async function generateGeminiText(options: {
     .trim();
 }
 
-async function generateGeminiTextWithDeepFallback(options: {
-  // If deep model errors with 429/503/5xx, fallback to lite.
-  // Keep frontend response shapes identical (only content changes).
-  deepModel: string;
-  liteModel: string;
-  isDeep: boolean;
+async function generateGeminiTextWithFallback(options: {
+  model: string;
+  fallbackModel?: string;
   messages: GeminiMessage[];
   temperature: number;
   maxOutputTokens: number;
   responseMimeType?: string;
+  responseSchema?: unknown;
   enableThinking?: boolean;
 }): Promise<string> {
-  if (!options.isDeep) {
-    return generateGeminiText({
-      model: options.liteModel,
-      messages: options.messages,
-      temperature: options.temperature,
-      maxOutputTokens: options.maxOutputTokens,
-      responseMimeType: options.responseMimeType,
-    });
-  }
-
   try {
     return await generateGeminiText({
-      model: options.deepModel,
+      model: options.model,
       messages: options.messages,
       temperature: options.temperature,
       maxOutputTokens: options.maxOutputTokens,
       responseMimeType: options.responseMimeType,
+      responseSchema: options.responseSchema,
       enableThinking: options.enableThinking,
     });
   } catch (e: any) {
     const status = Number(e?.status ?? null);
-    if (isGeminiRateOrTransient(Number.isFinite(status) ? status : null)) {
+    if (
+      options.fallbackModel &&
+      isGeminiRateOrTransient(Number.isFinite(status) ? status : null)
+    ) {
       return await generateGeminiText({
-        model: options.liteModel,
+        model: options.fallbackModel,
         messages: options.messages,
         temperature: options.temperature,
         maxOutputTokens: options.maxOutputTokens,
         responseMimeType: options.responseMimeType,
+        responseSchema: options.responseSchema,
       });
     }
     throw e;
   }
 }
 
-function forceEmbeddingTo1536(values: unknown): number[] {
-  // We must guarantee the DB insert matches EMBEDDING_DIMENSIONS.
-  const arr = Array.isArray(values) ? values : [];
-  const nums = arr.map((v) => (Number.isFinite(Number(v)) ? Number(v) : 0));
-
-  if (nums.length === EMBEDDING_DIMENSIONS) return nums;
-  if (nums.length > EMBEDDING_DIMENSIONS) {
-    // deterministic truncation
-    return nums.slice(0, EMBEDDING_DIMENSIONS);
-  }
-
-  // pad with zeros
-  const out = nums.slice();
-  while (out.length < EMBEDDING_DIMENSIONS) out.push(0);
-  return out;
-}
-
-async function embedTexts(texts: string[]): Promise<number[][]> {
-  const cleanTexts = texts.map((text) => String(text || "").trim());
-  if (!cleanTexts.length) return [];
-
-  const res = await fetchGeminiWithBackoff(
-    `https://generativelanguage.googleapis.com/v1beta/models/${EMBEDDING_MODEL}:batchEmbedContents`,
-    {
-      requests: cleanTexts.map((text) => ({
-        model: `models/${EMBEDDING_MODEL}`,
-        content: { parts: [{ text }] },
-        embedContentConfig: {
-          outputDimensionality: EMBEDDING_DIMENSIONS,
-        },
-      })),
-    },
-    GEMINI_API_KEY,
-  );
-
-  const raw = await res.text();
-  const json = raw ? JSON.parse(raw) : null;
-
-  if (!res.ok) {
-    throw new Error(`EMBEDDINGS_ERROR ${res.status}: ${raw.slice(0, 500)}`);
-  }
-
-  const embeddings = Array.isArray(json?.embeddings) ? json.embeddings : [];
-  return embeddings
-    .map((item: any) => forceEmbeddingTo1536(item?.values))
-    .slice(0, cleanTexts.length);
-}
-
-// Parses text that contains page markers like: [Page 3]
-function splitIntoPages(
+// Parses text that contains page markers like: [Page 3].
+function parsePageMarkers(
   text: string,
 ): Array<{ page: number | null; text: string }> {
-  const t = (text || "").slice(0, MAX_INDEX_CHARS_PER_FILE);
+  const t = String(text || "").trim();
 
-  // If no page markers, treat as single "page"
   if (!/\[Page\s+\d+\]/.test(t)) {
     return [{ page: null, text: t }];
   }
@@ -284,6 +234,12 @@ function splitIntoPages(
   return out;
 }
 
+function splitIntoPages(
+  text: string,
+): Array<{ page: number | null; text: string }> {
+  return parsePageMarkers(String(text || "").slice(0, NOTES_HARD_SAFETY_CAP));
+}
+
 function chunkText(pageText: string): string[] {
   const s = (pageText || "").replace(/\s+/g, " ").trim();
   if (!s) return [];
@@ -309,105 +265,6 @@ type PdfDoc = {
   text: string;
   pages?: number | null;
 };
-
-async function indexPdfDocs(
-  supabaseAdmin: ReturnType<typeof createClient>,
-  userId: string,
-  conversationId: string,
-  pdfDocs: PdfDoc[],
-) {
-  for (const doc of pdfDocs) {
-    const fileId = String(doc.file_id || "").trim();
-    const fileName = String(doc.file_name || "").trim() || null;
-    const text = String(doc.text || "").trim();
-    if (!fileId || !text) continue;
-
-    // Replace old chunks for this file in this conversation (clean + simple)
-    await supabaseAdmin
-      .from("pdf_chunks")
-      .delete()
-      .eq("user_id", userId)
-      .eq("conversation_id", conversationId)
-      .eq("file_id", fileId);
-
-    const pages = splitIntoPages(text);
-
-    let chunkIndex = 0;
-    const rows: any[] = [];
-
-    for (const p of pages) {
-      const parts = chunkText(p.text);
-      for (const part of parts) {
-        rows.push({
-          user_id: userId,
-          conversation_id: conversationId,
-          file_id: fileId,
-          file_name: fileName,
-          page_start: p.page,
-          page_end: p.page,
-          chunk_index: chunkIndex++,
-          content: part,
-          embedding: [], // fill after embedding
-        });
-      }
-    }
-
-    if (!rows.length) continue;
-
-    // Embed in batches
-    const BATCH = 48;
-    for (let i = 0; i < rows.length; i += BATCH) {
-      const batchRows = rows.slice(i, i + BATCH);
-      const batchTexts = batchRows.map((r) => r.content);
-      const embeds = await embedTexts(batchTexts);
-      for (let j = 0; j < batchRows.length; j++) {
-        // Ensure each row embeds exactly 1536 dims
-        batchRows[j].embedding = forceEmbeddingTo1536(embeds[j]);
-      }
-    }
-
-    const { error } = await supabaseAdmin.from("pdf_chunks").insert(rows);
-    if (error) {
-      console.error("PDF_INDEX_INSERT_ERROR", error);
-      // don't throw hard — user can still chat without PDF
-    }
-  }
-}
-
-function buildRagContext(chunks: any[]): string {
-  let out = "";
-  for (const c of chunks || []) {
-    const page =
-      c.page_start == null
-        ? ""
-        : ` (page ${c.page_start}${
-            c.page_end && c.page_end !== c.page_start ? `-${c.page_end}` : ""
-          })`;
-    const header = `\n--- ${c.file_name || "PDF"}${page} ---\n`;
-    const block = header + String(c.content || "").trim() + "\n";
-    if (out.length + block.length > MAX_CONTEXT_CHARS) break;
-    out += block;
-  }
-  return out.trim();
-}
-
-async function fetchAllChunksForFile(
-  supabaseAdmin: any,
-  userId: string,
-  conversationId: string,
-  fileId: string,
-) {
-  const { data, error } = await supabaseAdmin
-    .from("pdf_chunks")
-    .select("chunk_index,page_start,page_end,content,file_name")
-    .eq("user_id", userId)
-    .eq("conversation_id", conversationId)
-    .eq("file_id", fileId)
-    .order("chunk_index", { ascending: true });
-
-  if (error) throw error;
-  return Array.isArray(data) ? data : [];
-}
 
 function makeBatchesByCharLimit(rows: any[], maxChars: number) {
   const batches: any[][] = [];
@@ -470,39 +327,106 @@ function parseJsonObject(text: string): any {
   return null;
 }
 
+function pickFlashcardItems(parsed: any): any[] {
+  if (Array.isArray(parsed)) return parsed;
+  if (Array.isArray(parsed?.cards)) return parsed.cards;
+  if (Array.isArray(parsed?.flashcards)) return parsed.flashcards;
+  if (Array.isArray(parsed?.items)) return parsed.items;
+  return [];
+}
+
 function normalizeFlashcards(
   value: any,
 ): Array<{ front: string; back: string }> {
   const arr = Array.isArray(value) ? value : [];
   return arr
     .map((card: any) => ({
-      front: String(card?.front ?? card?.question ?? "").trim(),
-      back: String(card?.back ?? card?.answer ?? "").trim(),
+      front: String(
+        card?.front ??
+          card?.question ??
+          card?.prompt ??
+          card?.term ??
+          card?.card_front ??
+          "",
+      ).trim(),
+      back: String(
+        card?.back ??
+          card?.answer ??
+          card?.explanation ??
+          card?.definition ??
+          card?.card_back ??
+          "",
+      ).trim(),
     }))
     .filter((card) => card.front && card.back)
-    .slice(0, 30);
+    .slice(0, 40);
+}
+
+function pickQuizItems(parsed: any): any[] {
+  if (Array.isArray(parsed)) return parsed;
+  if (Array.isArray(parsed?.questions)) return parsed.questions;
+  if (Array.isArray(parsed?.quiz)) return parsed.quiz;
+  if (Array.isArray(parsed?.mcqs)) return parsed.mcqs;
+  if (Array.isArray(parsed?.items)) return parsed.items;
+  return [];
+}
+
+function normalizeQuizOptions(item: any): string[] {
+  if (Array.isArray(item?.options)) {
+    return item.options
+      .map((option: unknown) => String(option ?? "").trim())
+      .filter(Boolean)
+      .slice(0, 5);
+  }
+
+  return [item?.a, item?.b, item?.c, item?.d, item?.e]
+    .map((option) => String(option ?? "").trim())
+    .filter(Boolean)
+    .slice(0, 5);
+}
+
+function resolveCorrectIndex(item: any, options: string[]): number {
+  const rawIndex = Number(item?.correct_index ?? item?.answer_index);
+  if (
+    Number.isInteger(rawIndex) &&
+    rawIndex >= 0 &&
+    rawIndex < options.length
+  ) {
+    return rawIndex;
+  }
+
+  const answer = String(
+    item?.correct_answer ?? item?.answer ?? item?.correct ?? "",
+  ).trim();
+
+  if (/^[A-E]$/i.test(answer)) {
+    const index = answer.toUpperCase().charCodeAt(0) - 65;
+    if (index >= 0 && index < options.length) return index;
+  }
+
+  const match = options.findIndex(
+    (option) => option.toLowerCase() === answer.toLowerCase(),
+  );
+
+  return match >= 0 ? match : 0;
 }
 
 function normalizeQuizQuestions(value: any) {
   const arr = Array.isArray(value) ? value : [];
   return arr
     .map((item: any) => {
-      const options = Array.isArray(item?.options)
-        ? item.options
-            .map((option: unknown) => String(option ?? "").trim())
-            .filter(Boolean)
-            .slice(0, 5)
-        : [];
-
-      const correctIndex = Number(
-        item?.correct_index ?? item?.answer_index ?? 0,
-      );
+      const options = normalizeQuizOptions(item);
+      const correctIndex = resolveCorrectIndex(item, options);
 
       return {
-        question: String(item?.question ?? "").trim(),
+        question: String(
+          item?.question ?? item?.stem ?? item?.prompt ?? "",
+        ).trim(),
         options,
-        correct_index: Number.isInteger(correctIndex) ? correctIndex : 0,
-        explanation: String(item?.explanation ?? "").trim(),
+        correct_index: correctIndex,
+        explanation: String(
+          item?.explanation ?? item?.rationale ?? item?.reason ?? "",
+        ).trim(),
       };
     })
     .filter(
@@ -512,16 +436,234 @@ function normalizeQuizQuestions(value: any) {
         item.correct_index >= 0 &&
         item.correct_index < item.options.length,
     )
-    .slice(0, 25);
+    .slice(0, 40);
 }
 
-function isPdfOverviewIntent(text: string): boolean {
+const FLASHCARD_RESPONSE_SCHEMA = {
+  type: "object",
+  properties: {
+    title: { type: "string" },
+    cards: {
+      type: "array",
+      minItems: 1,
+      maxItems: 40,
+      items: {
+        type: "object",
+        properties: {
+          front: { type: "string" },
+          back: { type: "string" },
+        },
+        required: ["front", "back"],
+      },
+    },
+  },
+  required: ["title", "cards"],
+};
+
+const QUIZ_RESPONSE_SCHEMA = {
+  type: "object",
+  properties: {
+    title: { type: "string" },
+    questions: {
+      type: "array",
+      minItems: 1,
+      maxItems: 40,
+      items: {
+        type: "object",
+        properties: {
+          question: { type: "string" },
+          options: {
+            type: "array",
+            minItems: 4,
+            maxItems: 4,
+            items: { type: "string" },
+          },
+          correct_index: {
+            type: "integer",
+            minimum: 0,
+            maximum: 3,
+          },
+          explanation: { type: "string" },
+        },
+        required: ["question", "options", "correct_index", "explanation"],
+      },
+    },
+  },
+  required: ["title", "questions"],
+};
+
+function estimatePageCount(
+  charCount: number,
+  providedPages?: number | null,
+): number {
+  if (providedPages && providedPages > 0) return providedPages;
+  return Math.max(1, Math.round(charCount / CHARS_PER_PAGE_ESTIMATE));
+}
+
+function shouldSkipLargePdfPage(text: string): boolean {
   const t = String(text || "").toLowerCase();
-  return (
-    /\b(what is this file|what is this document|what is this talking about|overview|summar(y|ize)|high[- ]level|big picture|what does it cover|what is it about)\b/.test(
-      t,
-    ) || /^\s*(what\s+is\s+this\s+file\s+about\??)\s*$/i.test(t)
+  if (!t.trim()) return true;
+  if (/\bcontents\b/.test(t)) return false;
+  return /isbn|copyright|all rights reserved|published by|publisher|printed in|library of congress|british library|contributors|acknowledgements|preface/.test(
+    t,
   );
+}
+
+function looksLikeChapterOpener(text: string): boolean {
+  const clean = String(text || "")
+    .replace(/\r/g, "")
+    .trim();
+  const firstLine = clean.split("\n").find(Boolean) || "";
+  if (/^\d+\s+chapter\s+\d+/i.test(firstLine)) return false;
+
+  const firstBlock = clean.slice(0, 1200);
+  return (
+    /^\s*(chapter|unit|section)\s+\d{1,2}\b/im.test(firstBlock) ||
+    /^\s*\d{1,2}\s*\n[A-Z][^\n]{3,100}\n/.test(firstBlock)
+  );
+}
+
+function rowFromPage(
+  page: { page: number | null; text: string },
+  fileName: string,
+  chunkIndex: number,
+) {
+  return {
+    chunk_index: chunkIndex,
+    page_start: page.page,
+    page_end: page.page,
+    content: String(page.text || "").trim(),
+    file_name: fileName,
+  };
+}
+
+function buildRowsFromPages(
+  pages: Array<{ page: number | null; text: string }>,
+  fileName: string,
+) {
+  const rows: any[] = [];
+  let chunkIndex = 0;
+
+  for (const page of pages) {
+    const parts = chunkText(page.text);
+
+    for (const part of parts) {
+      rows.push({
+        chunk_index: chunkIndex++,
+        page_start: page.page,
+        page_end: page.page,
+        content: part,
+        file_name: fileName,
+      });
+    }
+  }
+
+  return rows;
+}
+
+function buildLargePdfStudyRows(rawText: string, fileName: string) {
+  const pages = parsePageMarkers(rawText);
+  const selected = new Map<number, { page: number | null; text: string }>();
+
+  const addPage = (index: number) => {
+    const page = pages[index];
+    if (!page || shouldSkipLargePdfPage(page.text)) return;
+    selected.set(index, page);
+  };
+
+  pages.forEach((page, index) => {
+    const text = String(page.text || "");
+    const lower = text.toLowerCase();
+
+    if (/\bcontents\b/.test(lower)) addPage(index);
+
+    if (looksLikeChapterOpener(text)) {
+      addPage(index);
+      addPage(index + 1);
+      addPage(index + 2);
+    }
+  });
+
+  if (!selected.size) {
+    pages.forEach((_, index) => {
+      if (index < 12 || index % 20 === 0) addPage(index);
+    });
+  }
+
+  const rows: any[] = [];
+  let usedChars = 0;
+  let chunkIndex = 0;
+
+  Array.from(selected.keys())
+    .sort((a, b) => a - b)
+    .forEach((index) => {
+      if (usedChars >= LARGE_NOTES_MAX_CONTEXT_CHARS) return;
+
+      const page = selected.get(index)!;
+      const clean = String(page.text || "")
+        .replace(/\s+/g, " ")
+        .trim();
+      if (!clean) return;
+
+      const remaining = LARGE_NOTES_MAX_CONTEXT_CHARS - usedChars;
+      const content = clean.slice(0, Math.max(0, remaining));
+      if (!content) return;
+
+      rows.push(
+        rowFromPage({ ...page, text: content }, fileName, chunkIndex++),
+      );
+      usedChars += content.length;
+    });
+
+  return rows;
+}
+
+function hasMcqIntent(text: string): boolean {
+  const t = String(text || "").toLowerCase();
+  return /\b(mcqs?|multiple[\s-]choice|quiz me|test me)\b/.test(t);
+}
+
+const MCQ_NUMBER_WORDS: Record<string, number> = {
+  one: 1,
+  two: 2,
+  three: 3,
+  four: 4,
+  five: 5,
+  six: 6,
+  seven: 7,
+  eight: 8,
+  nine: 9,
+  ten: 10,
+  eleven: 11,
+  twelve: 12,
+  thirteen: 13,
+  fourteen: 14,
+  fifteen: 15,
+  sixteen: 16,
+  seventeen: 17,
+  eighteen: 18,
+  nineteen: 19,
+  twenty: 20,
+};
+
+function detectRequestedMcqCount(text: string): number | null {
+  const t = String(text || "").toLowerCase();
+
+  const digitMatch = t.match(/\b(\d{1,2})\s*(?:mcqs?|questions?|qs)\b/);
+  if (digitMatch) {
+    const n = parseInt(digitMatch[1], 10);
+    if (n >= 1 && n <= 40) return n;
+  }
+
+  const wordMatch = t.match(
+    /\b(one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)\s*(?:mcqs?|questions?|qs)\b/,
+  );
+  if (wordMatch) {
+    const n = MCQ_NUMBER_WORDS[wordMatch[1]];
+    if (n) return n;
+  }
+
+  return null;
 }
 
 serve(async (req: Request): Promise<Response> => {
@@ -534,12 +676,7 @@ serve(async (req: Request): Promise<Response> => {
     });
   }
 
-  if (
-    !GEMINI_API_KEY ||
-    !SUPABASE_URL ||
-    !SUPABASE_SERVICE_ROLE_KEY ||
-    !SUPABASE_ANON_KEY
-  ) {
+  if (!GEMINI_API_KEY || !SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
     return new Response(JSON.stringify({ error: "SERVER_MISCONFIGURED" }), {
       status: 500,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -597,12 +734,7 @@ serve(async (req: Request): Promise<Response> => {
       },
     );
 
-    // User-context client (anon + user JWT): RLS + auth.uid() works inside RPC
     const authHeader = req.headers.get("Authorization") || "";
-    const supabaseUser = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-      auth: { persistSession: false },
-      global: { headers: { Authorization: authHeader } },
-    });
 
     // Identify user
     let userId: string | null = null;
@@ -611,9 +743,6 @@ serve(async (req: Request): Promise<Response> => {
       const { data } = await supabaseAdmin.auth.getUser(jwt);
       if (data?.user) userId = data.user.id;
     }
-
-    // Enforce signed-in for PDF indexing/retrieval
-    const canUsePdf = Boolean(userId && conversationId);
 
     let subscriptionTier = "free";
     let isProUser = false;
@@ -636,7 +765,12 @@ serve(async (req: Request): Promise<Response> => {
       }
     }
 
-    if ((task === "flashcards" || task === "quiz") && !isProUser) {
+    if (
+      (task === "flashcards" ||
+        task === "quiz" ||
+        (task === "chapter_notes" && pdfDocs.length > 0)) &&
+      !isProUser
+    ) {
       return new Response(
         JSON.stringify({ error: "PRO_REQUIRED", tier: subscriptionTier }),
         {
@@ -646,7 +780,7 @@ serve(async (req: Request): Promise<Response> => {
       );
     }
 
-    const maxPdfDocs = isProUser ? 5 : userId ? 1 : 0;
+    const maxPdfDocs = isProUser && task === "chapter_notes" ? 1 : 0;
 
     if (pdfDocs.length > maxPdfDocs) {
       return new Response(
@@ -711,13 +845,154 @@ serve(async (req: Request): Promise<Response> => {
       });
     }
 
-    // If PDFs arrived with this message: index them now (chat-scoped via conversation_id)
-    if (canUsePdf && pdfDocs.length) {
-      await indexPdfDocs(supabaseAdmin, userId!, conversationId, pdfDocs);
+    if (
+      task === "chapter_notes" &&
+      pdfDocs.length &&
+      String(pdfDocs[0]?.text || "").trim()
+    ) {
+      const doc = pdfDocs[0];
+      const fileName = String(doc.file_name || "Dental PDF").trim();
+      const rawText = String(doc.text || "").trim();
+      const estimatedPages = estimatePageCount(rawText.length, doc.pages);
+
+      if (estimatedPages > MAX_NOTES_PDF_PAGES) {
+        return new Response(
+          JSON.stringify({
+            error: "PDF_TOO_LARGE",
+            message: `This PDF has about ${estimatedPages} pages. Upload a book under ${MAX_NOTES_PDF_PAGES} pages or split it by section.`,
+          }),
+          {
+            status: 400,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          },
+        );
+      }
+
+      const isLargePdf =
+        rawText.length > NOTES_SINGLE_PASS_CHAR_LIMIT ||
+        estimatedPages > LARGE_NOTES_PAGE_THRESHOLD;
+
+      const rows = isLargePdf
+        ? buildLargePdfStudyRows(rawText, fileName)
+        : buildRowsFromPages(splitIntoPages(rawText), fileName);
+
+      if (!rows.length) {
+        return new Response(JSON.stringify({ error: "NO_PDF_TEXT_FOUND" }), {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+
+      if (isLargePdf) {
+        const studyMap = await generateGeminiTextWithFallback({
+          model: GEMINI_STUDY_MODEL,
+          fallbackModel: GEMINI_EXAM_COACH_MODEL,
+          enableThinking: true,
+          temperature: 0.3,
+          maxOutputTokens: LARGE_NOTES_OUTPUT_TOKENS,
+          messages: [
+            {
+              role: "system",
+              content:
+                "You are the DentAIstudy Notes engine — a senior dental educator and licensing exam coach. A very large dental PDF was uploaded. Your job is not to rewrite the whole book. Create one clean, readable, exam-ready chapter map from the provided extracted structure and chapter samples. Cover all visible chapters, including final chapters, even if earlier chapters must be tighter. Ignore copyright, ISBN, publisher, preface, acknowledgements, contributors, and dosage/legal disclaimers unless the actual study content requires a safety warning. Use the PDF as the scope and organize it for exam revision. No greeting. No filler. Do not mention internal chunking or extraction limits.",
+            },
+            {
+              role: "user",
+              content:
+                `Source: ${fileName}\n` +
+                `Detected size: about ${estimatedPages} pages.\n` +
+                "Deliverable: Create one exam-ready note sheet for the full uploaded book.\n\n" +
+                "Required structure:\n" +
+                "# [Book or file title] — Exam Notes\n" +
+                "## How to study this book\n" +
+                "Give 4-6 bullets that tell an anxious exam candidate how to use the material.\n" +
+                "## Chapter-by-chapter high-yield map\n" +
+                "Cover every visible chapter or major section. For each one, give: core exam focus, must-know clinical points, common viva/MCQ traps, and what to revise first. Keep each chapter tight enough that the final chapters are never dropped.\n" +
+                "## Final high-yield traps\n" +
+                "List the cross-chapter mistakes students commonly make.\n\n" +
+                "Rules:\n" +
+                "- Do not waste space on publisher details, ISBN, editors, contents admin, disclaimers, preface, or acknowledgements.\n" +
+                "- Do not pretend this is a full page-by-page rewrite. Make it a smart study map.\n" +
+                "- If a chapter has only a title or limited extracted detail, still include a concise exam-revision direction, but do not invent page-specific facts.\n" +
+                "- Use practical dental exam language, not textbook marketing language.\n\n" +
+                `Extracted structure and chapter samples:\n${formatBatch(rows)}`,
+            },
+          ],
+        });
+
+        return new Response(JSON.stringify({ output: studyMap }), {
+          status: 200,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+
+      const batches = makeBatchesByCharLimit(rows, 12000);
+      const partials: string[] = [];
+
+      for (let i = 0; i < batches.length; i++) {
+        const batchText = formatBatch(batches[i]);
+
+        const sectionText = await generateGeminiTextWithFallback({
+          model: GEMINI_STUDY_MODEL,
+          fallbackModel: GEMINI_EXAM_COACH_MODEL,
+          enableThinking: true,
+          temperature: 0.25,
+          maxOutputTokens: MAX_OUTPUT_TOKENS_QA,
+          messages: [
+            {
+              role: "system",
+              content:
+                "You are the DentAIstudy Notes engine — a senior dental educator and licensing exam coach. Create exam-ready notes from the provided PDF text. Use direct headings, high-yield bullets, mechanisms, clinical relevance, and exam traps where supported. Ignore publisher details, ISBN, copyright, preface, acknowledgements, and generic book disclaimers unless clinically relevant. No greeting. No filler. Do not invent missing content.",
+            },
+            {
+              role: "user",
+              content:
+                `Source: ${fileName}\n` +
+                `Goal: Produce exam-ready notes for this section.\n` +
+                `Section ${i + 1}/${batches.length}:\n\n` +
+                batchText,
+            },
+          ],
+        });
+
+        if (sectionText) partials.push(sectionText);
+      }
+
+      const merged = await generateGeminiTextWithFallback({
+        model: GEMINI_STUDY_MODEL,
+        fallbackModel: GEMINI_EXAM_COACH_MODEL,
+        enableThinking: true,
+        temperature: 0.35,
+        maxOutputTokens: MAX_OUTPUT_TOKENS_DEEP,
+        messages: [
+          {
+            role: "system",
+            content:
+              "You are the DentAIstudy Notes engine — a senior dental educator and licensing exam coach. Create one polished exam-ready note sheet from the section notes. Start directly with the topic, then structure the answer with concise headings, core concepts, definitions, red flags, tables when useful, clinical reasoning, exam traps, and likely viva or MCQ angles. Remove repeated points and remove publisher/admin material. No greeting. No filler.",
+          },
+          {
+            role: "user",
+            content:
+              `Source: ${fileName}\n` +
+              `Deliverable: Complete exam-ready notes from the uploaded PDF.\n\n` +
+              partials
+                .map(
+                  (part, index) =>
+                    `--- Section Notes ${index + 1} ---\n${part}`,
+                )
+                .join("\n\n"),
+          },
+        ],
+      });
+
+      return new Response(JSON.stringify({ output: merged }), {
+        status: 200,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
 
     if (task === "flashcards") {
-      const cardCount = clampInt(body?.card_count, 6, 30, 12);
+      const cardCount = clampInt(body?.card_count, 6, 40, 12);
       const sourceText = truncateText(
         [
           topic,
@@ -737,11 +1012,13 @@ serve(async (req: Request): Promise<Response> => {
         });
       }
 
-      const aiText = await generateGeminiText({
-        model: GEMINI_QUICK_MODEL,
+      const aiText = await generateGeminiTextWithFallback({
+        model: GEMINI_STUDY_MODEL,
+        fallbackModel: GEMINI_EXAM_COACH_MODEL,
         temperature: 0.38,
-        maxOutputTokens: 2600,
+        maxOutputTokens: 3200,
         responseMimeType: "application/json",
+        responseSchema: FLASHCARD_RESPONSE_SCHEMA,
         messages: [
           {
             role: "system",
@@ -765,7 +1042,21 @@ serve(async (req: Request): Promise<Response> => {
       });
 
       const parsed = parseJsonObject(aiText);
-      const cards = normalizeFlashcards(parsed?.cards);
+      const cards = normalizeFlashcards(pickFlashcardItems(parsed));
+
+      if (!cards.length) {
+        console.error("FLASHCARDS_PARSE_EMPTY", aiText.slice(0, 800));
+        return new Response(
+          JSON.stringify({
+            error: "FLASHCARDS_EMPTY",
+            message: "Could not generate flashcards from this note. Try again.",
+          }),
+          {
+            status: 502,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          },
+        );
+      }
 
       return new Response(
         JSON.stringify({
@@ -780,7 +1071,7 @@ serve(async (req: Request): Promise<Response> => {
     }
 
     if (task === "quiz") {
-      const questionCount = clampInt(body?.question_count, 5, 25, 10);
+      const questionCount = clampInt(body?.question_count, 5, 40, 10);
       const difficulty = ["easy", "normal", "hard"].includes(
         String(body?.difficulty),
       )
@@ -805,11 +1096,13 @@ serve(async (req: Request): Promise<Response> => {
         });
       }
 
-      const aiText = await generateGeminiText({
-        model: GEMINI_QUICK_MODEL,
+      const aiText = await generateGeminiTextWithFallback({
+        model: GEMINI_STUDY_MODEL,
+        fallbackModel: GEMINI_EXAM_COACH_MODEL,
         temperature: difficulty === "hard" ? 0.35 : 0.25,
-        maxOutputTokens: 3600,
+        maxOutputTokens: 4600,
         responseMimeType: "application/json",
+        responseSchema: QUIZ_RESPONSE_SCHEMA,
         messages: [
           {
             role: "system",
@@ -832,7 +1125,22 @@ serve(async (req: Request): Promise<Response> => {
       });
 
       const parsed = parseJsonObject(aiText);
-      const questions = normalizeQuizQuestions(parsed?.questions);
+      const questions = normalizeQuizQuestions(pickQuizItems(parsed));
+
+      if (!questions.length) {
+        console.error("QUIZ_PARSE_EMPTY", aiText.slice(0, 800));
+        return new Response(
+          JSON.stringify({
+            error: "QUIZ_EMPTY",
+            message:
+              "Could not generate quiz questions from this note. Try again.",
+          }),
+          {
+            status: 502,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          },
+        );
+      }
 
       return new Response(
         JSON.stringify({
@@ -846,8 +1154,7 @@ serve(async (req: Request): Promise<Response> => {
       );
     }
 
-    // Retrieve top-k relevant chunks unless the user clearly asks for full PDF notes
-    const isDeepStudy = task === "chapter_notes";
+    // Exam Coach is text-only. Notes handles PDF-to-notes earlier in the chapter_notes branch.
     const latestUserQuestion =
       topic ||
       (messagesFromClient
@@ -858,147 +1165,12 @@ serve(async (req: Request): Promise<Response> => {
 
     const questionLine = topic ? `Current user question: ${topic}` : "";
 
-    const wantsFullPdfNotes =
-      /\b(full chapter notes|complete chapter notes|full pdf notes|whole pdf notes|entire pdf notes|complete exam sheet|study sheet from the full pdf|make notes from the full pdf)\b/i.test(
-        latestUserQuestion,
-      );
-
-    const canBuildPdfChapterNotes = Boolean(
-      canUsePdf && isDeepStudy && activeFileId && wantsFullPdfNotes,
-    );
-
-    const isOverview = canUsePdf && isPdfOverviewIntent(latestUserQuestion);
-
-    let ragContext = "";
-    if (canUsePdf && !canBuildPdfChapterNotes) {
-      try {
-        if (isOverview && activeFileId) {
-          const overviewChunks = await fetchAllChunksForFile(
-            supabaseAdmin,
-            userId!,
-            conversationId,
-            activeFileId,
-          );
-
-          // File overview should come from the document front matter and contents,
-          // not from one semantically similar chapter hit.
-          ragContext = buildRagContext(overviewChunks.slice(0, 14));
-        }
-
-        if (!ragContext && latestUserQuestion) {
-          const retrievalQuestion = isOverview
-            ? "title author preface foreword contents chapters sections dental specialties exam preparation overview"
-            : latestUserQuestion;
-          const [qEmbed] = await embedTexts([retrievalQuestion]);
-
-          const { data } = await supabaseUser.rpc("match_pdf_chunks", {
-            p_conversation_id: conversationId,
-            p_query_embedding: qEmbed,
-            p_match_count: isOverview
-              ? Math.max(RETRIEVE_TOP_K * 2, 12)
-              : RETRIEVE_TOP_K,
-          });
-
-          ragContext = buildRagContext(Array.isArray(data) ? data : []);
-        }
-      } catch (e) {
-        console.error("RAG_RETRIEVE_ERROR", e);
-      }
-    }
-
-    // Full PDF chapter notes only when a PDF is actually available
-    if (canBuildPdfChapterNotes) {
-      const allChunks = await fetchAllChunksForFile(
-        supabaseAdmin,
-        userId!,
-        conversationId,
-        activeFileId,
-      );
-
-      if (!allChunks.length) {
-        return new Response(JSON.stringify({ error: "NO_CHUNKS_FOUND" }), {
-          status: 404,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
-
-      const batches = makeBatchesByCharLimit(allChunks, 12000);
-      const partials: string[] = [];
-
-      for (let i = 0; i < batches.length; i++) {
-        const batchText = formatBatch(batches[i]);
-
-        const sectionText = await generateGeminiTextWithDeepFallback({
-          deepModel: GEMINI_DEEP_MODEL,
-          liteModel: GEMINI_QUICK_MODEL,
-          isDeep: true,
-          temperature: 0.25,
-          maxOutputTokens: MAX_OUTPUT_TOKENS_QA,
-          messages: [
-            {
-              role: "system",
-              content:
-                "You are the DentAIstudy exam tutor — a senior dental educator and licensing exam coach. Create exam-ready notes from the provided text ONLY. " +
-                "Use direct headings, high-yield bullets, mechanisms, clinical relevance, and exam traps where supported. " +
-                "No greeting. No filler. Do NOT invent missing content.",
-            },
-            {
-              role: "user",
-              content:
-                `Subject: ${subject}\n` +
-                `Goal: Produce exam-ready notes for this section.\n` +
-                `Section ${i + 1}/${batches.length}:\n\n` +
-                batchText,
-            },
-          ],
-        });
-
-        if (sectionText) partials.push(sectionText);
-      }
-
-      const merged = await generateGeminiTextWithDeepFallback({
-        deepModel: GEMINI_DEEP_MODEL,
-        liteModel: GEMINI_QUICK_MODEL,
-        isDeep: true,
-        temperature: 0.35,
-        maxOutputTokens: MAX_OUTPUT_TOKENS_DEEP,
-        messages: [
-          {
-            role: "system",
-            content:
-              "You are the DentAIstudy exam tutor — a senior dental educator and licensing exam coach. " +
-              "Create one polished deep-study chapter sheet from the section notes. " +
-              "Start directly with the topic, then structure the answer with concise headings, core concepts, definitions, red flags, tables when useful, and likely exam questions. " +
-              "No greeting. No filler. No repeated points.",
-          },
-          {
-            role: "user",
-            content:
-              `Subject: ${subject}\n` +
-              `Deliverable: Complete exam sheet for the full chapter.\n\n` +
-              partials
-                .map((p, idx) => `--- Section Notes ${idx + 1} ---\n${p}`)
-                .join("\n\n"),
-          },
-        ],
-      });
-
-      return new Response(JSON.stringify({ output: merged }), {
-        status: 200,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
+    const mcqIntentDetected = hasMcqIntent(latestUserQuestion);
+    const requestedMcqCount = detectRequestedMcqCount(latestUserQuestion);
+    const effectiveMode = mcqIntentDetected ? "MCQ" : mode;
 
     const modeExplanation = (() => {
-      if (isDeepStudy) {
-        return (
-          "DEEP STUDY MODE — full teaching answer with examiner-level structure. " +
-          "Use the relevant sections only: direct answer, definition, classification, mechanism/pathophysiology, clinical features, investigations, management, high-yield exam notes, and common traps. " +
-          "Do not pad. Depth means mechanism, clinical reasoning, and exam relevance — not filler."
-        );
-      }
-
-      const l = mode.toLowerCase();
+      const l = effectiveMode.toLowerCase();
       if (l.includes("osce")) {
         return "OSCE MODE — answer in examiner checklist format: introduction, history, examination, investigations, diagnosis/differential, management, follow-up, and mark-scoring points.";
       }
@@ -1026,21 +1198,22 @@ serve(async (req: Request): Promise<Response> => {
           "Only ONE answer is unambiguously correct. If two options are both clinically valid, rewrite the stem — add a time constraint, patient factor, or clinical finding that separates them.\n" +
           "Distractors must represent real mistakes real candidates make.\n" +
           "Every stem must be a clinical scenario — never a pure definition or direct recall question.\n" +
-          "Default to 5 questions unless user specifies a number.\n" +
+          (requestedMcqCount
+            ? `EXACT COUNT COMPLIANCE: The user explicitly requested ${requestedMcqCount} questions. You MUST deliver exactly ${requestedMcqCount} questions in this single response — Question 1 through Question ${requestedMcqCount}. Do not stop early. Do not silently deliver fewer and wait to be asked for the rest. If space is tight, compress each explanation to one tight sentence rather than dropping questions.\n`
+            : "Default to 5 questions unless the user specifies a number.\n") +
           "Separate every question with --- on its own line."
         );
       }
 
       return (
-        "QUICK ANSWER MODE.\n\n" +
+        "EXAM COACH MODE.\n\n" +
         "STEP 1 — INTERNAL ONLY. Before writing anything, classify the question type in your head. This classification NEVER appears in the response — not as a label, not as a sentence, not as a thought. The response starts directly with the answer content. If you write 'This is a TYPE X question' or 'The user is asking for...' or 'I need to...' or 'I will...' anywhere in the response, that is a critical failure.\n\n" +
         "GIBBERISH DETECTION — Before classifying, check: does the message contain a sequence of random characters, keyboard mashing, or text that is not readable English or dental terminology? Examples: 'xjxjxxjxjsjdjxx', 'sxjzjszjzjzsjzj', 'djdjdjssjsjsjs'. If yes, do not attempt to answer as if the message were normal. Instead, respond with exactly this: 'Your message contains some text I could not read clearly. What specifically would you like me to clarify or explain differently?' Then stop. Do not guess at intent.\n\n" +
         "Question types — classify silently:\n" +
         "TYPE A: Exam prep / study guide — 'What should I study for X', 'Important topics for X', 'What does [exam] test'\n" +
         "TYPE B: Factual or definition — 'What is X', 'Define X', 'Explain X', 'How does X work'\n" +
         "TYPE C: Clinical management — 'How do I manage X', 'Treatment of X', 'Patient presents with X'\n" +
-        "TYPE D: PDF or file overview — 'What is this file about', 'Summarize this book', 'What does this document cover'\n" +
-        "TYPE E: Follow-up, re-explanation, or clarification request — 'explain again', 'I don't understand', 'teach me differently', 'what do you mean by X'\n\n" +
+        "TYPE D: Follow-up, re-explanation, or clarification request — 'explain again', 'I don't understand', 'teach me differently', 'what do you mean by X'\n\n" +
         "STEP 2 — Apply the correct answer architecture for the type:\n\n" +
         "TYPE A — Exam prep:\n" +
         "Open with the specific subject areas by name — not a statement about the exam. Name 5–8 high-yield topics immediately, each with one precise clinical reason it appears on that exam. Do not describe what the exam values — demonstrate it by naming the actual content. Close with one specific trap this exam is known for: the exact area candidates neglect, the exact guideline they forget, or the exact reasoning step they skip.\n\n" +
@@ -1048,12 +1221,7 @@ serve(async (req: Request): Promise<Response> => {
         "Open with the clinical answer or core definition in one sentence. Follow with mechanism, pathophysiology, or clinical significance in the next 2–3 sentences. Close with one specific viva or exam trap on its own paragraph — the exact point examiners use to separate passing from failing answers.\n\n" +
         "TYPE C — Clinical management:\n" +
         "Open with the immediate clinical decision — what you do first and why. List the management priority or sequence directly. One sentence giving the critical reasoning behind the key step. Close with one trap — the step candidates skip, the contraindication they miss, or the complication they fail to anticipate.\n\n" +
-        "TYPE D — PDF or file overview:\n" +
-        "Block 1: Title, author, publication year if visible, intended audience. Two sentences maximum.\n" +
-        "Block 2: A bullet list of the specific dental subjects and notable chapters. Name at least 6 specific topics you can see in the content — do not generalize.\n" +
-        "Block 3: Which licensing exams or student levels this resource suits, what it does well as a revision tool, and one honest limitation based only on what you can see in the content — year of publication, regional calibration, or depth level.\n" +
-        "TRAP RULE FOR TYPE D: Only add an exam trap if the PDF content itself supports a real and specific mistake. If no such trap is visible in the content, omit the trap entirely. A fabricated trap is worse than no trap.\n\n" +
-        "TYPE E — Follow-up, re-explanation, or clarification:\n" +
+        "TYPE D — Follow-up, re-explanation, or clarification:\n" +
         "RULE: Never repeat the previous answer in simpler words. Simpler is not better — it is shallower and wastes the user's time.\n" +
         "When the user says 'explain again' or 'I don't understand' or 'teach me differently', do one or more of these:\n" +
         "  1. Find the angle the first answer missed — approach the concept from a different direction\n" +
@@ -1084,8 +1252,7 @@ serve(async (req: Request): Promise<Response> => {
         "  • Multi-topic or exam prep question (TYPE A, or any question covering 3+ areas): 350–550 words — name every relevant area, do not stop early\n" +
         "  • Complex multi-part question ('walk me through X AND Y', 'explain X and how it relates to Y'): answer every part fully, no word ceiling — truncating a multi-part answer is a failure\n" +
         "  • Clinical management TYPE C: 200–350 words depending on condition complexity\n" +
-        "  • TYPE D file overview: cover all visible chapters — no ceiling\n" +
-        "  • TYPE E follow-up: match the depth of what was already established\n" +
+        "  • TYPE D follow-up: match the depth of what was already established\n" +
         "Never pad with filler sentences to reach a minimum. Never stop before finishing a genuine answer to reach a maximum. The right length is: every part of the question answered, every high-yield point included, nothing that doesn't earn its place.\n\n" +
         "TRAP QUALITY: The trap must name a specific real mistake for this exact topic and this exact exam. If the same trap could apply to any dental question, it is filler — cut it. If you cannot identify a specific real trap, omit the trap section entirely. An absent trap is better than a generic one."
       );
@@ -1101,22 +1268,23 @@ serve(async (req: Request): Promise<Response> => {
       "Never open with: Certainly, Of course, Hello, Great question, Sure, Absolutely, I'd be happy to help, Glad you asked, That's a great topic.\n" +
       "Never close with: I hope this helps, Feel free to ask more, Let me know if you have questions.\n" +
       "BANNED RESPONSE OPENERS — these are also forbidden, no exceptions:\n" +
-      "  • 'The provided PDF excerpts indicate / show / suggest / contain...'\n" +
-      "  • 'The provided excerpts from [book/document]...'\n" +
-      "  • 'Based on the PDF / excerpts / document / file...'\n" +
-      "  • 'This document / file / book covers / contains / discusses...'\n" +
-      "  • 'I cannot extract / find MCQs from this document because...'\n" +
       "  • 'Here are [N] questions / MCQs / flashcards on [topic]:'\n" +
-      "  • 'While the actual content of page X is not available...'\n" +
-      "MCQ START RULE: Every MCQ response must begin with the characters '**Question 1:**' — nothing before it, no preamble, no sentence about what you are generating, no sentence about the source material.\n" +
+      "  • 'I will explain...'\n" +
+      "  • 'Let's discuss...'\n" +
+      "  • 'The answer is as follows...'\n" +
+      "MCQ START RULE: Every MCQ response must begin with the characters '**Question 1:**' — nothing before it, no preamble, no sentence about what you are generating.\n" +
       "No hollow acknowledgement. No corporate filler. Every word must earn its place.\n\n" +
       "ANSWER ARCHITECTURE\n" +
       "Layer 1: Direct answer — state the core fact or clinical decision immediately.\n" +
       "Layer 2: The why — mechanism, rationale, pathophysiology, or clinical reasoning.\n" +
       "Layer 3: The exam hook — what examiners test, the common trap, or the clinical consequence.\n" +
-      "Quick mode compresses this structure. Deep mode expands it with headings.\n\n" +
+      "Exam Coach keeps this structure focused: direct answer first, clinical reasoning second, examiner trap only when useful.\n\n" +
       "ANTICIPATE THE REAL NEED\n" +
       "Answer the question asked, then ask yourself what a good examiner expects the student to know adjacent to this topic. If there is a high-value insight the student clearly needs but did not ask for — a clinical consequence, contraindication, viva trap, or common student error — include it at the end under **Examiner note:**. Use this sparingly, only when genuinely valuable. Do not pad.\n\n" +
+      "TOPIC FIDELITY — NON-NEGOTIABLE\n" +
+      "Before answering, identify the exact subject the user named — a specific appliance, condition, drug, technique, or classification. If the term contains an obvious typo (e.g., 'bionater' for 'Bionator'), silently correct the spelling and answer about that exact corrected term. Never substitute a different, even closely related, subject for the one named — naming Twin Block when the user asked about Bionator is a hard failure, not a stylistic choice, even though both are Class II functional appliances.\n" +
+      "If the term is genuinely ambiguous between two distinct valid dental terms, ask one short clarifying question instead of guessing.\n" +
+      "SELF-CHECK before sending: does every question, fact, and explanation in this response refer to the literal subject the user named (after typo correction) — not a related but different one? If not, rewrite before responding.\n\n" +
       "FORMATTING\n" +
       "Use markdown headings and bullets when they improve scanning. Use tables for classifications, comparisons, drugs, or dose-style information. Do not write unbroken prose longer than 80 words. Do not over-format simple answers.\n\n" +
       "EXAM CALIBRATION\n" +
@@ -1129,40 +1297,17 @@ serve(async (req: Request): Promise<Response> => {
       "If no exam is specified, use internationally applicable evidence-based dentistry.\n\n" +
       "EXAM CONTEXT PERSISTENCE\n" +
       "If the user has mentioned their target exam anywhere in this conversation — ORE, INBDE, ADC, NDECC, SDLE, DHA, MOH, or DOH — maintain that exam calibration for every answer in this session. Do not drift back to generic standards unless the user explicitly changes their exam context.\n\n" +
-      "PDF SOURCE RULE\n" +
-      "If PDF excerpts are provided, they are the primary source. Never claim the PDF is mainly about one topic unless the excerpts support that as the main theme. For a PDF overview, identify the document title/type, target audience, visible chapters/topics, and study value. If excerpts do not contain enough detail, say what is visible first, then clearly label any added clinical knowledge.\n" +
-      "PDF MCQ AND STUDY MATERIAL RULE: When the user asks for MCQs, questions, flashcards, or study material 'from' or 'based on' a PDF or book, generate that content from what the PDF covers. Never refuse on the grounds that the PDF does not contain pre-written questions — that is never what the user means. 'Give me MCQs from this book' means create clinical questions about this book's topics. Use the chapter list, topic headings, and any available excerpts. If excerpts for the requested topic are unavailable, generate from standard dental knowledge for that topic and do not mention the gap unless it materially affects accuracy.\n\n" +
-      "MCQ INTENT OVERRIDE: If the user's message contains a request for MCQs, questions, quiz items, or practice questions — regardless of the current study mode — apply the full MCQ format architecture. Mode setting does not block MCQ intent. A user in Quick mode asking 'give me MCQs' gets MCQ format, not a Quick mode prose answer.\n\n" +
+      "MCQ INTENT OVERRIDE: If the user's message contains a request for MCQs, questions, quiz items, or practice questions, apply the full MCQ format architecture. The user asking for questions means they want practice questions, not a prose explanation.\n\n" +
       "CLINICAL BOUNDARY\n" +
       "DentAIstudy is a study and exam-prep tool. For acute real patient emergencies, direct the user to a supervising clinician or emergency care. For exam prep and clinical case discussion, answer fully and clinically without unnecessary disclaimers.";
 
-    const pdfAnswerRule = ragContext
-      ? isOverview
-        ? isDeepStudy
-          ? "PDF overview rule: give a fuller structured overview of the attached file. Identify the title/type, author if visible, target audience, visible chapters/topics, how the content is organized, and the exam-study value. Use only supported excerpts. Do not over-focus on a single chapter unless the document itself is that chapter."
-          : "PDF QUICK OVERVIEW — use this specific format. The RULE 6 word cap does not apply to this task.\n" +
-            "Paragraph 1: Book title, author, publication year if visible, and who it is for. Two sentences maximum.\n" +
-            "Paragraph 2: The actual subjects and chapters covered. Name the dental specialties and specific topics explicitly — minimum 6 items. Use a short bullet list if the chapter count is high.\n" +
-            "Paragraph 3: Exam relevance — which licensing exams this book suits, what it does well as a revision resource, and one honest limitation based on the content itself (e.g., year of publication, regional calibration, depth level).\n" +
-            "TRAP RULE: Only add an exam trap if it is directly supported by something in the PDF excerpts. If the excerpts do not contain material for a specific trap, omit the trap entirely. Do not invent traps."
-        : isDeepStudy
-          ? "PDF answer rule: answer the user's exact question from the PDF excerpts with a fuller structured answer. Use headings, key points, mechanisms, and exam relevance. If the excerpts are insufficient, say what is missing, then clearly label any general dental knowledge."
-          : "PDF answer rule: answer the user's exact question from the PDF excerpts with a useful exam-focused answer. Give the direct answer, the key rationale, and 3–5 high-yield points. If the excerpts are insufficient, say what is visible and avoid inventing."
-      : "";
-
     const baseUserPrompt = [
       `Subject: ${subject}`,
-      `Study mode: ${isDeepStudy ? "Deep study" : mode}`,
+      "Product area: Exam Coach",
       questionLine,
       `Instruction: ${modeExplanation}`,
-      isDeepStudy
-        ? "Target depth: detailed teaching with clinical reasoning and exam hooks."
-        : "Target depth: concise exam-point answer with substance.",
-      pdfAnswerRule,
-      ragContext ? `\nRelevant PDF excerpts:\n${ragContext}` : "",
-      isOverview
-        ? "\nTask: PDF overview request. Synthesize the document-level picture from visible excerpts. Ignore earlier assistant claims if they conflict with the excerpts."
-        : "\nKeep the answer exam-relevant, clinical, and direct.",
+      "Target depth: exam-focused answer with clinical reasoning, high-yield structure, and no filler.",
+      "\nKeep the answer exam-relevant, clinical, and direct.",
     ]
       .filter(Boolean)
       .join("\n");
@@ -1185,16 +1330,18 @@ serve(async (req: Request): Promise<Response> => {
       ...safeHistory,
     ];
 
-    const content = await generateGeminiTextWithDeepFallback({
-      deepModel: GEMINI_DEEP_MODEL,
-      liteModel: GEMINI_QUICK_MODEL,
-      isDeep: isDeepStudy,
+    const mcqScaledTokens = mcqIntentDetected
+      ? Math.min(
+          9000,
+          Math.max(MAX_OUTPUT_TOKENS_QA, (requestedMcqCount || 5) * 450 + 800),
+        )
+      : null;
+
+    const content = await generateGeminiText({
+      model: GEMINI_EXAM_COACH_MODEL,
       messages: finalMessages,
-      temperature: isDeepStudy ? 0.45 : 0.4,
-      maxOutputTokens: isDeepStudy
-        ? MAX_OUTPUT_TOKENS_DEEP
-        : MAX_OUTPUT_TOKENS_QA,
-      enableThinking: isDeepStudy,
+      temperature: 0.4,
+      maxOutputTokens: mcqScaledTokens ?? MAX_OUTPUT_TOKENS_QA,
     });
 
     return new Response(JSON.stringify({ content }), {
