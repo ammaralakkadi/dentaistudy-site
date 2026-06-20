@@ -9,7 +9,7 @@
     <title>Quiz | DentAIstudy</title>
     <meta
       name="description"
-      content="Generate, save, and take dental quizzes with DentAIstudy Pro."
+      content="Turn saved dental notes into board-style quizzes with DentAIstudy Pro."
     />
     <link rel="canonical" href="https://dentaistudy.com/study-quiz.html" />
     <link rel="stylesheet" href="assets/css/study-builder/base.css" />
@@ -123,23 +123,6 @@
         </nav>
 
         <nav class="sb-nav" aria-label="Study Suite">
-          <a class="sb-btn" href="study.html">
-            <span class="ico" aria-hidden="true">
-              <svg
-                viewBox="0 0 24 24"
-                width="18"
-                height="18"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-              >
-                <path d="M12 5v14M5 12h14" />
-              </svg>
-            </span>
-            New chat
-          </a>
-
           <a class="sb-btn" href="study-library.html">
             <span class="ico" aria-hidden="true">
               <svg
@@ -159,6 +142,52 @@
               </svg>
             </span>
             Library
+          </a>
+
+          <a class="sb-btn" href="study.html">
+            <span class="ico" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                width="18"
+                height="18"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"
+                />
+                <path d="M8 9h8" />
+                <path d="M8 13h5" />
+              </svg>
+            </span>
+            Exam Coach
+          </a>
+
+          <a class="sb-btn" href="study-notes.html">
+            <span class="ico" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                width="18"
+                height="18"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                />
+                <path d="M14 2v6h6" />
+                <path d="M8 13h8" />
+                <path d="M8 17h5" />
+              </svg>
+            </span>
+            Notes
+            <span class="mini-badge">Pro</span>
           </a>
 
           <a class="sb-btn" href="study-flashcards.html">
@@ -300,8 +329,8 @@
             <a
               class="iconbtn"
               href="study.html"
-              aria-label="New chat"
-              title="New chat"
+              aria-label="Open Exam Coach"
+              title="Open Exam Coach"
             >
               <svg
                 viewBox="0 0 24 24"
@@ -309,21 +338,26 @@
                 height="20"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
+                stroke-width="1.8"
                 stroke-linecap="round"
+                stroke-linejoin="round"
               >
-                <path d="M12 5v14M5 12h14" />
+                <path
+                  d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"
+                />
+                <path d="M8 9h8" />
+                <path d="M8 13h5" />
               </svg>
             </a>
             <button
               class="iconbtn"
               id="btnMore"
               type="button"
-              aria-label="Study menu"
+              aria-label="Suite"
               aria-controls="chatsPanel"
               aria-expanded="false"
               aria-haspopup="dialog"
-              title="Study menu"
+              title="Suite"
             >
               <svg
                 viewBox="0 0 24 24"
@@ -350,17 +384,17 @@
           class="chats-panel"
           id="chatsPanel"
           role="dialog"
-          aria-label="Study menu"
+          aria-label="Suite"
           aria-modal="true"
           hidden
         >
           <div class="chats-panel-head">
-            <div class="chats-panel-title">Study menu</div>
+            <div class="chats-panel-title">Suite</div>
             <button
               class="iconbtn"
               id="chatsPanelClose"
               type="button"
-              aria-label="Close study menu"
+              aria-label="Close Suite"
             >
               <svg
                 viewBox="0 0 24 24"
@@ -401,10 +435,10 @@
                   <path d="m9 14 2 2 4-4" />
                 </svg>
               </div>
-              <h1>Unlock instant dental quizzes.</h1>
+              <h1>Unlock quizzes from your notes.</h1>
               <p>
-                Generate board-style and subject quizzes from weak areas, PDFs,
-                and dental topics before exams.
+                Generate board-style questions from saved Notes, then review
+                explanations while weak spots are still fresh.
               </p>
               <div
                 class="pro-lock-preview"
@@ -421,484 +455,55 @@
                 <a class="study-primary-btn" href="pricing.html"
                   >Upgrade to Pro</a
                 >
-                <a class="study-secondary-btn" href="study.html"
-                  >Back to chat</a
+                <a class="study-secondary-btn" href="study-notes.html"
+                  >Create notes</a
                 >
               </div>
             </article>
           </div>
 
           <div data-pro-panel hidden>
-            <div class="study-hero">
-              <div>
-                <p class="study-eyebrow">Exam mode</p>
-                <h1>Start the drill before motivation fades.</h1>
-                <p>
-                  Choose an exam or subject, generate board-style MCQs, then
-                  review explanations while the weak spots are fresh.
-                </p>
-              </div>
-              <div class="quiz-hero-media" aria-hidden="true">
-                <img src="assets/img/dental-quiz.png" alt="" />
-              </div>
-            </div>
-
             <div class="quiz-layout">
-              <aside class="study-panel tool-panel">
-                <h2>Create a quiz</h2>
-
-                <div class="study-quick-start" data-quiz-presets>
-                  <div class="study-quick-head">
-                    <span>Start fast</span>
-                    <small
-                      >Choose a drill that feels close to exam pressure.</small
-                    >
+              <aside class="tool-panel study-launcher">
+                <div class="study-create-hero">
+                  <div class="study-create-copy">
+                    <p class="study-create-kicker">Board practice</p>
+                    <h2>Create quizzes from your Notes</h2>
+                    <p>Start from one saved Note.</p>
                   </div>
 
-                  <div class="study-preset-group">
-                    <p>Exams</p>
-                    <div class="study-preset-grid">
-                      <button
-                        class="study-preset-btn"
-                        type="button"
-                        data-quiz-preset="ore"
-                      >
-                        <span class="study-preset-icon">ORE</span>
-                        <span class="study-preset-copy">
-                          <span class="study-preset-title"
-                            >ORE Emergency OSCE</span
-                          >
-                          <span class="study-preset-desc"
-                            >Drugs, doses, and sequence</span
-                          >
-                        </span>
-                        <span class="study-preset-arrow" aria-hidden="true"
-                          >›</span
-                        >
-                      </button>
-
-                      <button
-                        class="study-preset-btn"
-                        type="button"
-                        data-quiz-preset="adex"
-                      >
-                        <span class="study-preset-icon">ADEX</span>
-                        <span class="study-preset-copy">
-                          <span class="study-preset-title"
-                            >ADEX Failure Traps</span
-                          >
-                          <span class="study-preset-desc"
-                            >Access, prep, and grading risk</span
-                          >
-                        </span>
-                        <span class="study-preset-arrow" aria-hidden="true"
-                          >›</span
-                        >
-                      </button>
-
-                      <button
-                        class="study-preset-btn"
-                        type="button"
-                        data-quiz-preset="inbde"
-                      >
-                        <span class="study-preset-icon">INBDE</span>
-                        <span class="study-preset-copy">
-                          <span class="study-preset-title"
-                            >INBDE Patient Box</span
-                          >
-                          <span class="study-preset-desc"
-                            >Pharma, ethics, diagnosis</span
-                          >
-                        </span>
-                        <span class="study-preset-arrow" aria-hidden="true"
-                          >›</span
-                        >
-                      </button>
-
-                      <button
-                        class="study-preset-btn"
-                        type="button"
-                        data-quiz-preset="adc"
-                      >
-                        <span class="study-preset-icon">ADC</span>
-                        <span class="study-preset-copy">
-                          <span class="study-preset-title">ADC Guidelines</span>
-                          <span class="study-preset-desc"
-                            >Scenario-based best answers</span
-                          >
-                        </span>
-                        <span class="study-preset-arrow" aria-hidden="true"
-                          >›</span
-                        >
-                      </button>
-
-                      <button
-                        class="study-preset-btn"
-                        type="button"
-                        data-quiz-preset="ndecc"
-                      >
-                        <span class="study-preset-icon">NDECC</span>
-                        <span class="study-preset-copy">
-                          <span class="study-preset-title"
-                            >NDECC Situations</span
-                          >
-                          <span class="study-preset-desc"
-                            >Consent, refusal, autonomy</span
-                          >
-                        </span>
-                        <span class="study-preset-arrow" aria-hidden="true"
-                          >›</span
-                        >
-                      </button>
-
-                      <button
-                        class="study-preset-btn"
-                        type="button"
-                        data-quiz-preset="sdle"
-                      >
-                        <span class="study-preset-icon">SDLE</span>
-                        <span class="study-preset-copy">
-                          <span class="study-preset-title"
-                            >SDLE Trauma MCQs</span
-                          >
-                          <span class="study-preset-desc"
-                            >Immature teeth and timing</span
-                          >
-                        </span>
-                        <span class="study-preset-arrow" aria-hidden="true"
-                          >›</span
-                        >
-                      </button>
-
-                      <button
-                        class="study-preset-btn"
-                        type="button"
-                        data-quiz-preset="uae"
-                      >
-                        <span class="study-preset-icon">UAE</span>
-                        <span class="study-preset-copy">
-                          <span class="study-preset-title"
-                            >UAE Licensing Risk</span
-                          >
-                          <span class="study-preset-desc"
-                            >Medical safety MCQs</span
-                          >
-                        </span>
-                        <span class="study-preset-arrow" aria-hidden="true"
-                          >›</span
-                        >
-                      </button>
-                    </div>
-                  </div>
-
-                  <div class="study-preset-group">
-                    <p>Subjects</p>
-                    <div class="study-preset-grid">
-                      <button
-                        class="study-preset-btn"
-                        type="button"
-                        data-quiz-preset="endodontics"
-                      >
-                        <span class="study-preset-icon">ENDO</span>
-                        <span class="study-preset-copy">
-                          <span class="study-preset-title"
-                            >Pulp Diagnosis MCQs</span
-                          >
-                          <span class="study-preset-desc"
-                            >Pain history and apical signs</span
-                          >
-                        </span>
-                        <span class="study-preset-arrow" aria-hidden="true"
-                          >›</span
-                        >
-                      </button>
-
-                      <button
-                        class="study-preset-btn"
-                        type="button"
-                        data-quiz-preset="operative"
-                      >
-                        <span class="study-preset-icon">OPER</span>
-                        <span class="study-preset-copy">
-                          <span class="study-preset-title"
-                            >Deep Caries Decisions</span
-                          >
-                          <span class="study-preset-desc"
-                            >Cap, restore, or refer</span
-                          >
-                        </span>
-                        <span class="study-preset-arrow" aria-hidden="true"
-                          >›</span
-                        >
-                      </button>
-
-                      <button
-                        class="study-preset-btn"
-                        type="button"
-                        data-quiz-preset="prosthodontics"
-                      >
-                        <span class="study-preset-icon">PROS</span>
-                        <span class="study-preset-copy">
-                          <span class="study-preset-title"
-                            >Crown Prep MCQs</span
-                          >
-                          <span class="study-preset-desc"
-                            >Margins, ferrule, occlusion</span
-                          >
-                        </span>
-                        <span class="study-preset-arrow" aria-hidden="true"
-                          >›</span
-                        >
-                      </button>
-
-                      <button
-                        class="study-preset-btn"
-                        type="button"
-                        data-quiz-preset="periodontology"
-                      >
-                        <span class="study-preset-icon">PERIO</span>
-                        <span class="study-preset-copy">
-                          <span class="study-preset-title"
-                            >AAP Classification</span
-                          >
-                          <span class="study-preset-desc"
-                            >Staging, grading, risk</span
-                          >
-                        </span>
-                        <span class="study-preset-arrow" aria-hidden="true"
-                          >›</span
-                        >
-                      </button>
-
-                      <button
-                        class="study-preset-btn"
-                        type="button"
-                        data-quiz-preset="oral-surgery"
-                      >
-                        <span class="study-preset-icon">OS</span>
-                        <span class="study-preset-copy">
-                          <span class="study-preset-title"
-                            >BRONJ and Bleeding</span
-                          >
-                          <span class="study-preset-desc"
-                            >Extraction risk decisions</span
-                          >
-                        </span>
-                        <span class="study-preset-arrow" aria-hidden="true"
-                          >›</span
-                        >
-                      </button>
-
-                      <button
-                        class="study-preset-btn"
-                        type="button"
-                        data-quiz-preset="oral-anatomy"
-                      >
-                        <span class="study-preset-icon">LA</span>
-                        <span class="study-preset-copy">
-                          <span class="study-preset-title">Fascial Spaces</span>
-                          <span class="study-preset-desc"
-                            >Ludwig’s angina anatomy</span
-                          >
-                        </span>
-                        <span class="study-preset-arrow" aria-hidden="true"
-                          >›</span
-                        >
-                      </button>
-
-                      <button
-                        class="study-preset-btn"
-                        type="button"
-                        data-quiz-preset="orthodontics"
-                      >
-                        <span class="study-preset-icon">ORTH</span>
-                        <span class="study-preset-copy">
-                          <span class="study-preset-title">Class II MCQs</span>
-                          <span class="study-preset-desc"
-                            >Division 1 vs 2 signs</span
-                          >
-                        </span>
-                        <span class="study-preset-arrow" aria-hidden="true"
-                          >›</span
-                        >
-                      </button>
-
-                      <button
-                        class="study-preset-btn"
-                        type="button"
-                        data-quiz-preset="pediatric"
-                      >
-                        <span class="study-preset-icon">PED</span>
-                        <span class="study-preset-copy">
-                          <span class="study-preset-title"
-                            >Pediatric Emergencies</span
-                          >
-                          <span class="study-preset-desc"
-                            >Trauma, LA dose, abscess</span
-                          >
-                        </span>
-                        <span class="study-preset-arrow" aria-hidden="true"
-                          >›</span
-                        >
-                      </button>
-                    </div>
-                  </div>
+                  <button
+                    class="study-primary-btn study-create-open-btn"
+                    id="openQuizCreateBtn"
+                    type="button"
+                  >
+                    <i data-lucide="plus" aria-hidden="true"></i>
+                    <span>Create quiz</span>
+                  </button>
                 </div>
 
-                <div class="quiz-create-form">
-                  <div class="study-field">
-                    <label for="quizDeckSelect">Flashcard Deck</label>
-                    <div class="quiz-control quiz-control-select">
-                      <span class="quiz-field-icon" aria-hidden="true">
-                        <svg
-                          viewBox="0 0 24 24"
-                          width="19"
-                          height="19"
-                          fill="none"
-                          stroke="currentColor"
-                          stroke-width="1.9"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        >
-                          <path d="m12 3 8 4-8 4-8-4 8-4Z" />
-                          <path d="m4 12 8 4 8-4" />
-                          <path d="m4 17 8 4 8-4" />
-                        </svg>
-                      </span>
-                      <select class="study-select" id="quizDeckSelect"></select>
-                    </div>
-                  </div>
-
-                  <div class="study-field">
-                    <label>Difficulty</label>
-                    <div class="difficulty-row">
-                      <label>
-                        <input
-                          type="radio"
-                          name="quizDifficulty"
-                          value="easy"
-                        />
-                        <span>Easy</span>
-                      </label>
-                      <label>
-                        <input
-                          type="radio"
-                          name="quizDifficulty"
-                          value="normal"
-                          checked
-                        />
-                        <span>Normal</span>
-                      </label>
-                      <label>
-                        <input
-                          type="radio"
-                          name="quizDifficulty"
-                          value="hard"
-                        />
-                        <span>Hard</span>
-                      </label>
-                    </div>
-                  </div>
-
-                  <div class="study-field study-inline">
-                    <div>
-                      <label for="quizTitleInput">Quiz Title</label>
-                      <div class="quiz-control">
-                        <span class="quiz-field-icon" aria-hidden="true">
-                          <svg
-                            viewBox="0 0 24 24"
-                            width="19"
-                            height="19"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.9"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          >
-                            <path d="M12 20h9" />
-                            <path
-                              d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5Z"
-                            />
-                          </svg>
-                        </span>
-                        <input
-                          class="study-input"
-                          id="quizTitleInput"
-                          type="text"
-                          placeholder="e.g. Oral pathology"
-                        />
-                      </div>
-                    </div>
-                    <div>
-                      <label for="questionCountInput">Questions</label>
-                      <div class="quiz-control">
-                        <span class="quiz-field-icon" aria-hidden="true">
-                          <svg
-                            viewBox="0 0 24 24"
-                            width="19"
-                            height="19"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.9"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          >
-                            <path d="M4 9h16" />
-                            <path d="M4 15h16" />
-                            <path d="M10 3 8 21" />
-                            <path d="M16 3 14 21" />
-                          </svg>
-                        </span>
-                        <input
-                          class="study-input"
-                          id="questionCountInput"
-                          type="number"
-                          min="5"
-                          max="25"
-                          value="10"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="study-field quiz-notes-field">
-                    <label for="quizSourceInput">Notes</label>
-                    <div class="quiz-control quiz-control-textarea">
-                      <span class="quiz-field-icon" aria-hidden="true">
-                        <svg
-                          viewBox="0 0 24 24"
-                          width="19"
-                          height="19"
-                          fill="none"
-                          stroke="currentColor"
-                          stroke-width="1.9"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        >
-                          <path
-                            d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4v8Z"
-                          />
-                          <path d="M8 8h8" />
-                          <path d="M8 12h5" />
-                        </svg>
-                      </span>
-                      <textarea
-                        class="study-textarea"
-                        id="quizSourceInput"
-                        placeholder="Paste notes, or choose a flashcard deck..."
-                      ></textarea>
-                    </div>
-                  </div>
-
-                  <div class="tool-actions quiz-generate-actions">
-                    <button
-                      class="study-primary-btn"
-                      id="generateQuizBtn"
-                      type="button"
+                <div class="study-create-card">
+                  <span class="study-create-card-icon" aria-hidden="true">
+                    <svg
+                      viewBox="0 0 24 24"
+                      width="22"
+                      height="22"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
                     >
-                      <i data-lucide="wand-sparkles" aria-hidden="true"></i>
-                      <span data-generate-label>Generate quiz</span>
-                    </button>
+                      <rect width="8" height="4" x="8" y="2" rx="1" ry="1" />
+                      <path
+                        d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"
+                      />
+                      <path d="m9 14 2 2 4-4" />
+                    </svg>
+                  </span>
+
+                  <div class="study-create-card-copy">
+                    <h3>Open a saved quiz</h3>
                   </div>
 
                   <div class="study-field quiz-saved-field">
@@ -925,6 +530,207 @@
                   </div>
                 </div>
               </aside>
+
+              <div
+                class="study-create-modal"
+                id="quizCreateModal"
+                aria-hidden="true"
+                hidden
+              >
+                <div class="study-create-backdrop" data-quiz-create-close></div>
+
+                <section
+                  class="study-create-dialog"
+                  role="dialog"
+                  aria-modal="true"
+                  aria-labelledby="quizCreateTitle"
+                >
+                  <div class="study-create-dialog-head">
+                    <div>
+                      <p class="study-create-kicker">New quiz</p>
+                      <h2 id="quizCreateTitle">Create quiz</h2>
+                      <p>
+                        Use one saved Note as the source, then choose the
+                        difficulty and question count.
+                      </p>
+                    </div>
+
+                    <button
+                      class="study-create-close"
+                      type="button"
+                      aria-label="Close create quiz"
+                      data-quiz-create-close
+                    >
+                      <i data-lucide="x" aria-hidden="true"></i>
+                    </button>
+                  </div>
+
+                  <div class="quiz-create-form">
+                    <div class="study-field quiz-note-field">
+                      <label for="quizNoteSelect">Saved Note</label>
+                      <div class="quiz-control quiz-control-select">
+                        <span class="quiz-field-icon" aria-hidden="true">
+                          <svg
+                            viewBox="0 0 24 24"
+                            width="19"
+                            height="19"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.9"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          >
+                            <path
+                              d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                            />
+                            <path d="M14 2v6h6" />
+                            <path d="M8 13h8" />
+                            <path d="M8 17h5" />
+                          </svg>
+                        </span>
+                        <select
+                          class="study-select"
+                          id="quizNoteSelect"
+                        ></select>
+                      </div>
+                    </div>
+
+                    <div class="study-field">
+                      <label>Difficulty</label>
+                      <div class="difficulty-row">
+                        <label>
+                          <input
+                            type="radio"
+                            name="quizDifficulty"
+                            value="easy"
+                          />
+                          <span>Easy</span>
+                        </label>
+                        <label>
+                          <input
+                            type="radio"
+                            name="quizDifficulty"
+                            value="normal"
+                            checked
+                          />
+                          <span>Normal</span>
+                        </label>
+                        <label>
+                          <input
+                            type="radio"
+                            name="quizDifficulty"
+                            value="hard"
+                          />
+                          <span>Hard</span>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div class="study-field study-inline">
+                      <div>
+                        <label for="quizTitleInput">Quiz Title</label>
+                        <div class="quiz-control">
+                          <span class="quiz-field-icon" aria-hidden="true">
+                            <svg
+                              viewBox="0 0 24 24"
+                              width="19"
+                              height="19"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="1.9"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            >
+                              <path d="M12 20h9" />
+                              <path
+                                d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5Z"
+                              />
+                            </svg>
+                          </span>
+                          <input
+                            class="study-input"
+                            id="quizTitleInput"
+                            type="text"
+                            placeholder="e.g. Oral pathology"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <label for="questionCountInput">Questions</label>
+                        <div class="quiz-control">
+                          <span class="quiz-field-icon" aria-hidden="true">
+                            <svg
+                              viewBox="0 0 24 24"
+                              width="19"
+                              height="19"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="1.9"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            >
+                              <path d="M4 9h16" />
+                              <path d="M4 15h16" />
+                              <path d="M10 3 8 21" />
+                              <path d="M16 3 14 21" />
+                            </svg>
+                          </span>
+                          <input
+                            class="study-input"
+                            id="questionCountInput"
+                            type="number"
+                            min="5"
+                            max="40"
+                            value="10"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <textarea id="quizSourceInput" hidden></textarea>
+
+                    <div class="tool-actions quiz-generate-actions">
+                      <button
+                        class="study-primary-btn"
+                        id="generateQuizBtn"
+                        type="button"
+                      >
+                        <i data-lucide="wand-sparkles" aria-hidden="true"></i>
+                        <span data-generate-label>Generate quiz</span>
+                      </button>
+                    </div>
+                  </div>
+                </section>
+              </div>
+
+              <article
+                class="study-output-empty quiz-empty-state"
+                id="quizEmptyState"
+                aria-label="Quiz preview"
+              >
+                <div class="study-output-empty-inner">
+                  <div class="study-output-empty-icon" aria-hidden="true">
+                    <svg
+                      viewBox="0 0 24 24"
+                      width="26"
+                      height="26"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <rect width="8" height="4" x="8" y="2" rx="1" ry="1" />
+                      <path
+                        d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"
+                      />
+                      <path d="m9 14 2 2 4-4" />
+                    </svg>
+                  </div>
+                  <h2>Your quizzes appear here.</h2>
+                  <p>Create or open a quiz when you are ready.</p>
+                </div>
+              </article>
 
               <section class="study-panel quiz-stage" aria-label="Quiz runner">
                 <div class="quiz-top">
@@ -1053,7 +859,7 @@
           </svg>
           <span>Exams</span>
         </a>
-        <a href="study.html">
+        <a href="study-notes.html">
           <svg
             width="20"
             height="20"
@@ -1064,10 +870,14 @@
             stroke-linecap="round"
             stroke-linejoin="round"
           >
-            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
-            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+            <path
+              d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+            />
+            <path d="M14 2v6h6" />
+            <path d="M8 13h8" />
+            <path d="M8 17h5" />
           </svg>
-          <span>Study Builder</span>
+          <span>Notes</span>
         </a>
         <a href="blogs.html">
           <svg

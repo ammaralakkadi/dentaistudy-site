@@ -9,7 +9,7 @@
     <title>Study Library | DentAIstudy</title>
     <meta
       name="description"
-      content="Open, search, rename, and manage your saved DentAIstudy chats, flashcards, and quizzes."
+      content="Open, search, rename, and manage your saved DentAIstudy notes, flashcards, quizzes, and Exam Coach chats."
     />
     <link rel="canonical" href="https://dentaistudy.com/study-library.html" />
     <link rel="stylesheet" href="assets/css/study-builder/base.css" />
@@ -121,23 +121,6 @@
         </nav>
 
         <nav class="sb-nav" aria-label="Study Suite">
-          <a class="sb-btn" href="study.html">
-            <span class="ico" aria-hidden="true">
-              <svg
-                viewBox="0 0 24 24"
-                width="18"
-                height="18"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-              >
-                <path d="M12 5v14M5 12h14" />
-              </svg>
-            </span>
-            New chat
-          </a>
-
           <a
             class="sb-btn is-active"
             href="study-library.html"
@@ -161,6 +144,52 @@
               </svg>
             </span>
             Library
+          </a>
+
+          <a class="sb-btn" href="study.html">
+            <span class="ico" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                width="18"
+                height="18"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"
+                />
+                <path d="M8 9h8" />
+                <path d="M8 13h5" />
+              </svg>
+            </span>
+            Exam Coach
+          </a>
+
+          <a class="sb-btn" href="study-notes.html">
+            <span class="ico" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                width="18"
+                height="18"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                />
+                <path d="M14 2v6h6" />
+                <path d="M8 13h8" />
+                <path d="M8 17h5" />
+              </svg>
+            </span>
+            Notes
+            <span class="mini-badge">Pro</span>
           </a>
 
           <a class="sb-btn" href="study-flashcards.html">
@@ -220,8 +249,12 @@
               stroke-linecap="round"
               stroke-linejoin="round"
             >
-              <path d="M12 3l1.7 4.3L18 9l-4.3 1.7L12 15l-1.7-4.3L6 9l4.3-1.7L12 3Z" />
-              <path d="M19 14l.9 2.1L22 17l-2.1.9L19 20l-.9-2.1L16 17l2.1-.9L19 14Z" />
+              <path
+                d="M12 3l1.7 4.3L18 9l-4.3 1.7L12 15l-1.7-4.3L6 9l4.3-1.7L12 3Z"
+              />
+              <path
+                d="M19 14l.9 2.1L22 17l-2.1.9L19 20l-.9-2.1L16 17l2.1-.9L19 14Z"
+              />
             </svg>
           </span>
           <span class="sb-upgrade-card-copy">
@@ -293,8 +326,8 @@
             <a
               class="iconbtn"
               href="study.html"
-              aria-label="New chat"
-              title="New chat"
+              aria-label="Open Exam Coach"
+              title="Open Exam Coach"
             >
               <svg
                 viewBox="0 0 24 24"
@@ -302,21 +335,26 @@
                 height="20"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
+                stroke-width="1.8"
                 stroke-linecap="round"
+                stroke-linejoin="round"
               >
-                <path d="M12 5v14M5 12h14" />
+                <path
+                  d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"
+                />
+                <path d="M8 9h8" />
+                <path d="M8 13h5" />
               </svg>
             </a>
             <button
               class="iconbtn"
               id="btnMore"
               type="button"
-              aria-label="Study menu"
+              aria-label="Suite"
               aria-controls="chatsPanel"
               aria-expanded="false"
               aria-haspopup="dialog"
-              title="Study menu"
+              title="Suite"
             >
               <svg
                 viewBox="0 0 24 24"
@@ -343,17 +381,17 @@
           class="chats-panel"
           id="chatsPanel"
           role="dialog"
-          aria-label="Study menu"
+          aria-label="Suite"
           aria-modal="true"
           hidden
         >
           <div class="chats-panel-head">
-            <div class="chats-panel-title">Study menu</div>
+            <div class="chats-panel-title">Suite</div>
             <button
               class="iconbtn"
               id="chatsPanelClose"
               type="button"
-              aria-label="Close study menu"
+              aria-label="Close Suite"
             >
               <svg
                 viewBox="0 0 24 24"
@@ -411,15 +449,37 @@
             <div class="study-hero">
               <div class="study-hero-copy">
                 <p class="study-eyebrow">Study Suite</p>
-                <h1>Your study library.</h1>
-                <p>
-                  Saved chats, flashcard decks, and quizzes in one place, so
-                  revision feels organized instead of scattered.
-                </p>
+                <h1>Library</h1>
               </div>
+
               <div class="library-hero-actions">
                 <a
                   class="study-primary-btn library-action-btn"
+                  href="study-notes.html"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    width="17"
+                    height="17"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.9"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                    />
+                    <path d="M14 2v6h6" />
+                    <path d="M8 13h8" />
+                    <path d="M8 17h5" />
+                  </svg>
+                  <span>New notes</span>
+                </a>
+
+                <a
+                  class="study-secondary-btn library-action-btn"
                   href="study.html"
                 >
                   <svg
@@ -428,14 +488,20 @@
                     height="17"
                     fill="none"
                     stroke="currentColor"
-                    stroke-width="2"
+                    stroke-width="1.8"
                     stroke-linecap="round"
+                    stroke-linejoin="round"
                     aria-hidden="true"
                   >
-                    <path d="M12 5v14M5 12h14" />
+                    <path
+                      d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"
+                    />
+                    <path d="M8 9h8" />
+                    <path d="M8 13h5" />
                   </svg>
-                  <span>New chat</span>
+                  <span>Exam Coach</span>
                 </a>
+
                 <a
                   class="study-secondary-btn library-action-btn"
                   href="study-flashcards.html"
@@ -457,8 +523,9 @@
                       d="M22 18H11a2 2 0 1 0 0 4h11V6H11a2 2 0 0 0-2 2v12"
                     />
                   </svg>
-                  <span>New flashcards</span>
+                  <span>Flashcards</span>
                 </a>
+
                 <a
                   class="study-secondary-btn library-action-btn"
                   href="study-quiz.html"
@@ -480,7 +547,7 @@
                     />
                     <path d="m9 14 2 2 4-4" />
                   </svg>
-                  <span>New quiz</span>
+                  <span>Quiz</span>
                 </a>
               </div>
             </div>
@@ -502,11 +569,43 @@
                   </svg>
                 </span>
                 <span class="library-stat-text">
-                  <span class="library-stat-label">Chats</span>
+                  <span class="library-stat-label">Exam Coach</span>
                   <strong id="libraryStatChats">0</strong>
                   <span class="library-stat-note">saved chats</span>
                 </span>
               </div>
+
+              <div class="library-stat">
+                <span
+                  class="library-stat-icon is-note"
+                  id="libraryStatNoteIcon"
+                  aria-hidden="true"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    width="22"
+                    height="22"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path
+                      d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                    />
+                    <path d="M14 2v6h6" />
+                    <path d="M8 13h8" />
+                    <path d="M8 17h5" />
+                  </svg>
+                </span>
+                <span class="library-stat-text">
+                  <span class="library-stat-label">Notes</span>
+                  <strong id="libraryStatNotes">0</strong>
+                  <span class="library-stat-note">saved notes</span>
+                </span>
+              </div>
+
               <div class="library-stat">
                 <span
                   class="library-stat-icon is-deck"
@@ -536,6 +635,7 @@
                   <span class="library-stat-note">decks</span>
                 </span>
               </div>
+
               <div class="library-stat">
                 <span
                   class="library-stat-icon is-quiz"
@@ -565,6 +665,7 @@
                   <span class="library-stat-note">quizzes</span>
                 </span>
               </div>
+
               <div class="library-stat">
                 <span class="library-stat-icon is-activity" aria-hidden="true">
                   <svg
@@ -607,10 +708,10 @@
                   <button
                     class="library-tab"
                     type="button"
-                    data-library-filter="chat"
+                    data-library-filter="note"
                   >
-                    Chats
-                    <span id="libraryCountChats">0</span>
+                    Notes
+                    <span id="libraryCountNotes">0</span>
                   </button>
                   <button
                     class="library-tab"
@@ -627,6 +728,14 @@
                   >
                     Quizzes
                     <span id="libraryCountQuizzes">0</span>
+                  </button>
+                  <button
+                    class="library-tab"
+                    type="button"
+                    data-library-filter="chat"
+                  >
+                    Exam Coach
+                    <span id="libraryCountChats">0</span>
                   </button>
                 </div>
 
@@ -725,7 +834,7 @@
                     class="library-search"
                     id="librarySearch"
                     type="search"
-                    placeholder="Search chats, flashcards, quizzes..."
+                    placeholder="Search notes, flashcards, quizzes..."
                     aria-label="Search library"
                     autocomplete="off"
                   />
@@ -758,8 +867,7 @@
 
             <div class="library-grid" id="libraryGrid" aria-live="polite"></div>
             <div class="study-empty" id="libraryEmpty" hidden>
-              No saved study work yet. Start a chat, make flashcards, or
-              generate a quiz.
+              No saved study work yet. Generate notes from a PDF to start.
             </div>
           </div>
         </section>
@@ -780,7 +888,9 @@
             stroke-linejoin="round"
           >
             <path d="M12 6v8l3-3 3 3V6" />
-            <path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2z" />
+            <path
+              d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2z"
+            />
           </svg>
           <span>Subjects</span>
         </a>
@@ -798,13 +908,15 @@
             <path d="M12 7v14" />
             <path d="M16 12h2" />
             <path d="M16 8h2" />
-            <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" />
+            <path
+              d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"
+            />
             <path d="M6 12h2" />
             <path d="M6 8h2" />
           </svg>
           <span>Exams</span>
         </a>
-        <a href="study.html">
+        <a href="study-notes.html">
           <svg
             width="20"
             height="20"
@@ -815,10 +927,14 @@
             stroke-linecap="round"
             stroke-linejoin="round"
           >
-            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
-            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+            <path
+              d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+            />
+            <path d="M14 2v6h6" />
+            <path d="M8 13h8" />
+            <path d="M8 17h5" />
           </svg>
-          <span>Study Builder</span>
+          <span>Notes</span>
         </a>
         <a href="blogs.html">
           <svg

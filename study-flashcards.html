@@ -9,7 +9,7 @@
     <title>Flashcards | DentAIstudy</title>
     <meta
       name="description"
-      content="Generate, save, and review dental flashcards with DentAIstudy Pro."
+      content="Turn saved dental notes into active recall flashcards with DentAIstudy Pro."
     />
     <link
       rel="canonical"
@@ -125,23 +125,6 @@
         </nav>
 
         <nav class="sb-nav" aria-label="Study Suite">
-          <a class="sb-btn" href="study.html">
-            <span class="ico" aria-hidden="true">
-              <svg
-                viewBox="0 0 24 24"
-                width="18"
-                height="18"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-              >
-                <path d="M12 5v14M5 12h14" />
-              </svg>
-            </span>
-            New chat
-          </a>
-
           <a class="sb-btn" href="study-library.html">
             <span class="ico" aria-hidden="true">
               <svg
@@ -161,6 +144,52 @@
               </svg>
             </span>
             Library
+          </a>
+
+          <a class="sb-btn" href="study.html">
+            <span class="ico" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                width="18"
+                height="18"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"
+                />
+                <path d="M8 9h8" />
+                <path d="M8 13h5" />
+              </svg>
+            </span>
+            Exam Coach
+          </a>
+
+          <a class="sb-btn" href="study-notes.html">
+            <span class="ico" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                width="18"
+                height="18"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                />
+                <path d="M14 2v6h6" />
+                <path d="M8 13h8" />
+                <path d="M8 17h5" />
+              </svg>
+            </span>
+            Notes
+            <span class="mini-badge">Pro</span>
           </a>
 
           <a
@@ -300,8 +329,8 @@
             <a
               class="iconbtn"
               href="study.html"
-              aria-label="New chat"
-              title="New chat"
+              aria-label="Open Exam Coach"
+              title="Open Exam Coach"
             >
               <svg
                 viewBox="0 0 24 24"
@@ -309,21 +338,26 @@
                 height="20"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
+                stroke-width="1.8"
                 stroke-linecap="round"
+                stroke-linejoin="round"
               >
-                <path d="M12 5v14M5 12h14" />
+                <path
+                  d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"
+                />
+                <path d="M8 9h8" />
+                <path d="M8 13h5" />
               </svg>
             </a>
             <button
               class="iconbtn"
               id="btnMore"
               type="button"
-              aria-label="Study menu"
+              aria-label="Suite"
               aria-controls="chatsPanel"
               aria-expanded="false"
               aria-haspopup="dialog"
-              title="Study menu"
+              title="Suite"
             >
               <svg
                 viewBox="0 0 24 24"
@@ -350,17 +384,17 @@
           class="chats-panel"
           id="chatsPanel"
           role="dialog"
-          aria-label="Study menu"
+          aria-label="Suite"
           aria-modal="true"
           hidden
         >
           <div class="chats-panel-head">
-            <div class="chats-panel-title">Study menu</div>
+            <div class="chats-panel-title">Suite</div>
             <button
               class="iconbtn"
               id="chatsPanelClose"
               type="button"
-              aria-label="Close study menu"
+              aria-label="Close Suite"
             >
               <svg
                 viewBox="0 0 24 24"
@@ -399,10 +433,10 @@
                   <path d="M22 18H11a2 2 0 1 0 0 4h11V6H11a2 2 0 0 0-2 2v12" />
                 </svg>
               </div>
-              <h1>Unlock instant dental flashcards.</h1>
+              <h1>Unlock flashcards from your notes.</h1>
               <p>
-                Turn weak topics, lecture notes, and dental subjects into active
-                recall decks for exams, clinics, and revision.
+                Generate active recall decks from saved Notes, then review them
+                for exams, clinics, and revision.
               </p>
               <div
                 class="pro-lock-preview"
@@ -419,431 +453,55 @@
                 <a class="study-primary-btn" href="pricing.html"
                   >Upgrade to Pro</a
                 >
-                <a class="study-secondary-btn" href="study.html"
-                  >Back to chat</a
+                <a class="study-secondary-btn" href="study-notes.html"
+                  >Create notes</a
                 >
               </div>
             </article>
           </div>
 
           <div data-pro-panel hidden>
-            <div class="study-hero">
-              <div>
-                <p class="study-eyebrow">Active recall</p>
-                <h1>Build today's deck in one tap.</h1>
-                <p>
-                  Choose an exam or subject, generate focused cards, then review
-                  without rebuilding the setup every time.
-                </p>
-              </div>
-              <div class="flashcards-hero-media" aria-hidden="true">
-                <img src="assets/img/dental-flash.png" alt="" />
-              </div>
-            </div>
-
             <div class="flashcards-layout">
-              <aside class="study-panel tool-panel">
-                <h2>Create a deck</h2>
-
-                <div class="study-quick-start" data-flashcard-presets>
-                  <div class="study-quick-head">
-                    <span>Start fast</span>
-                    <small
-                      >Pick a high-pressure area students usually avoid.</small
-                    >
+              <aside class="tool-panel study-launcher">
+                <div class="study-create-hero">
+                  <div class="study-create-copy">
+                    <p class="study-create-kicker">Active recall</p>
+                    <h2>Create flashcards from your Notes</h2>
+                    <p>Start from one saved Note.</p>
                   </div>
 
-                  <div class="study-preset-group">
-                    <p>Exams</p>
-                    <div class="study-preset-grid">
-                      <button
-                        class="study-preset-btn"
-                        type="button"
-                        data-flashcard-preset="ore"
-                      >
-                        <span class="study-preset-icon">ORE</span>
-                        <span class="study-preset-copy">
-                          <span class="study-preset-title"
-                            >ORE Emergency Drugs</span
-                          >
-                          <span class="study-preset-desc"
-                            >UK dental emergency recall</span
-                          >
-                        </span>
-                        <span class="study-preset-arrow" aria-hidden="true"
-                          >›</span
-                        >
-                      </button>
-
-                      <button
-                        class="study-preset-btn"
-                        type="button"
-                        data-flashcard-preset="adex"
-                      >
-                        <span class="study-preset-icon">ADEX</span>
-                        <span class="study-preset-copy">
-                          <span class="study-preset-title"
-                            >ADEX Critical Errors</span
-                          >
-                          <span class="study-preset-desc"
-                            >Access, prep, and fail points</span
-                          >
-                        </span>
-                        <span class="study-preset-arrow" aria-hidden="true"
-                          >›</span
-                        >
-                      </button>
-
-                      <button
-                        class="study-preset-btn"
-                        type="button"
-                        data-flashcard-preset="inbde"
-                      >
-                        <span class="study-preset-icon">INBDE</span>
-                        <span class="study-preset-copy">
-                          <span class="study-preset-title"
-                            >INBDE Patient Box</span
-                          >
-                          <span class="study-preset-desc"
-                            >Medically complex cases</span
-                          >
-                        </span>
-                        <span class="study-preset-arrow" aria-hidden="true"
-                          >›</span
-                        >
-                      </button>
-
-                      <button
-                        class="study-preset-btn"
-                        type="button"
-                        data-flashcard-preset="adc"
-                      >
-                        <span class="study-preset-icon">ADC</span>
-                        <span class="study-preset-copy">
-                          <span class="study-preset-title"
-                            >ADC Scenario Logic</span
-                          >
-                          <span class="study-preset-desc"
-                            >Guidelines and best answer traps</span
-                          >
-                        </span>
-                        <span class="study-preset-arrow" aria-hidden="true"
-                          >›</span
-                        >
-                      </button>
-
-                      <button
-                        class="study-preset-btn"
-                        type="button"
-                        data-flashcard-preset="ndecc"
-                      >
-                        <span class="study-preset-icon">NDECC</span>
-                        <span class="study-preset-copy">
-                          <span class="study-preset-title">NDECC Judgment</span>
-                          <span class="study-preset-desc"
-                            >Autonomy, consent, communication</span
-                          >
-                        </span>
-                        <span class="study-preset-arrow" aria-hidden="true"
-                          >›</span
-                        >
-                      </button>
-
-                      <button
-                        class="study-preset-btn"
-                        type="button"
-                        data-flashcard-preset="sdle"
-                      >
-                        <span class="study-preset-icon">SDLE</span>
-                        <span class="study-preset-copy">
-                          <span class="study-preset-title"
-                            >SDLE Trauma Recall</span
-                          >
-                          <span class="study-preset-desc"
-                            >Pediatric trauma and prevention</span
-                          >
-                        </span>
-                        <span class="study-preset-arrow" aria-hidden="true"
-                          >›</span
-                        >
-                      </button>
-
-                      <button
-                        class="study-preset-btn"
-                        type="button"
-                        data-flashcard-preset="uae"
-                      >
-                        <span class="study-preset-icon">UAE</span>
-                        <span class="study-preset-copy">
-                          <span class="study-preset-title"
-                            >UAE Medical Risk</span
-                          >
-                          <span class="study-preset-desc"
-                            >Prometric-style safety recall</span
-                          >
-                        </span>
-                        <span class="study-preset-arrow" aria-hidden="true"
-                          >›</span
-                        >
-                      </button>
-                    </div>
-                  </div>
-
-                  <div class="study-preset-group">
-                    <p>Subjects</p>
-                    <div class="study-preset-grid">
-                      <button
-                        class="study-preset-btn"
-                        type="button"
-                        data-flashcard-preset="endodontics"
-                      >
-                        <span class="study-preset-icon">ENDO</span>
-                        <span class="study-preset-copy">
-                          <span class="study-preset-title">Pulp Diagnosis</span>
-                          <span class="study-preset-desc"
-                            >Reversible vs irreversible pain</span
-                          >
-                        </span>
-                        <span class="study-preset-arrow" aria-hidden="true"
-                          >›</span
-                        >
-                      </button>
-
-                      <button
-                        class="study-preset-btn"
-                        type="button"
-                        data-flashcard-preset="operative"
-                      >
-                        <span class="study-preset-icon">OPER</span>
-                        <span class="study-preset-copy">
-                          <span class="study-preset-title"
-                            >Pulp Cap Decisions</span
-                          >
-                          <span class="study-preset-desc"
-                            >Direct vs indirect pulp cap</span
-                          >
-                        </span>
-                        <span class="study-preset-arrow" aria-hidden="true"
-                          >›</span
-                        >
-                      </button>
-
-                      <button
-                        class="study-preset-btn"
-                        type="button"
-                        data-flashcard-preset="prosthodontics"
-                      >
-                        <span class="study-preset-icon">PROS</span>
-                        <span class="study-preset-copy">
-                          <span class="study-preset-title"
-                            >Crown Prep Traps</span
-                          >
-                          <span class="study-preset-desc"
-                            >Ferrule, margins, taper</span
-                          >
-                        </span>
-                        <span class="study-preset-arrow" aria-hidden="true"
-                          >›</span
-                        >
-                      </button>
-
-                      <button
-                        class="study-preset-btn"
-                        type="button"
-                        data-flashcard-preset="periodontology"
-                      >
-                        <span class="study-preset-icon">PERIO</span>
-                        <span class="study-preset-copy">
-                          <span class="study-preset-title"
-                            >Staging and Grading</span
-                          >
-                          <span class="study-preset-desc"
-                            >AAP classification recall</span
-                          >
-                        </span>
-                        <span class="study-preset-arrow" aria-hidden="true"
-                          >›</span
-                        >
-                      </button>
-
-                      <button
-                        class="study-preset-btn"
-                        type="button"
-                        data-flashcard-preset="oral-surgery"
-                      >
-                        <span class="study-preset-icon">OS</span>
-                        <span class="study-preset-copy">
-                          <span class="study-preset-title"
-                            >MRONJ and Extractions</span
-                          >
-                          <span class="study-preset-desc"
-                            >Risk, prevention, management</span
-                          >
-                        </span>
-                        <span class="study-preset-arrow" aria-hidden="true"
-                          >›</span
-                        >
-                      </button>
-
-                      <button
-                        class="study-preset-btn"
-                        type="button"
-                        data-flashcard-preset="oral-anatomy"
-                      >
-                        <span class="study-preset-icon">LA</span>
-                        <span class="study-preset-copy">
-                          <span class="study-preset-title"
-                            >Ludwig’s Angina</span
-                          >
-                          <span class="study-preset-desc"
-                            >Spaces, borders, airway risk</span
-                          >
-                        </span>
-                        <span class="study-preset-arrow" aria-hidden="true"
-                          >›</span
-                        >
-                      </button>
-
-                      <button
-                        class="study-preset-btn"
-                        type="button"
-                        data-flashcard-preset="orthodontics"
-                      >
-                        <span class="study-preset-icon">ORTH</span>
-                        <span class="study-preset-copy">
-                          <span class="study-preset-title"
-                            >Class II Differences</span
-                          >
-                          <span class="study-preset-desc"
-                            >Division 1 vs Division 2</span
-                          >
-                        </span>
-                        <span class="study-preset-arrow" aria-hidden="true"
-                          >›</span
-                        >
-                      </button>
-
-                      <button
-                        class="study-preset-btn"
-                        type="button"
-                        data-flashcard-preset="pediatric"
-                      >
-                        <span class="study-preset-icon">PED</span>
-                        <span class="study-preset-copy">
-                          <span class="study-preset-title"
-                            >Pediatric LA Doses</span
-                          >
-                          <span class="study-preset-desc"
-                            >Maximum dose and safety</span
-                          >
-                        </span>
-                        <span class="study-preset-arrow" aria-hidden="true"
-                          >›</span
-                        >
-                      </button>
-                    </div>
-                  </div>
+                  <button
+                    class="study-primary-btn study-create-open-btn"
+                    id="openFlashcardCreateBtn"
+                    type="button"
+                  >
+                    <i data-lucide="plus" aria-hidden="true"></i>
+                    <span>Create flashcards</span>
+                  </button>
                 </div>
 
-                <div class="flashcard-create-form">
-                  <div class="study-field flashcard-chat-field">
-                    <label for="flashcardChatSelect">Saved Chat</label>
-                    <div class="flashcard-control flashcard-control-select">
-                      <span class="flashcard-field-icon" aria-hidden="true">
-                        <svg
-                          viewBox="0 0 24 24"
-                          width="19"
-                          height="19"
-                          fill="none"
-                          stroke="currentColor"
-                          stroke-width="1.9"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        >
-                          <path
-                            d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4v8Z"
-                          />
-                          <path d="M8 8h8" />
-                          <path d="M8 12h5" />
-                        </svg>
-                      </span>
-                      <select
-                        class="study-select"
-                        id="flashcardChatSelect"
-                      ></select>
-                    </div>
-                  </div>
-
-                  <div class="study-field study-inline flashcard-title-count">
-                    <div>
-                      <label for="deckTitleInput">Deck Title</label>
-                      <div class="flashcard-control">
-                        <span class="flashcard-field-icon" aria-hidden="true">
-                          <svg
-                            viewBox="0 0 24 24"
-                            width="19"
-                            height="19"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.9"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          >
-                            <path d="M12 20h9" />
-                            <path
-                              d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5Z"
-                            />
-                          </svg>
-                        </span>
-                        <input
-                          class="study-input"
-                          id="deckTitleInput"
-                          type="text"
-                          placeholder="e.g. Local anaesthesia"
-                        />
-                      </div>
-                    </div>
-                    <div>
-                      <label for="cardCountInput">Cards</label>
-                      <div class="flashcard-control">
-                        <span class="flashcard-field-icon" aria-hidden="true">
-                          <i data-lucide="library"></i>
-                        </span>
-                        <input
-                          class="study-input"
-                          id="cardCountInput"
-                          type="number"
-                          min="6"
-                          max="30"
-                          value="12"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="study-field flashcard-notes-field">
-                    <label for="flashcardSourceInput">Notes</label>
-                    <div class="flashcard-control flashcard-control-textarea">
-                      <span class="flashcard-field-icon" aria-hidden="true">
-                        <i data-lucide="notepad-text"></i>
-                      </span>
-                      <textarea
-                        class="study-textarea"
-                        id="flashcardSourceInput"
-                        placeholder="Paste notes, a topic, or pull from a saved chat..."
-                      ></textarea>
-                    </div>
-                  </div>
-
-                  <div class="tool-actions flashcard-generate-actions">
-                    <button
-                      class="study-primary-btn"
-                      id="generateCardsBtn"
-                      type="button"
+                <div class="study-create-card">
+                  <span class="study-create-card-icon" aria-hidden="true">
+                    <svg
+                      viewBox="0 0 24 24"
+                      width="22"
+                      height="22"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
                     >
-                      <i data-lucide="wand-sparkles" aria-hidden="true"></i>
-                      <span data-generate-label>Generate flashcards</span>
-                    </button>
+                      <path d="M2 16V4a2 2 0 0 1 2-2h11" />
+                      <path d="M5 14H4a2 2 0 1 0 0 4h1" />
+                      <path
+                        d="M22 18H11a2 2 0 1 0 0 4h11V6H11a2 2 0 0 0-2 2v12"
+                      />
+                    </svg>
+                  </span>
+
+                  <div class="study-create-card-copy">
+                    <h3>Open a saved deck</h3>
                   </div>
 
                   <div class="study-field flashcard-saved-field">
@@ -870,6 +528,179 @@
                   </div>
                 </div>
               </aside>
+
+              <div
+                class="study-create-modal"
+                id="flashcardCreateModal"
+                aria-hidden="true"
+                hidden
+              >
+                <div
+                  class="study-create-backdrop"
+                  data-flashcard-create-close
+                ></div>
+
+                <section
+                  class="study-create-dialog"
+                  role="dialog"
+                  aria-modal="true"
+                  aria-labelledby="flashcardCreateTitle"
+                >
+                  <div class="study-create-dialog-head">
+                    <div>
+                      <p class="study-create-kicker">New deck</p>
+                      <h2 id="flashcardCreateTitle">Create flashcards</h2>
+                      <p>
+                        Use one saved Note as the source. Keep the deck focused
+                        and exam-ready.
+                      </p>
+                    </div>
+
+                    <button
+                      class="study-create-close"
+                      type="button"
+                      aria-label="Close create flashcards"
+                      data-flashcard-create-close
+                    >
+                      <i data-lucide="x" aria-hidden="true"></i>
+                    </button>
+                  </div>
+
+                  <div class="flashcard-create-form">
+                    <div class="study-field flashcard-note-field">
+                      <label for="flashcardNoteSelect">Saved Note</label>
+                      <div class="flashcard-control flashcard-control-select">
+                        <span class="flashcard-field-icon" aria-hidden="true">
+                          <svg
+                            viewBox="0 0 24 24"
+                            width="19"
+                            height="19"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.9"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          >
+                            <path
+                              d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                            />
+                            <path d="M14 2v6h6" />
+                            <path d="M8 13h8" />
+                            <path d="M8 17h5" />
+                          </svg>
+                        </span>
+                        <select
+                          class="study-select"
+                          id="flashcardNoteSelect"
+                        ></select>
+                      </div>
+                    </div>
+
+                    <div class="study-field study-inline flashcard-title-count">
+                      <div>
+                        <label for="deckTitleInput">Deck Title</label>
+                        <div class="flashcard-control">
+                          <span class="flashcard-field-icon" aria-hidden="true">
+                            <svg
+                              viewBox="0 0 24 24"
+                              width="19"
+                              height="19"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="1.9"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            >
+                              <path d="M12 20h9" />
+                              <path
+                                d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5Z"
+                              />
+                            </svg>
+                          </span>
+                          <input
+                            class="study-input"
+                            id="deckTitleInput"
+                            type="text"
+                            placeholder="e.g. Local anaesthesia"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <label for="cardCountInput">Cards</label>
+                        <div class="flashcard-control">
+                          <span class="flashcard-field-icon" aria-hidden="true">
+                            <svg
+                              viewBox="0 0 24 24"
+                              width="19"
+                              height="19"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="1.9"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            >
+                              <path d="M4 9h16" />
+                              <path d="M4 15h16" />
+                              <path d="M10 3 8 21" />
+                              <path d="M16 3 14 21" />
+                            </svg>
+                          </span>
+                          <input
+                            class="study-input"
+                            id="cardCountInput"
+                            type="number"
+                            min="6"
+                            max="40"
+                            value="12"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <textarea id="flashcardSourceInput" hidden></textarea>
+
+                    <div class="tool-actions flashcard-generate-actions">
+                      <button
+                        class="study-primary-btn"
+                        id="generateCardsBtn"
+                        type="button"
+                      >
+                        <i data-lucide="wand-sparkles" aria-hidden="true"></i>
+                        <span data-generate-label>Generate flashcards</span>
+                      </button>
+                    </div>
+                  </div>
+                </section>
+              </div>
+
+              <article
+                class="study-output-empty flashcard-empty-state"
+                id="flashcardEmptyState"
+                aria-label="Flashcards preview"
+              >
+                <div class="study-output-empty-inner">
+                  <div class="study-output-empty-icon" aria-hidden="true">
+                    <svg
+                      viewBox="0 0 24 24"
+                      width="26"
+                      height="26"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path d="M2 16V4a2 2 0 0 1 2-2h11" />
+                      <path d="M5 14H4a2 2 0 1 0 0 4h1" />
+                      <path
+                        d="M22 18H11a2 2 0 1 0 0 4h11V6H11a2 2 0 0 0-2 2v12"
+                      />
+                    </svg>
+                  </div>
+                  <h2>Your flashcards appear here.</h2>
+                  <p>Create or open a deck when you are ready.</p>
+                </div>
+              </article>
 
               <section
                 class="study-panel deck-stage"
@@ -1021,7 +852,7 @@
           </svg>
           <span>Exams</span>
         </a>
-        <a href="study.html">
+        <a href="study-notes.html">
           <svg
             width="20"
             height="20"
@@ -1032,10 +863,14 @@
             stroke-linecap="round"
             stroke-linejoin="round"
           >
-            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
-            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+            <path
+              d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+            />
+            <path d="M14 2v6h6" />
+            <path d="M8 13h8" />
+            <path d="M8 17h5" />
           </svg>
-          <span>Study Builder</span>
+          <span>Notes</span>
         </a>
         <a href="blogs.html">
           <svg

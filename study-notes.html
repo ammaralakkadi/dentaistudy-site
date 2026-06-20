@@ -1,0 +1,898 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content"
+    />
+    <title>Notes | DentAIstudy</title>
+    <meta
+      name="description"
+      content="Upload a dental PDF and turn it into clear, exam-ready notes with DentAIstudy Pro."
+    />
+    <link rel="canonical" href="https://dentaistudy.com/study-notes.html" />
+    <link rel="stylesheet" href="assets/css/study-builder/base.css" />
+    <link rel="stylesheet" href="assets/css/study-builder/shell.css" />
+    <link rel="stylesheet" href="assets/css/study-builder/sidebar.css" />
+    <link rel="stylesheet" href="assets/css/study-builder/topbar.css" />
+    <link rel="stylesheet" href="assets/css/study-builder/responsive.css" />
+    <link rel="stylesheet" href="assets/css/study-builder/study-nav.css" />
+    <link rel="stylesheet" href="assets/css/study-builder/flashcards.css" />
+    <link rel="stylesheet" href="assets/css/study-builder/notes.css" />
+    <link rel="stylesheet" href="assets/css/hamburger-legacy.css" />
+  </head>
+  <body>
+    <div class="app study-app" data-theme="light">
+      <aside class="sidebar" id="sidebar" aria-label="Sidebar">
+        <div class="sb-top">
+          <div class="sb-title">
+            <a class="brand" href="index.html" aria-label="DentAIstudy home">
+              <span>Dent</span><span>AIstudy</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="userchip" data-auth-loading>
+          <div class="avatar" aria-hidden="true">
+            <img
+              src="assets/img/default-avatar.png"
+              alt="Your avatar"
+              data-das-avatar
+            />
+          </div>
+
+          <div class="user-meta">
+            <div class="user-name" id="das-user-name" aria-live="polite"></div>
+            <div
+              class="sb-plan"
+              id="das-study-plan-badge"
+              aria-label="Plan"
+              hidden
+            >
+              <svg
+                class="sb-plan-icon"
+                viewBox="0 0 24 24"
+                width="13"
+                height="13"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path
+                  d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"
+                />
+                <path d="m9 12 2 2 4-4" />
+              </svg>
+              <span class="sb-plan-text">Free Member</span>
+            </div>
+          </div>
+        </div>
+
+        <nav class="sb-nav" aria-label="Account">
+          <a class="sb-btn" href="profile.html" data-action="profile">
+            <span class="ico" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                width="18"
+                height="18"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M20 21a8 8 0 0 0-16 0" />
+                <circle cx="12" cy="8" r="4" />
+              </svg>
+            </span>
+            My profile
+          </a>
+
+          <a class="sb-btn" href="settings.html" data-action="settings">
+            <span class="ico" aria-hidden="true">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <line x1="4" y1="6" x2="6.8" y2="6" />
+                <line x1="11.2" y1="6" x2="20" y2="6" />
+                <circle cx="9" cy="6" r="2.2" fill="none" />
+                <line x1="4" y1="12" x2="12.8" y2="12" />
+                <line x1="17.2" y1="12" x2="20" y2="12" />
+                <circle cx="15" cy="12" r="2.2" fill="none" />
+                <line x1="4" y1="18" x2="6.8" y2="18" />
+                <line x1="11.2" y1="18" x2="20" y2="18" />
+                <circle cx="9" cy="18" r="2.2" fill="none" />
+              </svg>
+            </span>
+            Account settings
+          </a>
+        </nav>
+
+        <nav class="sb-nav" aria-label="Study Suite">
+          <a class="sb-btn" href="study-library.html">
+            <span class="ico" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                width="18"
+                height="18"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="4" y="4" width="6" height="6" rx="1.5" />
+                <rect x="14" y="4" width="6" height="6" rx="1.5" />
+                <rect x="4" y="14" width="6" height="6" rx="1.5" />
+                <rect x="14" y="14" width="6" height="6" rx="1.5" />
+              </svg>
+            </span>
+            Library
+          </a>
+
+          <a class="sb-btn" href="study.html">
+            <span class="ico" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                width="18"
+                height="18"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"
+                />
+                <path d="M8 9h8" />
+                <path d="M8 13h5" />
+              </svg>
+            </span>
+            Exam Coach
+          </a>
+
+          <a
+            class="sb-btn is-active"
+            href="study-notes.html"
+            aria-current="page"
+          >
+            <span class="ico" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                width="18"
+                height="18"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                />
+                <path d="M14 2v6h6" />
+                <path d="M8 13h8" />
+                <path d="M8 17h5" />
+              </svg>
+            </span>
+            Notes
+            <span class="mini-badge">Pro</span>
+          </a>
+
+          <a class="sb-btn" href="study-flashcards.html">
+            <span class="ico" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                width="18"
+                height="18"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M2 16V4a2 2 0 0 1 2-2h11" />
+                <path d="M5 14H4a2 2 0 1 0 0 4h1" />
+                <path d="M22 18H11a2 2 0 1 0 0 4h11V6H11a2 2 0 0 0-2 2v12" />
+              </svg>
+            </span>
+            Flashcards
+            <span class="mini-badge">Pro</span>
+          </a>
+
+          <a class="sb-btn" href="study-quiz.html">
+            <span class="ico" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                width="18"
+                height="18"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect width="8" height="4" x="8" y="2" rx="1" ry="1" />
+                <path
+                  d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"
+                />
+                <path d="m9 14 2 2 4-4" />
+              </svg>
+            </span>
+            Quiz
+            <span class="mini-badge">Pro</span>
+          </a>
+        </nav>
+
+        <a class="sb-upgrade-card" href="pricing.html" data-study-cta hidden>
+          <span class="sb-upgrade-card-icon" aria-hidden="true">
+            <svg
+              viewBox="0 0 24 24"
+              width="20"
+              height="20"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.9"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M12 3l1.7 4.3L18 9l-4.3 1.7L12 15l-1.7-4.3L6 9l4.3-1.7L12 3Z"
+              />
+              <path
+                d="M19 14l.9 2.1L22 17l-2.1.9L19 20l-.9-2.1L16 17l2.1-.9L19 14Z"
+              />
+            </svg>
+          </span>
+          <span class="sb-upgrade-card-copy">
+            <span class="sb-upgrade-card-title" data-study-cta-title></span>
+            <span class="sb-upgrade-card-text" data-study-cta-text></span>
+          </span>
+          <span class="sb-upgrade-card-arrow" aria-hidden="true">
+            <svg
+              viewBox="0 0 24 24"
+              width="18"
+              height="18"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="m9 18 6-6-6-6" />
+            </svg>
+          </span>
+        </a>
+
+        <div id="sbChatsSlot" hidden></div>
+      </aside>
+
+      <main class="main study-main" aria-label="Notes">
+        <header class="topbar site-header">
+          <button
+            class="menu-toggle"
+            type="button"
+            aria-label="Open menu"
+            aria-controls="sidebar"
+            aria-expanded="false"
+          >
+            <span></span><span></span><span></span>
+          </button>
+
+          <div class="topbar-title">
+            <div class="topbar-page" aria-label="Page">
+              <span class="topbar-page-icon" aria-hidden="true">
+                <svg
+                  viewBox="0 0 24 24"
+                  width="18"
+                  height="18"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                  />
+                  <path d="M14 2v6h6" />
+                  <path d="M8 13h8" />
+                  <path d="M8 17h5" />
+                </svg>
+              </span>
+              <span>Notes</span>
+            </div>
+            <a
+              class="brand topbar-brand"
+              href="index.html"
+              aria-label="DentAIstudy home"
+            >
+              <span>Dent</span><span>AIstudy</span>
+            </a>
+          </div>
+
+          <div class="topbar-actions" aria-label="Study actions">
+            <a
+              class="iconbtn"
+              href="study.html"
+              aria-label="Open Exam Coach"
+              title="Open Exam Coach"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                width="20"
+                height="20"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"
+                />
+                <path d="M8 9h8" />
+                <path d="M8 13h5" />
+              </svg>
+            </a>
+            <button
+              class="iconbtn"
+              id="btnMore"
+              type="button"
+              aria-label="Suite"
+              aria-controls="chatsPanel"
+              aria-expanded="false"
+              aria-haspopup="dialog"
+              title="Suite"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                width="20"
+                height="20"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+              >
+                <path d="M6 12h.01M12 12h.01M18 12h.01" />
+              </svg>
+            </button>
+          </div>
+
+          <div class="header-right">
+            <a href="login.html" class="btn btn-outline header-login">Log in</a>
+            <a href="signup.html" class="btn btn-primary header-signup"
+              >Sign up</a
+            >
+          </div>
+        </header>
+
+        <div
+          class="chats-panel"
+          id="chatsPanel"
+          role="dialog"
+          aria-label="Suite"
+          aria-modal="true"
+          hidden
+        >
+          <div class="chats-panel-head">
+            <div class="chats-panel-title">Suite</div>
+            <button
+              class="iconbtn"
+              id="chatsPanelClose"
+              type="button"
+              aria-label="Close Suite"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                width="20"
+                height="20"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+              >
+                <path d="M6 6l12 12M18 6L6 18" />
+              </svg>
+            </button>
+          </div>
+          <div class="chats-panel-body" id="chatsPanelBody">
+            <div id="chatsPanelContent"></div>
+          </div>
+        </div>
+
+        <section class="study-page notes-page">
+          <div data-pro-lock>
+            <article class="pro-lock-card">
+              <div class="pro-lock-icon" aria-hidden="true">
+                <svg
+                  viewBox="0 0 24 24"
+                  width="20"
+                  height="20"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                  />
+                  <path d="M14 2v6h6" />
+                  <path d="M8 13h8" />
+                  <path d="M8 17h5" />
+                </svg>
+              </div>
+              <h1>Unlock PDF-to-notes.</h1>
+              <p>
+                Upload your dental material and turn it into clear, exam-ready
+                notes built for revision, viva prep, and clinical reasoning.
+              </p>
+              <div class="pro-lock-preview" aria-label="Included notes outputs">
+                <span>Exam notes</span>
+                <span>High-yield points</span>
+                <span>Clinical reasoning</span>
+                <span>Exam traps</span>
+                <span>Viva angles</span>
+              </div>
+              <div class="pro-lock-actions">
+                <a class="study-primary-btn" href="pricing.html"
+                  >Upgrade to Pro</a
+                >
+                <a class="study-secondary-btn" href="study.html"
+                  >Open Exam Coach</a
+                >
+              </div>
+            </article>
+          </div>
+
+          <div data-pro-panel hidden>
+            <div class="notes-layout">
+              <header class="notes-suite-head">
+                <p>Study Suite source</p>
+                <h1>Generate exam-ready notes</h1>
+                <span>
+                  Upload a PDF, generate notes, then turn them into flashcards
+                  or quizzes.
+                </span>
+              </header>
+
+              <article class="notes-panel">
+                <h2>Upload PDF</h2>
+
+                <form id="notesForm" autocomplete="off">
+                  <div
+                    class="notes-dropzone"
+                    id="notesDropzone"
+                    aria-label="Upload PDF"
+                  >
+                    <button
+                      class="notes-clear-pdf"
+                      id="notesClearBtn"
+                      type="button"
+                      aria-label="Clear selected PDF"
+                      disabled
+                    >
+                      <svg
+                        viewBox="0 0 24 24"
+                        width="17"
+                        height="17"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true"
+                      >
+                        <path d="M18 6 6 18" />
+                        <path d="m6 6 12 12" />
+                      </svg>
+                    </button>
+
+                    <button
+                      class="notes-file-button"
+                      id="notesFileButton"
+                      type="button"
+                    >
+                      <span class="notes-file-icon" aria-hidden="true">
+                        <svg
+                          viewBox="0 0 24 24"
+                          width="24"
+                          height="24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="1.8"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        >
+                          <path
+                            d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                          />
+                          <path d="M14 2v6h6" />
+                          <path d="M12 18v-6" />
+                          <path d="m9 15 3-3 3 3" />
+                        </svg>
+                      </span>
+                      <span class="notes-file-copy">
+                        <span class="notes-file-name" id="notesFileName"
+                          >Upload one dental PDF</span
+                        >
+                        <span class="notes-file-meta" id="notesFileMeta"
+                          >PDF only · up to 50 MB</span
+                        >
+                      </span>
+                    </button>
+
+                    <input
+                      id="notesPdfInput"
+                      type="file"
+                      accept="application/pdf"
+                      hidden
+                    />
+                  </div>
+
+                  <div class="notes-form-actions">
+                    <button
+                      class="study-primary-btn"
+                      id="notesGenerateBtn"
+                      type="submit"
+                      disabled
+                    >
+                      <svg
+                        class="notes-btn-icon"
+                        viewBox="0 0 24 24"
+                        width="18"
+                        height="18"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true"
+                      >
+                        <path
+                          d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.2 1.2 0 0 0 1.72 0L21.64 5.36a1.2 1.2 0 0 0 0-1.72"
+                        />
+                        <path d="m14 7 3 3" />
+                        <path d="M5 6v4" />
+                        <path d="M19 14v4" />
+                        <path d="M10 2v2" />
+                        <path d="M7 8H3" />
+                        <path d="M21 16h-4" />
+                        <path d="M11 3H9" />
+                      </svg>
+                      <span id="notesGenerateBtnLabel">Generate notes</span>
+                    </button>
+                  </div>
+
+                  <p class="notes-status" id="notesStatus" hidden></p>
+                </form>
+              </article>
+
+              <article class="notes-saved-card study-create-card">
+                <span class="study-create-card-icon" aria-hidden="true">
+                  <svg
+                    viewBox="0 0 24 24"
+                    width="22"
+                    height="22"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path
+                      d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                    />
+                    <path d="M14 2v6h6" />
+                    <path d="M8 13h8" />
+                    <path d="M8 17h5" />
+                  </svg>
+                </span>
+
+                <div class="study-create-card-copy">
+                  <h3>Open a saved note</h3>
+                </div>
+
+                <div class="study-field">
+                  <label for="notesSavedSelect">Saved Notes</label>
+                  <div class="flashcard-control flashcard-control-select">
+                    <span class="flashcard-field-icon" aria-hidden="true">
+                      <svg
+                        viewBox="0 0 24 24"
+                        width="19"
+                        height="19"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.9"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path
+                          d="M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"
+                        />
+                      </svg>
+                    </span>
+                    <select class="study-select" id="notesSavedSelect">
+                      <option value="">Choose a saved note</option>
+                    </select>
+                  </div>
+                </div>
+              </article>
+
+              <article class="notes-result" id="notesResult" hidden>
+                <div class="notes-result-head">
+                  <h2>Your notes</h2>
+
+                  <div class="notes-result-actions">
+                    <a
+                      class="notes-action-link"
+                      id="notesFlashcardsLink"
+                      href="study-flashcards.html"
+                      hidden
+                    >
+                      Make flashcards
+                    </a>
+
+                    <a
+                      class="notes-action-link"
+                      id="notesQuizLink"
+                      href="study-quiz.html"
+                      hidden
+                    >
+                      Make quiz
+                    </a>
+
+                    <button
+                      class="notes-copy-btn"
+                      id="notesCopyBtn"
+                      type="button"
+                      aria-label="Copy notes"
+                    >
+                      <svg
+                        viewBox="0 0 24 24"
+                        width="17"
+                        height="17"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true"
+                      >
+                        <rect x="9" y="9" width="13" height="13" rx="2" />
+                        <path
+                          d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+                <div class="notes-result-body" id="notesResultBody"></div>
+              </article>
+
+              <article class="notes-empty-result" aria-label="Notes preview">
+                <div class="notes-empty-result-inner">
+                  <div class="notes-empty-result-icon" aria-hidden="true">
+                    <svg
+                      viewBox="0 0 24 24"
+                      width="26"
+                      height="26"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+                      <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+                    </svg>
+                  </div>
+                  <h2>Your generated notes appear here.</h2>
+                  <p>
+                    Upload a PDF, generate notes, then turn them into flashcards
+                    or quizzes.
+                  </p>
+                </div>
+              </article>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div class="slide-nav-backdrop"></div>
+    <nav class="slide-nav">
+      <div class="slide-nav-links">
+        <a href="subjects.html">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M12 6v8l3-3 3 3V6" />
+            <path
+              d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2z"
+            />
+          </svg>
+          <span>Subjects</span>
+        </a>
+        <a href="exams.html">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M12 7v14" />
+            <path d="M16 12h2" />
+            <path d="M16 8h2" />
+            <path
+              d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"
+            />
+            <path d="M6 12h2" />
+            <path d="M6 8h2" />
+          </svg>
+          <span>Exams</span>
+        </a>
+        <a href="study-notes.html">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path
+              d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+            />
+            <path d="M14 2v6h6" />
+            <path d="M8 13h8" />
+            <path d="M8 17h5" />
+          </svg>
+          <span>Notes</span>
+        </a>
+        <a href="blogs.html">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M12 20h9" />
+            <path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4z" />
+          </svg>
+          <span>Blogs</span>
+        </a>
+        <a href="pricing.html">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path
+              d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"
+            />
+            <line x1="7" y1="7" x2="7.01" y2="7" />
+          </svg>
+          <span>Pricing</span>
+        </a>
+        <div
+          class="slide-nav-divider"
+          role="separator"
+          aria-hidden="true"
+        ></div>
+        <a href="profile.html">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
+          </svg>
+          <span>My profile</span>
+        </a>
+        <a href="settings.html">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="12" cy="12" r="3" />
+            <path
+              d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1.08-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1.08 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1.08 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c.26.604.852.997 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1.08z"
+            />
+          </svg>
+          <span>Account settings</span>
+        </a>
+        <div
+          class="slide-nav-divider"
+          role="separator"
+          aria-hidden="true"
+        ></div>
+        <a href="login.html" class="slide-login-link">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+            <polyline points="10 17 15 12 10 7" />
+            <line x1="15" y1="12" x2="3" y2="12" />
+          </svg>
+          <span>Log in</span>
+        </a>
+      </div>
+    </nav>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+      defer
+    ></script>
+    <script src="assets/js/auth-client.js" defer></script>
+    <script src="assets/js/auth-guard.js" defer></script>
+    <script src="assets/js/auth-logout.js" defer></script>
+    <script src="assets/js/hamburger-legacy.js" defer></script>
+    <script src="assets/js/study-builder/pro-gate.js" defer></script>
+    <script src="assets/js/study-builder/sidebar.js" defer></script>
+    <script type="module">
+      import * as pdfjsLib from "./assets/vendor/pdfjs/pdf.mjs";
+      pdfjsLib.GlobalWorkerOptions.workerSrc =
+        "./assets/vendor/pdfjs/pdf.worker.mjs";
+      window.pdfjsLib = pdfjsLib;
+    </script>
+    <script src="assets/js/study-builder/notes.js" defer></script>
+    <div class="backdrop" id="backdrop" hidden></div>
+  </body>
+</html>

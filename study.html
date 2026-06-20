@@ -21,10 +21,10 @@
       content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content"
     />
 
-    <title>AI Dental Study Builder | PDFs, Flashcards and Quiz Practice</title>
+    <title>Exam Coach | Dental Exam Explanations</title>
     <meta
       name="description"
-      content="Turn dental topics, PDFs, lecture notes, and weak areas into focused answers, deeper explanations, flashcards, and quiz practice."
+      content="Ask Exam Coach dental questions and get clear, exam-focused explanations for clinical topics, weak areas, and study confusion."
     />
 
     <link rel="canonical" href="https://dentaistudy.com/study.html" />
@@ -141,28 +141,6 @@
         </nav>
 
         <nav class="sb-nav" aria-label="Study Suite">
-          <button
-            class="sb-btn is-active"
-            type="button"
-            data-action="newChat"
-            aria-current="page"
-          >
-            <span class="ico" aria-hidden="true">
-              <svg
-                viewBox="0 0 24 24"
-                width="18"
-                height="18"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-              >
-                <path d="M12 5v14M5 12h14" />
-              </svg>
-            </span>
-            New chat
-          </button>
-
           <a class="sb-btn" href="study-library.html">
             <span class="ico" aria-hidden="true">
               <svg
@@ -182,6 +160,52 @@
               </svg>
             </span>
             Library
+          </a>
+
+          <a class="sb-btn is-active" href="study.html" aria-current="page">
+            <span class="ico" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                width="18"
+                height="18"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"
+                />
+                <path d="M8 9h8" />
+                <path d="M8 13h5" />
+              </svg>
+            </span>
+            Exam Coach
+          </a>
+
+          <a class="sb-btn" href="study-notes.html">
+            <span class="ico" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                width="18"
+                height="18"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                />
+                <path d="M14 2v6h6" />
+                <path d="M8 13h8" />
+                <path d="M8 17h5" />
+              </svg>
+            </span>
+            Notes
+            <span class="mini-badge">Pro</span>
           </a>
 
           <a class="sb-btn" href="study-flashcards.html">
@@ -271,7 +295,7 @@
 
         <div id="sbChatsSlot" hidden></div>
       </aside>
-      <main class="main" aria-label="Chat">
+      <main class="main" aria-label="Exam Coach chat">
         <header class="topbar site-header">
           <button
             class="menu-toggle"
@@ -300,7 +324,7 @@
                   <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
                 </svg>
               </span>
-              <span>Study Builder</span>
+              <span>Exam Coach</span>
             </div>
             <a
               class="brand topbar-brand"
@@ -315,8 +339,8 @@
             <a
               class="iconbtn"
               href="study.html"
-              aria-label="New chat"
-              title="New chat"
+              aria-label="Open Exam Coach"
+              title="Open Exam Coach"
             >
               <svg
                 viewBox="0 0 24 24"
@@ -324,21 +348,26 @@
                 height="20"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
+                stroke-width="1.8"
                 stroke-linecap="round"
+                stroke-linejoin="round"
               >
-                <path d="M12 5v14M5 12h14" />
+                <path
+                  d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"
+                />
+                <path d="M8 9h8" />
+                <path d="M8 13h5" />
               </svg>
             </a>
             <button
               class="iconbtn"
               id="btnMore"
               type="button"
-              aria-label="Study menu"
+              aria-label="Suite"
               aria-controls="chatsPanel"
               aria-expanded="false"
               aria-haspopup="dialog"
-              title="Study menu"
+              title="Suite"
             >
               <svg
                 viewBox="0 0 24 24"
@@ -365,17 +394,17 @@
           class="chats-panel"
           id="chatsPanel"
           role="dialog"
-          aria-label="Study menu"
+          aria-label="Suite"
           aria-modal="true"
           hidden
         >
           <div class="chats-panel-head">
-            <div class="chats-panel-title">Study menu</div>
+            <div class="chats-panel-title">Suite</div>
             <button
               class="iconbtn"
               id="chatsPanelClose"
               type="button"
-              aria-label="Close study menu"
+              aria-label="Close Suite"
             >
               <svg
                 viewBox="0 0 24 24"
@@ -422,129 +451,19 @@
           </button>
         </section>
 
-        <!-- Error / info toast -->
-        <div id="dropToast" class="drop-toast" hidden aria-live="polite"></div>
-
-        <!-- Drop zone overlay (desktop drag-and-drop) -->
-        <div id="dropOverlay" class="drop-overlay" hidden aria-hidden="true">
-          <div class="drop-overlay-inner">
-            <div class="drop-overlay-ico">
-              <svg
-                viewBox="0 0 24 24"
-                width="28"
-                height="28"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path
-                  d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7z"
-                />
-                <path d="M14 2v5h5" />
-                <line x1="12" y1="18" x2="12" y2="12" />
-                <polyline points="9 15 12 12 15 15" />
-              </svg>
-            </div>
-            <p class="drop-overlay-label">Drop PDF to attach</p>
-          </div>
-        </div>
-
         <footer class="composer-wrap" aria-label="Composer">
           <form class="composer" id="composer" autocomplete="off">
             <div class="input-shell">
-              <div class="attachbar" id="attachBar" hidden></div>
-
               <textarea
                 id="prompt"
                 class="prompt"
                 rows="1"
-                placeholder="Ask anything about dentistry…"
-                aria-label="Ask anything about dentistry"
+                placeholder="Ask Exam Coach about any dental topic…"
+                aria-label="Ask Exam Coach about any dental topic"
               ></textarea>
 
-              <input
-                type="file"
-                id="pdfInput"
-                accept="application/pdf"
-                multiple
-                hidden
-              />
-
               <div class="composer-toolbar">
-                <div class="toolbar-left">
-                  <button
-                    class="tool-btn"
-                    type="button"
-                    id="btnAdd"
-                    aria-label="Attach PDF"
-                  >
-                    <svg
-                      viewBox="0 0 24 24"
-                      width="15"
-                      height="15"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    >
-                      <path
-                        d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
-                      />
-                      <polyline points="14 2 14 8 20 8" />
-                      <line x1="9" y1="13" x2="15" y2="13" />
-                      <line x1="9" y1="17" x2="13" y2="17" />
-                    </svg>
-                  </button>
-
-                  <div class="mode-toggle" role="group" aria-label="Study mode">
-                    <button
-                      class="mode-pill addpill is-active"
-                      type="button"
-                      data-task="qa"
-                      aria-pressed="true"
-                    >
-                      <svg
-                        viewBox="0 0 24 24"
-                        width="11"
-                        height="11"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      >
-                        <polygon
-                          points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"
-                        />
-                      </svg>
-                      <span class="pill-label">Quick</span>
-                    </button>
-                    <button
-                      class="mode-pill addpill"
-                      type="button"
-                      data-task="chapter_notes"
-                      aria-pressed="false"
-                    >
-                      <svg
-                        viewBox="0 0 24 24"
-                        width="11"
-                        height="11"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2.2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      >
-                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
-                        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
-                      </svg>
-                      <span class="pill-label">Deep</span>
-                    </button>
-                  </div>
-                </div>
+                <div class="toolbar-left"></div>
 
                 <button
                   class="sendbtn"
@@ -585,14 +504,6 @@
     <script src="assets/js/hamburger-legacy.js" defer></script>
 
     <!-- Services + adapters (old study-builder.js trimmed) -->
-
-    <!-- PDF.js (local, v5.x ESM build) -->
-    <script type="module">
-      import * as pdfjsLib from "./assets/vendor/pdfjs/pdf.mjs";
-      pdfjsLib.GlobalWorkerOptions.workerSrc =
-        "./assets/vendor/pdfjs/pdf.worker.mjs";
-      window.pdfjsLib = pdfjsLib;
-    </script>
 
     <script src="assets/js/study-builder.js" defer></script>
 
@@ -645,7 +556,7 @@
           </svg>
           <span>Exams</span>
         </a>
-        <a href="study.html">
+        <a href="study-notes.html">
           <svg
             width="20"
             height="20"
@@ -656,10 +567,14 @@
             stroke-linecap="round"
             stroke-linejoin="round"
           >
-            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
-            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+            <path
+              d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+            />
+            <path d="M14 2v6h6" />
+            <path d="M8 13h8" />
+            <path d="M8 17h5" />
           </svg>
-          <span>Study Builder</span>
+          <span>Notes</span>
         </a>
         <a href="blogs.html">
           <svg
