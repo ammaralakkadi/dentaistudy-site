@@ -350,7 +350,7 @@
 
   function clampCount(value) {
     const n = Number(value || 10);
-    return Math.max(5, Math.min(40, Math.round(n)));
+    return Math.max(5, Math.min(30, Math.round(n)));
   }
 
   function resetStage(message) {
@@ -919,9 +919,9 @@
     const difficulty = selectedDifficulty();
     const rawCount = Number(els.count?.value || 10);
 
-    if (rawCount > 40) {
-      tools.toast("Maximum is 40 quiz questions.", "error");
-      if (els.count) els.count.value = 40;
+    if (rawCount > 30) {
+      tools.toast("Maximum is 30 quiz questions.", "error");
+      if (els.count) els.count.value = 30;
       return;
     }
 
