@@ -23,33 +23,31 @@
   emptyStateEl.className = "empty-state is-hidden";
   emptyStateEl.innerHTML = `
   <div class="empty-state-inner" aria-label="Get started">
-    <p class="empty-state-kicker">DentAIstudy workspace</p>
-    <h1 class="empty-state-title">${getGreeting()}, ready to study?</h1>
-    <p class="empty-state-subtitle">Start with a high-yield dental workflow or ask your own question.</p>
+    <p class="empty-state-kicker">Exam Coach</p>
+    <h1 class="empty-state-title">${getGreeting()}, ask your dental tutor.</h1>
+    <p class="empty-state-subtitle">Get clear explanations for dental topics, clinical cases, and exam confusion.</p>
 
     <div class="starter-grid">
-    <button class="starter-card" type="button" data-prompt="Explain this PDF like a dental exam mentor. Start with the high-yield summary, then list exam traps and what I should memorize: ">
+    <button class="starter-card" type="button" data-prompt="Explain this dental topic like a senior exam mentor. Keep it clear, high-yield, and clinically useful: ">
     <span class="starter-ico" aria-hidden="true">
       <svg viewBox="0 0 24 24" fill="none">
-        <path d="M11 17a4 4 0 0 1-8 0V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M16.7 13H19a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M7 17h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="m11 8 2.3-2.3a2.4 2.4 0 0 1 3.404.004L18.6 7.6a2.4 2.4 0 0 1 .026 3.434L9.9 19.8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M8 9h8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M8 13h5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </span>
-    <span class="starter-text">Explain this PDF</span>
+    <span class="starter-text">Explain a topic</span>
   </button>
 
-  <button class="starter-card" type="button" data-prompt="Make clean high-yield dental exam notes on this topic. Use headings, key facts, clinical signs, treatment, and common traps: ">
+  <button class="starter-card" type="button" data-prompt="Compare these two dental topics in a simple exam table. Focus on diagnosis, key signs, treatment, and common traps: ">
   <span class="starter-ico" aria-hidden="true">
     <svg viewBox="0 0 24 24" fill="none">
-      <path d="M10 8a2.4 2.4 0 0 1 1.706.706l3.588 3.588A2.4 2.4 0 0 1 16 14v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V10a2 2 0 0 1 2-2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M10 8v5a1 1 0 0 0 1 1h5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M8 4a2 2 0 0 1 2-2h6a2.4 2.4 0 0 1 1.706.706l3.588 3.588A2.4 2.4 0 0 1 22 8v6a2 2 0 0 1-2 2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M16 2v5a1 1 0 0 0 1 1h5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect width="13" height="7" x="3" y="3" rx="1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="m22 15-3-3 3-3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect width="13" height="7" x="3" y="14" rx="1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
   </span>
-  <span class="starter-text">Make exam notes</span>
+  <span class="starter-text">Compare two topics</span>
 </button>
 
 <button class="starter-card" type="button" data-prompt="Test me with 10 clinical dental MCQs on this topic. Make them exam-style, include the correct answer, and explain why: ">
@@ -66,15 +64,17 @@
 <span class="starter-text">Test me with MCQs</span>
 </button>
 
-<button class="starter-card" type="button" data-prompt="Compare these two dental topics in a simple exam table. Focus on diagnosis, key signs, treatment, and common traps: ">
+<button class="starter-card" type="button" data-prompt="Help me reason through this dental clinical case step by step. Explain the likely diagnosis, key clues, differentials, and management: ">
 <span class="starter-ico" aria-hidden="true">
   <svg viewBox="0 0 24 24" fill="none">
-    <rect width="13" height="7" x="3" y="3" rx="1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="m22 15-3-3 3-3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    <rect width="13" height="7" x="3" y="14" rx="1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M16 2v4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M8 2v4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M8 12h8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M8 16h5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
   </svg>
 </span>
-<span class="starter-text">Compare two topics</span>
+<span class="starter-text">Reason a case</span>
 </button>
     </div>
   </div>`;
@@ -149,31 +149,7 @@
     "Almost ready…",
   ];
 
-  const THINKING_PHASES_PDF = [
-    "Reading the PDF…",
-    "Finding the high-yield sections…",
-    "Extracting key dental concepts…",
-    "Connecting notes to your question…",
-    "Structuring the answer clearly…",
-    "Preparing exam-focused points…",
-    "Almost ready…",
-  ];
-
-  const THINKING_PHASES_DEEP = [
-    "Reading the full chapter…",
-    "Finding the core themes…",
-    "Separating high-yield from extra detail…",
-    "Organizing the clinical concepts…",
-    "Building structured study notes…",
-    "Formatting this for revision…",
-    "Almost ready…",
-  ];
-
   function getThinkingPhases() {
-    const task = window.DentAIstudyTask || "qa";
-    const hasPdf = !!window.DentAIPDF?.getActiveContext?.();
-    if (task === "chapter_notes") return THINKING_PHASES_DEEP;
-    if (hasPdf) return THINKING_PHASES_PDF;
     return THINKING_PHASES;
   }
 
@@ -365,6 +341,12 @@
   }
 
   function showCopied(btn) {
+    const shouldShowAppCopyHelper = window.matchMedia?.(
+      "(hover: hover) and (pointer: fine)",
+    )?.matches;
+
+    if (!shouldShowAppCopyHelper) return;
+
     btn.classList.add("is-on");
     btn.classList.add("show-copied");
 

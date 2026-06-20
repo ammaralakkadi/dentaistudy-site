@@ -1,5 +1,5 @@
 // assets/js/study-builder/sidebar.js
-// Study menu panel wiring: open/close + backdrop + ESC.
+// Suite panel wiring: open/close + backdrop + ESC.
 // NOTE: This intentionally excludes the hamburger/#sidebar drawer system to avoid conflicts.
 
 (() => {

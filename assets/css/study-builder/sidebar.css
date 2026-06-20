@@ -18,8 +18,8 @@
   border-right: 1px solid rgba(17, 24, 39, 0.08);
   display: flex;
   flex-direction: column;
-  padding: 14px 14px 12px;
-  gap: 14px;
+  padding: 12px 11px 10px;
+  gap: 10px;
   overflow-x: hidden;
   overflow-y: auto;
   scrollbar-width: thin;
@@ -182,17 +182,17 @@
 
 .sb-btn {
   width: 100%;
-  min-height: 42px;
+  min-height: 38px;
   border: 1px solid transparent;
   background: transparent;
   color: #0b0f19;
-  border-radius: 12px;
-  padding: 10px 10px;
+  border-radius: 11px;
+  padding: 8px 9px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 9px;
   text-align: left;
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 600;
   line-height: 1.2;
   text-decoration: none;

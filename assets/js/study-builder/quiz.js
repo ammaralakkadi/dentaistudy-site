@@ -3,115 +3,8 @@
   "use strict";
 
   const tools = window.DentAIStudyTools;
-  const QUICK_PRESETS = {
-    ore: {
-      title: "ORE emergency OSCE quiz",
-      count: 12,
-      difficulty: "hard",
-      source:
-        "Generate ORE Part 2 style dental medical emergency MCQs and OSCE decision questions with explanations. Focus on adult drug administration, dose ranges, oxygen, sequence of actions, status epilepticus, anaphylaxis, asthma, hypoglycemia, syncope, angina/MI, adrenal crisis, local anesthetic toxicity, and common UK dental practice station mistakes.",
-    },
-    adex: {
-      title: "ADEX critical error quiz",
-      count: 12,
-      difficulty: "hard",
-      source:
-        "Generate ADEX-style exam questions with explanations focused on critical failure traps. Cover anterior endodontic access on tooth #8, lateral perforation risk, crown preparation over-taper, under-reduction, margin errors, restorative decision-making, typodont grading risk, and recognizing automatic-failure patterns.",
-    },
-    inbde: {
-      title: "INBDE patient box quiz",
-      count: 12,
-      difficulty: "hard",
-      source:
-        "Generate INBDE Patient Box style MCQs with explanations. Include medically complex cases involving uncontrolled diabetes, warfarin and INR, dual antiplatelet therapy, prosthetic heart valves, antibiotic prophylaxis, penicillin allergy, facial space infection, pharmacology, pathology, ethics, autonomy, and treatment sequencing.",
-    },
-    adc: {
-      title: "ADC guideline scenario quiz",
-      count: 12,
-      difficulty: "hard",
-      source:
-        "Generate ADC-style scenario-based MCQs with explanations. Focus on infection control failures, failed autoclave cycle/data logging, professional boundaries, cultural safety, consent, patient safety, referral, emergency triage, and best-answer reasoning when several choices seem acceptable.",
-    },
-    ndecc: {
-      title: "NDECC situational quiz",
-      count: 12,
-      difficulty: "hard",
-      source:
-        "Generate NDECC-style situational judgment MCQs with explanations. Focus on patient refusal, unnecessary extraction requests, salvageable root canal communication, informed consent, autonomy, ethical compliance, documentation, infection control, and examiner-style Canadian clinical reasoning.",
-    },
-    sdle: {
-      title: "SDLE trauma quiz",
-      count: 12,
-      difficulty: "hard",
-      source:
-        "Generate SDLE-style MCQs with explanations focused on pediatric trauma, immature permanent teeth, complicated crown-root fracture timing, avulsion and luxation management, community dentistry, DMFT calculations, prevention, fluoride, and high-yield Saudi licensing exam traps.",
-    },
-    uae: {
-      title: "UAE medical risk quiz",
-      count: 12,
-      difficulty: "normal",
-      source:
-        "Generate UAE DHA MOH DOH Prometric-style MCQs with explanations focused on dental medical risk. Include antibiotic prophylaxis, prosthetic heart valves, penicillin allergy, anticoagulants, aspirin and clopidogrel, diabetes, hypertension, local anesthetic maximum dose, pediatric dosing, syncope, hypoglycemia, and LA toxicity.",
-    },
-    endodontics: {
-      title: "Pulp diagnosis quiz",
-      count: 10,
-      difficulty: "normal",
-      source:
-        "Generate endodontics MCQs with explanations that test differentiation between reversible pulpitis, symptomatic irreversible pulpitis, necrotic pulp, symptomatic apical periodontitis, acute apical abscess, cracked tooth, horizontal root fracture, vertical root fracture, and trauma-related endodontic decisions.",
-    },
-    operative: {
-      title: "Deep caries decision quiz",
-      count: 10,
-      difficulty: "normal",
-      source:
-        "Generate operative dentistry MCQs with explanations focused on deep caries decision-making. Test direct pulp cap vs indirect pulp cap, selective caries removal, stepwise excavation, bonding failure, postoperative sensitivity, rubber dam isolation, matrix and wedge selection, restoration repair, and caries risk.",
-    },
-    prosthodontics: {
-      title: "Crown preparation quiz",
-      count: 10,
-      difficulty: "normal",
-      source:
-        "Generate prosthodontics MCQs with explanations focused on crown preparation and prostho reasoning. Include ferrule, finish line selection, taper, occlusal clearance, biologic width, impression errors, temporary crowns, RPD design basics, pontic design, occlusion, and common failure traps.",
-    },
-    periodontology: {
-      title: "AAP classification quiz",
-      count: 10,
-      difficulty: "normal",
-      source:
-        "Generate periodontology MCQs with explanations comparing 1999 periodontal classification with current staging and grading. Test CAL, RBL, probing depth, BOP, furcation, mobility, grade modifiers, diabetes, smoking, periodontal abscess, peri-implant disease, treatment planning, and maintenance.",
-    },
-    "oral-surgery": {
-      title: "MRONJ and bleeding quiz",
-      count: 10,
-      difficulty: "normal",
-      source:
-        "Generate oral surgery MCQs with explanations focused on extraction risk. Include MRONJ/BRONJ, bisphosphonate history, antiresorptive therapy, anticoagulants, aspirin and clopidogrel, bleeding control, dry socket, oroantral communication, odontogenic infection spread, third molars, and referral red flags.",
-    },
-    "oral-anatomy": {
-      title: "Fascial space quiz",
-      count: 10,
-      difficulty: "normal",
-      source:
-        "Generate oral anatomy MCQs with explanations focused on fascial space infections and Ludwig’s angina. Test anatomical borders, submandibular/sublingual/submental spaces, airway risk, infection spread, local anesthesia landmarks, trigeminal nerve branches, TMJ, maxillary sinus, and lymph drainage.",
-    },
-    orthodontics: {
-      title: "Class II diagnosis quiz",
-      count: 10,
-      difficulty: "normal",
-      source:
-        "Generate orthodontics MCQs with explanations comparing Class II Division 1 and Class II Division 2 malocclusion. Test clinical features, incisor inclination, overjet, overbite, lip competence, cephalometric clues, facial profile, radiographic features, treatment timing, and exam traps.",
-    },
-    pediatric: {
-      title: "Pediatric emergency quiz",
-      count: 10,
-      difficulty: "normal",
-      source:
-        "Generate pediatric dentistry MCQs with explanations focused on trauma and safety. Include immature permanent teeth, complicated crown-root fracture timing, avulsion, luxation injuries, pulp therapy, stainless steel crowns, space maintainers, local anesthetic maximum dose, SDF, Hall technique, and child abscess care.",
-    },
-  };
+
   const els = {};
-  let decks = [];
   let quizzes = [];
   let questions = [];
   let answers = [];
@@ -128,10 +21,11 @@
   let customSelectEventsBound = false;
 
   const GENERATING_PHRASES = [
-    "Generating quiz…",
-    "Writing clinical questions…",
-    "Building answer options…",
-    "Saving your quiz…",
+    "Reading note...",
+    "Building questions...",
+    "Writing explanations...",
+    "Balancing difficulty...",
+    "Saving quiz...",
   ];
 
   function qs(id) {
@@ -158,16 +52,24 @@
     if (els.generate) els.generate.textContent = label;
   }
 
+  function setGeneratingPhrase(label) {
+    setGenerateLabel(label);
+
+    if (!els.stage?.classList.contains("is-generating")) return;
+    if (els.stageMeta) els.stageMeta.textContent = label;
+    if (els.question) els.question.textContent = label;
+  }
+
   function startGeneratePhrases() {
     let phraseIndex = 0;
 
-    window.clearInterval(generatePhraseTimer);
-    setGenerateLabel(GENERATING_PHRASES[phraseIndex]);
+    stopGeneratePhrases();
+    setGeneratingPhrase(GENERATING_PHRASES[phraseIndex]);
 
     generatePhraseTimer = window.setInterval(() => {
       phraseIndex = (phraseIndex + 1) % GENERATING_PHRASES.length;
-      setGenerateLabel(GENERATING_PHRASES[phraseIndex]);
-    }, 1300);
+      setGeneratingPhrase(GENERATING_PHRASES[phraseIndex]);
+    }, 1400);
   }
 
   function stopGeneratePhrases() {
@@ -177,7 +79,13 @@
   }
 
   function cacheEls() {
-    els.deckSelect = qs("quizDeckSelect");
+    els.layout = document.querySelector(".quiz-layout");
+    els.stage = document.querySelector(".quiz-stage");
+    els.empty = qs("quizEmptyState");
+    els.createModal = qs("quizCreateModal");
+    els.openCreate = qs("openQuizCreateBtn");
+    els.createClose = document.querySelectorAll("[data-quiz-create-close]");
+    els.noteSelect = qs("quizNoteSelect");
     els.quizSelect = qs("quizSelect");
     els.source = qs("quizSourceInput");
     els.count = qs("questionCountInput");
@@ -222,20 +130,48 @@
       root.classList.remove("is-open");
       root.classList.remove("is-drop-up");
       menu.hidden = true;
+      menu.style.left = "";
+      menu.style.top = "";
+      menu.style.right = "";
+      menu.style.width = "";
       menu.style.maxHeight = "";
     });
   }
 
   function positionCustomSelect(root, menu) {
     const rect = root.getBoundingClientRect();
-    const gap = 12;
-    const spaceBelow = window.innerHeight - rect.bottom - gap;
-    const spaceAbove = rect.top - gap;
-    const shouldOpenUp = spaceBelow < 180 && spaceAbove > spaceBelow;
-    const available = shouldOpenUp ? spaceAbove : spaceBelow;
+    const gap = 8;
+    const padding = 12;
+    const minHeight = 150;
+    const maxHeight = 280;
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+    const spaceBelow = viewportHeight - rect.bottom - padding;
+    const spaceAbove = rect.top - padding;
+    const shouldOpenUp = spaceBelow < minHeight && spaceAbove > spaceBelow;
+    const available = shouldOpenUp ? spaceAbove - gap : spaceBelow - gap;
+    const menuHeight = Math.max(minHeight, Math.min(maxHeight, available));
+    const width = Math.min(rect.width, viewportWidth - padding * 2);
+    const left = Math.max(
+      padding,
+      Math.min(rect.left, viewportWidth - width - padding),
+    );
+    const top = shouldOpenUp
+      ? Math.max(padding, rect.top - gap - menuHeight)
+      : Math.min(rect.bottom + gap, viewportHeight - padding - menuHeight);
 
     root.classList.toggle("is-drop-up", shouldOpenUp);
-    menu.style.maxHeight = `${Math.max(160, Math.min(260, available))}px`;
+    menu.style.left = `${left}px`;
+    menu.style.top = `${top}px`;
+    menu.style.right = "auto";
+    menu.style.width = `${width}px`;
+    menu.style.maxHeight = `${menuHeight}px`;
+  }
+
+  function repositionOpenCustomSelects() {
+    customSelects.forEach(({ root, menu }) => {
+      if (!menu.hidden) positionCustomSelect(root, menu);
+    });
   }
 
   function syncCustomSelect(select) {
@@ -305,7 +241,7 @@
   }
 
   function enhanceSelects() {
-    [els.deckSelect, els.quizSelect].forEach(enhanceSelect);
+    [els.noteSelect, els.quizSelect].forEach(enhanceSelect);
 
     if (customSelectEventsBound) return;
     customSelectEventsBound = true;
@@ -318,6 +254,9 @@
     document.addEventListener("keydown", (event) => {
       if (event.key === "Escape") closeCustomSelects();
     });
+
+    window.addEventListener("resize", repositionOpenCustomSelects);
+    window.addEventListener("scroll", repositionOpenCustomSelects, true);
   }
 
   function setDifficulty(value) {
@@ -325,18 +264,6 @@
       `input[name="quizDifficulty"][value="${value}"]`,
     );
     if (input) input.checked = true;
-  }
-
-  function useQuickPreset(presetId) {
-    const preset = QUICK_PRESETS[presetId];
-    if (!preset || els.generate?.disabled) return;
-
-    if (els.title) els.title.value = preset.title;
-    if (els.count) els.count.value = String(preset.count);
-    if (els.source) els.source.value = preset.source;
-    setDifficulty(preset.difficulty);
-
-    focusCreateForm();
   }
 
   function isTypingTarget(target) {
@@ -349,6 +276,10 @@
 
   function getInitialQuizId() {
     return new URLSearchParams(window.location.search).get("quiz") || "";
+  }
+
+  function getInitialNoteId() {
+    return new URLSearchParams(window.location.search).get("note") || "";
   }
 
   function setFlowMode(mode) {
@@ -385,16 +316,32 @@
     });
   }
 
-  function focusCreateForm() {
+  function setCreateModal(open) {
+    if (!els.createModal) return;
+
+    els.createModal.hidden = !open;
+    els.createModal.setAttribute("aria-hidden", open ? "false" : "true");
+    document.body.classList.toggle("study-modal-open", open);
+
+    if (open) {
+      window.setTimeout(() => {
+        els.noteSelect?.focus?.();
+      }, 80);
+    }
+  }
+
+  function openCreateModal() {
     document.activeElement?.blur?.();
     setFlowMode("create");
+    setCreateModal(true);
+  }
 
-    if (isMobileFlow()) {
-      scrollPageTop();
-      return;
-    }
+  function closeCreateModal() {
+    setCreateModal(false);
+  }
 
-    scrollToTarget(".quiz-create-form");
+  function focusCreateForm() {
+    openCreateModal();
   }
 
   function focusPageTop() {
@@ -403,10 +350,11 @@
 
   function clampCount(value) {
     const n = Number(value || 10);
-    return Math.max(5, Math.min(25, Math.round(n)));
+    return Math.max(5, Math.min(40, Math.round(n)));
   }
 
   function resetStage(message) {
+    stopGeneratePhrases();
     questions = [];
     answers = [];
     currentIndex = 0;
@@ -417,8 +365,10 @@
     showingResult = false;
 
     setFlowMode("normal");
-    document.querySelector(".quiz-stage")?.classList.remove("is-result");
-    document.querySelector(".quiz-stage")?.classList.add("is-empty");
+    els.stage?.classList.remove("is-result", "is-generating");
+    els.stage?.classList.add("is-empty");
+    els.layout?.classList.add("is-empty");
+    if (els.empty) els.empty.hidden = false;
     if (els.stageTitle) els.stageTitle.textContent = "No quiz selected";
     if (els.stageMeta)
       els.stageMeta.textContent = "Generate a quiz or open a saved one.";
@@ -534,7 +484,10 @@
 
     const stage = document.querySelector(".quiz-stage");
     stage?.classList.remove("is-empty");
+    stage?.classList.remove("is-generating");
     stage?.classList.add("is-result");
+    els.layout?.classList.remove("is-empty");
+    if (els.empty) els.empty.hidden = true;
 
     if (els.stageTitle) els.stageTitle.textContent = "Quiz complete";
     if (els.stageMeta)
@@ -611,7 +564,9 @@
 
     document
       .querySelector(".quiz-stage")
-      ?.classList.remove("is-empty", "is-result");
+      ?.classList.remove("is-empty", "is-result", "is-generating");
+    els.layout?.classList.remove("is-empty");
+    if (els.empty) els.empty.hidden = true;
     if (els.result) els.result.hidden = true;
     const q = questions[currentIndex];
     const selected = answers[currentIndex];
@@ -673,6 +628,35 @@
     });
   }
 
+  function renderGeneratingQuiz() {
+    questions = [];
+    answers = [];
+    currentIndex = 0;
+    activeQuizId = null;
+    activeAttemptId = null;
+    reviewed = false;
+    lastScore = null;
+    showingResult = false;
+    setFlowMode("study");
+    els.layout?.classList.remove("is-empty");
+    if (els.empty) els.empty.hidden = true;
+    els.stage?.classList.remove("is-empty", "is-result");
+    els.stage?.classList.add("is-generating");
+    if (els.stageTitle) els.stageTitle.textContent = "Preparing quiz";
+    if (els.stageMeta) els.stageMeta.textContent = "Saving your questions...";
+    if (els.pill) els.pill.textContent = "0 of 0";
+    if (els.progress) els.progress.style.width = "0%";
+    if (els.map) els.map.innerHTML = "";
+    if (els.question) els.question.textContent = "Preparing quiz...";
+    if (els.options) els.options.innerHTML = "";
+    if (els.explanation) {
+      els.explanation.textContent = "";
+      els.explanation.hidden = true;
+    }
+    if (els.result) els.result.hidden = true;
+    if (els.finish) els.finish.textContent = "Finish";
+  }
+
   function goToQuestion(index) {
     if (!questions.length) return;
     const previousIndex = currentIndex;
@@ -704,6 +688,15 @@
     answers[currentIndex] = index;
     saveQuizProgress();
     renderQuestion();
+
+    const allAnswered = answers.every((answer) => answer !== null);
+    const isLastQuestion = currentIndex >= questions.length - 1;
+
+    if (allAnswered && isLastQuestion) {
+      window.setTimeout(() => {
+        if (!reviewed) finishQuiz();
+      }, 260);
+    }
   }
 
   function onKeyDown(event) {
@@ -773,54 +766,46 @@
           item.correct_index >= 0 &&
           item.correct_index < item.options.length,
       )
-      .slice(0, 25);
+      .slice(0, 40);
   }
 
-  async function loadDecks() {
-    const state = await tools.ready();
-    if (!state.supabase || !state.user || !els.deckSelect) return;
+  async function loadNotes() {
+    if (!els.noteSelect) return;
 
-    const { data, error } = await state.supabase
-      .from("flashcard_decks")
-      .select("id,title,updated_at")
-      .order("updated_at", { ascending: false })
-      .limit(30);
+    const notes = await tools.fetchNotes(30);
+    els.noteSelect.innerHTML = `<option value="">Choose a saved Note</option>`;
 
-    decks = error || !Array.isArray(data) ? [] : data;
-    els.deckSelect.innerHTML = `<option value="">Optional: build from flashcards</option>`;
-    decks.forEach((deck) => {
+    notes.forEach((note) => {
       const opt = document.createElement("option");
-      opt.value = deck.id;
-      opt.textContent = deck.title || "Untitled deck";
-      els.deckSelect.appendChild(opt);
+      opt.value = note.id;
+      opt.textContent = note.title || "Untitled note";
+      els.noteSelect.appendChild(opt);
     });
 
-    syncCustomSelect(els.deckSelect);
+    syncCustomSelect(els.noteSelect);
   }
 
-  async function loadDeckSource(deckId) {
-    if (!deckId) return;
+  async function useSelectedNote() {
+    const id = els.noteSelect?.value;
 
-    const state = await tools.ready();
-    const { data, error } = await state.supabase
-      .from("flashcards")
-      .select("front,back,position")
-      .eq("deck_id", deckId)
-      .order("position", { ascending: true });
-
-    if (error || !Array.isArray(data) || !data.length) {
-      tools.toast("This deck has no cards yet.", "error");
+    if (!id) {
+      if (els.source) els.source.value = "";
       return;
     }
 
-    const deck = decks.find((d) => d.id === deckId);
-    els.source.value = data
-      .map((card, index) => `${index + 1}. Q: ${card.front}\nA: ${card.back}`)
-      .join("\n\n")
-      .slice(0, 18000);
+    const note = await tools.fetchNoteText(id);
+    if (!note?.content) {
+      if (els.source) els.source.value = "";
+      tools.toast("Could not open this Note.", "error");
+      return;
+    }
 
-    if (!els.title.value.trim())
-      els.title.value = `${deck?.title || "Flashcards"} quiz`;
+    if (els.source)
+      els.source.value = String(note.content || "").slice(0, 22000);
+
+    if (!els.title.value.trim()) {
+      els.title.value = `${note.title || "Saved Note"} quiz`.slice(0, 90);
+    }
   }
 
   async function loadQuizzes() {
@@ -927,12 +912,20 @@
   async function generateQuiz() {
     const source = (els.source?.value || "").trim();
     if (source.length < 40) {
-      tools.toast("Add notes or choose a flashcard deck first.", "error");
+      tools.toast("Choose a saved Note first.", "error");
       return;
     }
 
     const difficulty = selectedDifficulty();
-    const count = clampCount(els.count?.value);
+    const rawCount = Number(els.count?.value || 10);
+
+    if (rawCount > 40) {
+      tools.toast("Maximum is 40 quiz questions.", "error");
+      if (els.count) els.count.value = 40;
+      return;
+    }
+
+    const count = clampCount(rawCount);
     const title =
       (els.title?.value || "").trim() ||
       source
@@ -943,7 +936,10 @@
 
     els.generate.disabled = true;
     els.generate.classList.add("is-loading");
+    closeCreateModal();
+    renderGeneratingQuiz();
     startGeneratePhrases();
+    focusQuizStage({ behavior: "smooth" });
 
     try {
       const data = await tools.ai({
@@ -954,19 +950,20 @@
       });
 
       const aiQuestions = sanitizeQuestions(data.questions);
-      if (!aiQuestions.length) throw new Error("No quiz questions returned");
+      if (!aiQuestions.length)
+        throw new Error("Could not generate quiz questions from this note.");
 
       const quizTitle = String(data.title || title)
         .trim()
         .slice(0, 90);
       const quizId = await saveQuiz(quizTitle, difficulty, aiQuestions);
 
-      tools.toast("Quiz saved.");
       await loadQuizzes();
       els.quizSelect.value = quizId;
       syncCustomSelect(els.quizSelect);
       await loadQuiz(quizId, { focus: true });
     } catch (err) {
+      resetStage();
       tools.toast(err?.message || "Could not generate quiz.", "error");
     } finally {
       els.generate.disabled = false;
@@ -1034,20 +1031,27 @@
   }
 
   function bind() {
-    document
-      .querySelector("[data-quiz-presets]")
-      ?.addEventListener("click", (event) => {
-        const btn = event.target.closest("[data-quiz-preset]");
-        if (!btn) return;
-        useQuickPreset(btn.dataset.quizPreset);
-      });
+    els.openCreate?.addEventListener("click", openCreateModal);
+    els.createClose?.forEach((button) => {
+      button.addEventListener("click", closeCreateModal);
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && !els.createModal?.hidden) {
+        closeCreateModal();
+      }
+    });
 
-    els.deckSelect?.addEventListener("change", (event) =>
-      loadDeckSource(event.target.value),
-    );
-    els.quizSelect?.addEventListener("change", (event) =>
-      loadQuiz(event.target.value, { focus: true }),
-    );
+    els.noteSelect?.addEventListener("change", useSelectedNote);
+    els.quizSelect?.addEventListener("change", (event) => {
+      const quizId = event.target.value;
+      if (!quizId) {
+        resetStage();
+        focusPageTop();
+        return;
+      }
+
+      loadQuiz(quizId, { focus: true });
+    });
     els.generate?.addEventListener("click", generateQuiz);
     els.deleteQuiz?.addEventListener("click", deleteQuiz);
     els.finish?.addEventListener("click", finishQuiz);
@@ -1076,6 +1080,14 @@
     });
 
     els.next?.addEventListener("click", () => {
+      if (!questions.length || reviewed) return;
+
+      if (currentIndex >= questions.length - 1) {
+        const allAnswered = answers.every((answer) => answer !== null);
+        if (allAnswered) finishQuiz();
+        return;
+      }
+
       goToQuestion(currentIndex + 1);
     });
 
@@ -1091,18 +1103,30 @@
     resetStage();
 
     const initialQuizId = getInitialQuizId();
+    const initialNoteId = getInitialNoteId();
 
     const state = await tools.ready();
     if (!state.isPro) return;
 
-    await Promise.all([loadDecks(), loadQuizzes()]);
+    await Promise.all([loadNotes(), loadQuizzes()]);
 
     const quizId = quizzes.find((quiz) => quiz.id === initialQuizId)?.id;
+    const hasInitialNote = Boolean(
+      initialNoteId &&
+      els.noteSelect?.querySelector(
+        `option[value="${CSS.escape(initialNoteId)}"]`,
+      ),
+    );
 
     if (quizId) {
       els.quizSelect.value = quizId;
       syncCustomSelect(els.quizSelect);
       await loadQuiz(quizId, { focus: true });
+    } else if (hasInitialNote) {
+      els.noteSelect.value = initialNoteId;
+      syncCustomSelect(els.noteSelect);
+      await useSelectedNote();
+      focusPageTop();
     } else {
       focusPageTop();
     }

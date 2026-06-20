@@ -4,6 +4,7 @@
 
   const tools = window.DentAIStudyTools;
   const els = {};
+  let notes = [];
   let conversations = [];
   let decks = [];
   let quizzes = [];
@@ -51,10 +52,12 @@
     );
     els.tabs = Array.from(document.querySelectorAll("[data-library-filter]"));
     els.countAll = qs("libraryCountAll");
+    els.countNotes = qs("libraryCountNotes");
     els.countChats = qs("libraryCountChats");
     els.countDecks = qs("libraryCountDecks");
     els.countQuizzes = qs("libraryCountQuizzes");
     els.statChats = qs("libraryStatChats");
+    els.statNotes = qs("libraryStatNotes");
     els.statDecks = qs("libraryStatDecks");
     els.statQuizzes = qs("libraryStatQuizzes");
     els.statDeckIcon = qs("libraryStatDeckIcon");
@@ -72,16 +75,30 @@
   }
 
   function buildItems() {
+    const noteItems = notes.map((note) => ({
+      id: note.id,
+      kind: "note",
+      label: "Note",
+      title: cleanTitle(note.title, "Untitled note"),
+      summary: note.page_count
+        ? `${Number(note.page_count)} pages`
+        : "Exam-ready notes",
+      updated_at: itemTime(note),
+      href: `study-notes.html?note=${encodeURIComponent(note.id)}`,
+      table: "study_notes",
+      deleteMessage: "Delete this saved note? This can't be undone.",
+    }));
+
     const chatItems = conversations.map((chat) => ({
       id: chat.id,
       kind: "chat",
       label: "Chat",
-      title: cleanTitle(chat.title, "Untitled study chat"),
-      summary: "Study chat",
+      title: cleanTitle(chat.title, "Untitled Exam Coach chat"),
+      summary: "Exam Coach chat",
       updated_at: itemTime(chat),
       href: `study.html?chat=${encodeURIComponent(chat.id)}`,
       table: "conversations",
-      deleteMessage: "Delete this study chat? This can't be undone.",
+      deleteMessage: "Delete this Exam Coach chat? This can't be undone.",
     }));
 
     const deckItems = decks.map((deck) => ({
@@ -110,11 +127,13 @@
       deleteMessage: "Delete this quiz? This can't be undone.",
     }));
 
-    return [...chatItems, ...deckItems, ...quizItems].sort((a, b) => {
-      const aTime = new Date(a.updated_at).getTime() || 0;
-      const bTime = new Date(b.updated_at).getTime() || 0;
-      return bTime - aTime;
-    });
+    return [...noteItems, ...deckItems, ...quizItems, ...chatItems].sort(
+      (a, b) => {
+        const aTime = new Date(a.updated_at).getTime() || 0;
+        const bTime = new Date(b.updated_at).getTime() || 0;
+        return bTime - aTime;
+      },
+    );
   }
 
   function sortItems(items) {
@@ -287,8 +306,14 @@
   function updateCounts(items = []) {
     syncLockedStats();
 
+    if (els.countNotes) {
+      els.countNotes.textContent = canUseProLibrary
+        ? String(notes.length)
+        : "Pro";
+    }
     if (els.countChats)
       els.countChats.textContent = String(conversations.length);
+    if (els.statChats) els.statChats.textContent = String(conversations.length);
     if (els.countDecks) {
       els.countDecks.textContent = canUseProLibrary
         ? String(decks.length)
@@ -299,7 +324,11 @@
         ? String(quizzes.length)
         : "Pro";
     }
-    if (els.statChats) els.statChats.textContent = String(conversations.length);
+    if (els.statNotes) {
+      els.statNotes.textContent = canUseProLibrary
+        ? String(notes.length)
+        : "Pro";
+    }
     if (els.statDecks) {
       els.statDecks.textContent = canUseProLibrary
         ? String(decks.length)
@@ -312,7 +341,7 @@
     }
     if (els.countAll) {
       els.countAll.textContent = String(
-        conversations.length + decks.length + quizzes.length,
+        notes.length + conversations.length + decks.length + quizzes.length,
       );
     }
 
@@ -322,7 +351,8 @@
   function setActiveTab() {
     els.tabs?.forEach((tab) => {
       const filter = tab.dataset.libraryFilter || "all";
-      const isProOnlyFilter = filter === "deck" || filter === "quiz";
+      const isProOnlyFilter =
+        filter === "note" || filter === "deck" || filter === "quiz";
       tab.disabled = isProOnlyFilter && !canUseProLibrary;
       tab.classList.toggle("is-active", filter === activeFilter);
     });
@@ -355,6 +385,17 @@
   }
 
   function iconForKind(kind) {
+    if (kind === "note") {
+      return `
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+          <path d="M14 2v6h6" />
+          <path d="M8 13h8" />
+          <path d="M8 17h5" />
+        </svg>
+      `;
+    }
+
     if (kind === "deck") {
       return `
         <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -383,10 +424,12 @@
   }
 
   function previewForItem(item) {
+    if (item.kind === "note")
+      return "Open these notes or use them to generate practice next.";
     if (item.kind === "deck") return "Review this saved flashcard deck.";
     if (item.kind === "quiz")
       return "Practice this saved quiz when you are ready.";
-    return "Continue this saved study chat.";
+    return "Continue this saved Exam Coach chat.";
   }
 
   function clampPercent(value) {
@@ -444,16 +487,14 @@
               <div class="library-title-group">
                 <h2 class="library-title">${tools.escapeHtml(item.title)}</h2>
                 <div class="library-meta">
-                  <span class="library-meta-icon" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                      <circle cx="12" cy="12" r="8.5" />
-                      <path d="M12 7.5v5l3 1.8" />
-                    </svg>
-                  </span>
-                  <span>${tools.formatRelativeTime(item.updated_at)}</span>
-                  <span class="library-meta-dot" aria-hidden="true"></span>
-                  <span>${tools.escapeHtml(item.summary)}</span>
-                </div>
+                <span class="library-meta-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="8.5" />
+                    <path d="M12 7.5v5l3 1.8" />
+                  </svg>
+                </span>
+                <span class="library-meta-time">${tools.formatRelativeTime(item.updated_at)}</span>
+              </div>
               </div>
             </div>
             <div class="library-type is-${item.kind}">${tools.escapeHtml(item.label)}</div>
@@ -642,21 +683,23 @@
       canUseProLibrary = Boolean(state.isPro);
 
       const chatRows = await tools.fetchConversations(30);
-      const [deckRows, quizRows] = canUseProLibrary
+      const [noteRows, deckRows, quizRows] = canUseProLibrary
         ? await Promise.all([
+            tools.fetchNotes(30),
             fetchRows("flashcard_decks", "id,title,created_at,updated_at"),
             fetchRows(
               "study_quizzes",
               "id,title,difficulty,question_count,created_at,updated_at",
             ),
           ])
-        : [[], []];
+        : [[], [], []];
 
       const [deckProgress, quizProgress] = await Promise.all([
         fetchFlashcardProgress(deckRows),
         fetchQuizProgress(quizRows),
       ]);
 
+      notes = noteRows;
       conversations = chatRows;
       decks = deckRows.map((deck) => ({
         ...deck,
@@ -782,7 +825,9 @@
     canUseProLibrary = Boolean(state.isPro);
     if (
       !canUseProLibrary &&
-      (activeFilter === "deck" || activeFilter === "quiz")
+      (activeFilter === "note" ||
+        activeFilter === "deck" ||
+        activeFilter === "quiz")
     ) {
       activeFilter = "all";
     }

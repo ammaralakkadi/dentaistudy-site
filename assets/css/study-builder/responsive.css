@@ -86,25 +86,6 @@
     font-size: 16px;
     max-height: 280px;
   }
-
-  .pill-label {
-    display: none;
-  }
-
-  .mode-toggle {
-    padding: 2px;
-    border-radius: 8px;
-    gap: 2px;
-  }
-
-  .mode-pill {
-    width: 30px;
-    height: 30px;
-    padding: 0;
-    border-radius: 7px;
-    gap: 0;
-    justify-content: center;
-  }
 }
 
 @media (max-width: 640px) and (max-height: 760px) {
@@ -580,6 +561,7 @@
     background: rgba(11, 99, 206, 0.07);
     border-color: transparent;
     color: #07111f;
+    font-weight: 700;
   }
 
   .chats-panel .sb-btn .ico {
@@ -709,7 +691,7 @@
 
 @media (min-width: 1025px) {
   :root {
-    --sb-w: 300px;
+    --sb-w: 268px;
   }
 
   #hamburger,

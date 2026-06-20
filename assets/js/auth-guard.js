@@ -23,6 +23,7 @@ console.log("[auth-guard] LOADED FILE v3.1 on", window.location.href);
 const DAS_STUDY_IDENTITY_CACHE_KEY = "das.study.identity.v1";
 const DAS_STUDY_FILES = [
   "study.html",
+  "study-notes.html",
   "study-library.html",
   "study-flashcards.html",
   "study-quiz.html",
@@ -197,6 +198,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const isStudyLibrary = fileName === "study-library.html";
   const isStudy = [
     "study.html",
+    "study-notes.html",
     "study-library.html",
     "study-flashcards.html",
     "study-quiz.html",
@@ -208,13 +210,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       document.body?.classList.remove("account-auth-loading");
     }
   };
-  // Desktop-only modal (keeps mobile/iPad using native confirm)
-  function isDesktopModal() {
-    return (
-      window.matchMedia && window.matchMedia("(min-width: 1025px)").matches
-    );
-  }
-
+  // Account confirmation modal
   function getDasModalEls() {
     const overlay = document.getElementById("dasModalOverlay");
     const title = document.getElementById("dasModalTitle");
@@ -234,7 +230,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     cancelText = "Cancel",
     danger = false,
   }) {
-    if (!isDesktopModal()) return Promise.resolve(window.confirm(message));
     const els = getDasModalEls();
     if (!els) return Promise.resolve(window.confirm(message));
 
@@ -248,7 +243,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         done = true;
 
         overlay.hidden = true;
-        if (input) input.hidden = true;
+        if (input) {
+          input.hidden = true;
+          input.value = "";
+        }
 
         overlay.removeEventListener("click", onBackdrop);
         cancelBtn.removeEventListener("click", onCancel);
@@ -277,11 +275,16 @@ document.addEventListener("DOMContentLoaded", async () => {
       cancelBtn.textContent = cancelText;
       okBtn.textContent = okText;
 
+      if (input) {
+        input.hidden = true;
+        input.value = "";
+      }
+
       okBtn.classList.toggle("das-modal__btn--danger", !!danger);
       okBtn.classList.toggle("das-modal__btn--primary", !danger);
 
       overlay.hidden = false;
-      okBtn.focus();
+      window.requestAnimationFrame(() => okBtn.focus());
 
       overlay.addEventListener("click", onBackdrop);
       cancelBtn.addEventListener("click", onCancel);
@@ -513,11 +516,15 @@ document.addEventListener("DOMContentLoaded", async () => {
       // Profile activity: real saved Study Library totals
       const chatCountEl = document.getElementById("das-profile-chat-count");
       const answerCountEl = document.getElementById("das-profile-answer-count");
+      const noteCountEl = document.getElementById("das-profile-note-count");
       const deckCountEl = document.getElementById("das-profile-deck-count");
       const quizCountEl = document.getElementById("das-profile-quiz-count");
       const lastActiveEl = document.getElementById("das-profile-last-active");
       const profileActivityOverview = document.querySelector(
         ".profile-library-overview",
+      );
+      const profileNoteStat = document.querySelector(
+        '[data-profile-pro-stat="notes"]',
       );
       const profileDeckStat = document.querySelector(
         '[data-profile-pro-stat="flashcards"]',
@@ -544,11 +551,19 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
 
       setProfileProStatState(
+        profileNoteStat,
+        noteCountEl,
+        isPaidPlan ? "active" : "locked",
+        "saved notes",
+      );
+
+      setProfileProStatState(
         profileDeckStat,
         deckCountEl,
         isPaidPlan ? "active" : "locked",
         "decks",
       );
+
       setProfileProStatState(
         profileQuizStat,
         quizCountEl,
@@ -575,9 +590,16 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       revealAccountPage();
 
-      if (chatCountEl || answerCountEl || deckCountEl || quizCountEl) {
+      if (
+        chatCountEl ||
+        answerCountEl ||
+        noteCountEl ||
+        deckCountEl ||
+        quizCountEl
+      ) {
         if (chatCountEl) chatCountEl.textContent = "—";
         if (answerCountEl) answerCountEl.textContent = "—";
+        if (isPaidPlan && noteCountEl) noteCountEl.textContent = "—";
         if (isPaidPlan && deckCountEl) deckCountEl.textContent = "—";
         if (isPaidPlan && quizCountEl) quizCountEl.textContent = "—";
 
@@ -598,6 +620,11 @@ document.addEventListener("DOMContentLoaded", async () => {
           if (isPaidPlan) {
             countRequests.push(
               supabase
+                .from("study_notes")
+                .select("id", { count: "exact", head: true })
+                .eq("user_id", user.id),
+
+              supabase
                 .from("flashcard_decks")
                 .select("id", { count: "exact", head: true })
                 .eq("user_id", user.id),
@@ -609,7 +636,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             );
           }
 
-          const [chatResult, answerResult, deckResult, quizResult] =
+          const [chatResult, answerResult, noteResult, deckResult, quizResult] =
             await Promise.all(countRequests);
 
           if (chatCountEl && !chatResult.error) {
@@ -618,6 +645,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
           if (answerCountEl && !answerResult.error) {
             answerCountEl.textContent = answerResult.count ?? 0;
+          }
+
+          if (isPaidPlan && noteCountEl && noteResult && !noteResult.error) {
+            noteCountEl.textContent = noteResult.count ?? 0;
           }
 
           if (isPaidPlan && deckCountEl && deckResult && !deckResult.error) {
@@ -631,6 +662,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           console.warn("[profile] Could not load study library totals:", err);
           if (chatCountEl) chatCountEl.textContent = "–";
           if (answerCountEl) answerCountEl.textContent = "–";
+          if (isPaidPlan && noteCountEl) noteCountEl.textContent = "–";
           if (isPaidPlan && deckCountEl) deckCountEl.textContent = "–";
           if (isPaidPlan && quizCountEl) quizCountEl.textContent = "–";
         }
@@ -1389,6 +1421,7 @@ function updateAuthUI(session) {
   const fileName = pathname.split("/").pop() || "index.html";
   const isStudyPage = [
     "study.html",
+    "study-notes.html",
     "study-library.html",
     "study-flashcards.html",
     "study-quiz.html",

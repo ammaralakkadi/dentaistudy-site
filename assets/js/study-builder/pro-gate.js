@@ -269,6 +269,75 @@
       .trim();
   }
 
+  async function fetchNotes(limit = 30) {
+    const s = await ready();
+    if (!s.supabase || !s.user) return [];
+
+    const { data, error } = await s.supabase
+      .from("study_notes")
+      .select("id,title,source_file_name,page_count,created_at,updated_at")
+      .order("updated_at", { ascending: false })
+      .order("created_at", { ascending: false })
+      .limit(limit);
+
+    if (error || !Array.isArray(data)) return [];
+    return data;
+  }
+
+  async function fetchNoteText(noteId) {
+    const s = await ready();
+    if (!s.supabase || !s.user || !noteId) return null;
+
+    const { data, error } = await s.supabase
+      .from("study_notes")
+      .select(
+        "id,title,source_file_name,content,page_count,created_at,updated_at",
+      )
+      .eq("id", noteId)
+      .single();
+
+    if (error || !data) return null;
+    return data;
+  }
+
+  async function saveGeneratedNote({
+    title,
+    sourceFileName,
+    content,
+    pageCount = null,
+  }) {
+    const s = await ready();
+    if (!s.supabase || !s.user) throw new Error("Sign in to save notes.");
+    if (!state.isPro) throw new Error("Notes are a Pro feature.");
+
+    const cleanContent = String(content || "").trim();
+    if (!cleanContent) throw new Error("No notes to save.");
+
+    const cleanTitle = String(title || sourceFileName || "Untitled note")
+      .replace(/\.pdf$/i, "")
+      .replace(/[_-]+/g, " ")
+      .replace(/\s+/g, " ")
+      .trim()
+      .slice(0, 160);
+
+    const { data, error } = await s.supabase
+      .from("study_notes")
+      .insert({
+        user_id: s.user.id,
+        title: cleanTitle || "Untitled note",
+        source_file_name: String(sourceFileName || "Dental PDF").slice(0, 240),
+        content: cleanContent,
+        page_count: Number.isFinite(Number(pageCount))
+          ? Number(pageCount)
+          : null,
+      })
+      .select("id")
+      .single();
+
+    if (error || !data?.id) throw error || new Error("Could not save notes.");
+    return data.id;
+  }
+
   function cleanSidebarTitle(value) {
     return (value || "New chat").trim().replace(/\s+/g, " ") || "New chat";
   }
@@ -560,6 +629,9 @@
     formatRelativeTime,
     fetchConversations,
     fetchConversationText,
+    fetchNotes,
+    fetchNoteText,
+    saveGeneratedNote,
   };
 
   async function boot() {

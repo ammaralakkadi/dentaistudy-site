@@ -288,29 +288,9 @@
     let userId = null;
     let isAuthed = false;
     let activeConversationId = null;
-    let lastPdfContextHash = "";
-    let lastActiveFileId = "";
 
-    // ===== Study Mode (Quick vs Deep) =====
-    window.DentAIstudyTask = "qa"; // default
-
-    document.addEventListener("click", (e) => {
-      const pill = e.target.closest(".addpill[data-task]");
-      if (!pill) return;
-
-      document
-        .querySelectorAll(".addpill[data-task]")
-        .forEach((p) => p.classList.remove("is-active"));
-
-      pill.classList.add("is-active");
-
-      const task = pill.getAttribute("data-task");
-      window.DentAIstudyTask =
-        task === "chapter_notes" ? "chapter_notes" : "qa";
-
-      const addBtn = document.getElementById("btnAdd");
-      if (addBtn?.classList.contains("is-open")) addBtn.click();
-    });
+    // Exam Coach is question-answer only. PDF notes move to the Notes page.
+    window.DentAIstudyTask = "qa";
 
     function getUrlChatId() {
       const url = new URL(window.location.href);
@@ -352,25 +332,8 @@
       return t.length > 200 ? t.slice(0, 200) : t;
     }
 
-    function normalizeAttachments(value) {
-      if (!Array.isArray(value)) return [];
-      return value
-        .map((item) => {
-          if (!item || typeof item !== "object") return null;
-          const name = String(item.name || "").trim();
-          if (!name) return null;
-          return {
-            name: name.slice(0, 240),
-            size: Number.isFinite(Number(item.size)) ? Number(item.size) : 0,
-            type: String(item.type || "application/pdf").slice(0, 80),
-            pages: Number.isFinite(Number(item.pages))
-              ? Number(item.pages)
-              : null,
-            status: String(item.status || "ready").slice(0, 40),
-          };
-        })
-        .filter(Boolean)
-        .slice(0, 10);
+    function normalizeAttachments() {
+      return [];
     }
 
     // Desktop-only modal (keeps mobile/iPad using native prompt/confirm)
@@ -704,9 +667,6 @@
           activeConversationId = c.id;
           setUrlChatId(activeConversationId);
           await loadConversation(activeConversationId);
-          window.DentAIPDF?.reset?.();
-          lastPdfContextHash = "";
-          lastActiveFileId = "";
 
           listEl
             .querySelectorAll(".sb-chat")
@@ -809,21 +769,7 @@
         }
       }
 
-      const restoredAttachments = thread
-        .filter((m) => m.role === "user")
-        .flatMap((m) => normalizeAttachments(m.attachments));
-
-      if (restoredAttachments.length) {
-        window.DentAIPendingPdfRestore = restoredAttachments;
-
-        window.DentAIPDF?.restoreActiveFromAttachments?.(restoredAttachments);
-
-        document.dispatchEvent(
-          new CustomEvent("dentai:restore-pdf-context", {
-            detail: { attachments: restoredAttachments },
-          }),
-        );
-      }
+      // Exam Coach does not restore PDF context. Saved notes will own the upload flow.
     }
 
     async function ensureConversationForFirstMessage(firstText) {
@@ -898,18 +844,10 @@
             activeConversationId = null;
             setUrlChatId(null);
             thread.length = 0;
-            lastPdfContextHash = "";
-            lastActiveFileId = "";
-            window.DentAIPDF?.reset?.();
-
             await refreshChatList();
           } else {
             window.ChatUI?.newChat?.();
             thread.length = 0;
-            lastPdfContextHash = "";
-            lastActiveFileId = "";
-            window.DentAIPDF?.reset?.();
-
             saveThread(thread);
           }
         });
@@ -920,14 +858,11 @@
       if (!form || !ta) return;
 
       let pendingSubmitText = null;
-      let pendingSubmitAttachments = [];
 
       form.addEventListener(
         "submit",
         (e) => {
           pendingSubmitText = (ta.value || "").trim();
-          pendingSubmitAttachments =
-            window.DentAIPDF?.getAttachedMetadata?.() || [];
           if (!pendingSubmitText) return;
 
           // Let composer.js run first (it draws the user bubble + thinking)
@@ -936,13 +871,6 @@
             const text = (pendingSubmitText || "").trim();
             pendingSubmitText = null;
             if (!text) return;
-
-            if (window.DentAIPDF?.hasPending?.()) {
-              window.ChatUI?.addAI?.(
-                "Still reading your PDF… try again in a moment.",
-              );
-              return;
-            }
 
             let accessToken = null;
 
@@ -967,36 +895,24 @@
             }
 
             try {
-              const attachments = normalizeAttachments(
-                pendingSubmitAttachments,
-              );
-              pendingSubmitAttachments = [];
-
               if (isAuthed) {
                 await ensureConversationForFirstMessage(text);
-                await insertMessage("user", text, attachments);
+                await insertMessage("user", text, []);
                 thread.push({
                   role: "user",
                   content: text,
-                  attachments: normalizeAttachments(attachments),
+                  attachments: [],
                 });
               } else {
                 thread.push({
                   role: "user",
                   content: text,
-                  attachments: normalizeAttachments(attachments),
+                  attachments: [],
                 });
                 saveThread(thread);
               }
 
               const headers = buildEdgeHeaders(accessToken);
-
-              const isMobile =
-                (navigator.userAgentData && navigator.userAgentData.mobile) ||
-                /Android|iPhone|iPad|iPod|Mobi/i.test(navigator.userAgent);
-
-              // Keep this small to avoid TPM blow-ups.
-              const pdfMaxChars = isMobile ? 8000 : 15000;
 
               // Only send recent history (don’t resend the whole chat every time).
               const historyWindow = 10;
@@ -1005,31 +921,13 @@
                 content: m.content,
               }));
 
-              // Inject PDF context when it changes (fixes wrong answers after switching PDFs).
-              const pdfContext =
-                window.DentAIPDF?.getActiveContext?.(pdfMaxChars) || "";
-              const pdfHash = pdfContext ? fnv1aHash(pdfContext) : "";
-
-              if (pdfHash && pdfHash !== lastPdfContextHash) {
-                requestMessages.unshift({ role: "user", content: pdfContext });
-                lastPdfContextHash = pdfHash;
-              } else if (!pdfHash) {
-                lastPdfContextHash = "";
-              }
-
-              const pdfDocs = window.DentAIPDF?.consumePending?.() || [];
-              if (pdfDocs.length && pdfDocs[0]?.file_id)
-                lastActiveFileId = String(pdfDocs[0].file_id);
-
               const response = await fetch(AI_ENDPOINT, {
                 method: "POST",
                 headers,
                 body: JSON.stringify({
                   topic: text,
                   conversation_id: activeConversationId,
-                  task: window.DentAIstudyTask || "qa",
-                  file_id: lastActiveFileId,
-                  pdf_docs: pdfDocs,
+                  task: "qa",
                   messages: requestMessages,
                 }),
               });

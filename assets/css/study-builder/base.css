@@ -19,8 +19,8 @@
   /* BRAND ACCENT */
   --accent: #111827;
 
-  --sb-w: 300px;
-  --topbar-h: 56px;
+  --sb-w: 268px;
+  --topbar-h: 50px;
 
   --safe-bottom: env(safe-area-inset-bottom, 0px);
   --safe-top: env(safe-area-inset-top, 0px);

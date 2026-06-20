@@ -4,98 +4,7 @@
 
   const tools = window.DentAIStudyTools;
   const SWIPE_THRESHOLD = 90;
-  const QUICK_PRESETS = {
-    ore: {
-      title: "ORE emergency drug deck",
-      count: 18,
-      source:
-        "Generate high-yield flashcards for ORE-style UK dental medical emergency stations. Focus on adult emergency drug names, indications, dose ranges, administration route, sequence of actions, oxygen use, calling emergency help, and common OSCE mistakes. Include seizure/status epilepticus, anaphylaxis, asthma, hypoglycemia, syncope, angina/MI, adrenal crisis, and local anesthetic toxicity.",
-    },
-    adex: {
-      title: "ADEX critical error deck",
-      count: 18,
-      source:
-        "Generate ADEX-style flashcards focused on clinical failure traps and critical deficiencies. Cover anterior endodontic access errors, lateral perforation risk, crown preparation over-taper, reduction mistakes, margin errors, restorative isolation, typodont grading logic, and how to recognize unsafe preparation patterns before submission.",
-    },
-    inbde: {
-      title: "INBDE patient box deck",
-      count: 18,
-      source:
-        "Generate INBDE case-based flashcards for medically complex Patient Box scenarios. Focus on pharmacology, uncontrolled diabetes, warfarin and INR, antiplatelet therapy, antibiotic prophylaxis, prosthetic heart valve considerations, facial space infection triage, ethics, autonomy, beneficence, non-maleficence, justice, and treatment sequencing.",
-    },
-    adc: {
-      title: "ADC scenario logic deck",
-      count: 18,
-      source:
-        "Generate ADC-style flashcards for scenario-based dental decision making. Focus on infection control failures, autoclave cycle issues, professional boundaries, informed consent, cultural safety, patient safety, referral decisions, emergency triage, and choosing the safest answer when multiple options look correct.",
-    },
-    ndecc: {
-      title: "NDECC judgment deck",
-      count: 18,
-      source:
-        "Generate NDECC-style flashcards for situational judgment, patient communication, consent, refusal of ideal treatment, autonomy, ethical compliance, documentation, infection control, and examiner-style clinical decision points. Include scenarios where a patient demands unnecessary extraction or refuses a salvageable root canal.",
-    },
-    sdle: {
-      title: "SDLE trauma recall deck",
-      count: 18,
-      source:
-        "Generate SDLE-style flashcards focused on pediatric dental trauma, community dentistry, prevention, emergency timelines, immature permanent teeth, complicated crown-root fractures, avulsion, luxation injuries, DMFT interpretation, fluoride, caries risk, and high-yield Saudi licensing recall points.",
-    },
-    uae: {
-      title: "UAE medical risk deck",
-      count: 18,
-      source:
-        "Generate UAE DHA MOH DOH Prometric-style flashcards focused on medical risk in dental practice. Cover antibiotic prophylaxis, prosthetic heart valve considerations, penicillin allergy alternatives, anticoagulants, dual antiplatelet therapy, hypertension, diabetes, medical emergencies, pediatric local anesthetic maximum dose, and safe referral decisions.",
-    },
-    endodontics: {
-      title: "Pulp diagnosis deck",
-      count: 16,
-      source:
-        "Generate high-yield endodontics flashcards that differentiate reversible pulpitis, symptomatic irreversible pulpitis, necrotic pulp, symptomatic apical periodontitis, acute apical abscess, and chronic apical lesions. Use pain history, cold test, percussion, palpation, radiographs, diagnosis, and first-line treatment.",
-    },
-    operative: {
-      title: "Deep caries decision deck",
-      count: 16,
-      source:
-        "Generate operative dentistry flashcards for deep caries and pulp protection decisions. Compare direct pulp cap, indirect pulp cap, selective caries removal, stepwise excavation, restoration repair, postoperative sensitivity, bonding failures, rubber dam isolation, matrix and wedge decisions, and exam traps.",
-    },
-    prosthodontics: {
-      title: "Crown preparation deck",
-      count: 16,
-      source:
-        "Generate prosthodontics flashcards on crown preparation and fixed prosthodontic failure traps. Cover ferrule effect, finish lines, taper, occlusal reduction, path of insertion, biologic width, impression errors, temporary crowns, pontic design, RPD design basics, occlusion, and common exam mistakes.",
-    },
-    periodontology: {
-      title: "AAP classification deck",
-      count: 16,
-      source:
-        "Generate periodontology flashcards comparing the 1999 periodontal classification with the current staging and grading system. Cover CAL, RBL, probing depth, BOP, furcation, mobility, complexity factors, grade modifiers, diabetes, smoking, periodontal abscess, peri-implant disease, and maintenance decisions.",
-    },
-    "oral-surgery": {
-      title: "MRONJ and extraction deck",
-      count: 16,
-      source:
-        "Generate oral surgery flashcards focused on extraction risk decisions. Cover MRONJ/BRONJ risk, bisphosphonates, antiresorptives, anticoagulants, dual antiplatelet therapy, bleeding control, dry socket, oroantral communication, odontogenic infection spread, third molars, and referral red flags.",
-    },
-    "oral-anatomy": {
-      title: "Fascial space anatomy deck",
-      count: 16,
-      source:
-        "Generate oral anatomy flashcards focused on fascial spaces and Ludwig’s angina. Cover submandibular, sublingual, submental, buccal, canine, pterygomandibular, parapharyngeal spaces, anatomical borders, infection spread, airway warning signs, local anesthesia landmarks, trigeminal branches, and maxillary sinus relevance.",
-    },
-    orthodontics: {
-      title: "Class II diagnosis deck",
-      count: 16,
-      source:
-        "Generate orthodontics flashcards comparing Class II Division 1 and Class II Division 2 malocclusion. Cover clinical features, incisor inclination, overjet, overbite, lip competence, cephalometric clues, facial profile, radiographic features, growth pattern, treatment timing, and exam differentiation traps.",
-    },
-    pediatric: {
-      title: "Pediatric emergency deck",
-      count: 16,
-      source:
-        "Generate pediatric dentistry flashcards focused on trauma and safety decisions. Cover immature permanent tooth trauma, complicated crown-root fracture, avulsion timing, pulp therapy, stainless steel crowns, space maintainers, pediatric local anesthetic maximum doses, behavior guidance, SDF, Hall technique, and child abscess care.",
-    },
-  };
+
   const els = {};
   let decks = [];
   let cards = [];
@@ -113,10 +22,11 @@
   let customSelectEventsBound = false;
 
   const GENERATING_PHRASES = [
-    "Generating flashcards…",
-    "Finding high-yield points…",
-    "Turning notes into cards…",
-    "Saving your deck…",
+    "Reading note...",
+    "Finding key facts...",
+    "Writing cards...",
+    "Checking recall points...",
+    "Saving deck...",
   ];
 
   function qs(id) {
@@ -143,16 +53,28 @@
     if (els.generate) els.generate.textContent = label;
   }
 
+  function setGeneratingPhrase(label) {
+    setGenerateLabel(label);
+
+    if (!els.stage?.classList.contains("is-generating")) return;
+    if (els.deckMeta) els.deckMeta.textContent = label;
+    if (els.frontText) {
+      els.frontText.textContent = label;
+      syncTextDensity(els.frontText, label);
+    }
+    if (els.hint) els.hint.textContent = "This usually takes a moment.";
+  }
+
   function startGeneratePhrases() {
     let phraseIndex = 0;
 
-    window.clearInterval(generatePhraseTimer);
-    setGenerateLabel(GENERATING_PHRASES[phraseIndex]);
+    stopGeneratePhrases();
+    setGeneratingPhrase(GENERATING_PHRASES[phraseIndex]);
 
     generatePhraseTimer = window.setInterval(() => {
       phraseIndex = (phraseIndex + 1) % GENERATING_PHRASES.length;
-      setGenerateLabel(GENERATING_PHRASES[phraseIndex]);
-    }, 1300);
+      setGeneratingPhrase(GENERATING_PHRASES[phraseIndex]);
+    }, 1400);
   }
 
   function stopGeneratePhrases() {
@@ -164,10 +86,16 @@
   function cacheEls() {
     els.layout = document.querySelector(".flashcards-layout");
     els.stage = document.querySelector(".deck-stage");
+    els.empty = qs("flashcardEmptyState");
+    els.createModal = qs("flashcardCreateModal");
+    els.openCreate = qs("openFlashcardCreateBtn");
+    els.createClose = document.querySelectorAll(
+      "[data-flashcard-create-close]",
+    );
     els.title = qs("deckTitleInput");
     els.count = qs("cardCountInput");
     els.source = qs("flashcardSourceInput");
-    els.chatSelect = qs("flashcardChatSelect");
+    els.noteSelect = qs("flashcardNoteSelect");
     els.deckSelect = qs("deckSelect");
     els.generate = qs("generateCardsBtn");
     els.deleteDeck = qs("deleteDeckBtn");
@@ -191,7 +119,7 @@
 
   function clampCount(value) {
     const n = Number(value || 12);
-    return Math.max(6, Math.min(30, Math.round(n)));
+    return Math.max(6, Math.min(40, Math.round(n)));
   }
 
   function isTypingTarget(target) {
@@ -214,20 +142,48 @@
       root.classList.remove("is-open");
       root.classList.remove("is-drop-up");
       menu.hidden = true;
+      menu.style.left = "";
+      menu.style.top = "";
+      menu.style.right = "";
+      menu.style.width = "";
       menu.style.maxHeight = "";
     });
   }
 
   function positionCustomSelect(root, menu) {
     const rect = root.getBoundingClientRect();
-    const gap = 12;
-    const spaceBelow = window.innerHeight - rect.bottom - gap;
-    const spaceAbove = rect.top - gap;
-    const shouldOpenUp = spaceBelow < 180 && spaceAbove > spaceBelow;
-    const available = shouldOpenUp ? spaceAbove : spaceBelow;
+    const gap = 8;
+    const padding = 12;
+    const minHeight = 150;
+    const maxHeight = 280;
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+    const spaceBelow = viewportHeight - rect.bottom - padding;
+    const spaceAbove = rect.top - padding;
+    const shouldOpenUp = spaceBelow < minHeight && spaceAbove > spaceBelow;
+    const available = shouldOpenUp ? spaceAbove - gap : spaceBelow - gap;
+    const menuHeight = Math.max(minHeight, Math.min(maxHeight, available));
+    const width = Math.min(rect.width, viewportWidth - padding * 2);
+    const left = Math.max(
+      padding,
+      Math.min(rect.left, viewportWidth - width - padding),
+    );
+    const top = shouldOpenUp
+      ? Math.max(padding, rect.top - gap - menuHeight)
+      : Math.min(rect.bottom + gap, viewportHeight - padding - menuHeight);
 
     root.classList.toggle("is-drop-up", shouldOpenUp);
-    menu.style.maxHeight = `${Math.max(160, Math.min(260, available))}px`;
+    menu.style.left = `${left}px`;
+    menu.style.top = `${top}px`;
+    menu.style.right = "auto";
+    menu.style.width = `${width}px`;
+    menu.style.maxHeight = `${menuHeight}px`;
+  }
+
+  function repositionOpenCustomSelects() {
+    customSelects.forEach(({ root, menu }) => {
+      if (!menu.hidden) positionCustomSelect(root, menu);
+    });
   }
 
   function syncCustomSelect(select) {
@@ -297,7 +253,7 @@
   }
 
   function enhanceSelects() {
-    [els.chatSelect, els.deckSelect].forEach(enhanceSelect);
+    [els.noteSelect, els.deckSelect].forEach(enhanceSelect);
 
     if (customSelectEventsBound) return;
     customSelectEventsBound = true;
@@ -310,9 +266,13 @@
     document.addEventListener("keydown", (event) => {
       if (event.key === "Escape") closeCustomSelects();
     });
+
+    window.addEventListener("resize", repositionOpenCustomSelects);
+    window.addEventListener("scroll", repositionOpenCustomSelects, true);
   }
 
   function resetStage(message) {
+    stopGeneratePhrases();
     cards = [];
     currentIndex = 0;
     isRevealed = false;
@@ -321,7 +281,8 @@
     reviewCards = new Set();
     setFlowMode("normal");
     els.layout?.classList.add("is-empty");
-    els.stage?.classList.remove("is-complete");
+    if (els.empty) els.empty.hidden = false;
+    els.stage?.classList.remove("is-complete", "is-generating");
     els.card?.classList.add("is-empty");
     els.card?.classList.remove(
       "is-complete",
@@ -335,7 +296,7 @@
     if (els.deckName) els.deckName.textContent = "No deck selected";
     if (els.deckMeta)
       els.deckMeta.textContent =
-        "Create a deck from notes or choose a saved deck.";
+        "Create flashcards from a saved Note or choose a saved deck.";
     if (els.counter) els.counter.textContent = "0 of 0";
     if (els.label) els.label.textContent = "Question";
     if (els.frontText)
@@ -514,7 +475,9 @@
   }
 
   function renderCompletionCard() {
+    els.stage?.classList.remove("is-generating");
     els.stage?.classList.add("is-complete");
+    if (els.empty) els.empty.hidden = true;
     els.card?.classList.remove(
       "is-empty",
       "is-flipped",
@@ -565,7 +528,8 @@
       return;
     }
 
-    els.stage?.classList.remove("is-complete");
+    els.stage?.classList.remove("is-complete", "is-generating");
+    if (els.empty) els.empty.hidden = true;
     els.card?.classList.remove(
       "is-complete",
       "is-empty",
@@ -601,6 +565,48 @@
     els.review?.classList.toggle("is-active", reviewCards.has(key));
     updateProgress();
     renderStrip();
+  }
+
+  function renderGeneratingDeck() {
+    cards = [];
+    currentIndex = 0;
+    isRevealed = false;
+    sessionFinished = false;
+    knownCards = new Set();
+    reviewCards = new Set();
+    activeDeckId = null;
+    setFlowMode("study");
+    els.layout?.classList.remove("is-empty");
+    if (els.empty) els.empty.hidden = true;
+    els.stage?.classList.remove("is-complete");
+    els.stage?.classList.add("is-generating");
+    els.card?.classList.remove(
+      "is-complete",
+      "is-flipped",
+      "is-dragging",
+      "is-swipe-next",
+      "is-swipe-prev",
+    );
+    els.card?.classList.add("is-empty");
+    if (els.card) els.card.style.transform = "";
+    if (els.deckName) els.deckName.textContent = "Building deck";
+    if (els.deckMeta) els.deckMeta.textContent = "Saving your flashcards...";
+    if (els.counter) els.counter.textContent = "0 of 0";
+    if (els.progressValue) els.progressValue.textContent = "0%";
+    if (els.progressBar) els.progressBar.style.width = "0%";
+    if (els.label) els.label.textContent = "Generating";
+    if (els.frontText) {
+      els.frontText.textContent = "Building deck...";
+      syncTextDensity(els.frontText, "Building deck...");
+    }
+    if (els.backText) {
+      els.backText.textContent = "";
+      syncTextDensity(els.backText, "");
+    }
+    if (els.hint) els.hint.textContent = "Saving...";
+    if (els.strip) els.strip.innerHTML = "";
+    els.know?.classList.remove("is-active");
+    els.review?.classList.remove("is-active");
   }
 
   function goToCard(index) {
@@ -800,6 +806,10 @@
     return new URLSearchParams(window.location.search).get("deck") || "";
   }
 
+  function getInitialNoteId() {
+    return new URLSearchParams(window.location.search).get("note") || "";
+  }
+
   function setFlowMode(mode) {
     const page = document.querySelector(".study-page");
     const layout = document.querySelector(".flashcards-layout");
@@ -834,16 +844,32 @@
     });
   }
 
-  function focusCreateForm() {
+  function setCreateModal(open) {
+    if (!els.createModal) return;
+
+    els.createModal.hidden = !open;
+    els.createModal.setAttribute("aria-hidden", open ? "false" : "true");
+    document.body.classList.toggle("study-modal-open", open);
+
+    if (open) {
+      window.setTimeout(() => {
+        els.noteSelect?.focus?.();
+      }, 80);
+    }
+  }
+
+  function openCreateModal() {
     document.activeElement?.blur?.();
     setFlowMode("create");
+    setCreateModal(true);
+  }
 
-    if (isMobileFlow()) {
-      scrollPageTop();
-      return;
-    }
+  function closeCreateModal() {
+    setCreateModal(false);
+  }
 
-    scrollToTarget(".flashcard-create-form");
+  function focusCreateForm() {
+    openCreateModal();
   }
 
   function focusPageTop() {
@@ -913,48 +939,43 @@
     if (options.focus) focusDeckStage({ repeat: true });
   }
 
-  async function loadChats() {
-    if (!els.chatSelect) return;
+  async function loadNotes() {
+    if (!els.noteSelect) return;
 
-    const chats = await tools.fetchConversations(30);
-    els.chatSelect.innerHTML = `<option value="">Optional: pull from a saved chat</option>`;
+    const notes = await tools.fetchNotes(30);
+    els.noteSelect.innerHTML = `<option value="">Choose a saved Note</option>`;
 
-    chats.forEach((chat) => {
+    notes.forEach((note) => {
       const opt = document.createElement("option");
-      opt.value = chat.id;
-      opt.textContent = chat.title || "Untitled study chat";
-      els.chatSelect.appendChild(opt);
+      opt.value = note.id;
+      opt.textContent = note.title || "Untitled note";
+      els.noteSelect.appendChild(opt);
     });
 
-    syncCustomSelect(els.chatSelect);
+    syncCustomSelect(els.noteSelect);
   }
 
-  async function useSelectedChat() {
-    const id = els.chatSelect?.value;
-    if (!id) return;
+  async function useSelectedNote() {
+    const id = els.noteSelect?.value;
 
-    const text = await tools.fetchConversationText(id);
-    if (!text) {
-      tools.toast("That chat has no saved messages yet.", "error");
+    if (!id) {
+      if (els.source) els.source.value = "";
       return;
     }
 
-    els.source.value = text.slice(0, 18000);
-    if (!els.title.value.trim()) {
-      const opt = els.chatSelect.options[els.chatSelect.selectedIndex];
-      els.title.value = opt?.textContent || "Study deck";
+    const note = await tools.fetchNoteText(id);
+    if (!note?.content) {
+      if (els.source) els.source.value = "";
+      tools.toast("Could not open this Note.", "error");
+      return;
     }
-  }
 
-  function useQuickPreset(presetId) {
-    const preset = QUICK_PRESETS[presetId];
-    if (!preset || els.generate?.disabled) return;
+    if (els.source)
+      els.source.value = String(note.content || "").slice(0, 22000);
 
-    if (els.title) els.title.value = preset.title;
-    if (els.count) els.count.value = String(preset.count);
-    if (els.source) els.source.value = preset.source;
-
-    focusCreateForm();
+    if (!els.title.value.trim()) {
+      els.title.value = `${note.title || "Saved Note"} flashcards`.slice(0, 90);
+    }
   }
 
   function sanitizeCards(aiCards) {
@@ -964,7 +985,7 @@
         back: String(card.back || card.answer || "").trim(),
       }))
       .filter((card) => card.front && card.back)
-      .slice(0, 30);
+      .slice(0, 40);
   }
 
   async function saveGeneratedDeck(title, aiCards) {
@@ -999,11 +1020,19 @@
   async function generateDeck() {
     const source = (els.source?.value || "").trim();
     if (source.length < 40) {
-      tools.toast("Paste notes or pull a saved chat first.", "error");
+      tools.toast("Choose a saved Note first.", "error");
       return;
     }
 
-    const requestedCount = clampCount(els.count?.value);
+    const rawCount = Number(els.count?.value || 12);
+
+    if (rawCount > 40) {
+      tools.toast("Maximum is 40 flashcards per deck.", "error");
+      if (els.count) els.count.value = 40;
+      return;
+    }
+
+    const requestedCount = clampCount(rawCount);
     const title =
       (els.title?.value || "").trim() ||
       source
@@ -1014,7 +1043,10 @@
 
     els.generate.disabled = true;
     els.generate.classList.add("is-loading");
+    closeCreateModal();
+    renderGeneratingDeck();
     startGeneratePhrases();
+    focusDeckStage({ behavior: "smooth" });
 
     try {
       const data = await tools.ai({
@@ -1024,19 +1056,20 @@
       });
 
       const aiCards = sanitizeCards(data.cards);
-      if (!aiCards.length) throw new Error("No flashcards returned");
+      if (!aiCards.length)
+        throw new Error("Could not generate flashcards from this note.");
 
       const deckTitle = String(data.title || title)
         .trim()
         .slice(0, 90);
       const deckId = await saveGeneratedDeck(deckTitle, aiCards);
 
-      tools.toast("Flashcards saved.");
       await loadDecks();
       els.deckSelect.value = deckId;
       syncCustomSelect(els.deckSelect);
       await loadCards(deckId, { focus: true });
     } catch (err) {
+      resetStage();
       tools.toast(err?.message || "Could not generate flashcards.", "error");
     } finally {
       els.generate.disabled = false;
@@ -1072,18 +1105,27 @@
   }
 
   function bind() {
-    document
-      .querySelector("[data-flashcard-presets]")
-      ?.addEventListener("click", (event) => {
-        const btn = event.target.closest("[data-flashcard-preset]");
-        if (!btn) return;
-        useQuickPreset(btn.dataset.flashcardPreset);
-      });
+    els.openCreate?.addEventListener("click", openCreateModal);
+    els.createClose?.forEach((button) => {
+      button.addEventListener("click", closeCreateModal);
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && !els.createModal?.hidden) {
+        closeCreateModal();
+      }
+    });
 
-    els.chatSelect?.addEventListener("change", useSelectedChat);
-    els.deckSelect?.addEventListener("change", (event) =>
-      loadCards(event.target.value, { focus: true }),
-    );
+    els.noteSelect?.addEventListener("change", useSelectedNote);
+    els.deckSelect?.addEventListener("change", (event) => {
+      const deckId = event.target.value;
+      if (!deckId) {
+        resetStage();
+        focusPageTop();
+        return;
+      }
+
+      loadCards(deckId, { focus: true });
+    });
     els.generate?.addEventListener("click", generateDeck);
     els.deleteDeck?.addEventListener("click", deleteDeck);
 
@@ -1155,18 +1197,30 @@
     resetStage();
 
     const initialDeckId = getInitialDeckId();
+    const initialNoteId = getInitialNoteId();
 
     const state = await tools.ready();
     if (!state.isPro) return;
 
-    await Promise.all([loadDecks(), loadChats()]);
+    await Promise.all([loadDecks(), loadNotes()]);
 
     const deckId = decks.find((deck) => deck.id === initialDeckId)?.id;
+    const hasInitialNote = Boolean(
+      initialNoteId &&
+      els.noteSelect?.querySelector(
+        `option[value="${CSS.escape(initialNoteId)}"]`,
+      ),
+    );
 
     if (deckId) {
       els.deckSelect.value = deckId;
       syncCustomSelect(els.deckSelect);
       await loadCards(deckId, { focus: true });
+    } else if (hasInitialNote) {
+      els.noteSelect.value = initialNoteId;
+      syncCustomSelect(els.noteSelect);
+      await useSelectedNote();
+      focusPageTop();
     } else {
       focusPageTop();
     }

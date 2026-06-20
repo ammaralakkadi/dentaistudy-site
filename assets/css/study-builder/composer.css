@@ -1,4 +1,4 @@
-/* composer.css — Study Builder composer */
+/* composer.css — Exam Coach composer */
 
 .composer-wrap {
   position: sticky;
@@ -48,114 +48,6 @@
     0 12px 28px rgba(11, 99, 206, 0.055);
 }
 
-@media (max-width: 640px) {
-  .attachchip {
-    max-width: 100%;
-  }
-
-  .attachchip .name {
-    max-width: min(220px, calc(100vw - 122px));
-  }
-}
-
-/* Attachment chips */
-.attachbar {
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 7px;
-  padding-bottom: 7px;
-}
-
-.attachchip {
-  display: inline-flex;
-  align-items: center;
-  max-width: min(320px, 100%);
-  border-radius: 9px;
-  border: 1px solid rgba(220, 38, 38, 0.12);
-  background: rgba(255, 251, 251, 0.96);
-  overflow: hidden;
-  color: rgba(15, 23, 42, 0.7);
-  transition:
-    background 140ms ease,
-    border-color 140ms ease;
-}
-.attachchip:hover {
-  border-color: rgba(220, 38, 38, 0.2);
-  background: #fff;
-}
-.attachchip.is-reading {
-  border-color: rgba(15, 76, 129, 0.16);
-  background: rgba(248, 250, 252, 0.96);
-}
-.attachchip.is-reading .pdfico {
-  color: rgba(15, 76, 129, 0.6);
-}
-.attachchip.is-reading .pdfico svg {
-  animation: chipPulse 1.1s ease-in-out infinite;
-}
-
-@keyframes chipPulse {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.35;
-  }
-}
-
-.attachchip .pdfico {
-  width: 28px;
-  height: 28px;
-  display: grid;
-  place-items: center;
-  flex: 0 0 auto;
-  color: rgba(220, 38, 38, 0.68);
-}
-.attachchip .pdfico svg {
-  width: 13px;
-  height: 13px;
-  stroke: currentColor;
-}
-.attachchip .name {
-  display: block;
-  min-width: 0;
-  max-width: 220px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  padding-right: 8px;
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 28px;
-}
-.attachchip .x {
-  width: 26px;
-  height: 28px;
-  border: 0;
-  border-left: 1px solid rgba(220, 38, 38, 0.08);
-  background: transparent;
-  color: rgba(100, 116, 139, 0.58);
-  display: grid;
-  place-items: center;
-  cursor: pointer;
-  transition:
-    background 140ms ease,
-    color 140ms ease;
-}
-.attachchip .x:hover {
-  background: rgba(220, 38, 38, 0.055);
-  color: rgba(220, 38, 38, 0.72);
-}
-.attachchip .x svg {
-  width: 11px;
-  height: 11px;
-  stroke: currentColor;
-  stroke-width: 2.5;
-}
-
-/* Textarea */
 .prompt {
   display: block;
   box-sizing: border-box;
@@ -179,16 +71,17 @@
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
+
 .prompt::placeholder {
   color: rgba(15, 23, 42, 0.34);
   opacity: 1;
 }
+
 .prompt::-webkit-scrollbar {
   width: 0;
   height: 0;
 }
 
-/* Bottom toolbar */
 .composer-toolbar {
   display: flex;
   align-items: center;
@@ -205,76 +98,6 @@
   flex: 1;
 }
 
-/* PDF attach button */
-.tool-btn {
-  flex: 0 0 auto;
-  width: 28px;
-  height: 28px;
-  border-radius: 9px;
-  border: 1px solid transparent;
-  background: transparent;
-  color: rgba(15, 23, 42, 0.48);
-  display: grid;
-  place-items: center;
-  transition:
-    background 140ms ease,
-    color 140ms ease,
-    border-color 140ms ease;
-}
-.tool-btn:hover {
-  background: rgba(15, 23, 42, 0.045);
-  color: rgba(15, 76, 129, 0.86);
-  border-color: rgba(15, 23, 42, 0.06);
-}
-
-/* Mode segmented control */
-.mode-toggle {
-  display: flex;
-  align-items: center;
-  gap: 2px;
-  background: rgba(15, 23, 42, 0.035);
-  border: 1px solid rgba(15, 23, 42, 0.055);
-  border-radius: 10px;
-  padding: 2px;
-}
-
-.mode-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  min-height: 24px;
-  padding: 3px 9px;
-  border-radius: 8px;
-  border: none;
-  background: transparent;
-  color: rgba(15, 23, 42, 0.52);
-  font-size: 12px;
-  font-weight: 580;
-  letter-spacing: 0;
-  transition:
-    background 140ms ease,
-    color 140ms ease,
-    box-shadow 140ms ease;
-  white-space: nowrap;
-}
-.mode-pill:hover {
-  color: rgba(15, 23, 42, 0.76);
-  background: rgba(255, 255, 255, 0.72);
-}
-.mode-pill.is-active {
-  background: #fff;
-  color: rgba(15, 76, 129, 0.92);
-  box-shadow:
-    0 1px 2px rgba(15, 23, 42, 0.055),
-    0 0 0 1px rgba(15, 23, 42, 0.06);
-}
-.mode-pill svg {
-  flex: 0 0 auto;
-  width: 11px;
-  height: 11px;
-}
-
-/* Send button */
 .sendbtn {
   flex: 0 0 auto;
   width: 30px;
@@ -291,12 +114,15 @@
     color 140ms ease,
     transform 100ms ease;
 }
+
 .sendbtn:hover:not(:disabled) {
   background: #0a3d6b;
 }
+
 .sendbtn:active:not(:disabled) {
   transform: scale(0.98);
 }
+
 .sendbtn:disabled {
   background: rgba(15, 23, 42, 0.08);
   color: rgba(15, 23, 42, 0.3);
@@ -305,133 +131,19 @@
   box-shadow: none;
 }
 
-/* Hide old elements no longer in HTML */
 .roundbtn,
 .addmenu,
 .input-actions {
   display: none;
 }
 
-/* Drop overlay */
-.drop-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-  background: rgba(11, 15, 25, 0.72);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  display: grid;
-  place-items: center;
-  opacity: 0;
-  transition: opacity 160ms ease;
-}
-.drop-overlay:not([hidden]) {
-  opacity: 1;
-}
-.drop-overlay[hidden] {
-  display: none;
-}
-
-.drop-overlay-inner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 14px;
-  padding: 40px 56px;
-  border-radius: 24px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 2px dashed rgba(255, 255, 255, 0.28);
-}
-.drop-overlay-ico {
-  width: 64px;
-  height: 64px;
-  border-radius: 18px;
-  display: grid;
-  place-items: center;
-  background: rgba(15, 76, 129, 0.35);
-  border: 1px solid rgba(15, 76, 129, 0.5);
-  color: rgba(165, 210, 255, 0.9);
-}
-.drop-overlay-label {
-  margin: 0;
-  font-size: 15px;
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.82);
-  letter-spacing: -0.01em;
-}
-
-/* Toast */
-.drop-toast {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  z-index: 200;
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  width: min(340px, calc(100vw - 40px));
-  padding: 13px 15px;
-  border-radius: 14px;
-  background: rgba(18, 22, 34, 0.97);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow:
-    0 8px 32px rgba(2, 6, 23, 0.28),
-    0 2px 8px rgba(2, 6, 23, 0.16);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  opacity: 0;
-  transform: translateY(-6px);
-  transition:
-    opacity 200ms ease,
-    transform 200ms ease;
-}
-.drop-toast:not([hidden]) {
-  opacity: 1;
-  transform: translateY(0);
-}
-.drop-toast[hidden] {
-  display: none;
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .mode-pill,
-  .sendbtn,
-  .drop-toast {
+  .sendbtn {
     transition: none;
   }
 
-  .mode-pill.is-active,
   .sendbtn:hover:not(:disabled),
-  .sendbtn:active:not(:disabled),
-  .drop-toast {
+  .sendbtn:active:not(:disabled) {
     transform: none;
   }
-}
-.drop-toast-ico {
-  flex: 0 0 auto;
-  margin-top: 1px;
-  display: grid;
-  place-items: center;
-}
-.drop-toast-ico--warn {
-  color: rgba(251, 191, 36, 0.9);
-}
-.drop-toast-ico--error {
-  color: rgba(248, 113, 113, 0.9);
-}
-.drop-toast-body {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-.drop-toast-title {
-  font-size: 13px;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.92);
-  letter-spacing: -0.01em;
-}
-.drop-toast-sub {
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.45);
-  line-height: 1.4;
 }
