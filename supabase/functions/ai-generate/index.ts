@@ -327,6 +327,66 @@ function parseJsonObject(text: string): any {
   return null;
 }
 
+function salvageArrayItems(rawText: string, keys: string[]): any[] {
+  const text = String(rawText || "");
+  let start = -1;
+
+  for (const key of keys) {
+    const match = new RegExp(`"${key}"\\s*:\\s*\\[`).exec(text);
+    if (match) {
+      start = match.index + match[0].length;
+      break;
+    }
+  }
+
+  if (start < 0) return [];
+
+  const items: any[] = [];
+  let depth = 0;
+  let inString = false;
+  let escape = false;
+  let itemStart = -1;
+
+  for (let i = start; i < text.length; i++) {
+    const ch = text[i];
+
+    if (inString) {
+      if (escape) escape = false;
+      else if (ch === "\\") escape = true;
+      else if (ch === '"') inString = false;
+      continue;
+    }
+
+    if (ch === '"') {
+      inString = true;
+      continue;
+    }
+
+    if (ch === "{") {
+      if (depth === 0) itemStart = i;
+      depth++;
+      continue;
+    }
+
+    if (ch === "}") {
+      depth--;
+      if (depth === 0 && itemStart >= 0) {
+        try {
+          items.push(JSON.parse(text.slice(itemStart, i + 1)));
+        } catch (_) {
+          // Skip malformed partial item and keep completed items.
+        }
+        itemStart = -1;
+      }
+      continue;
+    }
+
+    if (ch === "]" && depth === 0) break;
+  }
+
+  return items;
+}
+
 function pickFlashcardItems(parsed: any): any[] {
   if (Array.isArray(parsed)) return parsed;
   if (Array.isArray(parsed?.cards)) return parsed.cards;
@@ -359,7 +419,7 @@ function normalizeFlashcards(
       ).trim(),
     }))
     .filter((card) => card.front && card.back)
-    .slice(0, 40);
+    .slice(0, 30);
 }
 
 function pickQuizItems(parsed: any): any[] {
@@ -436,7 +496,7 @@ function normalizeQuizQuestions(value: any) {
         item.correct_index >= 0 &&
         item.correct_index < item.options.length,
     )
-    .slice(0, 40);
+    .slice(0, 30);
 }
 
 const FLASHCARD_RESPONSE_SCHEMA = {
@@ -445,8 +505,6 @@ const FLASHCARD_RESPONSE_SCHEMA = {
     title: { type: "string" },
     cards: {
       type: "array",
-      minItems: 1,
-      maxItems: 40,
       items: {
         type: "object",
         properties: {
@@ -466,23 +524,15 @@ const QUIZ_RESPONSE_SCHEMA = {
     title: { type: "string" },
     questions: {
       type: "array",
-      minItems: 1,
-      maxItems: 40,
       items: {
         type: "object",
         properties: {
           question: { type: "string" },
           options: {
             type: "array",
-            minItems: 4,
-            maxItems: 4,
             items: { type: "string" },
           },
-          correct_index: {
-            type: "integer",
-            minimum: 0,
-            maximum: 3,
-          },
+          correct_index: { type: "integer" },
           explanation: { type: "string" },
         },
         required: ["question", "options", "correct_index", "explanation"],
@@ -491,6 +541,134 @@ const QUIZ_RESPONSE_SCHEMA = {
   },
   required: ["title", "questions"],
 };
+
+const QUIZ_DIFFICULTY_SPEC: Record<string, string> = {
+  easy:
+    "EASY — direct recall and single-step clinical reasoning. Short, clear stems. " +
+    "One clearly correct answer; distractors are wrong in an obvious way to a student who has studied the material. Good for first-pass revision.",
+  normal:
+    "NORMAL — licensing-exam style. Clinical scenario stems with 1-2 decision points. " +
+    "Distractors are plausible and reflect common partial-understanding errors. Tests applied understanding, not memorization.",
+  hard:
+    "HARD — multi-step clinical reasoning. Stems include contraindications, exceptions, sequencing, or conflicting clinical findings that must be weighed against each other. " +
+    "Distractors are close calls that mirror real examiner traps, not just wrong facts.",
+};
+
+function countBuffer(count: number): number {
+  if (count <= 10) return 2;
+  if (count <= 25) return 3;
+  return 4;
+}
+
+async function refundAiCredit(
+  adminClient: any,
+  snapshot: { userId: string; metadata: Record<string, unknown> } | null,
+): Promise<void> {
+  if (!snapshot) return;
+
+  try {
+    await adminClient.auth.admin.updateUserById(snapshot.userId, {
+      user_metadata: snapshot.metadata,
+    });
+  } catch (_) {
+    // Best-effort refund. Do not block the error response.
+  }
+}
+
+async function topUpFlashcards(params: {
+  sourceText: string;
+  existingFronts: string[];
+  needed: number;
+}): Promise<Array<{ front: string; back: string }>> {
+  const avoidList = params.existingFronts
+    .slice(0, 30)
+    .map((front) => `- ${front}`)
+    .join("\n");
+
+  const aiText = await generateGeminiTextWithFallback({
+    model: GEMINI_STUDY_MODEL,
+    fallbackModel: GEMINI_EXAM_COACH_MODEL,
+    temperature: 0.4,
+    maxOutputTokens: Math.min(6000, Math.max(1800, params.needed * 260 + 500)),
+    responseMimeType: "application/json",
+    responseSchema: FLASHCARD_RESPONSE_SCHEMA,
+    messages: [
+      {
+        role: "system",
+        content:
+          "You are the DentAIstudy exam tutor. Generate additional active-recall flashcards that do not duplicate the ones already produced. " +
+          "Back: 2-3 concise sentences, max 50 words. Output valid JSON only. No preamble. No markdown.",
+      },
+      {
+        role: "user",
+        content:
+          `Create exactly ${params.needed} NEW active-recall flashcards from the source below. ` +
+          `Do not repeat or rephrase these existing fronts:\n${avoidList || "(none)"}\n\n` +
+          'Return this schema: {"title":"short deck title","cards":[{"front":"question","back":"answer"}]}\n\n' +
+          `Source:\n${params.sourceText}`,
+      },
+    ],
+  });
+
+  const parsed = parseJsonObject(aiText);
+  let topUp = normalizeFlashcards(pickFlashcardItems(parsed));
+
+  if (!topUp.length) {
+    topUp = normalizeFlashcards(
+      salvageArrayItems(aiText, ["cards", "flashcards", "items"]),
+    );
+  }
+
+  return topUp;
+}
+
+async function topUpQuizQuestions(params: {
+  sourceText: string;
+  existingQuestions: string[];
+  needed: number;
+  difficulty: string;
+}): Promise<ReturnType<typeof normalizeQuizQuestions>> {
+  const avoidList = params.existingQuestions
+    .slice(0, 30)
+    .map((question) => `- ${question}`)
+    .join("\n");
+
+  const aiText = await generateGeminiTextWithFallback({
+    model: GEMINI_STUDY_MODEL,
+    fallbackModel: GEMINI_EXAM_COACH_MODEL,
+    temperature: params.difficulty === "hard" ? 0.35 : 0.25,
+    maxOutputTokens: Math.min(6000, Math.max(2000, params.needed * 380 + 500)),
+    responseMimeType: "application/json",
+    responseSchema: QUIZ_RESPONSE_SCHEMA,
+    messages: [
+      {
+        role: "system",
+        content:
+          "You are the DentAIstudy exam writer. Generate additional MCQs that do not duplicate the ones already produced. " +
+          "Explanations: 1-2 concise sentences, max 45 words. Output valid JSON only. No preamble. No markdown.",
+      },
+      {
+        role: "user",
+        content:
+          `Create exactly ${params.needed} NEW ${params.difficulty} multiple-choice questions from the source below. ` +
+          `Do not repeat or rephrase these existing stems:\n${avoidList || "(none)"}\n\n` +
+          'Return this schema: {"title":"short quiz title","questions":[{"question":"...","options":["A","B","C","D"],"correct_index":0,"explanation":"..."}]}\n\n' +
+          `Source:\n${params.sourceText}`,
+      },
+    ],
+  });
+
+  const parsed = parseJsonObject(aiText);
+  let topUp = normalizeQuizQuestions(pickQuizItems(parsed));
+
+  if (!topUp.length) {
+    topUp = normalizeQuizQuestions(
+      salvageArrayItems(aiText, ["questions", "quiz", "mcqs", "items"]),
+    );
+  }
+
+  return topUp;
+}
 
 function estimatePageCount(
   charCount: number,
@@ -796,6 +974,11 @@ serve(async (req: Request): Promise<Response> => {
       );
     }
 
+    let creditRefundSnapshot: {
+      userId: string;
+      metadata: Record<string, unknown>;
+    } | null = null;
+
     if (userId && quotaUserMeta) {
       const today = getTodayUTC();
       const limit = isProUser ? PRO_DAILY_LIMIT : FREE_DAILY_LIMIT;
@@ -835,6 +1018,15 @@ serve(async (req: Request): Promise<Response> => {
           },
         );
       }
+
+      creditRefundSnapshot = {
+        userId,
+        metadata: {
+          ...quotaUserMeta,
+          ai_date: today,
+          ai_count: used,
+        },
+      };
 
       await supabaseAdmin.auth.admin.updateUserById(userId, {
         user_metadata: {
@@ -992,7 +1184,8 @@ serve(async (req: Request): Promise<Response> => {
     }
 
     if (task === "flashcards") {
-      const cardCount = clampInt(body?.card_count, 6, 40, 12);
+      const cardCount = clampInt(body?.card_count, 6, 30, 12);
+      const requestedCardCount = cardCount + countBuffer(cardCount);
       const sourceText = truncateText(
         [
           topic,
@@ -1012,11 +1205,16 @@ serve(async (req: Request): Promise<Response> => {
         });
       }
 
+      const flashcardMaxTokens = Math.min(
+        8000,
+        Math.max(3200, requestedCardCount * 220 + 600),
+      );
+
       const aiText = await generateGeminiTextWithFallback({
         model: GEMINI_STUDY_MODEL,
         fallbackModel: GEMINI_EXAM_COACH_MODEL,
         temperature: 0.38,
-        maxOutputTokens: 3200,
+        maxOutputTokens: flashcardMaxTokens,
         responseMimeType: "application/json",
         responseSchema: FLASHCARD_RESPONSE_SCHEMA,
         messages: [
@@ -1026,14 +1224,14 @@ serve(async (req: Request): Promise<Response> => {
               "You are the DentAIstudy exam tutor — a senior dental educator and licensing exam coach. " +
               "Generate active-recall flashcards that train exam thinking, not passive memorisation. " +
               "Front: a specific clinical or exam-style question, hard enough to be useful. " +
-              "Back: a direct complete answer with any exam-critical nuance and the reason behind the fact. " +
+              "Back: a direct complete answer with exam-critical nuance in 2-3 concise sentences, max 50 words. " +
               "Prioritise high-yield clinical facts, classifications, contraindications, viva traps, and common student errors. " +
               "Output valid JSON only. No preamble. No markdown.",
           },
           {
             role: "user",
             content:
-              `Create exactly ${cardCount} active-recall flashcards from the source. ` +
+              `Create exactly ${requestedCardCount} active-recall flashcards from the source. ` +
               "Avoid duplicates. Keep questions specific and answers concise but useful. " +
               'Return this schema: {"title":"short deck title","cards":[{"front":"question","back":"answer"}]}\n\n' +
               `Source:\n${sourceText}`,
@@ -1042,17 +1240,69 @@ serve(async (req: Request): Promise<Response> => {
       });
 
       const parsed = parseJsonObject(aiText);
-      const cards = normalizeFlashcards(pickFlashcardItems(parsed));
+      let cards = normalizeFlashcards(pickFlashcardItems(parsed));
+      let salvaged = !parsed;
 
       if (!cards.length) {
-        console.error("FLASHCARDS_PARSE_EMPTY", aiText.slice(0, 800));
+        cards = normalizeFlashcards(
+          salvageArrayItems(aiText, ["cards", "flashcards", "items"]),
+        );
+        salvaged = true;
+      }
+
+      if (cards.length < cardCount) {
+        try {
+          const topUp = await topUpFlashcards({
+            sourceText,
+            existingFronts: cards.map((card) => card.front),
+            needed: cardCount - cards.length,
+          });
+
+          const seen = new Set(cards.map((card) => card.front.toLowerCase()));
+
+          for (const card of topUp) {
+            if (cards.length >= cardCount) break;
+            if (seen.has(card.front.toLowerCase())) continue;
+
+            cards.push(card);
+            seen.add(card.front.toLowerCase());
+          }
+
+          salvaged = true;
+        } catch (_) {
+          // Best-effort top-up. Return the valid cards we already have.
+        }
+      }
+
+      cards = cards.slice(0, cardCount);
+
+      if (cards.length < cardCount) {
+        await refundAiCredit(supabaseAdmin, creditRefundSnapshot);
+
+        if (!cards.length) {
+          console.error("FLASHCARDS_PARSE_EMPTY", aiText.slice(0, 800));
+          return new Response(
+            JSON.stringify({
+              error: "FLASHCARDS_EMPTY",
+              message:
+                "Could not generate flashcards from this note. Try again.",
+            }),
+            {
+              status: 502,
+              headers: { ...corsHeaders, "Content-Type": "application/json" },
+            },
+          );
+        }
+
         return new Response(
           JSON.stringify({
-            error: "FLASHCARDS_EMPTY",
-            message: "Could not generate flashcards from this note. Try again.",
+            error: "FLASHCARDS_INCOMPLETE",
+            message: `Only ${cards.length} of ${cardCount} flashcards could be generated from this note. Try a lower count or a longer note.`,
+            requested_count: cardCount,
+            generated_count: cards.length,
           }),
           {
-            status: 502,
+            status: 422,
             headers: { ...corsHeaders, "Content-Type": "application/json" },
           },
         );
@@ -1062,6 +1312,9 @@ serve(async (req: Request): Promise<Response> => {
         JSON.stringify({
           title: String(parsed?.title || "Study deck").slice(0, 90),
           cards,
+          requested_count: cardCount,
+          generated_count: cards.length,
+          salvaged,
         }),
         {
           status: 200,
@@ -1071,7 +1324,8 @@ serve(async (req: Request): Promise<Response> => {
     }
 
     if (task === "quiz") {
-      const questionCount = clampInt(body?.question_count, 5, 40, 10);
+      const questionCount = clampInt(body?.question_count, 5, 30, 10);
+      const requestedQuestionCount = questionCount + countBuffer(questionCount);
       const difficulty = ["easy", "normal", "hard"].includes(
         String(body?.difficulty),
       )
@@ -1096,11 +1350,16 @@ serve(async (req: Request): Promise<Response> => {
         });
       }
 
+      const quizMaxTokens = Math.min(
+        9000,
+        Math.max(4600, requestedQuestionCount * 380 + 600),
+      );
+
       const aiText = await generateGeminiTextWithFallback({
         model: GEMINI_STUDY_MODEL,
         fallbackModel: GEMINI_EXAM_COACH_MODEL,
         temperature: difficulty === "hard" ? 0.35 : 0.25,
-        maxOutputTokens: 4600,
+        maxOutputTokens: quizMaxTokens,
         responseMimeType: "application/json",
         responseSchema: QUIZ_RESPONSE_SCHEMA,
         messages: [
@@ -1108,15 +1367,15 @@ serve(async (req: Request): Promise<Response> => {
             role: "system",
             content:
               "You are the DentAIstudy exam writer — a senior dental educator who writes licensing-style dental questions. " +
-              "Generate MCQs that test clinical reasoning and decision-making, not isolated fact recall. " +
               "Use realistic clinical stems and plausible distractors based on mistakes real students make. " +
-              "Explanations must state why the correct answer is correct and why the distractors fail. " +
+              "Explanations must state why the correct answer is correct and why distractors fail in 1-2 concise sentences, max 45 words. " +
               "Output valid JSON only. No preamble. No markdown.",
           },
           {
             role: "user",
             content:
-              `Create exactly ${questionCount} ${difficulty} multiple-choice questions from the source. ` +
+              `Create exactly ${requestedQuestionCount} multiple-choice questions from the source. ` +
+              `Difficulty calibration:\n${QUIZ_DIFFICULTY_SPEC[difficulty]}\n\n` +
               "Each question needs 4 options, one correct answer, and a short explanation. Avoid duplicates. " +
               'Return this schema: {"title":"short quiz title","questions":[{"question":"...","options":["A","B","C","D"],"correct_index":0,"explanation":"..."}]}\n\n' +
               `Source:\n${sourceText}`,
@@ -1125,18 +1384,72 @@ serve(async (req: Request): Promise<Response> => {
       });
 
       const parsed = parseJsonObject(aiText);
-      const questions = normalizeQuizQuestions(pickQuizItems(parsed));
+      let questions = normalizeQuizQuestions(pickQuizItems(parsed));
+      let salvaged = !parsed;
 
       if (!questions.length) {
-        console.error("QUIZ_PARSE_EMPTY", aiText.slice(0, 800));
+        questions = normalizeQuizQuestions(
+          salvageArrayItems(aiText, ["questions", "quiz", "mcqs", "items"]),
+        );
+        salvaged = true;
+      }
+
+      if (questions.length < questionCount) {
+        try {
+          const topUp = await topUpQuizQuestions({
+            sourceText,
+            existingQuestions: questions.map((question) => question.question),
+            needed: questionCount - questions.length,
+            difficulty,
+          });
+
+          const seen = new Set(
+            questions.map((question) => question.question.toLowerCase()),
+          );
+
+          for (const question of topUp) {
+            if (questions.length >= questionCount) break;
+            if (seen.has(question.question.toLowerCase())) continue;
+
+            questions.push(question);
+            seen.add(question.question.toLowerCase());
+          }
+
+          salvaged = true;
+        } catch (_) {
+          // Best-effort top-up. Return the valid questions we already have.
+        }
+      }
+
+      questions = questions.slice(0, questionCount);
+
+      if (questions.length < questionCount) {
+        await refundAiCredit(supabaseAdmin, creditRefundSnapshot);
+
+        if (!questions.length) {
+          console.error("QUIZ_PARSE_EMPTY", aiText.slice(0, 800));
+          return new Response(
+            JSON.stringify({
+              error: "QUIZ_EMPTY",
+              message:
+                "Could not generate quiz questions from this note. Try again.",
+            }),
+            {
+              status: 502,
+              headers: { ...corsHeaders, "Content-Type": "application/json" },
+            },
+          );
+        }
+
         return new Response(
           JSON.stringify({
-            error: "QUIZ_EMPTY",
-            message:
-              "Could not generate quiz questions from this note. Try again.",
+            error: "QUIZ_INCOMPLETE",
+            message: `Only ${questions.length} of ${questionCount} quiz questions could be generated from this note. Try a lower count or a longer note.`,
+            requested_count: questionCount,
+            generated_count: questions.length,
           }),
           {
-            status: 502,
+            status: 422,
             headers: { ...corsHeaders, "Content-Type": "application/json" },
           },
         );
@@ -1146,6 +1459,10 @@ serve(async (req: Request): Promise<Response> => {
         JSON.stringify({
           title: String(parsed?.title || "Study quiz").slice(0, 90),
           questions,
+          requested_count: questionCount,
+          generated_count: questions.length,
+          difficulty,
+          salvaged,
         }),
         {
           status: 200,
