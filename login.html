@@ -3,7 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>Log in | DentAIstudy</title>
+
+    <meta
+      name="description"
+      content="Log in to DentAIstudy to continue your dental study work, saved Library items, Exam Coach chats, notes, flashcards, and quizzes."
+    />
 
     <!-- Favicon (rounded PNG you just exported) -->
     <link rel="icon" href="/favicon.ico" sizes="any" />
@@ -42,7 +48,7 @@
           <nav class="header-nav">
             <a href="subjects.html">Subjects</a>
             <a href="exams.html">Exams</a>
-            <a href="study.html">Study Builder</a>
+            <a href="study-library.html">Library</a>
             <a href="blogs.html">Blogs</a>
             <a href="pricing.html">Pricing</a>
           </nav>
@@ -100,7 +106,7 @@
             </svg>
             <span>Exams</span>
           </a>
-          <a href="study.html">
+          <a href="study-library.html">
             <svg
               width="20"
               height="20"
@@ -111,10 +117,12 @@
               stroke-linecap="round"
               stroke-linejoin="round"
             >
-              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
-              <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+              <rect x="4" y="4" width="6" height="6" rx="1.5" />
+              <rect x="14" y="4" width="6" height="6" rx="1.5" />
+              <rect x="4" y="14" width="6" height="6" rx="1.5" />
+              <rect x="14" y="14" width="6" height="6" rx="1.5" />
             </svg>
-            <span>Study Builder</span>
+            <span>Library</span>
           </a>
           <a href="blogs.html">
             <svg
@@ -226,9 +234,7 @@
           </div>
 
           <h1 class="auth-title">Log in to DentAIstudy</h1>
-          <p class="auth-subtitle">
-            Access your saved study packs, recent topics, and workspace.
-          </p>
+          <p class="auth-subtitle">Continue your chats, saved Library works.</p>
 
           <!-- Google button (icon already exists in assets/img/google-icon.svg) -->
           <button type="button" class="google-btn" id="login-google-btn">
@@ -303,11 +309,7 @@
               Log in
             </button>
 
-            <p
-              id="login-message"
-              class="auth-terms"
-              style="margin-top: 8px"
-            ></p>
+            <p id="login-message" class="auth-terms auth-message"></p>
 
             <p class="auth-switch">
               Don’t have an account yet?

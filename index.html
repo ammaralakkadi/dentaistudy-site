@@ -18,12 +18,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>
-      DentAIstudy | AI Dental Study Builder for Exams, PDFs and Revision
-    </title>
+    <title>DentAIstudy | Dental AI Notes, Exam Coach and Practice</title>
     <meta
       name="description"
-      content="Study dentistry from your own PDFs, weak topics, and exam questions. Create focused answers, notes, flashcards, and quizzes for dental exam preparation."
+      content="Dental AI study tools for PDFs, weak topics, and exam questions. Create notes, get Exam Coach answers, and practice with flashcards and quizzes."
     />
     <link rel="canonical" href="https://dentaistudy.com/" />
 
@@ -65,7 +63,7 @@
           <nav class="header-nav">
             <a href="subjects.html">Subjects</a>
             <a href="exams.html">Exams</a>
-            <a href="study.html">Study Builder</a>
+            <a href="study-library.html">Library</a>
             <a href="blogs.html">Blogs</a>
             <a href="pricing.html">Pricing</a>
           </nav>
@@ -123,7 +121,7 @@
             </svg>
             <span>Exams</span>
           </a>
-          <a href="study.html">
+          <a href="study-library.html">
             <svg
               width="20"
               height="20"
@@ -134,10 +132,12 @@
               stroke-linecap="round"
               stroke-linejoin="round"
             >
-              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
-              <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+              <rect x="4" y="4" width="6" height="6" rx="1.5" />
+              <rect x="14" y="4" width="6" height="6" rx="1.5" />
+              <rect x="4" y="14" width="6" height="6" rx="1.5" />
+              <rect x="14" y="14" width="6" height="6" rx="1.5" />
             </svg>
-            <span>Study Builder</span>
+            <span>Library</span>
           </a>
           <a href="blogs.html">
             <svg
@@ -251,25 +251,25 @@
               <div class="hero-badge-row">
                 <span>
                   <span class="hero-badge-dot"></span>
-                  <span>Dental only AI • Study Builder • Exam hubs</span>
+                  <span>Dental AI notes • Exam Coach • Library</span>
                 </span>
               </div>
 
-              <div class="hero-eyebrow">Dental prep from your files</div>
+              <div class="hero-eyebrow">Dental exam study workspace</div>
 
               <h1 class="hero-title">
                 Study dentistry in one place, not across random tabs
               </h1>
 
               <p class="hero-lead">
-                Turn topics, PDFs, and weak areas into cleaner dental notes,
-                quick answers, flashcards, and quiz practice, then move into
-                exam hubs when you need structured guidance.
+                Create professional notes from your PDFs, ask Exam Coach when a
+                topic needs clarity, then practice and save the work in your
+                Library.
               </p>
 
               <div class="hero-actions hero-actions-main">
                 <a
-                  href="study.html"
+                  href="study-notes.html"
                   class="btn btn-primary hero-cta-btn hero-cta-btn-primary"
                 >
                   <svg
@@ -283,15 +283,20 @@
                     stroke-linejoin="round"
                     aria-hidden="true"
                   >
-                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
-                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+                    <path
+                      d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"
+                    />
+                    <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+                    <path d="M10 9H8" />
+                    <path d="M16 13H8" />
+                    <path d="M16 17H8" />
                   </svg>
-                  <span class="hero-cta-label-desktop">Open Study Builder</span>
-                  <span class="hero-cta-label-mobile">Study Builder</span>
+                  <span class="hero-cta-label-desktop">Create Notes</span>
+                  <span class="hero-cta-label-mobile">Create Notes</span>
                 </a>
 
                 <a
-                  href="exams.html"
+                  href="study.html"
                   class="btn btn-outline hero-cta-btn hero-cta-btn-secondary"
                 >
                   <svg
@@ -305,17 +310,12 @@
                     stroke-linejoin="round"
                     aria-hidden="true"
                   >
-                    <path d="M12 7v14" />
-                    <path d="M16 12h2" />
-                    <path d="M16 8h2" />
                     <path
-                      d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"
+                      d="M21 15a4 4 0 0 1-4 4H7l-4 4V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"
                     />
-                    <path d="M6 12h2" />
-                    <path d="M6 8h2" />
                   </svg>
-                  <span class="hero-cta-label-desktop">Explore exam hubs</span>
-                  <span class="hero-cta-label-mobile">Exam hubs</span>
+                  <span class="hero-cta-label-desktop">Open Exam Coach</span>
+                  <span class="hero-cta-label-mobile">Exam Coach</span>
                 </a>
               </div>
             </div>
@@ -323,12 +323,12 @@
             <aside class="hero-visual-col">
               <div
                 class="hero-product-stage"
-                aria-label="DentAIstudy Study Builder preview"
+                aria-label="DentAIstudy Notes preview"
               >
                 <img
                   class="hero-product-img"
-                  src="assets/img/study-builder-hero-ui.png"
-                  alt="DentAIstudy Study Builder workspace preview"
+                  src="assets/img/study-notes-hero-ui.png"
+                  alt="DentAIstudy Notes workspace preview"
                   width="2048"
                   height="1280"
                   loading="eager"
@@ -337,53 +337,56 @@
                 />
 
                 <div class="hero-product-cue hero-product-cue--top">
-                  PDF to exam ready notes
+                  PDF to professional notes
                 </div>
 
                 <div class="hero-product-cue hero-product-cue--bottom">
-                  Quick and Deep study modes
+                  Flashcards and quizzes next
                 </div>
               </div>
             </aside>
+
             <div class="hero-proof-list">
               <div class="hero-proof-item">
-                <strong>Upload your own material</strong>
+                <strong>Start with your material</strong>
                 <span
-                  >Use PDFs, lecture files, and dense notes as your study
-                  base</span
+                  >Use dental PDFs, lecture slides, or dense notes when you need
+                  structure</span
                 >
               </div>
 
               <div class="hero-proof-item">
-                <strong>Choose the study flow you need</strong>
-                <span>
-                  Get a quick answer, deeper explanation, flashcards, or quiz
-                  practice
-                </span>
+                <strong>Use Exam Coach for clarity</strong>
+                <span
+                  >Ask focused dental questions when a topic needs
+                  explanation</span
+                >
               </div>
 
               <div class="hero-proof-item">
-                <strong>Prepare with exam focus</strong>
-                <span>
-                  Built for OSCE, viva, theory, boards, and subject revision
-                </span>
+                <strong>Practice and keep it saved</strong>
+                <span
+                  >Turn notes into flashcards, quizzes, and organized Library
+                  items</span
+                >
               </div>
             </div>
           </div>
         </section>
       </div>
 
-      <!-- SEE STUDY BUILDER IN ACTION -->
+      <!-- HOW DENTAISTUDY WORKS -->
       <section class="section">
         <div class="container">
           <div class="section-header">
-            <div class="section-kicker">How Study Builder works</div>
+            <div class="section-kicker">How DentAIstudy works</div>
             <h2 class="section-title">
-              From messy material to exam ready study work
+              From dental material to usable study work
             </h2>
             <p class="section-subtitle">
-              Move from a topic or PDF into notes, flashcards, quizzes, and a
-              saved study library without changing tools.
+              Start with a PDF, topic, or exam question, then move into notes,
+              Exam Coach explanations, flashcards, quizzes, and your saved
+              Library.
             </p>
           </div>
 
@@ -494,7 +497,7 @@
 
                 <div class="workflow-walk-image">
                   <img
-                    src="assets/img/landing/pdf-prompt.png"
+                    src="assets/img/landing/notes-upload.png"
                     alt="DentAIstudy turning a PDF into study notes"
                     loading="lazy"
                   />
@@ -520,7 +523,7 @@
 
                 <div class="workflow-walk-image">
                   <img
-                    src="assets/img/landing/answer-to-pdf.png"
+                    src="assets/img/landing/notes-generated.png"
                     alt="Generated PDF note inside DentAIstudy"
                     loading="lazy"
                   />
@@ -546,7 +549,7 @@
 
                 <div class="workflow-walk-image">
                   <img
-                    src="assets/img/landing/create-deck.png"
+                    src="assets/img/landing/flashcards-desktop.png"
                     alt="Create flashcard deck in DentAIstudy"
                     loading="lazy"
                   />
@@ -572,7 +575,7 @@
 
                 <div class="workflow-walk-image">
                   <img
-                    src="assets/img/landing/create-quiz.png"
+                    src="assets/img/landing/quiz-desktop.png"
                     alt="Create quiz in DentAIstudy"
                     loading="lazy"
                   />
@@ -598,7 +601,7 @@
 
                 <div class="workflow-walk-image">
                   <img
-                    src="assets/img/landing/your-study-library.png"
+                    src="assets/img/landing/library-desktop.png"
                     alt="DentAIstudy study library"
                     loading="lazy"
                   />
@@ -758,11 +761,11 @@
             <div class="output-studio-copy">
               <div class="section-kicker">Study outputs</div>
               <h2 class="section-title">
-                Generate the study work you actually need
+                Choose the format your revision needs
               </h2>
               <p class="section-subtitle">
-                Start with a topic or PDF, then turn it into exam ready notes,
-                OSCE flows, flashcards, and quiz practice without switching
+                Start with material or a weak topic, then turn it into notes,
+                OSCE flows, flashcards, or quiz practice without switching
                 tools.
               </p>
 
@@ -873,8 +876,8 @@
               </div>
 
               <div class="output-studio-actions">
-                <a href="study.html" class="btn btn-primary">
-                  Try Study Builder
+                <a href="study-notes.html" class="btn btn-primary">
+                  Create notes
                 </a>
               </div>
             </div>
@@ -902,7 +905,7 @@
                   </div>
 
                   <div class="output-preview-body">
-                    <div class="output-preview-kicker">Deep Study output</div>
+                    <div class="output-preview-kicker">Notes output</div>
                     <h3>Exam ready notes</h3>
                     <p>
                       Ameloblastoma is a benign but locally aggressive
@@ -1209,7 +1212,7 @@
       <section class="section testimonials-section">
         <div class="container">
           <div class="section-header">
-            <div class="section-kicker">Real testimonials</div>
+            <div class="section-kicker">testimonials</div>
             <h2 class="section-title">What dental learners are saying</h2>
             <p class="section-subtitle">
               Feedback from dental students, candidates, and residents using
@@ -1252,7 +1255,7 @@
 
                 <p>
                   “I used to get lost in dense textbooks right before clinics.
-                  Now I use Study Builder to turn heavy topics into clean OSCE
+                  Now I use Exam Coach to turn heavy topics into clean OSCE
                   flows I can review before seeing a patient.”
                 </p>
               </article>
@@ -1607,7 +1610,7 @@
                 <div class="testimonial-stars">★★★★★</div>
 
                 <p>
-                  “Seminar literature reviews used to take days. Deep Study
+                  “Seminar literature reviews used to take days. Exam Coach
                   helps strip the fluff and organize evidence into structured
                   insights.”
                 </p>
@@ -1725,8 +1728,8 @@
           <div class="section-header">
             <h2 class="section-title">Frequently asked questions</h2>
             <p class="section-subtitle">
-              Clear answers about plans, PDFs, flashcards, quizzes, and how
-              DentAIstudy fits into real dental exam prep.
+              Clear answers about Notes, Exam Coach, flashcards, quizzes, and
+              how DentAIstudy fits into real dental exam prep.
             </p>
           </div>
 
@@ -1736,10 +1739,10 @@
                 <span>Is DentAIstudy free?</span><span>⌄</span>
               </button>
               <div class="faq-answer">
-                Yes. You can start free, ask dental study questions, use a light
-                daily AI limit, upload 1 PDF per chat, and save up to 30 study
-                chats. Pro unlocks higher limits, flashcards, quiz mode, and a 3
-                day free trial. See <a href="pricing.html">Pricing</a>.
+                Yes. Free users can test Exam Coach with a light daily study
+                limit. Pro unlocks Notes, flashcards, quizzes, higher study
+                capacity, and a 3 day free trial. See
+                <a href="pricing.html">Pricing</a>.
               </div>
             </div>
 
@@ -1750,9 +1753,9 @@
                 ><span>⌄</span>
               </button>
               <div class="faq-answer">
-                DentAIstudy is a dental study workspace, not just a chat box. It
-                connects PDFs, focused answers, flashcards, quizzes, and saved
-                study work so your revision feels more structured.
+                DentAIstudy is built around dental study work, not open-ended
+                chatting. It connects Notes, Exam Coach, Flashcards, Quiz, and
+                Library so revision feels more structured.
               </div>
             </div>
 
@@ -1762,9 +1765,9 @@
                 ><span>⌄</span>
               </button>
               <div class="faq-answer">
-                Yes. You can upload study material and ask focused dental
-                questions from it. Free users can test the PDF flow, while Pro
-                gives more PDF capacity for heavier revision.
+                Yes. Notes is the Pro PDF-to-study tool. Upload dental material
+                and turn it into cleaner notes you can revise, save, and use for
+                practice.
               </div>
             </div>
 
@@ -1773,9 +1776,9 @@
                 <span>Are flashcards and quizzes included?</span><span>⌄</span>
               </button>
               <div class="faq-answer">
-                Flashcards and quiz mode are Pro study tools. They are designed
-                to turn weak topics into active recall practice instead of only
-                rereading notes.
+                Flashcards and Quiz are Pro study tools. They help you turn
+                notes and weak topics into active recall instead of only
+                rereading material.
               </div>
             </div>
 
@@ -1791,7 +1794,7 @@
             </div>
           </div>
 
-          <div style="text-align: center; margin-top: 22px">
+          <div class="faq-actions">
             <a href="faqs.html" class="btn btn-outline">View all FAQs</a>
           </div>
         </div>
@@ -1839,7 +1842,9 @@
               <h4>Product</h4>
               <a href="subjects.html">Subjects</a>
               <a href="exams.html">Exams</a>
-              <a href="study.html">Study Builder</a>
+              <a href="study-notes.html">Notes</a>
+              <a href="study.html">Exam Coach</a>
+              <a href="study-library.html">Library</a>
               <a href="blogs.html">Blogs</a>
             </div>
 
