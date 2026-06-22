@@ -37,7 +37,7 @@ With Study Builder, users can start from a topic or upload their own material, t
 
 ## Stack
 
-Static site · GitHub Pages · Supabase · Paddle
+Jamstack full stack app · GitHub Pages · BaaS · SaaS API
 
 ---
 
