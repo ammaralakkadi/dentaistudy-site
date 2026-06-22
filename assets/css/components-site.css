@@ -154,6 +154,18 @@
   }
 }
 
+.section-main-action {
+  margin-top: 40px;
+  text-align: center;
+}
+
+.section-main-action .btn {
+  gap: 8px;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 650;
+}
+
 .feature-item {
   text-align: left;
   width: 100%;
@@ -1246,6 +1258,12 @@
   transform: rotate(180deg);
 }
 
+.faq-actions {
+  margin-top: 22px;
+  display: flex;
+  justify-content: center;
+}
+
 /* ------------------------------
    FOOTER
 --------------------------------*/
@@ -2138,6 +2156,21 @@
   margin-top: 8px;
 }
 
+.subjects-cta-row {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+}
+
+.subjects-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
 /* ------------------------------
    BLOGS PAGE LAYOUT
 --------------------------------*/
@@ -2175,6 +2208,27 @@ body:has(#blog-library) .section > .container:has(#blog-search) > div {
   display: flex;
   flex-direction: column;
   gap: 16px;
+}
+
+.blog-index-cta {
+  margin-top: 40px;
+  text-align: center;
+}
+
+.blog-index-cta p {
+  margin: 0 0 14px;
+  color: #64748b;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.blog-index-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 600;
 }
 
 /* ----- BLOG SPACING HELPERS ----- */

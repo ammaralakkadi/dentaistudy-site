@@ -400,6 +400,33 @@
     });
   }
 
+  function readQuizProgress(metadata, quizId) {
+    const progress = metadata?.study_quiz_progress;
+    if (!progress || typeof progress !== "object" || !quizId) return null;
+    return progress[quizId] || null;
+  }
+
+  function clampQuizIndex(value, total) {
+    const index = Math.trunc(Number(value));
+    if (!Number.isFinite(index)) return 0;
+    return Math.max(0, Math.min(total - 1, index));
+  }
+
+  function normalizeQuizScore(savedScore, total) {
+    if (!savedScore || typeof savedScore !== "object" || !total) return null;
+
+    const score = Math.trunc(Number(savedScore.score));
+    const percent = Math.trunc(Number(savedScore.percent));
+
+    if (!Number.isFinite(score) || !Number.isFinite(percent)) return null;
+
+    return {
+      score: Math.max(0, Math.min(total, score)),
+      total,
+      percent: Math.max(0, Math.min(100, percent)),
+    };
+  }
+
   async function loadLatestAttempt(quizId, total) {
     const state = await tools.ready();
     if (!state.supabase || !state.user || !quizId) return null;
@@ -428,10 +455,23 @@
       if (!state.supabase || !state.user) return;
 
       const total = questions.length;
+      const score = scoreQuiz();
+      const answeredCount = answers.filter((answer) => answer !== null).length;
+      const resultScore =
+        reviewed && lastScore
+          ? lastScore
+          : reviewed
+            ? {
+                score,
+                total,
+                percent: Math.round((score / total) * 100),
+              }
+            : null;
+
       const payload = {
         quiz_id: activeQuizId,
         user_id: state.user.id,
-        score: scoreQuiz(),
+        score,
         total,
         answers,
       };
@@ -441,16 +481,41 @@
           .from("study_quiz_attempts")
           .update(payload)
           .eq("id", activeAttemptId);
-        return;
+      } else {
+        const { data, error } = await state.supabase
+          .from("study_quiz_attempts")
+          .insert(payload)
+          .select("id")
+          .single();
+
+        if (!error && data?.id) activeAttemptId = data.id;
       }
 
-      const { data, error } = await state.supabase
-        .from("study_quiz_attempts")
-        .insert(payload)
-        .select("id")
-        .single();
+      const meta = state.user.user_metadata || {};
+      const progress = {
+        ...(meta.study_quiz_progress &&
+        typeof meta.study_quiz_progress === "object"
+          ? meta.study_quiz_progress
+          : {}),
+      };
 
-      if (!error && data?.id) activeAttemptId = data.id;
+      progress[activeQuizId] = {
+        attempt_id: activeAttemptId,
+        current_index: currentIndex,
+        reviewed,
+        showing_result: showingResult,
+        last_score: resultScore,
+        answered_count: answeredCount,
+        total,
+        updated_at: new Date().toISOString(),
+      };
+
+      const nextMeta = { ...meta, study_quiz_progress: progress };
+      const { error } = await state.supabase.auth.updateUser({
+        data: nextMeta,
+      });
+
+      if (!error) state.user.user_metadata = nextMeta;
     } catch {}
   }
 
@@ -511,7 +576,7 @@
         : "Perfect run - keep this deck warm with a quick repeat later.";
     }
     if (els.result) els.result.hidden = false;
-    if (els.finish) els.finish.textContent = "Reviewed";
+    if (els.finish) els.finish.textContent = "Restart";
   }
 
   function renderMap() {
@@ -533,14 +598,16 @@
     questions.forEach((q, index) => {
       const btn = els.map.children[index];
       if (!btn) return;
+
       const answered = answers[index] !== null;
+      const isCorrect = reviewed && answers[index] === q.correct_index;
+      const isWrong =
+        reviewed && answered && answers[index] !== q.correct_index;
+
       btn.classList.toggle("is-active", index === currentIndex);
       btn.classList.toggle("is-answered", answered);
-
-      if (reviewed) {
-        btn.classList.toggle("is-correct", answers[index] === q.correct_index);
-        btn.classList.toggle("is-wrong", answers[index] !== q.correct_index);
-      }
+      btn.classList.toggle("is-correct", isCorrect);
+      btn.classList.toggle("is-wrong", isWrong);
     });
 
     const active = els.map.querySelector(".quiz-map-btn.is-active");
@@ -571,9 +638,9 @@
     const q = questions[currentIndex];
     const selected = answers[currentIndex];
     const total = questions.length;
-    const progress = Math.round(((currentIndex + 1) / total) * 100);
     const answeredCount = answers.filter((answer) => answer !== null).length;
     const remainingCount = total - answeredCount;
+    const progress = Math.round((answeredCount / total) * 100);
 
     if (els.stageTitle) {
       els.stageTitle.textContent =
@@ -592,7 +659,7 @@
     if (els.pill) els.pill.textContent = `${currentIndex + 1} of ${total}`;
     if (els.finish) {
       els.finish.textContent = reviewed
-        ? "Reviewed"
+        ? "Restart"
         : `Finish ${answeredCount}/${total}`;
     }
     if (els.progress) els.progress.style.width = `${progress}%`;
@@ -665,6 +732,8 @@
     renderQuestion();
 
     if (currentIndex === previousIndex) return;
+
+    saveQuizProgress();
 
     const panel = document.querySelector(".quiz-question-panel");
     if (!panel) return;
@@ -860,15 +929,49 @@
 
     activeQuizId = quizId;
     questions = data.map((q) => ({ ...q, quiz_title: quiz?.title || "Quiz" }));
+
+    try {
+      const { data: refreshed } = await state.supabase.auth.getUser();
+      if (refreshed?.user) state.user = refreshed.user;
+    } catch {}
+
     const latestAttempt = await loadLatestAttempt(quizId, questions.length);
-    activeAttemptId = latestAttempt?.id || null;
+    const savedProgress = readQuizProgress(state.user?.user_metadata, quizId);
+    const firstUnanswered = latestAttempt?.answers?.findIndex(
+      (answer) => answer === null,
+    );
+
+    activeAttemptId = latestAttempt?.id || savedProgress?.attempt_id || null;
     answers =
       latestAttempt?.answers ||
       Array.from({ length: questions.length }, () => null);
-    currentIndex = 0;
-    reviewed = false;
-    lastScore = null;
-    showingResult = false;
+
+    reviewed =
+      Boolean(savedProgress?.reviewed) &&
+      Number(savedProgress?.total) === questions.length;
+
+    lastScore = reviewed
+      ? normalizeQuizScore(savedProgress?.last_score, questions.length)
+      : null;
+
+    if (reviewed && !lastScore) {
+      const score = scoreQuiz();
+      lastScore = {
+        score,
+        total: questions.length,
+        percent: Math.round((score / questions.length) * 100),
+      };
+    }
+
+    currentIndex = reviewed
+      ? clampQuizIndex(savedProgress?.current_index, questions.length)
+      : savedProgress
+        ? clampQuizIndex(savedProgress.current_index, questions.length)
+        : firstUnanswered >= 0
+          ? firstUnanswered
+          : 0;
+
+    showingResult = reviewed;
     renderQuestion();
     if (options.focus) focusQuizStage({ repeat: true });
   }
@@ -1030,6 +1133,19 @@
     await saveQuizProgress();
   }
 
+  async function restartQuizSession() {
+    if (!questions.length) return;
+
+    answers = Array.from({ length: questions.length }, () => null);
+    currentIndex = 0;
+    reviewed = false;
+    lastScore = null;
+    showingResult = false;
+
+    renderQuestion();
+    await saveQuizProgress();
+  }
+
   function bind() {
     els.openCreate?.addEventListener("click", openCreateModal);
     els.createClose?.forEach((button) => {
@@ -1054,7 +1170,14 @@
     });
     els.generate?.addEventListener("click", generateQuiz);
     els.deleteQuiz?.addEventListener("click", deleteQuiz);
-    els.finish?.addEventListener("click", finishQuiz);
+    els.finish?.addEventListener("click", () => {
+      if (reviewed) {
+        restartQuizSession();
+        return;
+      }
+
+      finishQuiz();
+    });
     els.reviewMissed?.addEventListener("click", () => {
       if (!questions.length) return;
       const firstMissed = answers.findIndex(

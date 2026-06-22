@@ -1417,16 +1417,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 function updateAuthUI(session) {
   const isLoggedIn = !!session;
 
-  const pathname = (window.location.pathname || "").toLowerCase();
-  const fileName = pathname.split("/").pop() || "index.html";
-  const isStudyPage = [
-    "study.html",
-    "study-notes.html",
-    "study-library.html",
-    "study-flashcards.html",
-    "study-quiz.html",
-  ].includes(fileName);
-
   const headerRight = document.querySelector(".header-right");
   const headerLogin = headerRight?.querySelector(".header-login");
   const slideNav = document.querySelector(".slide-nav");
@@ -1444,52 +1434,47 @@ function updateAuthUI(session) {
 
   const signupHref = `${rootPrefix}signup.html`;
 
-  const studyHref =
-    headerRight?.dataset.dasStudyHref ||
+  const libraryHref =
+    headerRight?.dataset.dasLibraryHref ||
     document
-      .querySelector('.header-nav a[href$="study.html"]')
+      .querySelector('.header-nav a[href$="study-library.html"]')
       ?.getAttribute("href") ||
-    `${rootPrefix}study.html`;
+    `${rootPrefix}study-library.html`;
 
   if (headerRight) {
     headerRight.dataset.dasLoginHref = loginHref;
-    headerRight.dataset.dasStudyHref = studyHref;
+    headerRight.dataset.dasLibraryHref = libraryHref;
   }
 
   // Desktop header
   if (headerRight) {
-    if (isStudyPage) {
-      headerRight.innerHTML = "";
-      headerRight.hidden = true;
-    } else {
-      headerRight.hidden = false;
+    headerRight.hidden = false;
 
-      if (isLoggedIn) {
-        headerRight.innerHTML = `
-          <details class="das-account-menu">
-            <summary class="das-account-trigger" aria-label="Account menu">
-              <span class="das-account-dot" aria-hidden="true"></span>
-              <span>Account</span>
-            </summary>
+    if (isLoggedIn) {
+      headerRight.innerHTML = `
+        <details class="das-account-menu">
+          <summary class="das-account-trigger" aria-label="Account menu">
+            <span class="das-account-dot" aria-hidden="true"></span>
+            <span>Account</span>
+          </summary>
 
-            <div class="das-account-dropdown" role="menu">
-              <a href="${studyHref}" role="menuitem">Study Builder</a>
-              <a href="${rootPrefix}profile.html" role="menuitem">Profile</a>
-              <a href="${rootPrefix}settings.html" role="menuitem">Settings</a>
-              <button type="button" role="menuitem" data-das-logout>
-                Log out
-              </button>
-            </div>
-          </details>
-        `;
-      } else {
-        headerRight.innerHTML = `
-          <div class="das-auth-actions">
-            <a href="${loginHref}" class="das-login-link">Sign in</a>
-            <a href="${signupHref}" class="das-start-link">Start free</a>
+          <div class="das-account-dropdown" role="menu">
+          <a href="${libraryHref}" role="menuitem">Library</a>
+            <a href="${rootPrefix}profile.html" role="menuitem">Profile</a>
+            <a href="${rootPrefix}settings.html" role="menuitem">Settings</a>
+            <button type="button" role="menuitem" data-das-logout>
+              Log out
+            </button>
           </div>
-        `;
-      }
+        </details>
+      `;
+    } else {
+      headerRight.innerHTML = `
+        <div class="das-auth-actions">
+          <a href="${loginHref}" class="das-login-link">Sign in</a>
+          <a href="${signupHref}" class="das-start-link">Start free</a>
+        </div>
+      `;
     }
   }
 

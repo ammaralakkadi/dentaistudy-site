@@ -20,6 +20,14 @@
       <rect x="14" y="17" width="8" height="5" rx="1" />
     </svg>
   `;
+  const noteStatIcon = `
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+      <path d="M14 2v6h6" />
+      <path d="M8 13h8" />
+      <path d="M8 17h5" />
+    </svg>
+  `;
   const deckStatIcon = `
     <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
       <path d="M2 16V4a2 2 0 0 1 2-2h11" />
@@ -60,6 +68,7 @@
     els.statNotes = qs("libraryStatNotes");
     els.statDecks = qs("libraryStatDecks");
     els.statQuizzes = qs("libraryStatQuizzes");
+    els.statNoteIcon = qs("libraryStatNoteIcon");
     els.statDeckIcon = qs("libraryStatDeckIcon");
     els.statQuizIcon = qs("libraryStatQuizIcon");
     els.statLastActivity = qs("libraryStatLastActivity");
@@ -283,6 +292,7 @@
   }
 
   function syncLockedStats() {
+    setLockedStatIcon(els.statNoteIcon, noteStatIcon);
     setLockedStatIcon(els.statDeckIcon, deckStatIcon);
     setLockedStatIcon(els.statQuizIcon, quizStatIcon);
   }
@@ -417,10 +427,12 @@
     }
 
     return `
-      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />
-      </svg>
-    `;
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z" />
+      <path d="M8 9h8" />
+      <path d="M8 13h5" />
+    </svg>
+  `;
   }
 
   function previewForItem(item) {

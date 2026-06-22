@@ -189,6 +189,8 @@
   }
 
   let toastTimer = null;
+  let toastExitTimer = null;
+
   function toast(message, type) {
     let el = document.getElementById("studyToast");
     if (!el) {
@@ -199,14 +201,24 @@
       document.body.appendChild(el);
     }
 
+    clearTimeout(toastTimer);
+    clearTimeout(toastExitTimer);
+
     el.textContent = message || "";
     el.classList.toggle("is-error", type === "error");
     el.hidden = false;
 
-    clearTimeout(toastTimer);
+    window.requestAnimationFrame(() => {
+      el.classList.add("is-visible");
+    });
+
     toastTimer = setTimeout(() => {
-      el.hidden = true;
-    }, 2800);
+      el.classList.remove("is-visible");
+
+      toastExitTimer = setTimeout(() => {
+        el.hidden = true;
+      }, 220);
+    }, 2600);
   }
 
   function escapeHtml(value) {

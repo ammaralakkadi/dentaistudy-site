@@ -1363,6 +1363,12 @@
   margin-bottom: 20px;
 }
 
+@media (min-width: 901px) {
+  .page-account.page-profile .profile-identity-card .profile-card-heading {
+    margin-bottom: 34px;
+  }
+}
+
 .page-account.page-profile .profile-card-heading h2 {
   margin: 0;
   color: #0f172a;
@@ -1466,7 +1472,7 @@
   font-size: 0.82rem;
 }
 
-.page-account.page-profile .profile-muted {
+.page-account.page-profile .profile-photo-note {
   margin: 14px 0 0;
   color: #64748b;
   font-size: 0.84rem;

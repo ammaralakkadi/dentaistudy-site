@@ -49,6 +49,7 @@ body {
 .brand {
   display: inline-flex;
   gap: 0;
+  color: #111827;
   text-decoration: none;
 
   font-family:
@@ -62,16 +63,21 @@ body {
 
   letter-spacing: -0.035em;
   line-height: 1.6;
+  transition: color 0.16s ease;
 }
 
 /* Dent */
 .brand span:first-child {
-  color: #111827;
+  color: currentColor;
 }
 
 /* AIstudy */
 .brand span:last-child {
-  color: #111827;
+  color: currentColor;
+}
+
+.brand:hover {
+  color: #334155;
 }
 
 button,

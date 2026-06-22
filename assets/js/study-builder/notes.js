@@ -423,58 +423,127 @@
   function inlineFormat(value) {
     return escapeHtml(value)
       .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+      .replace(/\*([^*]+)\*/g, "<em>$1</em>")
       .replace(/`([^`]+)`/g, "<code>$1</code>");
   }
 
+  function isTableSeparator(line) {
+    const text = String(line || "").trim();
+    return /^\|?[\s:-]+\|[\s|:-]*$/.test(text) && text.includes("|");
+  }
+
+  function splitTableRow(line) {
+    let text = String(line || "").trim();
+    if (text.startsWith("|")) text = text.slice(1);
+    if (text.endsWith("|")) text = text.slice(0, -1);
+    return text.split("|").map((cell) => inlineFormat(cell.trim()));
+  }
+
   function renderMarkdown(markdown) {
-    const lines = String(markdown || "").split(/\r?\n/);
+    const lines = String(markdown || "")
+      .replace(/\r\n/g, "\n")
+      .split("\n");
     let html = "";
-    let listOpen = false;
+    let listType = "";
 
     function closeList() {
-      if (!listOpen) return;
-      html += "</ul>";
-      listOpen = false;
+      if (!listType) return;
+      html += `</${listType}>`;
+      listType = "";
     }
 
-    lines.forEach((line) => {
-      const raw = line.trim();
+    function openList(type) {
+      if (listType === type) return;
+      closeList();
+      html += `<${type}>`;
+      listType = type;
+    }
+
+    for (let i = 0; i < lines.length; i++) {
+      const raw = lines[i].trim();
 
       if (!raw) {
         closeList();
-        return;
+        continue;
+      }
+
+      if (
+        raw.includes("|") &&
+        i + 1 < lines.length &&
+        isTableSeparator(lines[i + 1])
+      ) {
+        closeList();
+
+        const headerCells = splitTableRow(raw);
+        i += 2;
+
+        const bodyRows = [];
+        while (i < lines.length && lines[i].trim().includes("|")) {
+          bodyRows.push(splitTableRow(lines[i]));
+          i += 1;
+        }
+        i -= 1;
+
+        html +=
+          '<div class="notes-table-wrap"><table class="notes-table"><thead><tr>';
+        headerCells.forEach((cell) => {
+          html += `<th>${cell}</th>`;
+        });
+        html += "</tr></thead><tbody>";
+        bodyRows.forEach((row) => {
+          html += "<tr>";
+          row.forEach((cell) => {
+            html += `<td>${cell}</td>`;
+          });
+          html += "</tr>";
+        });
+        html += "</tbody></table></div>";
+        continue;
       }
 
       if (/^###\s+/.test(raw)) {
         closeList();
         html += `<h3>${inlineFormat(raw.replace(/^###\s+/, ""))}</h3>`;
-        return;
+        continue;
       }
 
       if (/^##\s+/.test(raw)) {
         closeList();
         html += `<h2>${inlineFormat(raw.replace(/^##\s+/, ""))}</h2>`;
-        return;
+        continue;
       }
 
       if (/^#\s+/.test(raw)) {
         closeList();
         html += `<h2>${inlineFormat(raw.replace(/^#\s+/, ""))}</h2>`;
-        return;
+        continue;
+      }
+
+      const looseNumberedHeading = /^(\d{1,2})\s+([A-Z][^:]{2,90})$/.exec(raw);
+      if (looseNumberedHeading) {
+        closeList();
+        html += `<h3>${looseNumberedHeading[1]}. ${inlineFormat(
+          looseNumberedHeading[2],
+        )}</h3>`;
+        continue;
+      }
+
+      const orderedItem = /^\d+\.\s+(.+)$/.exec(raw);
+      if (orderedItem) {
+        openList("ol");
+        html += `<li>${inlineFormat(orderedItem[1])}</li>`;
+        continue;
       }
 
       if (/^[-*]\s+/.test(raw)) {
-        if (!listOpen) {
-          html += "<ul>";
-          listOpen = true;
-        }
+        openList("ul");
         html += `<li>${inlineFormat(raw.replace(/^[-*]\s+/, ""))}</li>`;
-        return;
+        continue;
       }
 
       closeList();
       html += `<p>${inlineFormat(raw)}</p>`;
-    });
+    }
 
     closeList();
     return html;
@@ -619,11 +688,18 @@
     const copied = await copyTextToClipboard(generatedText);
 
     if (copied) {
-      const shouldShowAppToast = window.matchMedia?.(
+      const isDesktopPointer = window.matchMedia?.(
         "(hover: hover) and (pointer: fine)",
       )?.matches;
 
-      if (shouldShowAppToast) toast("Notes copied.");
+      const userAgent = navigator.userAgent || "";
+      const isSafari =
+        /Safari/i.test(userAgent) &&
+        !/Chrome|Chromium|CriOS|FxiOS|EdgiOS|OPiOS|OPR|Android/i.test(
+          userAgent,
+        );
+
+      if (isDesktopPointer || isSafari) toast("Notes copied.");
       return;
     }
 

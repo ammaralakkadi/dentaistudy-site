@@ -16,6 +16,7 @@
   let drag = null;
   let knownCards = new Set();
   let reviewCards = new Set();
+  let viewedCards = new Set();
   let cardMotionTimer = null;
   let generatePhraseTimer = null;
   const customSelects = new Map();
@@ -279,6 +280,7 @@
     sessionFinished = false;
     knownCards = new Set();
     reviewCards = new Set();
+    viewedCards = new Set();
     setFlowMode("normal");
     els.layout?.classList.add("is-empty");
     if (els.empty) els.empty.hidden = false;
@@ -396,6 +398,9 @@
       progress[activeDeckId] = {
         known_ids: Array.from(knownCards),
         review_ids: Array.from(reviewCards),
+        viewed_ids: Array.from(viewedCards),
+        current_index: currentIndex,
+        finished: sessionFinished,
         viewed_count: viewedCount,
         total: cards.length,
         percent: cards.length
@@ -446,6 +451,10 @@
     Array.from(els.strip.children).forEach((btn, index) => {
       const card = cards[index];
       const key = cardKey(card, index);
+      const isMarked = knownCards.has(key) || reviewCards.has(key);
+      const isViewed = viewedCards.has(key) || index < currentIndex || isMarked;
+
+      btn.classList.toggle("is-viewed", isViewed);
       btn.classList.toggle("is-active", index === currentIndex);
       btn.classList.toggle("is-known", knownCards.has(key));
       btn.classList.toggle("is-review", reviewCards.has(key));
@@ -461,7 +470,8 @@
 
   function sessionProgressCount() {
     if (!cards.length) return 0;
-    return Math.min(Math.max(reviewedCount(), currentIndex + 1), cards.length);
+
+    return Math.min(Math.max(viewedCards.size, reviewedCount()), cards.length);
   }
 
   function updateProgress() {
@@ -574,6 +584,7 @@
     sessionFinished = false;
     knownCards = new Set();
     reviewCards = new Set();
+    viewedCards = new Set();
     activeDeckId = null;
     setFlowMode("study");
     els.layout?.classList.remove("is-empty");
@@ -611,12 +622,16 @@
 
   function goToCard(index) {
     if (!cards.length) return;
-    sessionFinished = false;
+
     const previousIndex = currentIndex;
+    viewedCards.add(cardKey(cards[currentIndex], currentIndex));
+
+    sessionFinished = false;
     currentIndex = (index + cards.length) % cards.length;
     setFlipped(false);
     renderCard();
     saveFlashcardProgress();
+
     if (currentIndex === previousIndex || !els.card) return;
 
     const direction = index > previousIndex ? "is-step-next" : "is-step-prev";
@@ -633,7 +648,7 @@
     if (!cards.length) return;
 
     if (sessionFinished) {
-      goToCard(0);
+      restartDeckSession();
       return;
     }
 
@@ -642,6 +657,8 @@
 
   function finishSession() {
     if (!cards.length) return;
+
+    viewedCards = new Set(cards.map((card, index) => cardKey(card, index)));
     sessionFinished = true;
     isRevealed = false;
     saveFlashcardProgress();
@@ -652,6 +669,20 @@
     if (!cards.length) return;
     const index = firstReviewIndex();
     goToCard(index >= 0 ? index : 0);
+  }
+
+  function restartDeckSession() {
+    if (!cards.length) return;
+
+    currentIndex = 0;
+    isRevealed = false;
+    sessionFinished = false;
+    knownCards = new Set();
+    reviewCards = new Set();
+    viewedCards = new Set();
+
+    renderCard();
+    saveFlashcardProgress();
   }
 
   function markCard(status) {
@@ -922,9 +953,6 @@
       ...card,
       deck_title: deck?.title || "Flashcard deck",
     }));
-    currentIndex = 0;
-    isRevealed = false;
-    sessionFinished = false;
 
     try {
       const { data: refreshed } = await state.supabase.auth.getUser();
@@ -933,8 +961,32 @@
 
     const validKeys = new Set(cards.map((card, index) => cardKey(card, index)));
     const saved = readFlashcardProgress(state.user?.user_metadata, deckId);
+    const savedIndex = Number(saved?.current_index);
+    const savedViewedCount = Math.trunc(Number(saved?.viewed_count) || 0);
+
     knownCards = new Set(validCardKeys(saved?.known_ids, validKeys));
     reviewCards = new Set(validCardKeys(saved?.review_ids, validKeys));
+    viewedCards = new Set(validCardKeys(saved?.viewed_ids, validKeys));
+
+    if (!viewedCards.size && savedViewedCount > 0) {
+      viewedCards = new Set(
+        cards
+          .slice(0, Math.min(savedViewedCount, cards.length))
+          .map((card, index) => cardKey(card, index)),
+      );
+    }
+
+    currentIndex = Number.isInteger(savedIndex)
+      ? Math.max(0, Math.min(cards.length - 1, savedIndex))
+      : 0;
+    isRevealed = false;
+    sessionFinished =
+      Boolean(saved?.finished) && Number(saved?.total) === cards.length;
+
+    if (sessionFinished) {
+      viewedCards = new Set(cards.map((card, index) => cardKey(card, index)));
+    }
+
     renderCard();
     if (options.focus) focusDeckStage({ repeat: true });
   }
@@ -1164,7 +1216,7 @@
 
     els.prev?.addEventListener("click", () => {
       if (sessionFinished) {
-        goToCard(0);
+        restartDeckSession();
         return;
       }
 
@@ -1173,7 +1225,7 @@
 
     els.next?.addEventListener("click", () => {
       if (sessionFinished) {
-        goToCard(0);
+        restartDeckSession();
         return;
       }
 
