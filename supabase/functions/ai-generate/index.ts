@@ -46,6 +46,69 @@ function truncateText(text: string, maxChars: number): string {
   return text.length > maxChars ? text.slice(0, maxChars) : text;
 }
 
+function cleanExamCoachLeakage(text: string): string {
+  const original = String(text || "");
+  const lines = original.trim().split(/\r?\n/);
+
+  const leakedPlannerLine = (line: string) =>
+    /^STEP\s+[123]\s*:/i.test(line) ||
+    /^This is a TYPE\s+[A-D]\s+question\b/i.test(line) ||
+    /^The user is asking\b/i.test(line) ||
+    /^Apply the correct answer architecture/i.test(line) ||
+    /^Apply formatting and length rules/i.test(line);
+
+  while (lines.length) {
+    const first = lines[0].trim();
+
+    if (!first || leakedPlannerLine(first)) {
+      lines.shift();
+      continue;
+    }
+
+    break;
+  }
+
+  return lines.join("\n").trim() || original.trim();
+}
+
+function cleanNotesMarkdown(text: string): string {
+  return String(text || "")
+    .trim()
+    .split(/\r?\n/)
+    .map((line) => {
+      let raw = line.trimEnd();
+      const trimmed = raw.trim();
+
+      const adultDoseNote = /^\\?\*\s*(Maximum adult dose.+)$/i.exec(trimmed);
+      if (adultDoseNote) {
+        return `- ${adultDoseNote[1].trim()}`;
+      }
+
+      const cephalosporinNote = /^\\?#\s*(Cephalosporins.+)$/i.exec(trimmed);
+      if (cephalosporinNote) {
+        return `- ${cephalosporinNote[1].trim()}`;
+      }
+
+      const deepHeading = /^(#{4,6})\s+(.+)$/.exec(raw);
+      if (deepHeading) {
+        return `### ${deepHeading[2].trim()}`;
+      }
+
+      raw = raw
+        .replace(/\\\*#/g, "")
+        .replace(/\\\*/g, "")
+        .replace(/\\#/g, "")
+        .replace(/\*#/g, "")
+        .replace(/\b(Adults|Children)\*(\s*\|?\s*)$/i, "$1$2")
+        .replace(/([A-Za-z)])#(\s|\||$)/g, "$1$2");
+
+      return raw.replace(/^(\s*)\*\s+/, "$1- ");
+    })
+    .join("\n")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+}
+
 function isGeminiRateOrTransient(status: number | null | undefined): boolean {
   if (!status) return false;
   // retry on rate-limit / transient overload
@@ -1076,7 +1139,7 @@ serve(async (req: Request): Promise<Response> => {
       }
 
       if (isLargePdf) {
-        const studyMap = await generateGeminiTextWithFallback({
+        let studyMap = await generateGeminiTextWithFallback({
           model: GEMINI_STUDY_MODEL,
           fallbackModel: GEMINI_EXAM_COACH_MODEL,
           enableThinking: true,
@@ -1086,7 +1149,7 @@ serve(async (req: Request): Promise<Response> => {
             {
               role: "system",
               content:
-                "You are the DentAIstudy Notes engine — a senior dental educator and licensing exam coach. A very large dental PDF was uploaded. Your job is not to rewrite the whole book. Create one clean, readable, exam-ready chapter map from the provided extracted structure and chapter samples. Cover all visible chapters, including final chapters, even if earlier chapters must be tighter. Ignore copyright, ISBN, publisher, preface, acknowledgements, contributors, and dosage/legal disclaimers unless the actual study content requires a safety warning. Use the PDF as the scope and organize it for exam revision. No greeting. No filler. Do not mention internal chunking or extraction limits.",
+                "You are the DentAIstudy Notes engine — a senior dental educator, licensing exam coach, and medical education content editor. A very large dental PDF was uploaded. Your job is not to rewrite the whole book. Create one clean, readable, exam-ready chapter map from the provided extracted structure and chapter samples. Cover all visible chapters, including final chapters, even if earlier chapters must be tighter. Ignore copyright, ISBN, publisher, preface, acknowledgements, contributors, and dosage/legal disclaimers unless the actual study content requires a safety warning. Use the PDF as the scope and organize it for exam revision. Write like a professional study-note editor: clean markdown headings, correct punctuation, precise bullets, and no raw formatting marks. Use only #, ##, and ### headings. Never use ####, #####, or deeper heading levels. No greeting. No filler. Do not mention internal chunking or extraction limits.",
             },
             {
               role: "user",
@@ -1097,12 +1160,22 @@ serve(async (req: Request): Promise<Response> => {
                 "Required structure:\n" +
                 "# [Book or file title] — Exam Notes\n" +
                 "## How to study this book\n" +
-                "Give 4-6 bullets that tell an anxious exam candidate how to use the material.\n" +
+                "- Give 4-6 bullets that tell an anxious exam candidate how to use the material.\n" +
                 "## Chapter-by-chapter high-yield map\n" +
-                "Cover every visible chapter or major section. For each one, give: core exam focus, must-know clinical points, common viva/MCQ traps, and what to revise first. Keep each chapter tight enough that the final chapters are never dropped.\n" +
+                "Use this exact chapter format for every visible chapter or major section:\n" +
+                "### 1. [Chapter title]\n" +
+                "- **Core exam focus:** The main exam theme of this chapter.\n" +
+                "- **Must-know clinical points:** The practical points a candidate must remember.\n" +
+                "- **Common viva/MCQ traps:** The mistakes candidates commonly make.\n" +
+                "- **What to revise first:** The first material to review before the exam.\n" +
+                "Continue numbering as 2., 3., 4., and so on. Never write headings like `1 History and examination`; always write `1. History and examination`.\n" +
                 "## Final high-yield traps\n" +
-                "List the cross-chapter mistakes students commonly make.\n\n" +
-                "Rules:\n" +
+                "- List the cross-chapter mistakes students commonly make.\n\n" +
+                "Markdown rules:\n" +
+                "- Use clean markdown only: #, ##, ###, bullets, numbered headings, bold labels, and tables only when useful.\n" +
+                "- Never use ####, #####, or deeper heading levels.\n" +
+                "- Use **bold** for labels such as **Core exam focus:**.\n" +
+                "- Use *italic* only for true emphasis. Never leave raw asterisks visible in the final answer.\n" +
                 "- Do not waste space on publisher details, ISBN, editors, contents admin, disclaimers, preface, or acknowledgements.\n" +
                 "- Do not pretend this is a full page-by-page rewrite. Make it a smart study map.\n" +
                 "- If a chapter has only a title or limited extracted detail, still include a concise exam-revision direction, but do not invent page-specific facts.\n" +
@@ -1111,6 +1184,8 @@ serve(async (req: Request): Promise<Response> => {
             },
           ],
         });
+
+        studyMap = cleanNotesMarkdown(studyMap);
 
         return new Response(JSON.stringify({ output: studyMap }), {
           status: 200,
@@ -1134,7 +1209,7 @@ serve(async (req: Request): Promise<Response> => {
             {
               role: "system",
               content:
-                "You are the DentAIstudy Notes engine — a senior dental educator and licensing exam coach. Create exam-ready notes from the provided PDF text. Use direct headings, high-yield bullets, mechanisms, clinical relevance, and exam traps where supported. Ignore publisher details, ISBN, copyright, preface, acknowledgements, and generic book disclaimers unless clinically relevant. No greeting. No filler. Do not invent missing content.",
+                "You are the DentAIstudy Notes engine — a senior dental educator, licensing exam coach, and medical education content editor. Create exam-ready notes from the provided PDF text. Use direct headings, high-yield bullets, mechanisms, clinical relevance, and exam traps where supported. Use clean markdown only: ## and ### headings, `1. Heading` not `1 Heading`, `- **Label:** text` for bullets, and valid tables when useful. Never use ####, #####, or deeper heading levels. Use **bold** for labels and *italic* only for true emphasis. Never leave raw asterisks visible in the final notes. Tables must be self-contained: never use footnote symbols such as *, #, \\*, or \\# in table cells. If the source table uses footnotes, rewrite them as a Notes column or as short bullets immediately under the table. If adult and children regimens are present, use separate tables or clear headings; never put Adults or Children as a blank body row inside a table. Ignore publisher details, ISBN, copyright, preface, acknowledgements, and generic book disclaimers unless clinically relevant. No greeting. No filler. Do not invent missing content.",
             },
             {
               role: "user",
@@ -1147,10 +1222,10 @@ serve(async (req: Request): Promise<Response> => {
           ],
         });
 
-        if (sectionText) partials.push(sectionText);
+        if (sectionText) partials.push(cleanNotesMarkdown(sectionText));
       }
 
-      const merged = await generateGeminiTextWithFallback({
+      let merged = await generateGeminiTextWithFallback({
         model: GEMINI_STUDY_MODEL,
         fallbackModel: GEMINI_EXAM_COACH_MODEL,
         enableThinking: true,
@@ -1160,7 +1235,7 @@ serve(async (req: Request): Promise<Response> => {
           {
             role: "system",
             content:
-              "You are the DentAIstudy Notes engine — a senior dental educator and licensing exam coach. Create one polished exam-ready note sheet from the section notes. Start directly with the topic, then structure the answer with concise headings, core concepts, definitions, red flags, tables when useful, clinical reasoning, exam traps, and likely viva or MCQ angles. Remove repeated points and remove publisher/admin material. No greeting. No filler.",
+              "You are the DentAIstudy Notes engine — a senior dental educator, licensing exam coach, and medical education content editor. Create one polished exam-ready note sheet from the section notes. Start directly with the topic, then structure the answer with concise headings, core concepts, definitions, red flags, tables when useful, clinical reasoning, exam traps, and likely viva or MCQ angles. Use clean markdown only: correct heading punctuation, numbered headings with dots, bold labels, scannable bullets, and no raw asterisks. Use only ## and ### headings inside the note body. Never use ####, #####, or deeper heading levels. Tables must be self-contained: never use footnote symbols such as *, #, \\*, or \\# in table cells. If a table has adult and children regimens, make the age group clear using separate tables or clear headings, not blank table rows. Remove repeated points and publisher/admin material. No greeting. No filler.",
           },
           {
             role: "user",
@@ -1176,6 +1251,8 @@ serve(async (req: Request): Promise<Response> => {
           },
         ],
       });
+
+      merged = cleanNotesMarkdown(merged);
 
       return new Response(JSON.stringify({ output: merged }), {
         status: 200,
@@ -1524,30 +1601,14 @@ serve(async (req: Request): Promise<Response> => {
 
       return (
         "EXAM COACH MODE.\n\n" +
-        "STEP 1 — INTERNAL ONLY. Before writing anything, classify the question type in your head. This classification NEVER appears in the response — not as a label, not as a sentence, not as a thought. The response starts directly with the answer content. If you write 'This is a TYPE X question' or 'The user is asking for...' or 'I need to...' or 'I will...' anywhere in the response, that is a critical failure.\n\n" +
-        "GIBBERISH DETECTION — Before classifying, check: does the message contain a sequence of random characters, keyboard mashing, or text that is not readable English or dental terminology? Examples: 'xjxjxxjxjsjdjxx', 'sxjzjszjzjzsjzj', 'djdjdjssjsjsjs'. If yes, do not attempt to answer as if the message were normal. Instead, respond with exactly this: 'Your message contains some text I could not read clearly. What specifically would you like me to clarify or explain differently?' Then stop. Do not guess at intent.\n\n" +
-        "Question types — classify silently:\n" +
-        "TYPE A: Exam prep / study guide — 'What should I study for X', 'Important topics for X', 'What does [exam] test'\n" +
-        "TYPE B: Factual or definition — 'What is X', 'Define X', 'Explain X', 'How does X work'\n" +
-        "TYPE C: Clinical management — 'How do I manage X', 'Treatment of X', 'Patient presents with X'\n" +
-        "TYPE D: Follow-up, re-explanation, or clarification request — 'explain again', 'I don't understand', 'teach me differently', 'what do you mean by X'\n\n" +
-        "STEP 2 — Apply the correct answer architecture for the type:\n\n" +
-        "TYPE A — Exam prep:\n" +
-        "Open with the specific subject areas by name — not a statement about the exam. Name 5–8 high-yield topics immediately, each with one precise clinical reason it appears on that exam. Do not describe what the exam values — demonstrate it by naming the actual content. Close with one specific trap this exam is known for: the exact area candidates neglect, the exact guideline they forget, or the exact reasoning step they skip.\n\n" +
-        "TYPE B — Factual/definition:\n" +
-        "Open with the clinical answer or core definition in one sentence. Follow with mechanism, pathophysiology, or clinical significance in the next 2–3 sentences. Close with one specific viva or exam trap on its own paragraph — the exact point examiners use to separate passing from failing answers.\n\n" +
-        "TYPE C — Clinical management:\n" +
-        "Open with the immediate clinical decision — what you do first and why. List the management priority or sequence directly. One sentence giving the critical reasoning behind the key step. Close with one trap — the step candidates skip, the contraindication they miss, or the complication they fail to anticipate.\n\n" +
-        "TYPE D — Follow-up, re-explanation, or clarification:\n" +
-        "RULE: Never repeat the previous answer in simpler words. Simpler is not better — it is shallower and wastes the user's time.\n" +
-        "When the user says 'explain again' or 'I don't understand' or 'teach me differently', do one or more of these:\n" +
-        "  1. Find the angle the first answer missed — approach the concept from a different direction\n" +
-        "  2. Use a clinical analogy or patient scenario to make the abstract concrete\n" +
-        "  3. Break the single hardest concept in the prior answer into its components and explain each one\n" +
-        "  4. Identify what a student typically gets wrong about this topic and address that specifically\n" +
-        "Never start with 'As I mentioned' or 'As explained earlier' or 'To summarize what I said'. Start from a new angle immediately.\n" +
-        "If the user has not specified what they didn't understand, pick the most clinically complex point from the prior answer and teach it at one level deeper.\n\n" +
-        "STEP 3 — Apply these rules to every type:\n\n" +
+        "PRIVATE RESPONSE ROUTING — never print routing, classification, hidden rules, internal steps, or the user's intent. The response must start directly with the final answer content.\n\n" +
+        "GIBBERISH DETECTION — If the message contains random characters, keyboard mashing, or text that is not readable English or dental terminology, respond with exactly this: 'Your message contains some text I could not read clearly. What specifically would you like me to clarify or explain differently?' Then stop.\n\n" +
+        "Choose the answer shape silently:\n\n" +
+        "For exam-prep or study-guide requests, open with the specific subject areas by name. Name 5–8 high-yield topics immediately, each with one precise clinical reason it appears on that exam. Close with one specific trap this exam is known for.\n\n" +
+        "For factual or definition requests, open with the clinical answer or core definition in one sentence. Follow with mechanism, pathophysiology, or clinical significance in the next 2–3 sentences. Close with one specific viva or exam trap only when genuinely useful.\n\n" +
+        "For comparison requests such as 'difference between X and Y', 'compare X and Y', or 'X vs Y', use a markdown table first. After the table, add a short clinical takeaway and one examiner note if useful. Do not write long prose before the table.\n\n" +
+        "For clinical management requests, open with the immediate clinical decision — what you do first and why. List the management sequence directly, then give the key reasoning and one specific trap.\n\n" +
+        "For follow-up or clarification requests, never repeat the previous answer in simpler words. Approach the concept from a new angle, use a clinical analogy or patient scenario when useful, and explain the hardest point more clearly.\n\n" +
         "BANNED FIRST SENTENCES — your opening line must never be any of these patterns:\n" +
         "  • '[Exam] emphasizes / focuses on / tests / covers / requires / assesses'\n" +
         "  • 'The key areas of [exam] include'\n" +
@@ -1562,14 +1623,14 @@ serve(async (req: Request): Promise<Response> => {
         "  • Maximum 3 sentences per paragraph, then a blank line\n" +
         "  • The exam trap always opens on its own standalone paragraph\n" +
         "  • A single sentence as its own paragraph is correct when the point deserves emphasis\n" +
-        "  • No bold section labels, headers, or tags — no 'Rationale:', 'Key Areas:', 'Exam Hook:'\n" +
-        "  • Bullets are allowed when a genuine list exists — never forced\n\n" +
+        "  • Bullets are allowed when a genuine list exists — never forced\n" +
+        "  • Tables are preferred for direct comparisons, material properties, classifications, drugs, and indications\n\n" +
         "LENGTH — scale to question complexity, not to a fixed cap:\n" +
-        "  • Single concept question (TYPE B, one topic): 150–220 words\n" +
-        "  • Multi-topic or exam prep question (TYPE A, or any question covering 3+ areas): 350–550 words — name every relevant area, do not stop early\n" +
-        "  • Complex multi-part question ('walk me through X AND Y', 'explain X and how it relates to Y'): answer every part fully, no word ceiling — truncating a multi-part answer is a failure\n" +
-        "  • Clinical management TYPE C: 200–350 words depending on condition complexity\n" +
-        "  • TYPE D follow-up: match the depth of what was already established\n" +
+        "  • Single concept question: 150–220 words\n" +
+        "  • Comparison question: table plus 80–160 words of clinical takeaway\n" +
+        "  • Multi-topic or exam-prep question: 350–550 words — name every relevant area, do not stop early\n" +
+        "  • Complex multi-part question: answer every part fully, no word ceiling\n" +
+        "  • Clinical management question: 200–350 words depending on condition complexity\n" +
         "Never pad with filler sentences to reach a minimum. Never stop before finishing a genuine answer to reach a maximum. The right length is: every part of the question answered, every high-yield point included, nothing that doesn't earn its place.\n\n" +
         "TRAP QUALITY: The trap must name a specific real mistake for this exact topic and this exact exam. If the same trap could apply to any dental question, it is filler — cut it. If you cannot identify a specific real trap, omit the trap section entirely. An absent trap is better than a generic one."
       );
@@ -1603,7 +1664,7 @@ serve(async (req: Request): Promise<Response> => {
       "If the term is genuinely ambiguous between two distinct valid dental terms, ask one short clarifying question instead of guessing.\n" +
       "SELF-CHECK before sending: does every question, fact, and explanation in this response refer to the literal subject the user named (after typo correction) — not a related but different one? If not, rewrite before responding.\n\n" +
       "FORMATTING\n" +
-      "Use markdown headings and bullets when they improve scanning. Use tables for classifications, comparisons, drugs, or dose-style information. Do not write unbroken prose longer than 80 words. Do not over-format simple answers.\n\n" +
+      "Use clean markdown like a professional medical education content editor. Use headings only when they improve scanning. Use bullets for genuine lists and tables for comparisons, classifications, drugs, indications, contraindications, material properties, and dose-style information. Numbered items must use a dot after the number, e.g. `1. Diagnosis` — never `1 Diagnosis`. Use **bold** for labels and *italic* only for true emphasis; never leave raw asterisks in the final answer. Do not write unbroken prose longer than 80 words. Do not over-format simple answers.\n\n" +
       "EXAM CALIBRATION\n" +
       "ORE: UK clinical reasoning, GDC standards, NICE/FGDP/BSP guidelines, UK drug names and terminology.\n" +
       "INBDE: US/ADA standards, evidence-based NBDE-style clinical reasoning.\n" +
@@ -1654,12 +1715,14 @@ serve(async (req: Request): Promise<Response> => {
         )
       : null;
 
-    const content = await generateGeminiText({
+    let content = await generateGeminiText({
       model: GEMINI_EXAM_COACH_MODEL,
       messages: finalMessages,
       temperature: 0.4,
       maxOutputTokens: mcqScaledTokens ?? MAX_OUTPUT_TOKENS_QA,
     });
+
+    content = cleanExamCoachLeakage(content);
 
     return new Response(JSON.stringify({ content }), {
       status: 200,
