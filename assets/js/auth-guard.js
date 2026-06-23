@@ -114,8 +114,75 @@ function renderStudyIdentity(identity, options = {}) {
   }
 }
 
+function renderStudyLockCard(status) {
+  if (!isDasStudyPage()) return;
+
+  const card = document.querySelector("[data-pro-lock] .pro-lock-card");
+  if (!card) return;
+
+  const page = getDasFileName();
+  const title = card.querySelector("h1");
+  const text = card.querySelector("p");
+  const primary = card.querySelector(".pro-lock-actions .study-primary-btn");
+  const secondary = card.querySelector(
+    ".pro-lock-actions .study-secondary-btn",
+  );
+
+  const freeCopy = {
+    "study-notes.html": {
+      title: "Unlock PDF to notes.",
+      text: "Upload your dental material and turn it into clear, exam ready notes built for revision, viva prep, and clinical reasoning.",
+    },
+    "study-flashcards.html": {
+      title: "Unlock flashcards from your notes.",
+      text: "Generate active recall decks from saved Notes, then review them for exams, clinics, and revision.",
+    },
+    "study-quiz.html": {
+      title: "Unlock quizzes from your notes.",
+      text: "Generate board style questions from saved Notes, then review explanations while weak spots are still fresh.",
+    },
+  };
+
+  const anonymousCopy = {
+    "study-notes.html": {
+      title: "PDF notes are Pro.",
+      text: "Sign up free to start with Exam Coach. Pro unlocks PDF to notes for revision, viva prep, and clinical reasoning.",
+    },
+    "study-flashcards.html": {
+      title: "Flashcards are Pro.",
+      text: "Sign up free to start with Exam Coach. Pro unlocks flashcards from saved Notes for active recall.",
+    },
+    "study-quiz.html": {
+      title: "Quizzes are Pro.",
+      text: "Sign up free to start with Exam Coach. Pro unlocks board style quizzes from saved Notes.",
+    },
+    "study-library.html": {
+      title: "Sign up to view your Study Library.",
+      text: "Create a free account to save Exam Coach chats. Pro adds Notes, flashcards, and quiz history.",
+    },
+  };
+
+  const content = status === "free" ? freeCopy[page] : anonymousCopy[page];
+  if (!content) return;
+
+  if (title) title.textContent = content.title;
+  if (text) text.textContent = content.text;
+
+  if (primary) {
+    primary.href = status === "free" ? "pricing.html" : "signup.html";
+    primary.textContent = status === "free" ? "Upgrade to Pro" : "Sign up free";
+  }
+
+  if (secondary) {
+    secondary.href = "study.html";
+    secondary.textContent = "Open Exam Coach";
+  }
+}
+
 function renderStudySidebarCta(status) {
   if (!isDasStudyPage()) return;
+
+  renderStudyLockCard(status);
 
   const cta = document.querySelector("[data-study-cta]");
   const userchip = document.querySelector(".userchip");
@@ -136,7 +203,7 @@ function renderStudySidebarCta(status) {
     if (title) title.textContent = "Sign up free";
     if (text) {
       text.textContent =
-        "Save your progress and keep your study workflow in one place.";
+        "Save your Exam Coach chats and keep your study work in one place.";
     }
     cta.hidden = false;
     return;
@@ -147,7 +214,8 @@ function renderStudySidebarCta(status) {
     cta.href = "pricing.html";
     if (title) title.textContent = "Upgrade to Pro";
     if (text) {
-      text.textContent = "Build without limits across your study workflow.";
+      text.textContent =
+        "Unlock Notes, flashcards, quizzes, and full Library flow.";
     }
     cta.hidden = false;
   }
