@@ -2,7 +2,7 @@
 
 A focused study platform for dental students and residents.
 
-DentAIstudy helps users study dentistry from their own PDFs, weak topics, and exam questions — with notes, flashcards, quizzes, Exam Coach answers, and saved study work in one place.
+DentAIstudy helps users study dentistry from their own PDFs, weak topics, and exam questions - with notes, flashcards, quizzes, Exam Coach answers, and saved study work in one place.
 
 🔗 **[dentaistudy.com](https://dentaistudy.com)**
 
@@ -17,13 +17,13 @@ DentAIstudy helps users study dentistry from their own PDFs, weak topics, and ex
 
 ## Core platform areas
 
-- **Study Notes** — upload dental PDFs and turn them into cleaner notes
-- **Exam Coach** — ask dental questions and get exam-focused answers
-- **Flashcards** — create recall-friendly decks from study material
-- **Quiz Mode** — generate practice questions with explanations
-- **Study Library** — organize saved notes, chats, flashcards, and quizzes
-- **Exam Hubs** — explore structured guidance for dental exam pathways
-- **Subject Hubs** — browse dental topics by specialty and subject
+- **Study Notes** - upload dental PDFs and turn them into cleaner notes
+- **Exam Coach** - ask dental questions and get exam focused answers
+- **Flashcards** - create recall friendly decks from study material
+- **Quiz Mode** - generate practice questions with explanations
+- **Study Library** - organize saved notes, chats, flashcards, and quizzes
+- **Exam Hubs** - explore structured guidance for dental exam pathways
+- **Subject Hubs** - browse dental topics by specialty and subject
 
 ## Built for
 
