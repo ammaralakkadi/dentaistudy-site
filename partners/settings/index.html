@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Partner Settings · DentAIstudy Partners</title>
+    <meta
+      name="description"
+      content="DentAIstudy Partners partner account settings."
+    />
+    <link rel="stylesheet" href="../assets/css/partner-base.css" />
+    <link rel="stylesheet" href="../assets/css/partner-dashboard.css" />
+    <link rel="stylesheet" href="../assets/css/partner-responsive.css" />
+  </head>
+  <body>
+    <div class="partner-shell">
+      <header class="partner-header">
+        <div class="container partner-header-inner">
+          <button
+            class="menu-toggle"
+            data-mobile-toggle
+            aria-label="Open menu"
+            aria-expanded="false"
+          >
+            <span></span><span></span><span></span>
+          </button>
+          <a
+            class="brand-lockup"
+            href="../"
+            aria-label="DentAIstudy Partners home"
+            ><span class="brand-text"
+              ><span>Dent</span><span>AIstudy</span></span
+            ><span class="brand-suffix">Partner</span></a
+          >
+          <div class="header-actions">
+            <details
+              class="das-account-menu partner-account-menu"
+              data-account-menu
+            >
+              <summary class="das-account-trigger">
+                <span class="das-account-dot"></span><span>Account</span>
+              </summary>
+              <div class="das-account-dropdown">
+                <a data-nav href="../dashboard/">Dashboard</a>
+                <a data-nav href="../settings/">Settings</a>
+                <button type="button" data-logout data-redirect="../login/">
+                  Log out
+                </button>
+              </div>
+            </details>
+          </div>
+        </div>
+      </header>
+      <div class="slide-nav-backdrop" data-mobile-backdrop></div>
+      <nav
+        class="slide-nav"
+        data-mobile-panel
+        aria-label="Mobile partner navigation"
+      >
+        <div class="slide-nav-links">
+          <a data-nav href="../program/"
+            ><span data-icon="file"></span><span>Program</span></a
+          >
+          <div class="slide-nav-divider"></div>
+          <a data-nav href="../dashboard/"
+            ><span data-icon="pulse"></span><span>Dashboard</span></a
+          >
+          <a data-nav href="../settings/"
+            ><span data-icon="settings"></span><span>Settings</span></a
+          >
+          <button
+            class="slide-nav-button"
+            type="button"
+            data-logout
+            data-redirect="../login/"
+          >
+            <span data-icon="logout"></span><span>Log out</span>
+          </button>
+        </div>
+      </nav>
+      <main class="dashboard-main">
+        <div class="container settings-container">
+          <div class="partner-page-head-left">
+            <h1 class="section-title">Partner settings</h1>
+            <p class="section-subtitle dashboard-subtitle">
+              Manage your partner profile, login details, and account request
+              settings.
+            </p>
+          </div>
+
+          <div class="settings-stack">
+            <section class="card card-inner settings-card">
+              <div class="settings-card-heading">
+                <h2 class="card-title">Profile</h2>
+                <p class="card-text">
+                  Keep your partner identity clean for manual records.
+                </p>
+              </div>
+              <form data-profile-form>
+                <div class="form-grid">
+                  <div class="form-row">
+                    <label class="label" for="creator-name">Display name</label
+                    ><input
+                      class="input"
+                      id="creator-name"
+                      data-name-input
+                      autocomplete="name"
+                    />
+                  </div>
+                  <div class="form-row">
+                    <label class="label" for="creator-email">Email</label
+                    ><input
+                      class="input"
+                      id="creator-email"
+                      type="email"
+                      data-email-input
+                      autocomplete="email"
+                    />
+                  </div>
+                </div>
+                <div class="settings-save-row">
+                  <button class="btn btn-primary" type="submit">
+                    Save profile</button
+                  ><span
+                    class="settings-save-status"
+                    data-profile-status
+                  ></span>
+                </div>
+              </form>
+            </section>
+
+            <section class="card card-inner settings-card">
+              <div class="settings-card-heading">
+                <h2 class="card-title">Password</h2>
+                <p class="card-text">
+                  Use your old password, then set a new one. Backend connection
+                  comes later.
+                </p>
+              </div>
+              <form data-password-form>
+                <div class="settings-password-stack">
+                  <div class="form-row">
+                    <label class="label" for="old-password">Old password</label>
+                    <div class="password-field">
+                      <input
+                        class="input"
+                        id="old-password"
+                        type="password"
+                        autocomplete="current-password"
+                      /><button
+                        type="button"
+                        class="password-eye"
+                        data-toggle-password
+                        aria-label="Show password"
+                      >
+                        <span data-icon="eye"></span>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="form-grid">
+                    <div class="form-row">
+                      <label class="label" for="new-password"
+                        >New password</label
+                      >
+                      <div class="password-field">
+                        <input
+                          class="input"
+                          id="new-password"
+                          type="password"
+                          autocomplete="new-password"
+                        /><button
+                          type="button"
+                          class="password-eye"
+                          data-toggle-password
+                          aria-label="Show password"
+                        >
+                          <span data-icon="eye"></span>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <label class="label" for="confirm-password"
+                        >Confirm new password</label
+                      >
+                      <div class="password-field">
+                        <input
+                          class="input"
+                          id="confirm-password"
+                          type="password"
+                          autocomplete="new-password"
+                        /><button
+                          type="button"
+                          class="password-eye"
+                          data-toggle-password
+                          aria-label="Show password"
+                        >
+                          <span data-icon="eye"></span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="settings-save-row">
+                  <button class="btn btn-primary" type="submit">
+                    Update password</button
+                  ><span
+                    class="settings-save-status"
+                    data-password-status
+                  ></span>
+                </div>
+              </form>
+            </section>
+
+            <section class="card card-inner settings-card">
+              <div class="settings-card-heading">
+                <h2 class="card-title">Payout contact</h2>
+                <p class="card-text">
+                  Manual payout method shown on your dashboard. Contact support
+                  if it changes.
+                </p>
+              </div>
+              <div class="settings-info-list">
+                <div>
+                  <span>Current method</span
+                  ><strong data-payout-method>Wise (USD)</strong>
+                </div>
+                <div>
+                  <span>Next payout window</span
+                  ><strong data-next-payout>July 1–5</strong>
+                </div>
+                <div>
+                  <span>Support</span
+                  ><a href="mailto:info@dentaistudy.com"
+                    >info@dentaistudy.com</a
+                  >
+                </div>
+              </div>
+            </section>
+
+            <section class="card card-inner settings-card settings-danger-card">
+              <div class="settings-card-heading">
+                <h2 class="card-title">Delete account</h2>
+                <p class="card-text">
+                  Send a deletion request for this partner account. We will
+                  review partner records before removing access.
+                </p>
+              </div>
+              <button
+                class="btn btn-danger"
+                type="button"
+                data-delete-request
+                aria-haspopup="dialog"
+                aria-controls="delete-account-modal"
+              >
+                Request account deletion
+              </button>
+              <span class="settings-save-status" data-delete-status></span>
+            </section>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <div
+      class="das-modal-overlay"
+      id="delete-account-modal"
+      data-delete-modal
+      hidden
+    >
+      <div
+        class="das-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="delete-modal-title"
+        aria-describedby="delete-modal-message"
+      >
+        <h3 class="das-modal__title" id="delete-modal-title">
+          Request account deletion
+        </h3>
+        <p class="das-modal__message" id="delete-modal-message">
+          Are you sure you want to send an account deletion request for this
+          partner account? We will review the partner records before removing
+          access.
+        </p>
+        <div class="das-modal__actions">
+          <button
+            class="das-modal__btn das-modal__btn--ghost"
+            type="button"
+            data-delete-cancel
+          >
+            Cancel
+          </button>
+          <button
+            class="das-modal__btn das-modal__btn--danger"
+            type="button"
+            data-delete-confirm
+          >
+            Send request
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="../assets/js/partner-icons.js" defer></script>
+    <script src="../assets/js/partner-common.js" defer></script>
+    <script src="../assets/js/partner-data.js" defer></script>
+    <script src="../assets/js/settings.js" defer></script>
+  </body>
+</html>

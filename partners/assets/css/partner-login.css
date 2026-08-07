@@ -1,0 +1,73 @@
+.login-wrap {
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 460px);
+  align-content: center;
+  justify-content: center;
+  padding: 42px var(--page-gutter) 58px;
+}
+.login-card {
+  width: 100%;
+  padding: 30px;
+}
+.login-card h1 {
+  margin: 0;
+  color: var(--ink-strong);
+  font-size: 32px;
+  line-height: 1.05;
+  letter-spacing: -0.055em;
+}
+.login-card p {
+  color: var(--muted);
+  margin: 10px 0 22px;
+}
+.login-card form {
+  display: grid;
+}
+.login-card .form-row,
+.login-card .select {
+  width: 100%;
+}
+.login-card form > .btn {
+  width: max-content;
+  max-width: 100%;
+  justify-self: center;
+  margin-top: 4px;
+}
+.login-card form > .btn [data-icon="arrow"] {
+  display: inline-flex;
+  transition: transform 0.18s ease;
+}
+.login-card form > .btn:hover [data-icon="arrow"],
+.login-card form > .btn:focus-visible [data-icon="arrow"] {
+  transform: translateX(3px);
+}
+.login-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--subtle);
+  font-size: 12px;
+  margin: 18px 0;
+}
+.login-divider::before,
+.login-divider::after {
+  content: "";
+  height: 1px;
+  background: var(--line);
+  flex: 1;
+}
+
+@media (max-width: 760px) {
+  .login-wrap {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 28px var(--page-gutter) 40px;
+  }
+  .login-card {
+    padding: 24px 20px;
+  }
+  .login-card form > .btn {
+    width: auto;
+    display: inline-flex;
+  }
+}

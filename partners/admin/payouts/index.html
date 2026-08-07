@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Payouts · DentAIstudy Partner Admin</title>
+    <meta
+      name="description"
+      content="DentAIstudy Partners private partner program."
+    />
+    <link rel="stylesheet" href="../../assets/css/partner-base.css" />
+    <link rel="stylesheet" href="../../assets/css/partner-admin.css" />
+
+    <link rel="stylesheet" href="../../assets/css/partner-responsive.css" />
+  </head>
+  <body>
+    <div class="admin-shell">
+      <aside class="admin-sidebar">
+        <div class="admin-sidebar-head">
+          <a
+            class="brand-lockup admin-brand"
+            href="../overview/"
+            aria-label="DentAIstudy Admin"
+            ><span class="brand-text"
+              ><span>Dent</span><span>AIstudy</span></span
+            ><span class="brand-suffix">Admin</span></a
+          >
+        </div>
+        <nav class="admin-nav">
+          <a class="" href="../../admin/overview/"
+            ><span data-icon="sparkle"></span>Overview</a
+          ><a class="" href="../../admin/creators/"
+            ><span data-icon="users"></span>Partners</a
+          ><a class="" href="../../admin/activity/"
+            ><span data-icon="tag"></span>Referrals</a
+          ><a class="is-active" href="../../admin/payouts/"
+            ><span data-icon="dollar"></span>Payouts</a
+          ><a class="" href="../../admin/settings/"
+            ><span data-icon="settings"></span>Settings</a
+          >
+        </nav>
+        <div class="admin-sidebar-foot">
+          <div>© <span data-year></span> DentAIstudy</div>
+          <a href="../../terms/">Terms</a><a href="../../privacy/">Privacy</a>
+        </div>
+      </aside>
+      <main class="admin-main">
+        <div class="admin-mobile-head">
+          <button
+            class="menu-toggle"
+            data-mobile-toggle
+            aria-label="Open admin menu"
+            aria-expanded="false"
+          >
+            <span></span><span></span><span></span>
+          </button>
+          <a class="brand-lockup admin-brand" href="../overview/"
+            ><span class="brand-text"
+              ><span>Dent</span><span>AIstudy</span></span
+            ><span class="brand-suffix">Admin</span></a
+          >
+        </div>
+        <div class="slide-nav-backdrop" data-mobile-backdrop></div>
+        <nav
+          class="slide-nav"
+          data-mobile-panel
+          aria-label="Mobile admin navigation"
+        >
+          <div class="slide-nav-links">
+            <a data-nav href="../../admin/overview/"
+              ><span data-icon="sparkle"></span><span>Overview</span></a
+            >
+            <a data-nav href="../../admin/creators/"
+              ><span data-icon="users"></span><span>Partners</span></a
+            >
+            <a data-nav href="../../admin/activity/"
+              ><span data-icon="tag"></span><span>Referrals</span></a
+            >
+            <a data-nav href="../../admin/payouts/"
+              ><span data-icon="dollar"></span><span>Payouts</span></a
+            >
+            <a data-nav href="../../admin/settings/"
+              ><span data-icon="settings"></span><span>Settings</span></a
+            >
+          </div>
+        </nav>
+        <div class="admin-topbar">
+          <span class="icon-circle gray admin-topbar-shield"
+            ><span data-icon="shield"></span
+          ></span>
+          <div class="admin-account">
+            <span class="avatar">AO</span><strong>Ammar</strong>
+          </div>
+        </div>
+        <div class="admin-content">
+          <div class="admin-page-head">
+            <h1>Payouts</h1>
+            <p>
+              Review payout eligibility, track monthly partner payments, and log
+              Wise transfers.
+            </p>
+            <div class="admin-sync-note">
+              <span data-icon="clock"></span> Records are manually reviewed from
+              Paddle and updated from this panel.
+            </div>
+          </div>
+          <div class="grid grid-4">
+            <div class="card stat-card">
+              <span class="icon-circle"><span data-icon="users"></span></span>
+              <div>
+                <div class="stat-label">Total partners</div>
+                <div class="stat-value" data-stat="creators">5</div>
+                <div class="stat-note">All partner accounts</div>
+              </div>
+            </div>
+            <div class="card stat-card">
+              <span class="icon-circle green"
+                ><span data-icon="check"></span
+              ></span>
+              <div>
+                <div class="stat-label">Confirmed paid users</div>
+                <div class="stat-value" data-stat="confirmed">13</div>
+                <div class="stat-note">Across all partners</div>
+              </div>
+            </div>
+            <div class="card stat-card">
+              <span class="icon-circle amber"
+                ><span data-icon="clock"></span
+              ></span>
+              <div>
+                <div class="stat-label">Pending review</div>
+                <div class="stat-value" data-stat="pending">2</div>
+                <div class="stat-note">Users awaiting review</div>
+              </div>
+            </div>
+            <div class="card stat-card">
+              <span class="icon-circle green"
+                ><span data-icon="dollar"></span
+              ></span>
+              <div>
+                <div class="stat-label">Approved commission</div>
+                <div class="stat-value" data-stat="approved">$72.04</div>
+                <div class="stat-note">All-time approved</div>
+              </div>
+            </div>
+          </div>
+          <div class="admin-grid-main">
+            <div>
+              <div class="card card-inner">
+                <div class="card-head">
+                  <h2 class="card-title">Payout queue</h2>
+                  <button
+                    class="btn btn-primary"
+                    type="button"
+                    data-payout-placeholder="Log payout placeholder"
+                  >
+                    Log payout <span data-icon="plus"></span>
+                  </button>
+                </div>
+                <div class="table-wrap">
+                  <table class="payout-queue-table">
+                    <thead>
+                      <tr>
+                        <th>Partner</th>
+                        <th>Commission</th>
+                        <th>Payment</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody data-payouts-table></tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="card card-inner payout-preview-card">
+                <h2 class="card-title">Payout preview</h2>
+                <div class="payout-preview-content" data-payout-preview></div>
+              </div>
+            </div>
+            <aside class="grid">
+              <div class="card side-card">
+                <h2 class="card-title">Payout breakdown</h2>
+                <div class="breakdown-row">
+                  <span>Ready for payout</span
+                  ><strong data-stat="ready">1</strong>
+                </div>
+                <div class="breakdown-row">
+                  <span>Pending review</span
+                  ><strong data-stat="pending">2</strong>
+                </div>
+                <div class="breakdown-row">
+                  <span>Paid this month</span
+                  ><strong data-stat="paidThisMonth">$0.00</strong>
+                </div>
+              </div>
+              <div class="card side-card">
+                <h2 class="card-title">Quick actions</h2>
+                <div class="action-list">
+                  <button
+                    class="primary"
+                    type="button"
+                    data-payout-placeholder="Log payout placeholder"
+                  >
+                    Log payout <span data-icon="arrow"></span></button
+                  ><button
+                    type="button"
+                    data-payout-placeholder="Export placeholder"
+                  >
+                    Export payouts <span data-icon="arrow"></span></button
+                  ><button
+                    type="button"
+                    data-payout-placeholder="Report placeholder"
+                  >
+                    Download report <span data-icon="arrow"></span>
+                  </button>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </main>
+    </div>
+    <script src="../../assets/js/partner-icons.js" defer></script>
+    <script src="../../assets/js/partner-common.js" defer></script>
+    <script src="../../assets/js/partner-data.js" defer></script>
+    <script src="../../assets/js/admin-common.js" defer></script>
+    <script src="../../assets/js/admin-payouts.js" defer></script>
+  </body>
+</html>

@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Partners · DentAIstudy Partner Admin</title>
+    <meta
+      name="description"
+      content="Manage DentAIstudy partner accounts and review calculated partner status."
+    />
+    <link rel="stylesheet" href="../../assets/css/partner-base.css" />
+    <link rel="stylesheet" href="../../assets/css/partner-admin.css" />
+    <link rel="stylesheet" href="../../assets/css/partner-responsive.css" />
+  </head>
+  <body>
+    <div class="admin-shell">
+      <aside class="admin-sidebar">
+        <div class="admin-sidebar-head">
+          <a
+            class="brand-lockup admin-brand"
+            href="../overview/"
+            aria-label="DentAIstudy Admin"
+          >
+            <span class="brand-text"
+              ><span>Dent</span><span>AIstudy</span></span
+            >
+            <span class="brand-suffix">Admin</span>
+          </a>
+        </div>
+        <nav class="admin-nav">
+          <a href="../../admin/overview/"
+            ><span data-icon="sparkle"></span>Overview</a
+          >
+          <a class="is-active" href="../../admin/creators/"
+            ><span data-icon="users"></span>Partners</a
+          >
+          <a href="../../admin/activity/"
+            ><span data-icon="tag"></span>Referrals</a
+          >
+          <a href="../../admin/payouts/"
+            ><span data-icon="dollar"></span>Payouts</a
+          >
+          <a href="../../admin/settings/"
+            ><span data-icon="settings"></span>Settings</a
+          >
+        </nav>
+        <div class="admin-sidebar-foot">
+          <div>© <span data-year></span> DentAIstudy</div>
+          <a href="../../terms/">Terms</a>
+          <a href="../../privacy/">Privacy</a>
+        </div>
+      </aside>
+
+      <main class="admin-main">
+        <div class="admin-mobile-head">
+          <button
+            class="menu-toggle"
+            data-mobile-toggle
+            aria-label="Open admin menu"
+            aria-expanded="false"
+          >
+            <span></span><span></span><span></span>
+          </button>
+          <a class="brand-lockup admin-brand" href="../overview/">
+            <span class="brand-text"
+              ><span>Dent</span><span>AIstudy</span></span
+            >
+            <span class="brand-suffix">Admin</span>
+          </a>
+        </div>
+
+        <div class="slide-nav-backdrop" data-mobile-backdrop></div>
+        <nav
+          class="slide-nav"
+          data-mobile-panel
+          aria-label="Mobile admin navigation"
+        >
+          <div class="slide-nav-links">
+            <a data-nav href="../../admin/overview/"
+              ><span data-icon="sparkle"></span><span>Overview</span></a
+            >
+            <a data-nav href="../../admin/creators/"
+              ><span data-icon="users"></span><span>Partners</span></a
+            >
+            <a data-nav href="../../admin/activity/"
+              ><span data-icon="tag"></span><span>Referrals</span></a
+            >
+            <a data-nav href="../../admin/payouts/"
+              ><span data-icon="dollar"></span><span>Payouts</span></a
+            >
+            <a data-nav href="../../admin/settings/"
+              ><span data-icon="settings"></span><span>Settings</span></a
+            >
+          </div>
+        </nav>
+
+        <div class="admin-topbar">
+          <span class="icon-circle gray admin-topbar-shield"
+            ><span data-icon="shield"></span
+          ></span>
+          <div class="admin-account">
+            <span class="avatar">AO</span><strong>Ammar</strong>
+          </div>
+        </div>
+
+        <div class="admin-content">
+          <div class="admin-page-head">
+            <h1>Partners</h1>
+            <p>
+              Manage account access here. Qualification and payout status come
+              from the referral ledger.
+            </p>
+            <div class="admin-sync-note">
+              <span data-icon="clock"></span> Edit payment records in Referrals,
+              not on this page.
+            </div>
+          </div>
+
+          <div class="grid grid-4">
+            <div class="card stat-card">
+              <span class="icon-circle"><span data-icon="users"></span></span>
+              <div>
+                <div class="stat-label">Total partners</div>
+                <div class="stat-value" data-partner-stat="total">0</div>
+                <div class="stat-note">All partner accounts</div>
+              </div>
+            </div>
+            <div class="card stat-card">
+              <span class="icon-circle"
+                ><span data-icon="shield"></span
+              ></span>
+              <div>
+                <div class="stat-label">Active accounts</div>
+                <div class="stat-value" data-partner-stat="active">0</div>
+                <div class="stat-note">Allowed to promote</div>
+              </div>
+            </div>
+            <div class="card stat-card">
+              <span class="icon-circle green"
+                ><span data-icon="check"></span
+              ></span>
+              <div>
+                <div class="stat-label">Qualified partners</div>
+                <div class="stat-value" data-partner-stat="qualified">0</div>
+                <div class="stat-note">Reached confirmed-user target</div>
+              </div>
+            </div>
+            <div class="card stat-card">
+              <span class="icon-circle green"
+                ><span data-icon="dollar"></span
+              ></span>
+              <div>
+                <div class="stat-label">Payout ready</div>
+                <div class="stat-value" data-partner-stat="ready">0</div>
+                <div class="stat-note">Qualified and above minimum</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card card-inner partner-accounts-card">
+            <div class="card-head">
+              <h2 class="card-title">Partner accounts</h2>
+              <button class="btn btn-primary" type="button" data-add-partner>
+                <span data-icon="plus"></span>Add partner
+              </button>
+            </div>
+
+            <div class="toolbar">
+              <input
+                class="input"
+                data-search-partners
+                aria-label="Search partner accounts"
+                placeholder="Search partners..."
+              />
+              <select
+                class="select"
+                data-filter-account
+                aria-label="Filter by account status"
+              >
+                <option value="">All accounts</option>
+                <option value="Active">Active</option>
+                <option value="Paused">Paused</option>
+                <option value="Ended">Ended</option>
+              </select>
+            </div>
+
+            <div class="table-wrap">
+              <table class="admin-table-wide partner-accounts-table">
+                <thead>
+                  <tr>
+                    <th>Partner</th>
+                    <th>Code</th>
+                    <th>Account</th>
+                    <th>Qualification</th>
+                    <th>Payout</th>
+                    <th>Last updated</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody data-partners-table></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="admin-drawer" data-partner-drawer aria-hidden="true">
+            <div class="drawer-head">
+              <h2 class="card-title" data-partner-form-title>Add partner</h2>
+              <button
+                class="drawer-close"
+                type="button"
+                data-partner-drawer-close
+                aria-label="Close partner form"
+              >
+                <span data-icon="close"></span>
+              </button>
+            </div>
+            <div class="drawer-body">
+              <form data-partner-form autocomplete="off">
+                <input type="hidden" name="id" />
+
+                <div class="form-row" data-partner-summary hidden>
+                  <span class="label">Calculated from referrals</span>
+                  <div class="preview-rows">
+                    <div class="rule-line">
+                      <span>Account status</span
+                      ><strong data-summary-account></strong>
+                    </div>
+                    <div class="rule-line">
+                      <span>Qualification</span
+                      ><strong data-summary-qualification></strong>
+                    </div>
+                    <div class="rule-line">
+                      <span>Payout status</span
+                      ><strong data-summary-payout></strong>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <label class="label" for="partner-name">Name</label>
+                  <input class="input" id="partner-name" name="name" required />
+                </div>
+
+                <div class="form-row">
+                  <label class="label" for="partner-email">Email</label>
+                  <input
+                    class="input"
+                    id="partner-email"
+                    name="email"
+                    type="email"
+                    required
+                  />
+                </div>
+
+                <div class="form-row">
+                  <label class="label" for="partner-code">Promo code</label>
+                  <input
+                    class="input"
+                    id="partner-code"
+                    name="code"
+                    required
+                    autocapitalize="characters"
+                  />
+                </div>
+
+                <div class="form-grid">
+                  <div class="form-row">
+                    <label class="label" for="partner-account-status"
+                      >Account status</label
+                    >
+                    <select
+                      class="select"
+                      id="partner-account-status"
+                      name="accountStatus"
+                    >
+                      <option value="Active">Active</option>
+                      <option value="Paused">Paused</option>
+                      <option value="Ended">Ended</option>
+                    </select>
+                  </div>
+                  <div class="form-row">
+                    <label class="label" for="partner-payout-method"
+                      >Payout method</label
+                    >
+                    <select
+                      class="select"
+                      id="partner-payout-method"
+                      name="payoutMethod"
+                    >
+                      <option value="Not added">Not added</option>
+                      <option value="Wise (USD)">Wise (USD)</option>
+                      <option value="Bank transfer">Bank transfer</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <label class="label" for="partner-notes">Notes</label>
+                  <textarea
+                    class="textarea"
+                    id="partner-notes"
+                    name="notes"
+                  ></textarea>
+                </div>
+
+                <button
+                  class="btn btn-primary"
+                  type="submit"
+                  data-partner-submit
+                >
+                  Add partner
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="../../assets/js/partner-icons.js" defer></script>
+    <script src="../../assets/js/partner-common.js" defer></script>
+    <script src="../../assets/js/partner-data.js" defer></script>
+    <script src="../../assets/js/admin-common.js" defer></script>
+    <script src="../../assets/js/admin-creators.js" defer></script>
+  </body>
+</html>

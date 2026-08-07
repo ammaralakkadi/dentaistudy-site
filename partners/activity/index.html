@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Recent Activity · DentAIstudy Partners</title>
+    <meta
+      name="description"
+      content="DentAIstudy Partners partner activity log."
+    />
+    <link rel="stylesheet" href="../assets/css/partner-base.css" />
+    <link rel="stylesheet" href="../assets/css/partner-dashboard.css" />
+    <link rel="stylesheet" href="../assets/css/partner-responsive.css" />
+  </head>
+  <body>
+    <div class="partner-shell">
+      <header class="partner-header">
+        <div class="container partner-header-inner">
+          <button
+            class="menu-toggle"
+            data-mobile-toggle
+            aria-label="Open menu"
+            aria-expanded="false"
+          >
+            <span></span><span></span><span></span>
+          </button>
+          <a
+            class="brand-lockup"
+            href="../"
+            aria-label="DentAIstudy Partners home"
+            ><span class="brand-text"
+              ><span>Dent</span><span>AIstudy</span></span
+            ><span class="brand-suffix">Partner</span></a
+          >
+          <div class="header-actions">
+            <details
+              class="das-account-menu partner-account-menu"
+              data-account-menu
+            >
+              <summary class="das-account-trigger">
+                <span class="das-account-dot"></span><span>Account</span>
+              </summary>
+              <div class="das-account-dropdown">
+                <a data-nav href="../dashboard/">Dashboard</a>
+                <a data-nav href="../settings/">Settings</a>
+                <button type="button" data-logout data-redirect="../login/">
+                  Log out
+                </button>
+              </div>
+            </details>
+          </div>
+        </div>
+      </header>
+      <div class="slide-nav-backdrop" data-mobile-backdrop></div>
+      <nav
+        class="slide-nav"
+        data-mobile-panel
+        aria-label="Mobile partner navigation"
+      >
+        <div class="slide-nav-links">
+          <a data-nav href="../program/"
+            ><span data-icon="file"></span><span>Program</span></a
+          >
+          <div class="slide-nav-divider"></div>
+          <a data-nav href="../dashboard/"
+            ><span data-icon="pulse"></span><span>Dashboard</span></a
+          >
+          <a data-nav href="../settings/"
+            ><span data-icon="settings"></span><span>Settings</span></a
+          >
+          <button
+            class="slide-nav-button"
+            type="button"
+            data-logout
+            data-redirect="../login/"
+          >
+            <span data-icon="logout"></span><span>Log out</span>
+          </button>
+        </div>
+      </nav>
+      <main class="dashboard-main">
+        <div class="container">
+          <div class="partner-page-head-left">
+            <a class="back-link" href="../dashboard/"
+              ><span data-icon="arrow"></span> Back to dashboard</a
+            >
+            <h1 class="section-title">Recent activity</h1>
+            <p class="section-subtitle dashboard-subtitle">
+              Full manual activity history for your partner account.
+            </p>
+          </div>
+
+          <div class="grid grid-3 activity-summary-grid">
+            <div class="card stat-card">
+              <span class="icon-circle">
+                <span data-icon="users"></span>
+              </span>
+              <div class="activity-stat-copy">
+                <div class="stat-label">Confirmed</div>
+                <div class="stat-value" data-confirmed>10</div>
+                <div class="stat-note">Paid users</div>
+              </div>
+            </div>
+            <div class="card stat-card">
+              <span class="icon-circle amber">
+                <span data-icon="clock"></span>
+              </span>
+              <div class="activity-stat-copy">
+                <div class="stat-label">Pending</div>
+                <div class="stat-value" data-pending-users>1</div>
+                <div class="stat-note">In review</div>
+              </div>
+            </div>
+            <div class="card stat-card">
+              <span class="icon-circle green">
+                <span data-icon="dollar"></span>
+              </span>
+              <div class="activity-stat-copy">
+                <div class="stat-label">Approved</div>
+                <div class="stat-value" data-approved-commission>$50.71</div>
+                <div class="stat-note">Commission</div>
+              </div>
+            </div>
+          </div>
+
+          <section class="activity-log">
+            <div class="card-head">
+              <h2 class="card-title">Activity log</h2>
+            </div>
+            <div data-activity-page-list class="activity-page-list"></div>
+          </section>
+        </div>
+      </main>
+    </div>
+    <script src="../assets/js/partner-icons.js" defer></script>
+    <script src="../assets/js/partner-common.js" defer></script>
+    <script src="../assets/js/partner-data.js" defer></script>
+    <script src="../assets/js/activity.js" defer></script>
+  </body>
+</html>

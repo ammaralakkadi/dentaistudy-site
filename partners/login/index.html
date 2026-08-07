@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Partner Login · DentAIstudy Partners</title>
+    <meta
+      name="description"
+      content="DentAIstudy Partners private partner program."
+    />
+    <link rel="stylesheet" href="../assets/css/partner-base.css" />
+    <link rel="stylesheet" href="../assets/css/partner-login.css" />
+
+    <link rel="stylesheet" href="../assets/css/partner-responsive.css" />
+  </head>
+  <body>
+    <div class="partner-shell">
+      <header class="partner-header">
+        <div class="container partner-header-inner">
+          <button
+            class="menu-toggle"
+            data-mobile-toggle
+            aria-label="Open menu"
+            aria-expanded="false"
+          >
+            <span></span><span></span><span></span>
+          </button>
+          <a
+            class="brand-lockup"
+            href="../"
+            aria-label="DentAIstudy Partners home"
+            ><span class="brand-text"
+              ><span>Dent</span><span>AIstudy</span></span
+            ><span class="brand-suffix">Partner</span></a
+          >
+          <div class="header-actions header-actions-public">
+            <a
+              class="btn btn-primary header-request"
+              href="mailto:info@dentaistudy.com?subject=DentAIstudy%20Partner%20Access%20Request"
+              >Request access</a
+            >
+            <a class="btn btn-outline header-login" href="../login/"
+              >Partner login</a
+            >
+          </div>
+        </div>
+      </header>
+      <div class="slide-nav-backdrop" data-mobile-backdrop></div>
+      <nav
+        class="slide-nav"
+        data-mobile-panel
+        aria-label="Mobile partner navigation"
+      >
+        <div class="slide-nav-links">
+          <a data-nav href="../program/"
+            ><span data-icon="file"></span><span>Program</span></a
+          >
+          <div class="slide-nav-divider"></div>
+          <a
+            href="mailto:info@dentaistudy.com?subject=DentAIstudy%20Partner%20Access%20Request"
+            ><span data-icon="mail"></span><span>Request access</span></a
+          >
+          <a data-nav href="../login/"
+            ><span data-icon="lock"></span><span>Partner login</span></a
+          >
+        </div>
+      </nav>
+      <main class="login-wrap">
+        <div class="card login-card">
+          <h1>Partner login</h1>
+          <p>
+            Use your assigned partner access to open the private DentAIstudy
+            Partner dashboard.
+          </p>
+          <form data-login-form>
+            <div class="form-row">
+              <label class="label" for="partner-login-account"
+                >Select partner account</label
+              ><select
+                class="select"
+                id="partner-login-account"
+                data-creator-select
+              ></select>
+            </div>
+            <button class="btn btn-primary" type="submit">
+              Open partner dashboard <span data-icon="arrow"></span>
+            </button>
+          </form>
+        </div>
+      </main>
+    </div>
+    <script src="../assets/js/partner-icons.js" defer></script>
+    <script src="../assets/js/partner-common.js" defer></script>
+    <script src="../assets/js/partner-data.js" defer></script>
+    <script src="../assets/js/login.js" defer></script>
+  </body>
+</html>

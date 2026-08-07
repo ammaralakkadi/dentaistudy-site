@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Referral ledger · DentAIstudy Partner Admin</title>
+    <meta
+      name="description"
+      content="Manually record and review DentAIstudy partner referrals."
+    />
+    <link rel="stylesheet" href="../../assets/css/partner-base.css" />
+    <link rel="stylesheet" href="../../assets/css/partner-admin.css" />
+    <link rel="stylesheet" href="../../assets/css/partner-responsive.css" />
+  </head>
+  <body>
+    <div class="admin-shell">
+      <aside class="admin-sidebar">
+        <div class="admin-sidebar-head">
+          <a
+            class="brand-lockup admin-brand"
+            href="../overview/"
+            aria-label="DentAIstudy Admin"
+          >
+            <span class="brand-text"
+              ><span>Dent</span><span>AIstudy</span></span
+            >
+            <span class="brand-suffix">Admin</span>
+          </a>
+        </div>
+        <nav class="admin-nav">
+          <a href="../../admin/overview/"
+            ><span data-icon="sparkle"></span>Overview</a
+          >
+          <a href="../../admin/creators/"
+            ><span data-icon="users"></span>Partners</a
+          >
+          <a class="is-active" href="../../admin/activity/"
+            ><span data-icon="tag"></span>Referrals</a
+          >
+          <a href="../../admin/payouts/"
+            ><span data-icon="dollar"></span>Payouts</a
+          >
+          <a href="../../admin/settings/"
+            ><span data-icon="settings"></span>Settings</a
+          >
+        </nav>
+        <div class="admin-sidebar-foot">
+          <div>© <span data-year></span> DentAIstudy</div>
+          <a href="../../terms/">Terms</a>
+          <a href="../../privacy/">Privacy</a>
+        </div>
+      </aside>
+
+      <main class="admin-main">
+        <div class="admin-mobile-head">
+          <button
+            class="menu-toggle"
+            data-mobile-toggle
+            aria-label="Open admin menu"
+            aria-expanded="false"
+          >
+            <span></span><span></span><span></span>
+          </button>
+          <a class="brand-lockup admin-brand" href="../overview/">
+            <span class="brand-text"
+              ><span>Dent</span><span>AIstudy</span></span
+            >
+            <span class="brand-suffix">Admin</span>
+          </a>
+        </div>
+
+        <div class="slide-nav-backdrop" data-mobile-backdrop></div>
+        <nav
+          class="slide-nav"
+          data-mobile-panel
+          aria-label="Mobile admin navigation"
+        >
+          <div class="slide-nav-links">
+            <a data-nav href="../../admin/overview/"
+              ><span data-icon="sparkle"></span><span>Overview</span></a
+            >
+            <a data-nav href="../../admin/creators/"
+              ><span data-icon="users"></span><span>Partners</span></a
+            >
+            <a data-nav href="../../admin/activity/"
+              ><span data-icon="tag"></span><span>Referrals</span></a
+            >
+            <a data-nav href="../../admin/payouts/"
+              ><span data-icon="dollar"></span><span>Payouts</span></a
+            >
+            <a data-nav href="../../admin/settings/"
+              ><span data-icon="settings"></span><span>Settings</span></a
+            >
+          </div>
+        </nav>
+
+        <div class="admin-topbar">
+          <span class="icon-circle gray admin-topbar-shield"
+            ><span data-icon="shield"></span
+          ></span>
+          <div class="admin-account">
+            <span class="avatar">AO</span><strong>Ammar</strong>
+          </div>
+        </div>
+
+        <div class="admin-content">
+          <div class="admin-page-head">
+            <h1>Referral ledger</h1>
+            <p>
+              Record each Paddle payment once, including the Total earnings
+              shown by Paddle. Qualification and commission totals are
+              calculated from these records.
+            </p>
+            <div class="admin-sync-note">
+              <span data-icon="clock"></span> Copy the Paddle transaction ID and
+              Total earnings before saving.
+            </div>
+          </div>
+
+          <div class="grid grid-4">
+            <div class="card stat-card">
+              <span class="icon-circle"><span data-icon="tag"></span></span>
+              <div>
+                <div class="stat-label">Ledger records</div>
+                <div class="stat-value" data-stat="referrals">19</div>
+                <div class="stat-note">All recorded payments</div>
+              </div>
+            </div>
+            <div class="card stat-card">
+              <span class="icon-circle green"
+                ><span data-icon="check"></span
+              ></span>
+              <div>
+                <div class="stat-label">Confirmed paid users</div>
+                <div class="stat-value" data-stat="confirmed">13</div>
+                <div class="stat-note">Approved first payments</div>
+              </div>
+            </div>
+            <div class="card stat-card">
+              <span class="icon-circle amber"
+                ><span data-icon="clock"></span
+              ></span>
+              <div>
+                <div class="stat-label">Pending records</div>
+                <div class="stat-value" data-stat="pendingReferrals">4</div>
+                <div class="stat-note">Awaiting approval</div>
+              </div>
+            </div>
+            <div class="card stat-card">
+              <span class="icon-circle green"
+                ><span data-icon="dollar"></span
+              ></span>
+              <div>
+                <div class="stat-label">Approved commission</div>
+                <div class="stat-value" data-stat="approved">$72.04</div>
+                <div class="stat-note">Approved and unpaid</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card card-inner referral-ledger-card">
+            <div class="card-head">
+              <div>
+                <h2 class="card-title">Payment records</h2>
+                <p class="card-text">First payments and eligible renewals.</p>
+              </div>
+              <button class="btn btn-primary" type="button" data-add-referral>
+                <span data-icon="plus"></span>Add referral
+              </button>
+            </div>
+
+            <div class="toolbar referral-toolbar">
+              <input
+                class="input referral-search"
+                data-search-referrals
+                aria-label="Search referral records"
+                placeholder="Search customer or Paddle ID..."
+              />
+              <select
+                class="select"
+                data-filter-partner
+                aria-label="Filter by partner"
+              >
+                <option value="">All partners</option>
+              </select>
+              <select
+                class="select"
+                data-filter-status
+                aria-label="Filter by status"
+              >
+                <option value="">All statuses</option>
+                <option value="Pending">Pending</option>
+                <option value="Approved">Approved</option>
+                <option value="Refunded">Refunded</option>
+                <option value="Disputed">Disputed</option>
+              </select>
+            </div>
+
+            <div class="table-wrap">
+              <table class="admin-table-wide referral-ledger-table">
+                <thead>
+                  <tr>
+                    <th>Payment date</th>
+                    <th>Partner / code</th>
+                    <th>Customer / Paddle ID</th>
+                    <th>Plan / payment</th>
+                    <th>Paddle total earnings</th>
+                    <th>Commission</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody data-referrals-table></tbody>
+              </table>
+            </div>
+          </div>
+          <div
+            class="admin-drawer referral-drawer"
+            data-referral-drawer
+            aria-hidden="true"
+          >
+            <div class="drawer-head">
+              <h2 class="card-title" data-referral-form-title>Add referral</h2>
+              <button
+                class="drawer-close"
+                type="button"
+                data-referral-drawer-close
+                aria-label="Close referral form"
+              >
+                <span data-icon="close"></span>
+              </button>
+            </div>
+            <div class="drawer-body">
+              <form data-referral-form autocomplete="off">
+                <input type="hidden" name="id" />
+
+                <div class="form-row">
+                  <label class="label" for="referral-partner">Partner</label>
+                  <select
+                    class="select"
+                    id="referral-partner"
+                    name="creatorId"
+                    required
+                  ></select>
+                </div>
+
+                <div class="form-row">
+                  <label class="label" for="referral-customer"
+                    >Customer reference</label
+                  >
+                  <input
+                    class="input"
+                    id="referral-customer"
+                    name="customerRef"
+                    required
+                    placeholder="CUS-001"
+                  />
+                </div>
+
+                <div class="form-row">
+                  <label class="label" for="referral-paddle"
+                    >Paddle transaction ID</label
+                  >
+                  <input
+                    class="input"
+                    id="referral-paddle"
+                    name="paddleId"
+                    required
+                    placeholder="txn_..."
+                  />
+                </div>
+
+                <div class="form-grid">
+                  <div>
+                    <label class="label" for="referral-plan">Plan</label>
+                    <select class="select" id="referral-plan" name="plan">
+                      <option value="Monthly">Monthly</option>
+                      <option value="Annual">Annual</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="label" for="referral-payment-type"
+                      >Payment type</label
+                    >
+                    <select
+                      class="select"
+                      id="referral-payment-type"
+                      name="paymentType"
+                    >
+                      <option value="First payment">First payment</option>
+                      <option value="Renewal">Renewal</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-row" data-renewal-row hidden>
+                  <label class="label" for="referral-renewal"
+                    >Renewal number</label
+                  >
+                  <input
+                    class="input"
+                    id="referral-renewal"
+                    name="renewalNumber"
+                    type="number"
+                    min="1"
+                    value="1"
+                  />
+                </div>
+
+                <div class="form-grid">
+                  <div>
+                    <label class="label" for="referral-date"
+                      >Payment date</label
+                    >
+                    <input
+                      class="input"
+                      id="referral-date"
+                      name="paymentDate"
+                      type="date"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label class="label" for="referral-paddle-earnings"
+                      >Paddle total earnings (USD)</label
+                    >
+                    <input
+                      class="input"
+                      id="referral-paddle-earnings"
+                      name="paddleTotalEarnings"
+                      type="number"
+                      min="0"
+                      step="0.01"
+                      placeholder="7.33"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <label class="label" for="referral-status">Status</label>
+                  <select class="select" id="referral-status" name="status">
+                    <option value="Pending">Pending</option>
+                    <option value="Approved">Approved</option>
+                    <option value="Refunded">Refunded</option>
+                    <option value="Disputed">Disputed</option>
+                  </select>
+                </div>
+
+                <div class="form-row" data-approval-row hidden>
+                  <label class="label" for="referral-approval-date"
+                    >Approval date</label
+                  >
+                  <input
+                    class="input"
+                    id="referral-approval-date"
+                    name="approvalDate"
+                    type="date"
+                  />
+                </div>
+
+                <div class="referral-commission-preview">
+                  <span>Calculated commission</span>
+                  <strong data-commission-preview>50% · $0.00</strong>
+                </div>
+
+                <div class="referral-payment-control">
+                  <label class="referral-check">
+                    <input type="checkbox" name="commissionPaid" disabled />
+                    <span>Commission already paid</span>
+                  </label>
+                  <div class="form-row" data-paid-date-row hidden>
+                    <label class="label" for="referral-paid-date"
+                      >Paid date</label
+                    >
+                    <input
+                      class="input"
+                      id="referral-paid-date"
+                      name="paidDate"
+                      type="date"
+                    />
+                  </div>
+                </div>
+
+                <button class="btn btn-primary" type="submit">
+                  Save referral
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="../../assets/js/partner-icons.js" defer></script>
+    <script src="../../assets/js/partner-common.js" defer></script>
+    <script src="../../assets/js/partner-data.js" defer></script>
+    <script src="../../assets/js/admin-common.js" defer></script>
+    <script src="../../assets/js/admin-activity.js" defer></script>
+  </body>
+</html>

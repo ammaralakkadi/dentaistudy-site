@@ -1,0 +1,1 @@
+/* partners home page JS placeholder for future small interactions */
