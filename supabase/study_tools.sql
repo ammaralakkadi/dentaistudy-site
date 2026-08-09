@@ -136,6 +136,87 @@ after insert or update or delete on public.study_quiz_questions
 for each row execute function public.touch_study_quiz_updated_at();
 
 -- =========================
+-- Guest AI quota
+-- =========================
+create table if not exists public.guest_ai_usage (
+  fingerprint_hash text not null,
+  usage_date date not null default ((timezone('utc', now()))::date),
+  request_count smallint not null default 0 check (request_count >= 0),
+  updated_at timestamptz not null default now(),
+  primary key (fingerprint_hash, usage_date)
+);
+
+alter table public.guest_ai_usage enable row level security;
+
+revoke all on table public.guest_ai_usage from anon, authenticated;
+revoke all on table public.guest_ai_usage from service_role;
+grant select, insert, update on table public.guest_ai_usage to service_role;
+
+create or replace function public.consume_guest_ai_credit(
+  p_fingerprint_hash text,
+  p_limit integer default 2
+)
+returns table (
+  allowed boolean,
+  used integer,
+  daily_limit integer
+)
+language plpgsql
+set search_path = public
+as $$
+declare
+  v_today date := (timezone('utc', now()))::date;
+  v_count integer;
+begin
+  if nullif(btrim(p_fingerprint_hash), '') is null then
+    raise exception 'Guest fingerprint is required';
+  end if;
+
+  if p_limit < 1 then
+    raise exception 'Guest daily limit must be positive';
+  end if;
+
+  insert into public.guest_ai_usage (
+    fingerprint_hash,
+    usage_date,
+    request_count,
+    updated_at
+  )
+  values (
+    p_fingerprint_hash,
+    v_today,
+    1,
+    now()
+  )
+  on conflict (fingerprint_hash, usage_date)
+  do update
+    set request_count = public.guest_ai_usage.request_count + 1,
+        updated_at = now()
+    where public.guest_ai_usage.request_count < p_limit
+  returning request_count into v_count;
+
+  if v_count is null then
+    select g.request_count
+      into v_count
+      from public.guest_ai_usage as g
+     where g.fingerprint_hash = p_fingerprint_hash
+       and g.usage_date = v_today;
+
+    return query select false, coalesce(v_count, p_limit), p_limit;
+    return;
+  end if;
+
+  return query select true, v_count, p_limit;
+end;
+$$;
+
+revoke all on function public.consume_guest_ai_credit(text, integer)
+  from public, anon, authenticated;
+
+grant execute on function public.consume_guest_ai_credit(text, integer)
+  to service_role;
+  
+-- =========================
 -- RLS
 -- =========================
 alter table public.flashcard_decks enable row level security;

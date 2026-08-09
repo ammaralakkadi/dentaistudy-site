@@ -14,6 +14,7 @@ const corsHeaders: Record<string, string> = {
 
 const FREE_DAILY_LIMIT = 12;
 const PRO_DAILY_LIMIT = 100;
+const GUEST_DAILY_LIMIT = 2;
 
 // Safety nets
 const HISTORY_WINDOW = 14;
@@ -39,6 +40,44 @@ const CHUNK_OVERLAP = 150;
 
 function getTodayUTC(): string {
   return new Date().toISOString().slice(0, 10);
+}
+
+function getClientIp(req: Request): string {
+  const cloudflareIp = req.headers.get("cf-connecting-ip")?.trim();
+  if (cloudflareIp) return cloudflareIp;
+
+  const forwardedFor = req.headers.get("x-forwarded-for");
+  if (forwardedFor) return forwardedFor.split(",")[0].trim();
+
+  return req.headers.get("x-real-ip")?.trim() || "unknown";
+}
+
+async function getGuestFingerprint(req: Request): Promise<string> {
+  const source = [
+    getClientIp(req),
+    req.headers.get("user-agent") ?? "",
+    req.headers.get("accept-language") ?? "",
+    req.headers.get("sec-ch-ua-platform") ?? "",
+    req.headers.get("sec-ch-ua-mobile") ?? "",
+  ].join("|");
+
+  const key = await crypto.subtle.importKey(
+    "raw",
+    new TextEncoder().encode(SUPABASE_SERVICE_ROLE_KEY),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"],
+  );
+
+  const signature = await crypto.subtle.sign(
+    "HMAC",
+    key,
+    new TextEncoder().encode(source),
+  );
+
+  return Array.from(new Uint8Array(signature), (byte) =>
+    byte.toString(16).padStart(2, "0"),
+  ).join("");
 }
 
 function truncateText(text: string, maxChars: number): string {
@@ -999,9 +1038,16 @@ serve(async (req: Request): Promise<Response> => {
 
         const appMeta: any = data.user.app_metadata ?? {};
         const tier = appMeta.subscription_tier || "free";
-        const isPro = tier === "pro" || tier === "pro_yearly";
+        const partnerProUntil = String(appMeta.partner_pro_until || "").trim();
+        const partnerProExpiresAt = partnerProUntil
+          ? Date.parse(`${partnerProUntil}T23:59:59.999Z`)
+          : Number.NaN;
+        const hasPartnerPro =
+          Number.isFinite(partnerProExpiresAt) &&
+          partnerProExpiresAt >= Date.now();
+        const isPro = tier === "pro" || tier === "pro_yearly" || hasPartnerPro;
 
-        subscriptionTier = tier;
+        subscriptionTier = hasPartnerPro && tier === "free" ? "pro" : tier;
         isProUser = isPro;
       }
     }
@@ -1098,6 +1144,36 @@ serve(async (req: Request): Promise<Response> => {
           ai_count: used + requestCost,
         },
       });
+    }
+
+    if (!userId) {
+      const guestFingerprint = await getGuestFingerprint(req);
+
+      const { data: guestQuotaRows, error: guestQuotaError } =
+        await supabaseAdmin.rpc("consume_guest_ai_credit", {
+          p_fingerprint_hash: guestFingerprint,
+          p_limit: GUEST_DAILY_LIMIT,
+        });
+
+      if (guestQuotaError) throw guestQuotaError;
+
+      const guestQuota = Array.isArray(guestQuotaRows)
+        ? guestQuotaRows[0]
+        : guestQuotaRows;
+
+      if (!guestQuota?.allowed) {
+        return new Response(
+          JSON.stringify({
+            error: "GUEST_LIMIT_REACHED",
+            limit: GUEST_DAILY_LIMIT,
+            used: Number(guestQuota?.used ?? GUEST_DAILY_LIMIT),
+          }),
+          {
+            status: 429,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          },
+        );
+      }
     }
 
     if (
