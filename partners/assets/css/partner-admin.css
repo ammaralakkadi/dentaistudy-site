@@ -755,33 +755,6 @@ html:has(.admin-shell) {
   font-size: 15px;
   white-space: nowrap;
 }
-.referral-payment-control {
-  margin-bottom: 16px;
-  padding-top: 15px;
-  border-top: 1px solid var(--line);
-}
-.referral-check {
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  color: var(--ink);
-  font-size: 13.5px;
-  font-weight: 620;
-}
-.referral-check input {
-  width: 16px;
-  height: 16px;
-  margin: 0;
-  accent-color: var(--blue);
-}
-.referral-check input:disabled + span {
-  color: var(--subtle);
-}
-.referral-payment-control .form-row {
-  margin-top: 13px;
-  margin-bottom: 0;
-}
-
 @media (min-width: 761px) and (max-width: 1180px) {
   .admin-grid-main {
     grid-template-columns: minmax(0, 1fr) 240px;

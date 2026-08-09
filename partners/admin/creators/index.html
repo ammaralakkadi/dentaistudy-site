@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="partner-auth-pending" data-partner-auth="admin">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -41,14 +41,9 @@
           <a href="../../admin/payouts/"
             ><span data-icon="dollar"></span>Payouts</a
           >
-          <a href="../../admin/settings/"
-            ><span data-icon="settings"></span>Settings</a
-          >
         </nav>
         <div class="admin-sidebar-foot">
           <div>© <span data-year></span> DentAIstudy</div>
-          <a href="../../terms/">Terms</a>
-          <a href="../../privacy/">Privacy</a>
         </div>
       </aside>
 
@@ -92,6 +87,14 @@
             <a data-nav href="../../admin/settings/"
               ><span data-icon="settings"></span><span>Settings</span></a
             >
+            <button
+              class="slide-nav-button"
+              type="button"
+              data-logout
+              data-redirect="../../login/?admin=1"
+            >
+              <span data-icon="logout"></span><span>Log out</span>
+            </button>
           </div>
         </nav>
 
@@ -99,21 +102,38 @@
           <span class="icon-circle gray admin-topbar-shield"
             ><span data-icon="shield"></span
           ></span>
-          <div class="admin-account">
-            <span class="avatar">AO</span><strong>Ammar</strong>
-          </div>
+
+          <details
+            class="das-account-menu admin-account-menu"
+            data-account-menu
+          >
+            <summary class="das-account-trigger admin-account">
+              <span class="avatar">AO</span><strong>Ammar</strong>
+            </summary>
+
+            <div class="das-account-dropdown">
+              <a href="../../admin/settings/">Settings</a>
+              <button
+                type="button"
+                data-logout
+                data-redirect="../../login/?admin=1"
+              >
+                Log out
+              </button>
+            </div>
+          </details>
         </div>
 
         <div class="admin-content">
           <div class="admin-page-head">
             <h1>Partners</h1>
             <p>
-              Manage account access here. Qualification and payout status come
-              from the referral ledger.
+              Add Partner access here. New DentAIstudy accounts receive an
+              invitation; existing accounts are linked directly.
             </p>
             <div class="admin-sync-note">
-              <span data-icon="clock"></span> Edit payment records in Referrals,
-              not on this page.
+              <span data-icon="clock"></span> Qualification and payout status
+              come from verified Referrals.
             </div>
           </div>
 
@@ -127,9 +147,7 @@
               </div>
             </div>
             <div class="card stat-card">
-              <span class="icon-circle"
-                ><span data-icon="shield"></span
-              ></span>
+              <span class="icon-circle"><span data-icon="shield"></span></span>
               <div>
                 <div class="stat-label">Active accounts</div>
                 <div class="stat-value" data-partner-stat="active">0</div>
@@ -234,6 +252,9 @@
                       <span>Payout status</span
                       ><strong data-summary-payout></strong>
                     </div>
+                    <div class="rule-line">
+                      <span>Pro access</span><strong data-summary-pro></strong>
+                    </div>
                   </div>
                 </div>
 
@@ -251,6 +272,9 @@
                     type="email"
                     required
                   />
+                  <span class="small-muted" data-partner-email-note hidden
+                    >Login email is fixed after Partner access is created.</span
+                  >
                 </div>
 
                 <div class="form-row">
@@ -318,9 +342,13 @@
       </main>
     </div>
 
+    <script
+      src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.111.0"
+      defer
+    ></script>
+    <script src="../../assets/js/partner-supabase.js" defer></script>
     <script src="../../assets/js/partner-icons.js" defer></script>
     <script src="../../assets/js/partner-common.js" defer></script>
-    <script src="../../assets/js/partner-data.js" defer></script>
     <script src="../../assets/js/admin-common.js" defer></script>
     <script src="../../assets/js/admin-creators.js" defer></script>
   </body>

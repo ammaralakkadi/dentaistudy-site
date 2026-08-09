@@ -28,6 +28,21 @@
 .login-card .select {
   width: 100%;
 }
+
+.login-message {
+  min-height: 20px;
+  margin: -2px 0 12px;
+  color: var(--muted);
+  font-size: 13px;
+  text-align: center;
+}
+.login-message:empty {
+  min-height: 0;
+  margin-bottom: 4px;
+}
+.login-message[data-type="error"] {
+  color: #a33a3a;
+}
 .login-card form > .btn {
   width: max-content;
   max-width: 100%;

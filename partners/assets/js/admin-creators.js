@@ -1,4 +1,5 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+  const auth = window.DentAIStudyPartnerSupabase;
   const tbody = document.querySelector("[data-partners-table]");
   const search = document.querySelector("[data-search-partners]");
   const accountFilter = document.querySelector("[data-filter-account]");
@@ -14,20 +15,41 @@ document.addEventListener("DOMContentLoaded", () => {
     "[data-summary-qualification]",
   );
   const summaryPayout = document.querySelector("[data-summary-payout]");
+  const summaryPro = document.querySelector("[data-summary-pro]");
+  const emailNote = document.querySelector("[data-partner-email-note]");
+
+  if (
+    !auth?.enabled ||
+    !tbody ||
+    !search ||
+    !accountFilter ||
+    !addButton ||
+    !drawer ||
+    !closeButton ||
+    !form
+  )
+    return;
+
+  const authState = await window.DentAIStudyPartnerAuthReady;
+  if (!authState?.user) return;
+
   const fields = form.elements;
+  const adminUser = authState.user;
   let activeId = "";
+  let settings = null;
+  let partners = [];
 
   const escapeHtml = (value) => {
     const element = document.createElement("div");
     element.textContent = String(value ?? "");
     return element.innerHTML;
   };
-  const setSelect = (select, value) => {
-    select.value = value;
-    select.dispatchEvent(new Event("change", { bubbles: true }));
+
+  const titleCase = (value) => {
+    const text = String(value ?? "").replaceAll("_", " ");
+    return text ? text.charAt(0).toUpperCase() + text.slice(1) : "";
   };
-  const qualificationLabel = (partner) =>
-    partner.qualified ? "Qualified" : "In progress";
+
   const partnerInitials = (name) =>
     name
       .trim()
@@ -37,26 +59,158 @@ document.addEventListener("DOMContentLoaded", () => {
       .join("")
       .toUpperCase() || "DP";
 
-  function renderStats(partners) {
+  const dateLabel = (value) => {
+    if (!value) return "—";
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return "—";
+    return new Intl.DateTimeFormat("en", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    }).format(date);
+  };
+
+  function setSelect(select, value) {
+    select.value = value;
+    select.dispatchEvent(new Event("change", { bubbles: true }));
+  }
+
+  function renderStats(allPartners) {
     const totals = {
-      total: partners.length,
-      active: partners.filter((partner) => partner.accountStatus === "Active")
+      total: allPartners.length,
+      active: allPartners.filter((partner) => partner.accountStatus === "Active")
         .length,
-      qualified: partners.filter((partner) => partner.qualified).length,
-      ready: partners.filter((partner) => partner.payoutStatus === "Ready")
+      qualified: allPartners.filter((partner) => partner.qualified).length,
+      ready: allPartners.filter((partner) => partner.payoutStatus === "Ready")
         .length,
     };
 
     document.querySelectorAll("[data-partner-stat]").forEach((element) => {
-      element.textContent = totals[element.dataset.partnerStat];
+      element.textContent = totals[element.dataset.partnerStat] ?? 0;
     });
   }
 
+  function derivePartners(creators, referrals, payouts) {
+    const minimumUsers = Number(settings.minimum_confirmed_paid_users || 10);
+    const minimumPayout = Number(settings.minimum_payout_usd || 50);
+
+    return creators.map((creator) => {
+      const creatorReferrals = referrals.filter(
+        (referral) => referral.creator_id === creator.id,
+      );
+      const confirmedCustomers = new Set(
+        creatorReferrals
+          .filter(
+            (referral) =>
+              referral.status === "approved" &&
+              referral.payment_type === "first_payment",
+          )
+          .map((referral) => referral.customer_token),
+      );
+      const creatorPayouts = payouts.filter(
+        (payout) => payout.creator_id === creator.id,
+      );
+      const payoutById = new Map(
+        creatorPayouts.map((payout) => [payout.id, payout]),
+      );
+      const approvedCommission = creatorReferrals
+        .filter((referral) => {
+          if (referral.status !== "approved") return false;
+          const payout = referral.payout_id
+            ? payoutById.get(referral.payout_id)
+            : null;
+          return !payout || payout.status !== "paid";
+        })
+        .reduce(
+          (sum, referral) => sum + Number(referral.commission_amount || 0),
+          0,
+        );
+      const qualified = confirmedCustomers.size >= minimumUsers;
+      const hasReadyPayout = creatorPayouts.some(
+        (payout) => payout.status === "ready",
+      );
+      const hasPaidPayout = creatorPayouts.some(
+        (payout) => payout.status === "paid",
+      );
+
+      let payoutStatus = "Locked";
+      if (qualified) {
+        if (hasReadyPayout || approvedCommission >= minimumPayout) {
+          payoutStatus = "Ready";
+        } else if (hasPaidPayout && approvedCommission === 0) {
+          payoutStatus = "Paid";
+        } else {
+          payoutStatus = "Below minimum";
+        }
+      }
+
+      return {
+        id: creator.id,
+        userId: creator.user_id,
+        name: creator.name,
+        initials: creator.initials || partnerInitials(creator.name),
+        email: creator.email,
+        code: creator.promo_code,
+        accountStatus: titleCase(creator.account_status),
+        payoutMethod: creator.payout_method || "Not added",
+        notes: creator.notes || "",
+        proAccessUntil: creator.pro_access_until,
+        lastUpdated: creator.updated_at,
+        confirmed: confirmedCustomers.size,
+        approvedCommission,
+        qualified,
+        payoutStatus,
+      };
+    });
+  }
+
+  async function loadPartners() {
+    tbody.innerHTML =
+      '<tr><td class="referral-empty" colspan="7">Loading Partner accounts…</td></tr>';
+
+    const [settingsResult, creatorsResult, referralsResult, payoutsResult] =
+      await Promise.all([
+        auth.client
+          .from("partner_settings")
+          .select("minimum_confirmed_paid_users,minimum_payout_usd")
+          .eq("id", 1)
+          .single(),
+        auth.client
+          .from("partner_creators")
+          .select(
+            "id,user_id,name,initials,email,promo_code,account_status,payout_method,pro_access_until,notes,updated_at",
+          )
+          .order("created_at", { ascending: false }),
+        auth.client
+          .from("partner_referrals")
+          .select(
+            "creator_id,customer_token,payment_type,status,commission_amount,payout_id",
+          ),
+        auth.client
+          .from("partner_payouts")
+          .select("id,creator_id,status"),
+      ]);
+
+    const error =
+      settingsResult.error ||
+      creatorsResult.error ||
+      referralsResult.error ||
+      payoutsResult.error;
+    if (error) throw error;
+
+    settings = settingsResult.data;
+    partners = derivePartners(
+      creatorsResult.data || [],
+      referralsResult.data || [],
+      payoutsResult.data || [],
+    );
+    render();
+  }
+
   function render() {
-    const data = PartnersStore.getData();
     const query = search.value.trim().toLowerCase();
     const accountStatus = accountFilter.value;
-    const partners = data.creators.filter((partner) => {
+    const visiblePartners = partners.filter((partner) => {
       const searchable = [partner.name, partner.email, partner.code]
         .join(" ")
         .toLowerCase();
@@ -67,15 +221,15 @@ document.addEventListener("DOMContentLoaded", () => {
       );
     });
 
-    renderStats(data.creators);
+    renderStats(partners);
 
-    if (!partners.length) {
+    if (!visiblePartners.length) {
       tbody.innerHTML =
-        '<tr><td class="referral-empty" colspan="7">No matching partner accounts.</td></tr>';
+        '<tr><td class="referral-empty" colspan="7">No matching Partner accounts.</td></tr>';
       return;
     }
 
-    tbody.innerHTML = partners
+    tbody.innerHTML = visiblePartners
       .map(
         (partner) => `
           <tr>
@@ -93,17 +247,17 @@ document.addEventListener("DOMContentLoaded", () => {
             </td>
             <td class="cell-status">
               <div class="partner-cell-stack">
-                ${badge(qualificationLabel(partner))}
-                <span class="small-muted">${partner.confirmed} / ${data.settings.minimumUsers} confirmed</span>
+                ${badge(partner.qualified ? "Qualified" : "In progress")}
+                <span class="small-muted">${partner.confirmed} / ${settings.minimum_confirmed_paid_users} confirmed</span>
               </div>
             </td>
             <td class="cell-status">
               <div class="partner-cell-stack">
                 ${badge(partner.payoutStatus)}
-                <span class="small-muted">${PartnersStore.money(partner.approvedCommission)} approved</span>
+                <span class="small-muted">${auth.money(partner.approvedCommission)} approved</span>
               </div>
             </td>
-            <td class="cell-nowrap">${escapeHtml(partner.lastUpdated)}</td>
+            <td class="cell-nowrap">${escapeHtml(dateLabel(partner.lastUpdated))}</td>
             <td class="cell-actions">
               <button class="btn btn-outline btn-sm table-action" type="button" data-edit-partner="${partner.id}">Edit</button>
             </td>
@@ -119,22 +273,27 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  function renderSummary(partner, minimumUsers) {
+  function renderSummary(partner) {
     summaryAccount.innerHTML = badge(partner.accountStatus);
     summaryQualification.innerHTML = `${badge(
-      qualificationLabel(partner),
-    )}<br><span class="small-muted">${partner.confirmed} / ${minimumUsers} confirmed users</span>`;
+      partner.qualified ? "Qualified" : "In progress",
+    )}<br><span class="small-muted">${partner.confirmed} / ${settings.minimum_confirmed_paid_users} confirmed users</span>`;
     summaryPayout.innerHTML = `${badge(
       partner.payoutStatus,
-    )}<br><span class="small-muted">${PartnersStore.money(
+    )}<br><span class="small-muted">${auth.money(
       partner.approvedCommission,
     )} approved</span>`;
+    summaryPro.textContent = partner.proAccessUntil
+      ? `Through ${dateLabel(partner.proAccessUntil)}`
+      : "Not set";
   }
 
   function resetForm() {
     form.reset();
     activeId = "";
     fields.id.value = "";
+    fields.email.readOnly = false;
+    if (emailNote) emailNote.hidden = true;
     setSelect(fields.accountStatus, "Active");
     setSelect(fields.payoutMethod, "Not added");
     summary.hidden = true;
@@ -144,20 +303,21 @@ document.addEventListener("DOMContentLoaded", () => {
     resetForm();
 
     if (id) {
-      const data = PartnersStore.getData();
-      const partner = data.creators.find((item) => item.id === id);
+      const partner = partners.find((item) => item.id === id);
       if (!partner) return;
 
       activeId = id;
       fields.id.value = id;
       fields.name.value = partner.name;
       fields.email.value = partner.email;
+      fields.email.readOnly = true;
       fields.code.value = partner.code;
-      fields.notes.value = partner.notes || "";
+      fields.notes.value = partner.notes;
       setSelect(fields.accountStatus, partner.accountStatus);
-      setSelect(fields.payoutMethod, partner.payoutMethod || "Not added");
-      renderSummary(partner, data.settings.minimumUsers);
+      setSelect(fields.payoutMethod, partner.payoutMethod);
+      renderSummary(partner);
       summary.hidden = false;
+      if (emailNote) emailNote.hidden = false;
     }
 
     formTitle.textContent = id ? "Edit partner" : "Add partner";
@@ -172,59 +332,63 @@ document.addEventListener("DOMContentLoaded", () => {
     drawer.setAttribute("aria-hidden", "true");
   }
 
-  function validatePartner(payload) {
-    const partners = PartnersStore.getData().creators.filter(
-      (partner) => partner.id !== activeId,
-    );
-    const normalize = (value) => value.trim().toLowerCase();
-
-    if (
-      partners.some(
-        (partner) => normalize(partner.code) === normalize(payload.code),
-      )
-    ) {
-      dasToast("This promo code is already assigned");
-      return false;
-    }
-
-    if (
-      partners.some(
-        (partner) => normalize(partner.email) === normalize(payload.email),
-      )
-    ) {
-      dasToast("This email is already assigned");
-      return false;
-    }
-
-    return true;
-  }
-
-  function addPartner(payload) {
-    const data = PartnersStore.getData();
-    const id = `partner-${Date.now()}`;
-
-    data.creators.unshift({
-      id,
-      name: payload.name,
-      initials: partnerInitials(payload.name),
-      email: payload.email,
-      code: payload.code,
-      accountStatus: payload.accountStatus,
-      payoutMethod: payload.payoutMethod,
-      lastUpdated: PartnersStore.nowStamp(),
-      notes: payload.notes,
+  async function addPartner(payload) {
+    const { data, error } = await auth.client.functions.invoke("partner-invite", {
+      body: {
+        name: payload.name,
+        email: payload.email,
+        promoCode: payload.code,
+        accountStatus: payload.accountStatus,
+        payoutMethod: payload.payoutMethod,
+        notes: payload.notes,
+      },
     });
 
-    PartnersStore.saveData(data);
-    PartnersStore.addActivity({
-      event: "Partner account added",
-      creatorId: id,
-      details: `${payload.code} · ${payload.accountStatus}`,
-      status: "Updated",
-    });
+    if (error) {
+      let message = error.message || "Could not add this Partner.";
+      try {
+        const body = await error.context?.json();
+        if (body?.error) message = body.error;
+      } catch (_) {
+        // Keep the Supabase error message when no JSON body is available.
+      }
+      throw new Error(message);
+    }
+    if (!data?.ok) throw new Error(data?.error || "Could not add this Partner.");
+
+    return data;
   }
 
-  form.addEventListener("submit", (event) => {
+  async function updatePartner(payload) {
+    const { error } = await auth.client
+      .from("partner_creators")
+      .update({
+        name: payload.name,
+        initials: partnerInitials(payload.name),
+        promo_code: payload.code,
+        account_status: payload.accountStatus.toLowerCase(),
+        payout_method: payload.payoutMethod,
+        notes: payload.notes || null,
+      })
+      .eq("id", activeId);
+
+    if (error) throw error;
+
+    const { error: activityError } = await auth.client
+      .from("partner_activity")
+      .insert({
+        creator_id: activeId,
+        actor_user_id: adminUser.id,
+        actor_kind: "admin",
+        event_type: "partner_updated",
+        details: `${payload.code} · ${payload.accountStatus}`,
+        visibility: "admin",
+      });
+
+    if (activityError) console.error(activityError);
+  }
+
+  form.addEventListener("submit", async (event) => {
     event.preventDefault();
 
     const payload = {
@@ -236,20 +400,34 @@ document.addEventListener("DOMContentLoaded", () => {
       notes: fields.notes.value.trim(),
     };
 
-    if (!validatePartner(payload)) return;
-
-    if (activeId) {
-      PartnersStore.updateCreator(activeId, {
-        ...payload,
-        initials: partnerInitials(payload.name),
-      });
-    } else {
-      addPartner(payload);
+    if (!payload.name || !payload.email || !payload.code) {
+      dasToast("Name, email, and promo code are required");
+      return;
     }
 
-    closeDrawer();
-    render();
-    dasToast(activeId ? "Partner saved" : "Partner added");
+    submitButton.disabled = true;
+
+    try {
+      if (activeId) {
+        await updatePartner(payload);
+        dasToast("Partner saved");
+      } else {
+        const result = await addPartner(payload);
+        dasToast(
+          result.mode === "invited"
+            ? "Partner invitation sent"
+            : "Existing DentAIstudy account linked",
+        );
+      }
+
+      closeDrawer();
+      await loadPartners();
+    } catch (error) {
+      console.error(error);
+      dasToast(error?.message || "Partner could not be saved");
+    } finally {
+      submitButton.disabled = false;
+    }
   });
 
   search.addEventListener("input", render);
@@ -270,5 +448,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  render();
+  try {
+    await adminSyncPartnerEntitlements();
+    await loadPartners();
+  } catch (error) {
+    console.error(error);
+    tbody.innerHTML =
+      '<tr><td class="referral-empty" colspan="7">Partner accounts could not be loaded.</td></tr>';
+    dasToast("Partner accounts could not be loaded");
+  }
 });

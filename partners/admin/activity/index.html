@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="partner-auth-pending" data-partner-auth="admin">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -41,14 +41,9 @@
           <a href="../../admin/payouts/"
             ><span data-icon="dollar"></span>Payouts</a
           >
-          <a href="../../admin/settings/"
-            ><span data-icon="settings"></span>Settings</a
-          >
         </nav>
         <div class="admin-sidebar-foot">
           <div>© <span data-year></span> DentAIstudy</div>
-          <a href="../../terms/">Terms</a>
-          <a href="../../privacy/">Privacy</a>
         </div>
       </aside>
 
@@ -92,6 +87,14 @@
             <a data-nav href="../../admin/settings/"
               ><span data-icon="settings"></span><span>Settings</span></a
             >
+            <button
+              class="slide-nav-button"
+              type="button"
+              data-logout
+              data-redirect="../../login/?admin=1"
+            >
+              <span data-icon="logout"></span><span>Log out</span>
+            </button>
           </div>
         </nav>
 
@@ -99,9 +102,26 @@
           <span class="icon-circle gray admin-topbar-shield"
             ><span data-icon="shield"></span
           ></span>
-          <div class="admin-account">
-            <span class="avatar">AO</span><strong>Ammar</strong>
-          </div>
+
+          <details
+            class="das-account-menu admin-account-menu"
+            data-account-menu
+          >
+            <summary class="das-account-trigger admin-account">
+              <span class="avatar">AO</span><strong>Ammar</strong>
+            </summary>
+
+            <div class="das-account-dropdown">
+              <a href="../../admin/settings/">Settings</a>
+              <button
+                type="button"
+                data-logout
+                data-redirect="../../login/?admin=1"
+              >
+                Log out
+              </button>
+            </div>
+          </details>
         </div>
 
         <div class="admin-content">
@@ -123,7 +143,7 @@
               <span class="icon-circle"><span data-icon="tag"></span></span>
               <div>
                 <div class="stat-label">Ledger records</div>
-                <div class="stat-value" data-stat="referrals">19</div>
+                <div class="stat-value" data-stat="referrals">0</div>
                 <div class="stat-note">All recorded payments</div>
               </div>
             </div>
@@ -133,7 +153,7 @@
               ></span>
               <div>
                 <div class="stat-label">Confirmed paid users</div>
-                <div class="stat-value" data-stat="confirmed">13</div>
+                <div class="stat-value" data-stat="confirmed">0</div>
                 <div class="stat-note">Approved first payments</div>
               </div>
             </div>
@@ -143,7 +163,7 @@
               ></span>
               <div>
                 <div class="stat-label">Pending records</div>
-                <div class="stat-value" data-stat="pendingReferrals">4</div>
+                <div class="stat-value" data-stat="pendingReferrals">0</div>
                 <div class="stat-note">Awaiting approval</div>
               </div>
             </div>
@@ -153,7 +173,7 @@
               ></span>
               <div>
                 <div class="stat-label">Approved commission</div>
-                <div class="stat-value" data-stat="approved">$72.04</div>
+                <div class="stat-value" data-stat="approved">$0.00</div>
                 <div class="stat-note">Approved and unpaid</div>
               </div>
             </div>
@@ -175,7 +195,7 @@
                 class="input referral-search"
                 data-search-referrals
                 aria-label="Search referral records"
-                placeholder="Search customer or Paddle ID..."
+                placeholder="Search Paddle customer or transaction ID..."
               />
               <select
                 class="select"
@@ -203,7 +223,7 @@
                   <tr>
                     <th>Payment date</th>
                     <th>Partner / code</th>
-                    <th>Customer / Paddle ID</th>
+                    <th>Paddle customer / transaction</th>
                     <th>Plan / payment</th>
                     <th>Paddle total earnings</th>
                     <th>Commission</th>
@@ -215,6 +235,34 @@
               </table>
             </div>
           </div>
+
+          <div class="card card-inner">
+            <div class="card-head">
+              <div>
+                <h2 class="card-title">Activity log</h2>
+                <p class="card-text">
+                  Real Partner and Admin events from the same audit history used
+                  on Overview.
+                </p>
+              </div>
+              <span class="pill gray">Audit log</span>
+            </div>
+            <div class="table-wrap">
+              <table class="admin-table-wide">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Partner</th>
+                    <th>Event</th>
+                    <th>Actor</th>
+                    <th>Details</th>
+                  </tr>
+                </thead>
+                <tbody data-admin-activity></tbody>
+              </table>
+            </div>
+          </div>
+
           <div
             class="admin-drawer referral-drawer"
             data-referral-drawer
@@ -247,15 +295,18 @@
 
                 <div class="form-row">
                   <label class="label" for="referral-customer"
-                    >Customer reference</label
+                    >Paddle customer ID</label
                   >
                   <input
                     class="input"
                     id="referral-customer"
-                    name="customerRef"
+                    name="paddleCustomerId"
                     required
-                    placeholder="CUS-001"
+                    placeholder="ctm_..."
                   />
+                  <span class="small-muted"
+                    >Fixed after the referral is created.</span
+                  >
                 </div>
 
                 <div class="form-row">
@@ -265,7 +316,7 @@
                   <input
                     class="input"
                     id="referral-paddle"
-                    name="paddleId"
+                    name="paddleTransactionId"
                     required
                     placeholder="txn_..."
                   />
@@ -348,39 +399,9 @@
                   </select>
                 </div>
 
-                <div class="form-row" data-approval-row hidden>
-                  <label class="label" for="referral-approval-date"
-                    >Approval date</label
-                  >
-                  <input
-                    class="input"
-                    id="referral-approval-date"
-                    name="approvalDate"
-                    type="date"
-                  />
-                </div>
-
                 <div class="referral-commission-preview">
                   <span>Calculated commission</span>
-                  <strong data-commission-preview>50% · $0.00</strong>
-                </div>
-
-                <div class="referral-payment-control">
-                  <label class="referral-check">
-                    <input type="checkbox" name="commissionPaid" disabled />
-                    <span>Commission already paid</span>
-                  </label>
-                  <div class="form-row" data-paid-date-row hidden>
-                    <label class="label" for="referral-paid-date"
-                      >Paid date</label
-                    >
-                    <input
-                      class="input"
-                      id="referral-paid-date"
-                      name="paidDate"
-                      type="date"
-                    />
-                  </div>
+                  <strong data-commission-preview>0% · $0.00</strong>
                 </div>
 
                 <button class="btn btn-primary" type="submit">
@@ -393,9 +414,13 @@
       </main>
     </div>
 
+    <script
+      src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.111.0"
+      defer
+    ></script>
+    <script src="../../assets/js/partner-supabase.js" defer></script>
     <script src="../../assets/js/partner-icons.js" defer></script>
     <script src="../../assets/js/partner-common.js" defer></script>
-    <script src="../../assets/js/partner-data.js" defer></script>
     <script src="../../assets/js/admin-common.js" defer></script>
     <script src="../../assets/js/admin-activity.js" defer></script>
   </body>

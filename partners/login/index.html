@@ -54,7 +54,7 @@
       >
         <div class="slide-nav-links">
           <a data-nav href="../program/"
-            ><span data-icon="file"></span><span>Program</span></a
+            ><span data-icon="program"></span><span>Program</span></a
           >
           <div class="slide-nav-divider"></div>
           <a
@@ -68,31 +68,55 @@
       </nav>
       <main class="login-wrap">
         <div class="card login-card">
-          <h1>Partner login</h1>
-          <p>
+          <h1 data-login-title>Partner login</h1>
+          <p data-login-copy>
             Use your assigned partner access to open the private DentAIstudy
             Partner dashboard.
           </p>
           <form data-login-form>
             <div class="form-row">
-              <label class="label" for="partner-login-account"
-                >Select partner account</label
-              ><select
-                class="select"
-                id="partner-login-account"
-                data-creator-select
-              ></select>
+              <label class="label" for="partner-login-email">Email</label>
+              <input
+                class="input"
+                id="partner-login-email"
+                name="email"
+                type="email"
+                autocomplete="email"
+                required
+              />
             </div>
+            <div class="form-row">
+              <label class="label" for="partner-login-password">Password</label>
+              <input
+                class="input"
+                id="partner-login-password"
+                name="password"
+                type="password"
+                autocomplete="current-password"
+                required
+              />
+            </div>
+            <p
+              class="login-message"
+              data-login-message
+              role="status"
+              aria-live="polite"
+            ></p>
             <button class="btn btn-primary" type="submit">
-              Open partner dashboard <span data-icon="arrow"></span>
+              <span data-login-submit-label>Open partner dashboard</span>
+              <span data-icon="arrow"></span>
             </button>
           </form>
         </div>
       </main>
     </div>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.111.0"
+      defer
+    ></script>
+    <script src="../assets/js/partner-supabase.js" defer></script>
     <script src="../assets/js/partner-icons.js" defer></script>
     <script src="../assets/js/partner-common.js" defer></script>
-    <script src="../assets/js/partner-data.js" defer></script>
     <script src="../assets/js/login.js" defer></script>
   </body>
 </html>

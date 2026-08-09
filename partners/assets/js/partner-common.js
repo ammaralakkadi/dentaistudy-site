@@ -103,13 +103,18 @@
 
   function logoutButtons() {
     qsa("[data-logout]").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        localStorage.removeItem("dentai_partner_active_creator");
-        toast("Logged out");
+      btn.addEventListener("click", async () => {
+        btn.disabled = true;
         const target = btn.getAttribute("data-redirect") || "../login/";
-        setTimeout(() => {
-          location.href = target;
-        }, 250);
+
+        try {
+          const client = window.DentAIStudyPartnerSupabase?.client;
+          if (client) await client.auth.signOut();
+        } catch (error) {
+          console.error("Partner logout failed:", error);
+        } finally {
+          location.replace(target);
+        }
       });
     });
   }

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="partner-auth-pending" data-partner-auth="admin">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -35,13 +35,10 @@
             ><span data-icon="tag"></span>Referrals</a
           ><a class="" href="../../admin/payouts/"
             ><span data-icon="dollar"></span>Payouts</a
-          ><a class="is-active" href="../../admin/settings/"
-            ><span data-icon="settings"></span>Settings</a
           >
         </nav>
         <div class="admin-sidebar-foot">
           <div>© <span data-year></span> DentAIstudy</div>
-          <a href="../../terms/">Terms</a><a href="../../privacy/">Privacy</a>
         </div>
       </aside>
       <main class="admin-main">
@@ -82,22 +79,47 @@
             <a data-nav href="../../admin/settings/"
               ><span data-icon="settings"></span><span>Settings</span></a
             >
+            <button
+              class="slide-nav-button"
+              type="button"
+              data-logout
+              data-redirect="../../login/?admin=1"
+            >
+              <span data-icon="logout"></span><span>Log out</span>
+            </button>
           </div>
         </nav>
         <div class="admin-topbar">
           <span class="icon-circle gray admin-topbar-shield"
             ><span data-icon="shield"></span
           ></span>
-          <div class="admin-account">
-            <span class="avatar">AO</span><strong>Ammar</strong>
-          </div>
+
+          <details
+            class="das-account-menu admin-account-menu"
+            data-account-menu
+          >
+            <summary class="das-account-trigger admin-account">
+              <span class="avatar">AO</span><strong>Ammar</strong>
+            </summary>
+
+            <div class="das-account-dropdown">
+              <a href="../../admin/settings/">Settings</a>
+              <button
+                type="button"
+                data-logout
+                data-redirect="../../login/?admin=1"
+              >
+                Log out
+              </button>
+            </div>
+          </details>
         </div>
         <div class="admin-content">
           <div class="admin-page-head">
             <h1>Settings</h1>
             <p>
-              Control partner access, rewards, commission rules, payout
-              thresholds, and program links.
+              Control partner rewards, commission rules, approval timing, and
+              payout thresholds.
             </p>
           </div>
 
@@ -125,23 +147,6 @@
                   >
                     <option>Active</option>
                     <option>Paused</option>
-                  </select>
-                </div>
-
-                <div class="setting-line">
-                  <div>
-                    <strong>Invite-only access</strong>
-                    <p class="small-muted">
-                      Only approved partners can enter the program.
-                    </p>
-                  </div>
-                  <select
-                    class="select"
-                    name="inviteOnly"
-                    aria-label="Invite-only access"
-                  >
-                    <option value="true">Enabled</option>
-                    <option value="false">Disabled</option>
                   </select>
                 </div>
 
@@ -191,34 +196,6 @@
                     min="1"
                     name="qualifiedProMonths"
                     aria-label="Qualified Pro access in months"
-                  />
-                </div>
-
-                <div class="setting-line">
-                  <div>
-                    <strong>Audience discount</strong>
-                    <p class="small-muted">
-                      Percentage removed from the first subscription payment.
-                    </p>
-                  </div>
-                  <input
-                    class="input"
-                    type="number"
-                    min="0"
-                    max="100"
-                    name="studentDiscount"
-                    aria-label="Audience discount percentage"
-                  />
-                </div>
-
-                <div class="form-row">
-                  <label class="label" for="discountScope"
-                    >Discount scope</label
-                  >
-                  <input
-                    class="input"
-                    id="discountScope"
-                    name="discountScope"
                   />
                 </div>
               </form>
@@ -335,83 +312,19 @@
                   <label class="label" for="payoutWindow">Payout window</label>
                   <input class="input" id="payoutWindow" name="payoutWindow" />
                 </div>
-
-                <div class="form-row">
-                  <label class="label" for="payoutMethod"
-                    >Default payout method</label
-                  >
-                  <input class="input" id="payoutMethod" name="payoutMethod" />
-                </div>
               </form>
             </div>
-
-            <form class="card card-inner" data-settings-form>
-              <div class="card-head">
-                <h2 class="card-title">Policy, brand & contact</h2>
-                <button class="btn btn-primary" type="submit">
-                  Save changes
-                </button>
-              </div>
-
-              <div class="form-row">
-                <label class="label" for="commissionBase"
-                  >Commission base</label
-                >
-                <textarea
-                  class="textarea"
-                  id="commissionBase"
-                  name="commissionBase"
-                ></textarea>
-              </div>
-
-              <div class="form-row">
-                <label class="label" for="attributionRule"
-                  >Attribution rule</label
-                >
-                <textarea
-                  class="textarea"
-                  id="attributionRule"
-                  name="attributionRule"
-                ></textarea>
-              </div>
-
-              <div class="form-row">
-                <label class="label" for="disclosureRule"
-                  >Disclosure requirement</label
-                >
-                <textarea
-                  class="textarea"
-                  id="disclosureRule"
-                  name="disclosureRule"
-                ></textarea>
-              </div>
-
-              <div class="form-grid">
-                <div class="form-row">
-                  <label class="label" for="supportEmail">Support email</label>
-                  <input class="input" id="supportEmail" name="supportEmail" />
-                </div>
-
-                <div class="form-row">
-                  <label class="label" for="publicUrl"
-                    >Public partner page URL</label
-                  >
-                  <input class="input" id="publicUrl" name="publicUrl" />
-                </div>
-              </div>
-
-              <div class="form-row">
-                <label class="label" for="loginUrl">Partner login URL</label>
-                <input class="input" id="loginUrl" name="loginUrl" />
-              </div>
-            </form>
           </div>
         </div>
       </main>
     </div>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.111.0"
+      defer
+    ></script>
+    <script src="../../assets/js/partner-supabase.js" defer></script>
     <script src="../../assets/js/partner-icons.js" defer></script>
     <script src="../../assets/js/partner-common.js" defer></script>
-    <script src="../../assets/js/partner-data.js" defer></script>
     <script src="../../assets/js/admin-common.js" defer></script>
     <script src="../../assets/js/admin-settings.js" defer></script>
   </body>

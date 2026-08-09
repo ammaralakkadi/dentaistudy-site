@@ -1,11 +1,3 @@
-function adminCreatorOptions(selected = "") {
-  return PartnersStore.getData()
-    .creators.map(
-      (c) =>
-        `<option value="${dasEscapeHtml(c.id)}" ${c.id === selected ? "selected" : ""}>${dasEscapeHtml(c.name)}</option>`,
-    )
-    .join("");
-}
 function isCurrentMonth(value) {
   if (!value) return false;
   const current = new Date();
@@ -16,57 +8,122 @@ function isCurrentMonth(value) {
     date.getMonth() === current.getMonth()
   );
 }
-function adminStatTotals() {
-  const data = PartnersStore.getData();
-  const creators = data.creators;
+
+function badge(status) {
+  const auth = window.DentAIStudyPartnerSupabase;
+  const className = auth?.statusClass?.(status) || "gray";
+  return `<span class="pill ${className}">${dasEscapeHtml(status)}</span>`;
+}
+
+async function adminStatTotals() {
+  const auth = window.DentAIStudyPartnerSupabase;
+  if (!auth?.enabled) return null;
+
+  const authState = await window.DentAIStudyPartnerAuthReady;
+  if (!authState?.user) return null;
+
+  const [creatorsResult, referralsResult, payoutsResult] = await Promise.all([
+    auth.client.from("partner_creators").select("id"),
+    auth.client
+      .from("partner_referrals")
+      .select(
+        "creator_id,customer_token,payment_type,status,commission_amount,payout_id",
+      ),
+    auth.client
+      .from("partner_payouts")
+      .select("id,status,amount_usd,paid_date,scheduled_date"),
+  ]);
+
+  const error =
+    creatorsResult.error || referralsResult.error || payoutsResult.error;
+  if (error) throw error;
+
+  const creators = creatorsResult.data || [];
+  const referrals = referralsResult.data || [];
+  const payouts = payoutsResult.data || [];
+  const payoutById = new Map(payouts.map((payout) => [payout.id, payout]));
+  const confirmedCustomers = new Set();
+  const pendingCustomers = new Set();
+  let approved = 0;
+
+  referrals.forEach((referral) => {
+    const customerKey = `${referral.creator_id}:${referral.customer_token}`;
+
+    if (
+      referral.payment_type === "first_payment" &&
+      referral.status === "approved"
+    ) {
+      confirmedCustomers.add(customerKey);
+    }
+
+    if (
+      referral.payment_type === "first_payment" &&
+      referral.status === "pending"
+    ) {
+      pendingCustomers.add(customerKey);
+    }
+
+    if (referral.status === "approved") {
+      const payout = referral.payout_id
+        ? payoutById.get(referral.payout_id)
+        : null;
+      if (!payout || payout.status !== "paid") {
+        approved += Number(referral.commission_amount || 0);
+      }
+    }
+  });
+
   return {
     creators: creators.length,
-    referrals: data.referrals.length,
-    confirmed: creators.reduce(
-      (sum, creator) => sum + Number(creator.confirmed || 0),
-      0,
-    ),
-    pending: creators.reduce(
-      (sum, creator) => sum + Number(creator.pendingUsers || 0),
-      0,
-    ),
-    pendingReferrals: data.referrals.filter(
-      (referral) => referral.status === "Pending",
+    referrals: referrals.length,
+    confirmed: confirmedCustomers.size,
+    pending: pendingCustomers.size,
+    pendingReferrals: referrals.filter(
+      (referral) => referral.status === "pending",
     ).length,
-    approved: creators.reduce(
-      (sum, creator) => sum + Number(creator.approvedCommission || 0),
-      0,
-    ),
-    paid: creators.reduce(
-      (sum, creator) => sum + Number(creator.paidCommission || 0),
-      0,
-    ),
-    ready: data.payouts.filter((payout) => payout.status === "Ready").length,
-    paidThisMonth: data.payouts
+    approved,
+    paid: payouts
+      .filter((payout) => payout.status === "paid")
+      .reduce((sum, payout) => sum + Number(payout.amount_usd || 0), 0),
+    ready: payouts.filter((payout) => payout.status === "ready").length,
+    paidThisMonth: payouts
       .filter(
         (payout) =>
-          payout.status === "Paid" &&
-          isCurrentMonth(payout.paidDate || payout.scheduled),
+          payout.status === "paid" &&
+          isCurrentMonth(payout.paid_date || payout.scheduled_date),
       )
-      .reduce((sum, payout) => sum + Number(payout.approved || 0), 0),
+      .reduce((sum, payout) => sum + Number(payout.amount_usd || 0), 0),
   };
 }
-function adminHydrateStats() {
-  const t = adminStatTotals();
-  document.querySelectorAll("[data-stat]").forEach((el) => {
-    const key = el.dataset.stat;
-    const val = t[key];
-    el.textContent = ["approved", "paid", "paidThisMonth"].includes(key)
-      ? PartnersStore.money(val)
-      : val;
+
+async function adminSyncPartnerEntitlements() {
+  const auth = window.DentAIStudyPartnerSupabase;
+  if (!auth?.enabled) return null;
+
+  const authState = await window.DentAIStudyPartnerAuthReady;
+  if (!authState?.user) return null;
+
+  const { data, error } = await auth.client.functions.invoke("partner-invite", {
+    body: { action: "sync_entitlements" },
   });
+
+  if (error) throw error;
+  if (data?.error) throw new Error(data.error);
+  return data || null;
 }
-function creatorCell(id) {
-  const c = PartnersStore.getCreator(id);
-  return `<div class="creator-cell"><strong>${dasEscapeHtml(c.name)}</strong><span class="small-muted">${dasEscapeHtml(c.code)}</span></div>`;
-}
-function badge(status) {
-  return `<span class="pill ${PartnersStore.statusClass(status)}">${dasEscapeHtml(status)}</span>`;
+
+async function adminHydrateStats() {
+  const auth = window.DentAIStudyPartnerSupabase;
+  const totals = await adminStatTotals();
+  if (!totals) return;
+
+  document.querySelectorAll("[data-stat]").forEach((element) => {
+    const key = element.dataset.stat;
+    const value = totals[key];
+    element.textContent = ["approved", "paid", "paidThisMonth"].includes(key)
+      ? auth.money(value)
+      : value ?? 0;
+  });
 }
 
 function adminHydrateTableLabels(root = document) {
@@ -81,6 +138,7 @@ function adminHydrateTableLabels(root = document) {
     });
   });
 }
+
 function adminWatchTables() {
   adminHydrateTableLabels();
   document.querySelectorAll(".admin-content tbody").forEach((tbody) => {
@@ -89,10 +147,12 @@ function adminWatchTables() {
   });
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  adminHydrateStats();
+document.addEventListener("DOMContentLoaded", async () => {
   adminWatchTables();
-  document
-    .querySelectorAll("[data-admin-creator-select]")
-    .forEach((sel) => (sel.innerHTML = adminCreatorOptions(sel.value)));
+
+  try {
+    await adminHydrateStats();
+  } catch (error) {
+    console.error("Admin stats could not be loaded:", error);
+  }
 });

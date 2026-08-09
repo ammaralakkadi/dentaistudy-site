@@ -56,6 +56,10 @@
 html {
   scroll-behavior: smooth;
 }
+html.partner-auth-pending body {
+  visibility: hidden;
+}
+
 body {
   margin: 0;
   font-family:
@@ -1197,17 +1201,24 @@ tr:hover td {
   left: 50%;
   bottom: 22px;
   z-index: 100;
+  width: max-content;
+  max-width: calc(100vw - 32px);
   transform: translate(-50%, 10px) scale(0.98);
   visibility: hidden;
   opacity: 0;
   pointer-events: none;
-  background: #111827;
-  color: #fff;
-  border-radius: 999px;
-  padding: 11px 15px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  background: #30343b;
+  color: rgba(255, 255, 255, 0.94);
+  padding: 10px 14px;
   font-size: 13px;
-  font-weight: 650;
-  box-shadow: 0 10px 28px rgba(17, 24, 39, 0.16);
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  text-align: center;
+  white-space: nowrap;
+  box-shadow: 0 8px 24px rgba(17, 24, 39, 0.14);
   transition:
     opacity 0.22s ease,
     transform 0.22s ease,

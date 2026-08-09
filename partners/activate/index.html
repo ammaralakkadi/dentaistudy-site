@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Activate Partner Access · DentAIstudy Partners</title>
+    <meta
+      name="description"
+      content="Finish setting up your private DentAIstudy Partner access."
+    />
+    <link rel="stylesheet" href="../assets/css/partner-base.css" />
+    <link rel="stylesheet" href="../assets/css/partner-login.css" />
+    <link rel="stylesheet" href="../assets/css/partner-responsive.css" />
+  </head>
+  <body>
+    <div class="partner-shell">
+      <header class="partner-header">
+        <div class="container partner-header-inner">
+          <a
+            class="brand-lockup"
+            href="../"
+            aria-label="DentAIstudy Partners home"
+            ><span class="brand-text"
+              ><span>Dent</span><span>AIstudy</span></span
+            ><span class="brand-suffix">Partner</span></a
+          >
+        </div>
+      </header>
+
+      <main class="login-wrap">
+        <div class="card login-card">
+          <h1>Set up partner access</h1>
+          <p>
+            Create the password you will use for your DentAIstudy Partner
+            dashboard.
+          </p>
+          <form data-activate-form hidden>
+            <div class="form-row">
+              <label class="label" for="partner-activate-email">Email</label>
+              <input
+                class="input"
+                id="partner-activate-email"
+                data-activate-email
+                type="email"
+                readonly
+              />
+            </div>
+            <div class="form-row">
+              <label class="label" for="partner-activate-password"
+                >New password</label
+              >
+              <input
+                class="input"
+                id="partner-activate-password"
+                name="password"
+                type="password"
+                autocomplete="new-password"
+                minlength="8"
+                required
+              />
+            </div>
+            <div class="form-row">
+              <label class="label" for="partner-activate-confirm"
+                >Confirm password</label
+              >
+              <input
+                class="input"
+                id="partner-activate-confirm"
+                name="confirmPassword"
+                type="password"
+                autocomplete="new-password"
+                minlength="8"
+                required
+              />
+            </div>
+            <button class="btn btn-primary" type="submit">
+              <span>Open partner dashboard</span>
+              <span data-icon="arrow"></span>
+            </button>
+          </form>
+          <p
+            class="login-message"
+            data-activate-message
+            role="status"
+            aria-live="polite"
+          >
+            Checking your invitation…
+          </p>
+        </div>
+      </main>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.111.0"
+      defer
+    ></script>
+    <script src="../assets/js/partner-supabase.js" defer></script>
+    <script src="../assets/js/partner-icons.js" defer></script>
+    <script src="../assets/js/partner-common.js" defer></script>
+    <script src="../assets/js/activate.js" defer></script>
+  </body>
+</html>

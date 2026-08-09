@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="partner-auth-pending" data-partner-auth="admin">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -36,13 +36,10 @@
             ><span data-icon="tag"></span>Referrals</a
           ><a class="is-active" href="../../admin/payouts/"
             ><span data-icon="dollar"></span>Payouts</a
-          ><a class="" href="../../admin/settings/"
-            ><span data-icon="settings"></span>Settings</a
           >
         </nav>
         <div class="admin-sidebar-foot">
           <div>© <span data-year></span> DentAIstudy</div>
-          <a href="../../terms/">Terms</a><a href="../../privacy/">Privacy</a>
         </div>
       </aside>
       <main class="admin-main">
@@ -83,15 +80,40 @@
             <a data-nav href="../../admin/settings/"
               ><span data-icon="settings"></span><span>Settings</span></a
             >
+            <button
+              class="slide-nav-button"
+              type="button"
+              data-logout
+              data-redirect="../../login/?admin=1"
+            >
+              <span data-icon="logout"></span><span>Log out</span>
+            </button>
           </div>
         </nav>
         <div class="admin-topbar">
           <span class="icon-circle gray admin-topbar-shield"
             ><span data-icon="shield"></span
           ></span>
-          <div class="admin-account">
-            <span class="avatar">AO</span><strong>Ammar</strong>
-          </div>
+
+          <details
+            class="das-account-menu admin-account-menu"
+            data-account-menu
+          >
+            <summary class="das-account-trigger admin-account">
+              <span class="avatar">AO</span><strong>Ammar</strong>
+            </summary>
+
+            <div class="das-account-dropdown">
+              <a href="../../admin/settings/">Settings</a>
+              <button
+                type="button"
+                data-logout
+                data-redirect="../../login/?admin=1"
+              >
+                Log out
+              </button>
+            </div>
+          </details>
         </div>
         <div class="admin-content">
           <div class="admin-page-head">
@@ -110,7 +132,7 @@
               <span class="icon-circle"><span data-icon="users"></span></span>
               <div>
                 <div class="stat-label">Total partners</div>
-                <div class="stat-value" data-stat="creators">5</div>
+                <div class="stat-value" data-stat="creators">0</div>
                 <div class="stat-note">All partner accounts</div>
               </div>
             </div>
@@ -120,7 +142,7 @@
               ></span>
               <div>
                 <div class="stat-label">Confirmed paid users</div>
-                <div class="stat-value" data-stat="confirmed">13</div>
+                <div class="stat-value" data-stat="confirmed">0</div>
                 <div class="stat-note">Across all partners</div>
               </div>
             </div>
@@ -130,7 +152,7 @@
               ></span>
               <div>
                 <div class="stat-label">Pending review</div>
-                <div class="stat-value" data-stat="pending">2</div>
+                <div class="stat-value" data-stat="pending">0</div>
                 <div class="stat-note">Users awaiting review</div>
               </div>
             </div>
@@ -140,7 +162,7 @@
               ></span>
               <div>
                 <div class="stat-label">Approved commission</div>
-                <div class="stat-value" data-stat="approved">$72.04</div>
+                <div class="stat-value" data-stat="approved">$0.00</div>
                 <div class="stat-note">All-time approved</div>
               </div>
             </div>
@@ -150,11 +172,7 @@
               <div class="card card-inner">
                 <div class="card-head">
                   <h2 class="card-title">Payout queue</h2>
-                  <button
-                    class="btn btn-primary"
-                    type="button"
-                    data-payout-placeholder="Log payout placeholder"
-                  >
+                  <button class="btn btn-primary" type="button" data-add-payout>
                     Log payout <span data-icon="plus"></span>
                   </button>
                 </div>
@@ -183,47 +201,104 @@
                 <h2 class="card-title">Payout breakdown</h2>
                 <div class="breakdown-row">
                   <span>Ready for payout</span
-                  ><strong data-stat="ready">1</strong>
+                  ><strong data-stat="ready">0</strong>
                 </div>
                 <div class="breakdown-row">
                   <span>Pending review</span
-                  ><strong data-stat="pending">2</strong>
+                  ><strong data-stat="pending">0</strong>
                 </div>
                 <div class="breakdown-row">
                   <span>Paid this month</span
                   ><strong data-stat="paidThisMonth">$0.00</strong>
                 </div>
               </div>
-              <div class="card side-card">
-                <h2 class="card-title">Quick actions</h2>
-                <div class="action-list">
-                  <button
-                    class="primary"
-                    type="button"
-                    data-payout-placeholder="Log payout placeholder"
-                  >
-                    Log payout <span data-icon="arrow"></span></button
-                  ><button
-                    type="button"
-                    data-payout-placeholder="Export placeholder"
-                  >
-                    Export payouts <span data-icon="arrow"></span></button
-                  ><button
-                    type="button"
-                    data-payout-placeholder="Report placeholder"
-                  >
-                    Download report <span data-icon="arrow"></span>
-                  </button>
-                </div>
-              </div>
             </aside>
+          </div>
+
+          <div
+            class="admin-drawer referral-drawer"
+            data-payout-drawer
+            aria-hidden="true"
+          >
+            <div class="drawer-head">
+              <h2 class="card-title">Log payout</h2>
+              <button
+                class="drawer-close"
+                type="button"
+                data-payout-drawer-close
+                aria-label="Close payout form"
+              >
+                <span data-icon="close"></span>
+              </button>
+            </div>
+            <div class="drawer-body">
+              <form data-payout-form autocomplete="off">
+                <div class="form-row">
+                  <label class="label" for="payout-partner">Partner</label>
+                  <select
+                    class="select"
+                    id="payout-partner"
+                    name="creatorId"
+                    required
+                  ></select>
+                </div>
+
+                <div class="referral-commission-preview">
+                  <span>Calculated payout</span>
+                  <strong data-payout-amount>$0.00</strong>
+                </div>
+
+                <div class="rule-line">
+                  <span>Payment method</span>
+                  <strong data-payout-method-preview>Not added</strong>
+                </div>
+
+                <div class="form-row">
+                  <label class="label" for="payout-scheduled-date"
+                    >Scheduled date</label
+                  >
+                  <input
+                    class="input"
+                    id="payout-scheduled-date"
+                    name="scheduledDate"
+                    type="date"
+                    required
+                  />
+                </div>
+
+                <div class="form-row">
+                  <label class="label" for="payout-notes"
+                    >Notes <span class="small-muted">(optional)</span></label
+                  >
+                  <textarea
+                    class="input"
+                    id="payout-notes"
+                    name="notes"
+                    rows="3"
+                  ></textarea>
+                </div>
+
+                <p class="small-muted">
+                  The amount is calculated from approved unpaid commission and
+                  cannot be typed manually.
+                </p>
+
+                <button class="btn btn-primary" type="submit">
+                  Create payout
+                </button>
+              </form>
+            </div>
           </div>
         </div>
       </main>
     </div>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.111.0"
+      defer
+    ></script>
+    <script src="../../assets/js/partner-supabase.js" defer></script>
     <script src="../../assets/js/partner-icons.js" defer></script>
     <script src="../../assets/js/partner-common.js" defer></script>
-    <script src="../../assets/js/partner-data.js" defer></script>
     <script src="../../assets/js/admin-common.js" defer></script>
     <script src="../../assets/js/admin-payouts.js" defer></script>
   </body>

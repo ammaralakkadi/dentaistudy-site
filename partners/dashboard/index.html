@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="partner-auth-pending" data-partner-auth="partner">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -61,7 +61,7 @@
       >
         <div class="slide-nav-links">
           <a data-nav href="../program/"
-            ><span data-icon="file"></span><span>Program</span></a
+            ><span data-icon="program"></span><span>Program</span></a
           >
           <div class="slide-nav-divider"></div>
           <a data-nav href="../dashboard/"
@@ -86,12 +86,12 @@
             <div>
               <h1 class="section-title">Partner Dashboard</h1>
               <p class="section-subtitle dashboard-subtitle">
-                Welcome back, <span data-creator-name>Dr. Sarah</span>. Your
+                Welcome back, <span data-creator-name>Partner</span>. Your
                 partner overview, activity log, and payout status.
               </p>
               <div class="dashboard-sync-note">
-                <span data-icon="clock"></span> Data is reviewed manually from
-                Paddle subscription records.
+                <span data-icon="clock"></span> Data is verified using our
+                subscription records.
               </div>
             </div>
           </div>
@@ -101,12 +101,12 @@
               <h2 class="card-title">Partner code</h2>
               <div class="code-box dashboard-code-box">
                 <div class="kbd-code">
-                  <span data-code>DENTSARAH25</span>
+                  <span data-code>—</span>
                   <button
                     class="code-copy-button"
                     type="button"
                     data-copy-code
-                    data-copy="DENTSARAH25"
+                    data-copy=""
                     aria-label="Copy partner code"
                   >
                     <span data-icon="copy"></span>
@@ -120,14 +120,14 @@
               <h2 class="card-title">Qualification progress</h2>
               <div class="dashboard-progress-block">
                 <div class="stat-value">
-                  <span data-confirmed>10</span> /
+                  <span data-confirmed>0</span> /
                   <span data-minimum>10</span> confirmed paid users
                 </div>
                 <div class="progress-track">
                   <div class="progress-fill" data-progress-fill></div>
                 </div>
                 <p class="card-text" data-progress-note>
-                  Payout qualification unlocked
+                  10 more to unlock payouts
                 </p>
               </div>
             </div>
@@ -139,9 +139,9 @@
               <div>
                 <h2 class="card-title">Next payout window</h2>
                 <div class="stat-value payout-date" data-next-payout>
-                  1–5 of each month
+                  Not unlocked
                 </div>
-                <p class="card-text" data-payout-method>Wise (USD)</p>
+                <p class="card-text" data-payout-method>Not added</p>
               </div>
             </div>
           </div>
@@ -150,7 +150,7 @@
             <div class="card card-inner">
               <div class="card-head">
                 <h2 class="card-title">Commission status</h2>
-                <span data-status-pill class="pill blue">Active</span>
+                <span data-status-pill class="pill gray">—</span>
               </div>
               <div class="commission-row">
                 <div class="commission-cell">
@@ -158,9 +158,9 @@
                     <span data-icon="clock"></span>
                   </span>
                   <span class="commission-label">Pending</span>
-                  <strong data-pending-commission>$6.08</strong>
+                  <strong data-pending-commission>$0.00</strong>
                   <span class="commission-note" data-pending-note
-                    >1 user awaiting review</span
+                    >0 users awaiting review</span
                   >
                 </div>
                 <div class="commission-cell">
@@ -168,7 +168,7 @@
                     <span data-icon="check"></span>
                   </span>
                   <span class="commission-label">Approved</span>
-                  <strong data-approved-commission>$50.71</strong>
+                  <strong data-approved-commission>$0.00</strong>
                   <span class="commission-note">Ready for payout</span>
                 </div>
                 <div class="commission-cell">
@@ -177,13 +177,13 @@
                   </span>
                   <span class="commission-label">Paid</span>
                   <strong class="paid-value" data-paid-commission>
-                    $32.07
+                    $0.00
                   </strong>
                   <span class="commission-note">All-time total</span>
                 </div>
               </div>
               <p class="card-text">
-                Commissions move from pending to approved after manual review
+                Commissions move from pending to approved after verification
                 and refund protection.
               </p>
             </div>
@@ -226,9 +226,13 @@
         </div>
       </main>
     </div>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.111.0"
+      defer
+    ></script>
+    <script src="../assets/js/partner-supabase.js" defer></script>
     <script src="../assets/js/partner-icons.js" defer></script>
     <script src="../assets/js/partner-common.js" defer></script>
-    <script src="../assets/js/partner-data.js" defer></script>
     <script src="../assets/js/dashboard.js" defer></script>
   </body>
 </html>

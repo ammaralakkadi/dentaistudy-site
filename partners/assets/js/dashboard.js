@@ -1,74 +1,97 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const id = PartnersStore.activeCreator();
-  const data = PartnersStore.getData();
-  const c = PartnersStore.getCreator(id);
-  const settings = data.settings;
-  const progress = Math.min(
-    100,
-    Math.round(
-      (Number(c.confirmed || 0) / Number(settings.minimumUsers || 10)) * 100,
-    ),
-  );
-  const set = (sel, value) => {
-    document.querySelectorAll(sel).forEach((el) => {
-      el.textContent = value;
+document.addEventListener("DOMContentLoaded", async () => {
+  const auth = window.DentAIStudyPartnerSupabase;
+  if (!auth?.enabled) return;
+
+  const set = (selector, value) => {
+    document.querySelectorAll(selector).forEach((element) => {
+      element.textContent = value;
     });
   };
-  set("[data-creator-name]", c.name);
-  set("[data-creator-initials]", c.initials);
-  set("[data-code]", c.code);
-  set("[data-confirmed]", c.confirmed);
-  set("[data-minimum]", settings.minimumUsers);
-  const remainingUsers = Math.max(0, settings.minimumUsers - c.confirmed);
-  set(
-    "[data-progress-note]",
-    remainingUsers === 0
-      ? "Payout qualification unlocked"
-      : `${remainingUsers} more to unlock payouts`,
-  );
-  set("[data-pending-commission]", PartnersStore.money(c.pendingCommission));
-  set("[data-approved-commission]", PartnersStore.money(c.approvedCommission));
-  set("[data-paid-commission]", PartnersStore.money(c.paidCommission));
-  set(
-    "[data-pending-note]",
-    `${c.pendingUsers} ${c.pendingUsers === 1 ? "user" : "users"} awaiting review`,
-  );
-  set("[data-next-payout]", c.nextPayout);
-  set("[data-payout-method]", c.payoutMethod);
-  set("[data-support-email]", settings.supportEmail);
-  const codeBox = document.querySelector("[data-copy-code]");
-  if (codeBox) codeBox.setAttribute("data-copy", c.code);
-  const progressEl = document.querySelector("[data-progress-fill]");
-  if (progressEl) progressEl.style.setProperty("--progress", progress + "%");
-  const status = document.querySelector("[data-status-pill]");
-  if (status) {
-    status.textContent = c.status;
-    status.className = "pill " + PartnersStore.statusClass(c.status);
-  }
 
-  const recent = data.activity.filter((a) => a.creatorId === c.id).slice(0, 3);
   const list = document.querySelector("[data-activity-list]");
-  if (list) {
-    list.innerHTML =
-      recent
-        .map(
-          (a) => `
-            <div class="activity-row">
-              <div class="activity-date">
-                <strong>${a.date.split(",")[0]}</strong>
-              </div>
-              <div class="activity-main-copy">
-                <div class="activity-title-line">
-                <div class="activity-title">${dasEscapeHtml(a.event)}</div>
-                <span class="pill ${PartnersStore.statusClass(a.status)}">
-                    ${dasEscapeHtml(a.status)}
-                  </span>
+
+  try {
+    const authState = await window.DentAIStudyPartnerAuthReady;
+    if (!authState?.profile) return;
+
+    const { profile } = authState;
+    const [summary, recentActivity] = await Promise.all([
+      auth.loadPartnerSummary(profile),
+      auth.getPartnerActivity(profile.id, 3),
+    ]);
+    const progress = Math.min(
+      100,
+      Math.round((summary.confirmed / summary.minimumUsers) * 100),
+    );
+    const remainingUsers = Math.max(
+      0,
+      summary.minimumUsers - summary.confirmed,
+    );
+
+    set("[data-creator-name]", profile.name);
+    set("[data-code]", profile.promo_code);
+    set("[data-confirmed]", summary.confirmed);
+    set("[data-minimum]", summary.minimumUsers);
+    set(
+      "[data-progress-note]",
+      remainingUsers === 0
+        ? "Payout qualification unlocked"
+        : `${remainingUsers} more to unlock payouts`,
+    );
+    set("[data-pending-commission]", auth.money(summary.pendingCommission));
+    set("[data-approved-commission]", auth.money(summary.approvedCommission));
+    set("[data-paid-commission]", auth.money(summary.paidCommission));
+    set(
+      "[data-pending-note]",
+      `${summary.pendingUsers} ${summary.pendingUsers === 1 ? "user" : "users"} awaiting review`,
+    );
+    set("[data-next-payout]", summary.nextPayout);
+    set("[data-payout-method]", profile.payout_method || "Not added");
+
+    const codeBox = document.querySelector("[data-copy-code]");
+    if (codeBox) codeBox.setAttribute("data-copy", profile.promo_code);
+
+    const progressElement = document.querySelector("[data-progress-fill]");
+    if (progressElement) {
+      progressElement.style.setProperty("--progress", progress + "%");
+    }
+
+    const status = document.querySelector("[data-status-pill]");
+    if (status) {
+      const accountStatus = auth.titleCase(profile.account_status);
+      status.textContent = accountStatus;
+      status.className = `pill ${auth.statusClass(accountStatus)}`;
+    }
+
+    if (list) {
+      list.innerHTML =
+        recentActivity
+          .map((activity) => {
+            const item = auth.activityPresentation(activity);
+            return `
+              <div class="activity-row">
+                <div class="activity-date">
+                  <strong>${dasEscapeHtml(item.date)}</strong>
                 </div>
-                <div class="activity-sub">${dasEscapeHtml(a.details)}</div>
+                <div class="activity-main-copy">
+                  <div class="activity-title-line">
+                    <div class="activity-title">${dasEscapeHtml(item.title)}</div>
+                    <span class="pill ${auth.statusClass(item.status)}">
+                      ${dasEscapeHtml(item.status)}
+                    </span>
+                  </div>
+                  <div class="activity-sub">${dasEscapeHtml(item.details)}</div>
+                </div>
               </div>
-            </div>
-          `,
-        )
-        .join("") || '<p class="empty-note">No activity yet.</p>';
+            `;
+          })
+          .join("") || '<p class="empty-note">No activity yet.</p>';
+    }
+  } catch (error) {
+    console.error("Partner dashboard could not load:", error);
+    if (list) {
+      list.innerHTML =
+        '<p class="empty-note">Partner data could not be loaded.</p>';
+    }
   }
 });

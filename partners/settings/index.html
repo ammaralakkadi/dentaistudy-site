@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="partner-auth-pending" data-partner-auth="partner">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -60,7 +60,7 @@
       >
         <div class="slide-nav-links">
           <a data-nav href="../program/"
-            ><span data-icon="file"></span><span>Program</span></a
+            ><span data-icon="program"></span><span>Program</span></a
           >
           <div class="slide-nav-divider"></div>
           <a data-nav href="../dashboard/"
@@ -94,7 +94,8 @@
               <div class="settings-card-heading">
                 <h2 class="card-title">Profile</h2>
                 <p class="card-text">
-                  Keep your partner identity clean for manual records.
+                  Update your Partner display name. Your login email stays linked
+                  to your DentAIstudy account.
                 </p>
               </div>
               <form data-profile-form>
@@ -106,6 +107,8 @@
                       id="creator-name"
                       data-name-input
                       autocomplete="name"
+                      maxlength="80"
+                      required
                     />
                   </div>
                   <div class="form-row">
@@ -116,6 +119,7 @@
                       type="email"
                       data-email-input
                       autocomplete="email"
+                      readonly
                     />
                   </div>
                 </div>
@@ -134,8 +138,8 @@
               <div class="settings-card-heading">
                 <h2 class="card-title">Password</h2>
                 <p class="card-text">
-                  Use your old password, then set a new one. Backend connection
-                  comes later.
+                  Use your old password, then set a new one for your Partner
+                  account.
                 </p>
               </div>
               <form data-password-form>
@@ -148,6 +152,7 @@
                         id="old-password"
                         type="password"
                         autocomplete="current-password"
+                        required
                       /><button
                         type="button"
                         class="password-eye"
@@ -169,6 +174,8 @@
                           id="new-password"
                           type="password"
                           autocomplete="new-password"
+                          minlength="8"
+                          required
                         /><button
                           type="button"
                           class="password-eye"
@@ -189,6 +196,8 @@
                           id="confirm-password"
                           type="password"
                           autocomplete="new-password"
+                          minlength="8"
+                          required
                         /><button
                           type="button"
                           class="password-eye"
@@ -216,18 +225,18 @@
               <div class="settings-card-heading">
                 <h2 class="card-title">Payout contact</h2>
                 <p class="card-text">
-                  Manual payout method shown on your dashboard. Contact support
-                  if it changes.
+                  Your payout method is shown on your dashboard. Contact
+                  support if it changes.
                 </p>
               </div>
               <div class="settings-info-list">
                 <div>
                   <span>Current method</span
-                  ><strong data-payout-method>Wise (USD)</strong>
+                  ><strong data-payout-method>Not added</strong>
                 </div>
                 <div>
                   <span>Next payout window</span
-                  ><strong data-next-payout>July 1–5</strong>
+                  ><strong data-next-payout>Not unlocked</strong>
                 </div>
                 <div>
                   <span>Support</span
@@ -302,9 +311,13 @@
       </div>
     </div>
 
+    <script
+      src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.111.0"
+      defer
+    ></script>
+    <script src="../assets/js/partner-supabase.js" defer></script>
     <script src="../assets/js/partner-icons.js" defer></script>
     <script src="../assets/js/partner-common.js" defer></script>
-    <script src="../assets/js/partner-data.js" defer></script>
     <script src="../assets/js/settings.js" defer></script>
   </body>
 </html>

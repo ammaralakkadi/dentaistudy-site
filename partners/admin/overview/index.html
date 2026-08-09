@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="partner-auth-pending" data-partner-auth="admin">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -36,13 +36,10 @@
             ><span data-icon="tag"></span>Referrals</a
           ><a class="" href="../../admin/payouts/"
             ><span data-icon="dollar"></span>Payouts</a
-          ><a class="" href="../../admin/settings/"
-            ><span data-icon="settings"></span>Settings</a
           >
         </nav>
         <div class="admin-sidebar-foot">
           <div>© <span data-year></span> DentAIstudy</div>
-          <a href="../../terms/">Terms</a><a href="../../privacy/">Privacy</a>
         </div>
       </aside>
       <main class="admin-main">
@@ -83,45 +80,59 @@
             <a data-nav href="../../admin/settings/"
               ><span data-icon="settings"></span><span>Settings</span></a
             >
+            <button
+              class="slide-nav-button"
+              type="button"
+              data-logout
+              data-redirect="../../login/?admin=1"
+            >
+              <span data-icon="logout"></span><span>Log out</span>
+            </button>
           </div>
         </nav>
         <div class="admin-topbar">
           <span class="icon-circle gray admin-topbar-shield"
             ><span data-icon="shield"></span
           ></span>
-          <div class="admin-account">
-            <span class="avatar">AO</span><strong>Ammar</strong>
-          </div>
+
+          <details
+            class="das-account-menu admin-account-menu"
+            data-account-menu
+          >
+            <summary class="das-account-trigger admin-account">
+              <span class="avatar">AO</span><strong>Ammar</strong>
+            </summary>
+
+            <div class="das-account-dropdown">
+              <a href="../../admin/settings/">Settings</a>
+              <button
+                type="button"
+                data-logout
+                data-redirect="../../login/?admin=1"
+              >
+                Log out
+              </button>
+            </div>
+          </details>
         </div>
         <div class="admin-content">
           <div class="admin-page-head">
             <h1>Overview</h1>
             <p>
-              High-level manual performance, payout readiness, and partner
+              Partner performance, payout readiness, and recent operational
               activity.
             </p>
-            <div class="admin-sync-note">
-              <span data-icon="clock"></span> Records are manually reviewed from
-              Paddle and updated from this panel.
-            </div>
           </div>
+
           <div class="grid grid-4">
-            <div class="card stat-card">
-              <span class="icon-circle"><span data-icon="users"></span></span>
-              <div>
-                <div class="stat-label">Total partners</div>
-                <div class="stat-value" data-stat="creators">5</div>
-                <div class="stat-note">All partner accounts</div>
-              </div>
-            </div>
             <div class="card stat-card">
               <span class="icon-circle green"
                 ><span data-icon="check"></span
               ></span>
               <div>
                 <div class="stat-label">Confirmed paid users</div>
-                <div class="stat-value" data-stat="confirmed">13</div>
-                <div class="stat-note">Across all partners</div>
+                <div class="stat-value" data-stat="confirmed">0</div>
+                <div class="stat-note">Approved first payments</div>
               </div>
             </div>
             <div class="card stat-card">
@@ -129,9 +140,9 @@
                 ><span data-icon="clock"></span
               ></span>
               <div>
-                <div class="stat-label">Pending review</div>
-                <div class="stat-value" data-stat="pending">2</div>
-                <div class="stat-note">Users awaiting review</div>
+                <div class="stat-label">Pending records</div>
+                <div class="stat-value" data-stat="pendingReferrals">0</div>
+                <div class="stat-note">Awaiting approval</div>
               </div>
             </div>
             <div class="card stat-card">
@@ -140,116 +151,48 @@
               ></span>
               <div>
                 <div class="stat-label">Approved commission</div>
-                <div class="stat-value" data-stat="approved">$72.04</div>
-                <div class="stat-note">All-time approved</div>
+                <div class="stat-value" data-stat="approved">$0.00</div>
+                <div class="stat-note">Approved and not paid</div>
+              </div>
+            </div>
+            <div class="card stat-card">
+              <span class="icon-circle"><span data-icon="dollar"></span></span>
+              <div>
+                <div class="stat-label">Ready payouts</div>
+                <div class="stat-value" data-stat="ready">0</div>
+                <div class="stat-note">Waiting for transfer</div>
               </div>
             </div>
           </div>
-          <div class="admin-grid-main">
-            <div class="grid grid-2">
-              <div class="card card-inner">
-                <div class="card-head">
-                  <h2 class="card-title">Pending review</h2>
-                  <span class="pill gray">Manual</span>
-                </div>
-                <div class="breakdown-row">
-                  <span>Users awaiting review</span
-                  ><strong data-stat="pending">2</strong>
-                </div>
-                <div class="breakdown-row">
-                  <span>Ready for payout</span
-                  ><strong data-stat="ready">1</strong>
-                </div>
-                <div class="breakdown-row">
-                  <span>Paid this month</span
-                  ><strong data-stat="paidThisMonth">$0.00</strong>
-                </div>
-                <p class="card-text">
-                  Use this panel as the manual command center. No growth
-                  snapshot, no automation.
-                </p>
-              </div>
-              <div class="card card-inner">
-                <div class="card-head">
-                  <h2 class="card-title">Top partners</h2>
-                  <a class="btn btn-outline btn-sm" href="../creators/"
-                    >View all</a
-                  >
-                </div>
-                <div class="table-wrap">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>Partner</th>
-                        <th>Code</th>
-                        <th>Users</th>
-                        <th>Status</th>
-                      </tr>
-                    </thead>
-                    <tbody data-top-creators></tbody>
-                  </table>
-                </div>
-              </div>
-              <div class="card card-inner admin-grid-span">
-                <div class="card-head">
-                  <h2 class="card-title">Recent admin activity</h2>
-                  <span class="pill gray">Audit log</span>
-                </div>
-                <div class="table-wrap">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>Date & time</th>
-                        <th>Event</th>
-                        <th>Admin</th>
-                      </tr>
-                    </thead>
-                    <tbody data-recent-activity></tbody>
-                  </table>
-                </div>
-              </div>
+
+          <div class="card card-inner">
+            <div class="card-head">
+              <h2 class="card-title">Recent activity</h2>
+              <span class="pill gray">Audit log</span>
             </div>
-            <aside class="grid">
-              <div class="card side-card">
-                <h2 class="card-title">Quick actions</h2>
-                <div class="action-list">
-                  <a class="primary" href="../creators/"
-                    >Add / edit partner <span data-icon="arrow"></span></a
-                  ><a href="../payouts/"
-                    >Update payout <span data-icon="arrow"></span></a
-                  ><a href="../activity/"
-                    >Add referral <span data-icon="arrow"></span
-                  ></a>
-                </div>
-              </div>
-              <div class="card side-card">
-                <h2 class="card-title">Manual rules</h2>
-                <ul class="clean-list">
-                  <li>
-                    <span class="check-dot"
-                      ><span data-icon="check"></span></span
-                    >Check Paddle first
-                  </li>
-                  <li>
-                    <span class="check-dot"
-                      ><span data-icon="check"></span></span
-                    >Update partner numbers
-                  </li>
-                  <li>
-                    <span class="check-dot"
-                      ><span data-icon="check"></span></span
-                    >Log payout reference
-                  </li>
-                </ul>
-              </div>
-            </aside>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Event</th>
+                    <th>Actor</th>
+                  </tr>
+                </thead>
+                <tbody data-recent-activity></tbody>
+              </table>
+            </div>
           </div>
         </div>
       </main>
     </div>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.111.0"
+      defer
+    ></script>
+    <script src="../../assets/js/partner-supabase.js" defer></script>
     <script src="../../assets/js/partner-icons.js" defer></script>
     <script src="../../assets/js/partner-common.js" defer></script>
-    <script src="../../assets/js/partner-data.js" defer></script>
     <script src="../../assets/js/admin-common.js" defer></script>
     <script src="../../assets/js/admin-overview.js" defer></script>
   </body>

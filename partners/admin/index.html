@@ -1,16 +1,24 @@
 <!doctype html>
-<html lang="en">
+<html
+  lang="en"
+  class="partner-auth-pending"
+  data-partner-auth="admin"
+  data-partner-auth-success="/partners/admin/overview/"
+>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="noindex, nofollow" />
     <title>DentAIstudy Partner Admin</title>
-    <meta http-equiv="refresh" content="0; url=overview/" />
+    <link rel="stylesheet" href="../assets/css/partner-base.css" />
     <link rel="stylesheet" href="../assets/css/partner-responsive.css" />
   </head>
   <body>
-    <p>
-      Opening DentAIstudy Partner Admin… <a href="overview/">Go to overview</a>
-    </p>
+    <p>Opening DentAIstudy Partner Admin…</p>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.111.0"
+      defer
+    ></script>
+    <script src="../assets/js/partner-supabase.js" defer></script>
   </body>
 </html>

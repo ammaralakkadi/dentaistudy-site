@@ -208,11 +208,12 @@
     grid-template-columns: 1fr;
   }
   .footer-inner {
-    grid-template-columns: 1fr;
-    gap: 42px;
+    grid-template-columns: minmax(220px, 0.8fr) minmax(0, 1.2fr);
+    gap: clamp(40px, 7vw, 72px);
   }
   .footer-navigation {
-    gap: 28px;
+    grid-template-columns: 1fr;
+    gap: 22px;
   }
 }
 
@@ -317,6 +318,7 @@
     padding: 16px;
   }
   .footer-inner {
+    grid-template-columns: 1fr;
     gap: 36px;
     padding-top: 44px;
     padding-bottom: 28px;
@@ -450,6 +452,11 @@
 @media (max-width: 560px) {
   :root {
     --page-gutter: var(--mobile-pad);
+  }
+
+  .toast {
+    width: auto;
+    white-space: normal;
   }
 
   .brand-lockup {
