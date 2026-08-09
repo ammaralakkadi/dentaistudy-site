@@ -192,13 +192,24 @@
         });
       };
       const close = () => {
-        wrap.classList.remove("is-open");
+        wrap.classList.remove("is-open", "is-dropup");
         button.setAttribute("aria-expanded", "false");
       };
       const open = () => {
         qsa(".select-enhanced.is-open").forEach((el) => {
-          if (el !== wrap) el.classList.remove("is-open");
+          if (el !== wrap) el.classList.remove("is-open", "is-dropup");
         });
+
+        wrap.classList.remove("is-dropup");
+        const buttonRect = button.getBoundingClientRect();
+        const menuHeight = Math.min(menu.scrollHeight, 230);
+        const spaceBelow = window.innerHeight - buttonRect.bottom - 12;
+        const spaceAbove = buttonRect.top - 12;
+
+        if (spaceBelow < menuHeight && spaceAbove > spaceBelow) {
+          wrap.classList.add("is-dropup");
+        }
+
         wrap.classList.add("is-open");
         button.setAttribute("aria-expanded", "true");
       };
@@ -220,13 +231,13 @@
   document.addEventListener("click", (event) => {
     if (!event.target.closest(".select-enhanced"))
       qsa(".select-enhanced.is-open").forEach((el) =>
-        el.classList.remove("is-open"),
+        el.classList.remove("is-open", "is-dropup"),
       );
   });
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape")
       qsa(".select-enhanced.is-open").forEach((el) =>
-        el.classList.remove("is-open"),
+        el.classList.remove("is-open", "is-dropup"),
       );
   });
   document.addEventListener("reset", (event) => {

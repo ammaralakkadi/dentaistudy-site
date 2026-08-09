@@ -131,7 +131,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     populateCreateForm();
     drawer.classList.add("is-open");
     drawer.setAttribute("aria-hidden", "false");
-    setTimeout(() => fields.creatorId.focus(), 40);
+    requestAnimationFrame(() =>
+      (window.matchMedia("(pointer: coarse)").matches
+        ? closeButton
+        : fields.creatorId
+      ).focus({ preventScroll: true }),
+    );
   }
 
   function closeDrawer() {
@@ -193,7 +198,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (!payout) {
       activeId = "";
       preview.innerHTML =
-        '<p class="empty-note">No payouts recorded yet.</p>';
+        '<p class="empty-note">No payout to preview yet.</p>';
       return;
     }
 
@@ -284,8 +289,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     const creatorsMap = creatorById();
 
     if (!payouts.length) {
-      tbody.innerHTML =
-        '<tr><td class="referral-empty" colspan="5">No payouts recorded yet.</td></tr>';
+      const emptyMessage = !creators.length
+        ? "No Partners yet. Payouts will appear after a Partner is added and qualifies."
+        : "No payouts yet. Eligible Partner payouts will appear here once qualification and payout minimum are met.";
+      tbody.innerHTML = `<tr><td class="referral-empty" colspan="5">${emptyMessage}</td></tr>`;
       renderPreview(null);
       return;
     }
@@ -378,7 +385,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     payouts = payoutsResult.data || [];
 
     buildCandidates();
-    addButton.disabled = candidates.length === 0;
+    addButton.disabled = false;
     renderTable();
   }
 

@@ -14,9 +14,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const [activityResult, creatorsResult] = await Promise.all([
       auth.client
         .from("partner_activity")
-        .select(
-          "id,creator_id,actor_kind,event_type,details,metadata,created_at",
-        )
+        .select("id,creator_id,event_type,details,metadata,created_at")
         .order("created_at", { ascending: false })
         .limit(5),
       auth.client
@@ -34,7 +32,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (!activity.length) {
       activityBody.innerHTML =
-        '<tr><td class="referral-empty" colspan="3">No Partner activity yet.</td></tr>';
+        '<tr><td class="referral-empty" colspan="2">No Partner activity yet.</td></tr>';
       return;
     }
 
@@ -53,7 +51,6 @@ document.addEventListener("DOMContentLoaded", async () => {
               <strong>${dasEscapeHtml(eventTitle(item.event_type))}</strong>
               <span class="small-muted creator-nowrap">${dasEscapeHtml(detail || subject)}</span>
             </td>
-            <td class="cell-status">${badge(auth.titleCase(item.actor_kind))}</td>
           </tr>
         `;
       })
@@ -61,6 +58,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   } catch (error) {
     console.error(error);
     activityBody.innerHTML =
-      '<tr><td class="referral-empty" colspan="3">Recent activity could not be loaded.</td></tr>';
+      '<tr><td class="referral-empty" colspan="2">Recent activity could not be loaded.</td></tr>';
   }
 });

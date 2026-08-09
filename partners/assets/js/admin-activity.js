@@ -100,7 +100,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       partnerFilter.value = currentFilter;
     }
 
-    addButton.disabled = creators.length === 0;
   }
 
   function render() {
@@ -135,8 +134,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
 
     if (!visible.length) {
-      tbody.innerHTML =
-        '<tr><td class="referral-empty" colspan="8">No matching referral records.</td></tr>';
+      const emptyMessage = !creators.length
+        ? "No Partners yet. Add a Partner before recording referrals."
+        : !referrals.length
+          ? "No referral records yet."
+          : "No matching referral records.";
+      tbody.innerHTML = `<tr><td class="referral-empty" colspan="8">${emptyMessage}</td></tr>`;
       return;
     }
 
@@ -280,7 +283,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     formTitle.textContent = id ? "Edit referral" : "Add referral";
     drawer.classList.add("is-open");
     drawer.setAttribute("aria-hidden", "false");
-    setTimeout(() => fields.paddleCustomerId.focus(), 0);
+    requestAnimationFrame(() =>
+      (window.matchMedia("(pointer: coarse)").matches
+        ? closeButton
+        : fields.paddleCustomerId
+      ).focus({ preventScroll: true }),
+    );
   }
 
   function closeDrawer() {

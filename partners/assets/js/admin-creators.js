@@ -224,8 +224,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     renderStats(partners);
 
     if (!visiblePartners.length) {
-      tbody.innerHTML =
-        '<tr><td class="referral-empty" colspan="7">No matching Partner accounts.</td></tr>';
+      const emptyMessage = partners.length
+        ? "No matching Partner accounts."
+        : "No Partner accounts yet. Use Add partner to create the first one.";
+      tbody.innerHTML = `<tr><td class="referral-empty" colspan="7">${emptyMessage}</td></tr>`;
       return;
     }
 
@@ -324,7 +326,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     submitButton.textContent = id ? "Save changes" : "Add partner";
     drawer.classList.add("is-open");
     drawer.setAttribute("aria-hidden", "false");
-    setTimeout(() => fields.name.focus(), 0);
+    requestAnimationFrame(() =>
+      (window.matchMedia("(pointer: coarse)").matches
+        ? closeButton
+        : fields.name
+      ).focus({ preventScroll: true }),
+    );
   }
 
   function closeDrawer() {

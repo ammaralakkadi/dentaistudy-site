@@ -132,8 +132,18 @@ function adminHydrateTableLabels(root = document) {
       th.textContent.trim(),
     );
     table.querySelectorAll("tbody tr").forEach((row) => {
-      Array.from(row.children).forEach((cell, index) => {
-        if (labels[index]) cell.setAttribute("data-label", labels[index]);
+      const cells = Array.from(row.children);
+      const isEmptyRow =
+        cells.length === 1 &&
+        (cells[0].classList.contains("referral-empty") || cells[0].colSpan > 1);
+
+      row.classList.toggle("is-empty-row", isEmptyRow);
+      cells.forEach((cell, index) => {
+        if (isEmptyRow) {
+          cell.removeAttribute("data-label");
+        } else if (labels[index]) {
+          cell.setAttribute("data-label", labels[index]);
+        }
       });
     });
   });
