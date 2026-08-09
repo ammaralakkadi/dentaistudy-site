@@ -41,6 +41,14 @@ function isDasProTier(tier) {
   return tier === "pro" || tier === "pro_yearly";
 }
 
+function hasActivePartnerPro(appMeta) {
+  const value = String(appMeta?.partner_pro_until || "").trim();
+  if (!value) return false;
+
+  const expiresAt = new Date(`${value}T23:59:59.999Z`).getTime();
+  return Number.isFinite(expiresAt) && expiresAt >= Date.now();
+}
+
 function readCachedStudyIdentity() {
   try {
     const raw = localStorage.getItem(DAS_STUDY_IDENTITY_CACHE_KEY);
@@ -500,18 +508,22 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Plan / subscription tier (provider-neutral)
     const subscriptionTier = appMeta.subscription_tier || "free";
+    const partnerProActive = hasActivePartnerPro(appMeta);
+    const isPaidPlan = isDasProTier(subscriptionTier) || partnerProActive;
+    const effectiveTier =
+      partnerProActive && !isDasProTier(subscriptionTier)
+        ? "pro"
+        : subscriptionTier;
 
-    const isPaidPlan =
-      subscriptionTier === "pro" || subscriptionTier === "pro_yearly";
-
-    // Expose for other modules (composer, etc.)
-    window.DentAIUser = { tier: subscriptionTier, isPro: isPaidPlan };
+    // Expose the effective entitlement for other modules (composer, etc.)
+    window.DentAIUser = { tier: effectiveTier, isPro: isPaidPlan };
 
     console.log("[auth-guard] derived plan from metadata:", {
       fileName,
       email,
       subscriptionTier,
       fromAppMeta: appMeta.subscription_tier,
+      partnerProActive,
       isPaidPlan,
     });
 
@@ -553,7 +565,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         userId: user.id,
         name: fullName,
         avatarUrl,
-        tier: subscriptionTier,
+        tier: effectiveTier,
       };
       writeCachedStudyIdentity(studyIdentity);
       renderStudyIdentity(studyIdentity, { ready: true });
@@ -785,7 +797,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         let planLabel = "Free";
         if (subscriptionTier === "pro_yearly") {
           planLabel = "Pro yearly";
-        } else if (subscriptionTier === "pro") {
+        } else if (isPaidPlan) {
           planLabel = "Pro";
         }
         identityPlanTag.textContent = planLabel;

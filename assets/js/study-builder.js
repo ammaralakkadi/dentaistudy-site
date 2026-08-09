@@ -21,20 +21,7 @@
   }
 
   function todayKey() {
-    const d = new Date();
-    const y = d.getFullYear();
-    const m = String(d.getMonth() + 1).padStart(2, "0");
-    const day = String(d.getDate()).padStart(2, "0");
-    return `${y}-${m}-${day}`;
-  }
-
-  function fnv1aHash(str) {
-    let h = 0x811c9dc5;
-    for (let i = 0; i < str.length; i++) {
-      h ^= str.charCodeAt(i);
-      h = Math.imul(h, 0x01000193);
-    }
-    return (h >>> 0).toString(16);
+    return new Date().toISOString().slice(0, 10);
   }
 
   function getAnonUsage() {
@@ -96,15 +83,19 @@
 
   function buildEdgeHeaders(accessToken) {
     const headers = { "Content-Type": "application/json" };
+
     try {
-      if (typeof SUPABASE_ANON_KEY === "string")
-        headers["apikey"] = SUPABASE_ANON_KEY;
-      if (accessToken) headers["Authorization"] = `Bearer ${accessToken}`;
-      else if (typeof SUPABASE_ANON_KEY === "string")
-        headers["Authorization"] = `Bearer ${SUPABASE_ANON_KEY}`;
+      if (typeof SUPABASE_PUBLISHABLE_KEY === "string") {
+        headers["apikey"] = SUPABASE_PUBLISHABLE_KEY;
+      }
+
+      if (accessToken) {
+        headers["Authorization"] = `Bearer ${accessToken}`;
+      }
     } catch {
       // ignore
     }
+
     return headers;
   }
 
@@ -967,10 +958,14 @@
               if (
                 response.status === 429 &&
                 data &&
-                data.error === "LIMIT_REACHED"
+                (data.error === "LIMIT_REACHED" ||
+                  data.error === "GUEST_LIMIT_REACHED")
               ) {
                 const msg =
-                  "You've reached today's AI limit. Please try again tomorrow or upgrade your plan.";
+                  data.error === "GUEST_LIMIT_REACHED"
+                    ? "You've hit today's guest limit. Create a free account to unlock more AI sessions each day."
+                    : "You've reached today's AI limit. Please try again tomorrow or upgrade your plan.";
+
                 window.ChatUI?.addAI(msg);
                 postProcessLastAiBubble(msg);
 

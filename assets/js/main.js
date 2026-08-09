@@ -384,7 +384,14 @@ document.querySelectorAll(".copy-btn").forEach((btn) => {
     const meta = (user && user.user_metadata) || {};
     const appMeta = (user && user.app_metadata) || {};
     const tier = appMeta.subscription_tier || meta.subscription_tier || "free";
-    const isPaid = tier === "pro" || tier === "pro_yearly";
+    const partnerProUntil = String(appMeta.partner_pro_until || "").trim();
+    const partnerProExpiresAt = partnerProUntil
+      ? new Date(`${partnerProUntil}T23:59:59.999Z`).getTime()
+      : NaN;
+    const hasPartnerPro =
+      Number.isFinite(partnerProExpiresAt) && partnerProExpiresAt >= Date.now();
+    const isPaid =
+      tier === "pro" || tier === "pro_yearly" || hasPartnerPro;
 
     // Free plan button: logged-in users go straight to Study builder
     if (isFreePlan) {
