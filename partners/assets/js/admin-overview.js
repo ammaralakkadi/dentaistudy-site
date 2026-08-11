@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             <td class="cell-nowrap"><strong>${dasEscapeHtml(auth.dateLabel(item.created_at))}</strong></td>
             <td>
               <strong>${dasEscapeHtml(eventTitle(item.event_type))}</strong>
-              <span class="small-muted creator-nowrap">${dasEscapeHtml(detail || subject)}</span>
+              <span class="small-muted">${dasEscapeHtml(detail || subject)}</span>
             </td>
           </tr>
         `;

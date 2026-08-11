@@ -404,7 +404,8 @@
   .admin-content .table-wrap {
     overflow: visible;
   }
-  .admin-content table {
+  .admin-content table,
+  .admin-content table.admin-table-wide {
     min-width: 0;
     border-collapse: separate;
     border-spacing: 0;
@@ -426,12 +427,20 @@
   }
   .admin-content td {
     display: grid;
-    grid-template-columns: minmax(118px, 0.42fr) minmax(0, 1fr);
-    gap: 10px;
+    grid-template-columns: 96px minmax(0, 1fr);
+    column-gap: 12px;
+    row-gap: 3px;
     align-items: start;
     padding: 10px 0;
     border-bottom: 1px solid var(--line);
     overflow-wrap: anywhere;
+  }
+  .admin-content td > * {
+    min-width: 0;
+    grid-column: 2;
+  }
+  .admin-content td > .small-muted {
+    margin-top: 0;
   }
   .admin-content td:last-child {
     border-bottom: 0;
@@ -442,10 +451,16 @@
   }
   .admin-content td::before {
     content: attr(data-label);
+    grid-column: 1;
+    grid-row: 1;
     color: var(--subtle);
     font-size: 12px;
     font-weight: 720;
     line-height: 1.35;
+  }
+  .admin-content .payout-queue-table .payout-partner-email {
+    white-space: normal;
+    overflow-wrap: anywhere;
   }
 }
 

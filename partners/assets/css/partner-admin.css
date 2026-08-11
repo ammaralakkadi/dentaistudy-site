@@ -376,6 +376,12 @@ html:has(.admin-shell) {
   font-size: 13px;
   line-height: 1.45;
 }
+.admin-content td > .small-muted {
+  display: block;
+  margin-top: 3px;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
 .admin-content .cell-creator {
   white-space: normal;
   max-width: 220px;
