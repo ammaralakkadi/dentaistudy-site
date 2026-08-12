@@ -335,7 +335,57 @@
                 >
                   Add partner
                 </button>
+
+                <div class="drawer-danger-action" data-partner-delete-zone hidden>
+                  <button
+                    class="btn btn-danger"
+                    type="button"
+                    data-delete-partner
+                  >
+                    Delete partner
+                  </button>
+                </div>
               </form>
+            </div>
+          </div>
+
+          <div
+            class="das-modal-overlay"
+            data-admin-delete-modal
+            role="presentation"
+            hidden
+          >
+            <div
+              class="das-modal"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="admin-delete-title"
+              aria-describedby="admin-delete-message"
+            >
+              <h2 class="das-modal__title" id="admin-delete-title">
+                Delete partner
+              </h2>
+              <p
+                class="das-modal__message"
+                id="admin-delete-message"
+                data-admin-delete-message
+              ></p>
+              <div class="das-modal__actions">
+                <button
+                  class="das-modal__btn das-modal__btn--ghost"
+                  type="button"
+                  data-admin-delete-cancel
+                >
+                  Cancel
+                </button>
+                <button
+                  class="das-modal__btn das-modal__btn--danger"
+                  type="button"
+                  data-admin-delete-confirm
+                >
+                  Delete partner
+                </button>
+              </div>
             </div>
           </div>
         </div>

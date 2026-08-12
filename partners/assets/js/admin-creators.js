@@ -17,6 +17,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   const summaryPayout = document.querySelector("[data-summary-payout]");
   const summaryPro = document.querySelector("[data-summary-pro]");
   const emailNote = document.querySelector("[data-partner-email-note]");
+  const deleteZone = document.querySelector("[data-partner-delete-zone]");
+  const deleteButton = document.querySelector("[data-delete-partner]");
+  const deleteModal = document.querySelector("[data-admin-delete-modal]");
+  const deleteMessage = document.querySelector("[data-admin-delete-message]");
+  const deleteCancel = document.querySelector("[data-admin-delete-cancel]");
+  const deleteConfirm = document.querySelector("[data-admin-delete-confirm]");
 
   if (
     !auth?.enabled ||
@@ -299,6 +305,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     setSelect(fields.accountStatus, "Active");
     setSelect(fields.payoutMethod, "Not added");
     summary.hidden = true;
+    if (deleteZone) deleteZone.hidden = true;
   }
 
   function openDrawer(id = "") {
@@ -320,6 +327,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       renderSummary(partner);
       summary.hidden = false;
       if (emailNote) emailNote.hidden = false;
+      if (deleteZone) deleteZone.hidden = false;
     }
 
     formTitle.textContent = id ? "Edit partner" : "Add partner";
@@ -364,6 +372,27 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (!data?.ok) throw new Error(data?.error || "Could not add this Partner.");
 
     return data;
+  }
+
+  async function deletePartner(partnerId) {
+    const { data, error } = await auth.client.functions.invoke("partner-invite", {
+      body: {
+        action: "delete_partner",
+        partnerId,
+      },
+    });
+
+    if (error) {
+      let message = error.message || "Could not delete this Partner.";
+      try {
+        const body = await error.context?.json();
+        if (body?.error) message = body.error;
+      } catch (_) {
+        // Keep the Supabase error message when no JSON body is available.
+      }
+      throw new Error(message);
+    }
+    if (!data?.ok) throw new Error(data?.error || "Could not delete this Partner.");
   }
 
   async function updatePartner(payload) {
@@ -437,6 +466,55 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
+  if (
+    deleteButton &&
+    deleteModal &&
+    deleteMessage &&
+    deleteCancel &&
+    deleteConfirm
+  ) {
+    let previousFocus = null;
+
+    const closeDeleteModal = () => {
+      deleteModal.hidden = true;
+      if (previousFocus instanceof HTMLElement) previousFocus.focus();
+    };
+
+    deleteButton.addEventListener("click", () => {
+      const partner = partners.find((item) => item.id === activeId);
+      if (!partner) return;
+
+      previousFocus = document.activeElement;
+      deleteMessage.textContent = `Are you sure you want to delete Partner “${partner.name}”?`;
+      deleteModal.hidden = false;
+      requestAnimationFrame(() => deleteCancel.focus({ preventScroll: true }));
+    });
+
+    deleteCancel.addEventListener("click", closeDeleteModal);
+
+    deleteModal.addEventListener("click", (event) => {
+      if (event.target === deleteModal) closeDeleteModal();
+    });
+
+    deleteConfirm.addEventListener("click", async () => {
+      if (!activeId) return;
+
+      deleteConfirm.disabled = true;
+      try {
+        await deletePartner(activeId);
+        closeDeleteModal();
+        closeDrawer();
+        dasToast("Partner deleted");
+        await loadPartners();
+      } catch (error) {
+        console.error(error);
+        dasToast(error?.message || "Partner could not be deleted");
+      } finally {
+        deleteConfirm.disabled = false;
+      }
+    });
+  }
+
   search.addEventListener("input", render);
   accountFilter.addEventListener("change", render);
   addButton.addEventListener("click", () => openDrawer());
@@ -450,9 +528,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && drawer.classList.contains("is-open")) {
-      closeDrawer();
+    if (event.key !== "Escape") return;
+
+    if (deleteModal && !deleteModal.hidden) {
+      deleteCancel?.click();
+      return;
     }
+
+    if (drawer.classList.contains("is-open")) closeDrawer();
   });
 
   try {

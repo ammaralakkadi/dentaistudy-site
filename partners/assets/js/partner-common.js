@@ -192,24 +192,25 @@
         });
       };
       const close = () => {
-        wrap.classList.remove("is-open", "is-dropup");
+        wrap.classList.remove("is-open");
         button.setAttribute("aria-expanded", "false");
       };
       const open = () => {
         qsa(".select-enhanced.is-open").forEach((el) => {
-          if (el !== wrap) el.classList.remove("is-open", "is-dropup");
+          if (el === wrap) return;
+          el.classList.remove("is-open");
+          const trigger = qs(".select-button", el);
+          if (trigger) trigger.setAttribute("aria-expanded", "false");
         });
 
-        wrap.classList.remove("is-dropup");
         const buttonRect = button.getBoundingClientRect();
         const menuHeight = Math.min(menu.scrollHeight, 230);
         const spaceBelow = window.innerHeight - buttonRect.bottom - 12;
         const spaceAbove = buttonRect.top - 12;
+        const shouldDropUp =
+          spaceBelow < menuHeight && spaceAbove > spaceBelow;
 
-        if (spaceBelow < menuHeight && spaceAbove > spaceBelow) {
-          wrap.classList.add("is-dropup");
-        }
-
+        wrap.classList.toggle("is-dropup", shouldDropUp);
         wrap.classList.add("is-open");
         button.setAttribute("aria-expanded", "true");
       };
@@ -230,15 +231,19 @@
 
   document.addEventListener("click", (event) => {
     if (!event.target.closest(".select-enhanced"))
-      qsa(".select-enhanced.is-open").forEach((el) =>
-        el.classList.remove("is-open", "is-dropup"),
-      );
+      qsa(".select-enhanced.is-open").forEach((el) => {
+        el.classList.remove("is-open");
+        const trigger = qs(".select-button", el);
+        if (trigger) trigger.setAttribute("aria-expanded", "false");
+      });
   });
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape")
-      qsa(".select-enhanced.is-open").forEach((el) =>
-        el.classList.remove("is-open", "is-dropup"),
-      );
+      qsa(".select-enhanced.is-open").forEach((el) => {
+        el.classList.remove("is-open");
+        const trigger = qs(".select-button", el);
+        if (trigger) trigger.setAttribute("aria-expanded", "false");
+      });
   });
   document.addEventListener("reset", (event) => {
     setTimeout(
