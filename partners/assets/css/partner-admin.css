@@ -144,18 +144,6 @@ html:has(.admin-shell) {
   max-width: 760px;
   font-size: 14px;
 }
-.admin-sync-note {
-  margin-top: 8px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--subtle);
-  font-size: 12.5px;
-}
-.admin-sync-note svg {
-  width: 16px;
-  height: 16px;
-}
 .admin-content > .grid.grid-4 {
   margin-bottom: 14px;
 }
@@ -659,6 +647,11 @@ body:has(.admin-drawer.is-open)::before {
 }
 .payout-preview-content {
   margin-top: 16px;
+}
+.payout-preview-content > .empty-note {
+  margin: 0;
+  padding: 12px 0;
+  text-align: center;
 }
 .setting-line {
   display: grid;

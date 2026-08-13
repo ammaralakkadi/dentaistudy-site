@@ -351,9 +351,6 @@
   .admin-page-head p {
     font-size: 14px;
   }
-  .admin-sync-note {
-    align-items: flex-start;
-  }
   .admin-content > .grid.grid-4 {
     grid-template-columns: 1fr;
   }

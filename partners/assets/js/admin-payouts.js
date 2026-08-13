@@ -289,10 +289,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     const creatorsMap = creatorById();
 
     if (!payouts.length) {
-      const emptyMessage = !creators.length
-        ? "No Partners yet. Payouts will appear after a Partner is added and qualifies."
-        : "No payouts yet. Eligible Partner payouts will appear here once qualification and payout minimum are met.";
-      tbody.innerHTML = `<tr><td class="referral-empty" colspan="5">${emptyMessage}</td></tr>`;
+      tbody.innerHTML =
+        '<tr><td class="referral-empty" colspan="5">No payouts yet.</td></tr>';
       renderPreview(null);
       return;
     }

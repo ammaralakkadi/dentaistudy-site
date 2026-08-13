@@ -111,13 +111,6 @@
   box-shadow: 0 14px 34px rgba(15, 23, 42, 0.07);
 }
 
-.pricing-style-card.is-featured {
-  border-color: rgba(11, 99, 255, 0.22);
-  box-shadow:
-    0 0 0 1px rgba(11, 99, 255, 0.06),
-    0 14px 34px rgba(15, 23, 42, 0.06);
-}
-
 .pricing-style-card h3 {
   margin: 14px 0 8px;
   color: #111827;
@@ -230,7 +223,7 @@
   padding: 15px 18px;
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   gap: 12px;
   border: 0;
   background: none;
@@ -251,12 +244,15 @@
   line-height: 1.35;
 }
 
-.faq-question span:last-child {
-  flex: 0 0 auto;
-  color: #71717a;
-  font-size: 16px;
-  line-height: 1.35;
-  transition: transform 0.2s ease;
+.faq-question .faq-chevron {
+  width: 8px;
+  height: 8px;
+  flex: 0 0 8px;
+  margin-right: 2px;
+  border-right: 1.6px solid #6b7280;
+  border-bottom: 1.6px solid #6b7280;
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform 0.16s ease;
 }
 
 .faq-answer {
@@ -276,8 +272,8 @@
   padding-bottom: 16px;
 }
 
-.faq-item.open .faq-question span:last-child {
-  transform: rotate(180deg);
+.faq-item.open .faq-question .faq-chevron {
+  transform: translateY(2px) rotate(225deg);
 }
 
 @media (max-width: 760px) {

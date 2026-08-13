@@ -308,6 +308,9 @@
 .activity-page-row:last-child {
   border-bottom: 0;
 }
+.activity-page-row .activity-title-line {
+  align-items: flex-start;
+}
 .activity-date {
   color: var(--ink);
   font-size: 13px;
