@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const form = document.querySelector("[data-login-form]");
   const emailInput = document.getElementById("partner-login-email");
   const passwordInput = document.getElementById("partner-login-password");
+  const forgotPasswordButton = document.querySelector("[data-login-forgot]");
   const message = document.querySelector("[data-login-message]");
   const title = document.querySelector("[data-login-title]");
   const copy = document.querySelector("[data-login-copy]");
@@ -73,6 +74,50 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   await redirectExistingSession();
+
+  forgotPasswordButton?.addEventListener("click", async () => {
+    const email = emailInput.value.trim();
+
+    if (!email) {
+      showMessage(
+        "Enter your email first and we'll send you a reset link.",
+        "error",
+      );
+      emailInput.focus();
+      return;
+    }
+
+    forgotPasswordButton.disabled = true;
+    showMessage("Sending you a secure reset link…");
+
+    try {
+      const { error } = await auth.client.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/settings.html`,
+      });
+
+      if (error) {
+        console.error("Partner password reset failed:", error);
+        showMessage(
+          "We couldn't send a reset email. Please try again in a moment.",
+          "error",
+        );
+        return;
+      }
+
+      showMessage(
+        "Check your inbox for a DentAIstudy password reset link.",
+        "success",
+      );
+    } catch (error) {
+      console.error("Partner password reset failed:", error);
+      showMessage(
+        "We couldn't send a reset email. Please try again in a moment.",
+        "error",
+      );
+    } finally {
+      forgotPasswordButton.disabled = false;
+    }
+  });
 
   form.addEventListener("submit", async (event) => {
     event.preventDefault();

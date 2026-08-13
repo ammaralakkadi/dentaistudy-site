@@ -9,19 +9,26 @@ document.addEventListener("DOMContentLoaded", async () => {
   };
   const list = document.querySelector("[data-activity-page-list]");
 
+  function renderSummary(summary) {
+    set("[data-confirmed]", summary.confirmed);
+    set("[data-pending-users]", summary.pendingUsers);
+    set("[data-approved-commission]", auth.money(summary.approvedCommission));
+  }
+
   try {
     const authState = await window.DentAIStudyPartnerAuthReady;
     if (!authState?.profile) return;
 
     const { profile } = authState;
+    const cachedSummary = auth.getCachedPartnerSummary(profile.id);
+    if (cachedSummary) renderSummary(cachedSummary);
+
     const [summary, rows] = await Promise.all([
       auth.loadPartnerSummary(profile),
       auth.getPartnerActivity(profile.id),
     ]);
 
-    set("[data-confirmed]", summary.confirmed);
-    set("[data-pending-users]", summary.pendingUsers);
-    set("[data-approved-commission]", auth.money(summary.approvedCommission));
+    renderSummary(summary);
 
     if (!list) return;
 

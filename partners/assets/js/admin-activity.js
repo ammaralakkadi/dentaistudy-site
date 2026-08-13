@@ -41,7 +41,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   let activeReferral = null;
 
   const today = () => new Date().toISOString().slice(0, 10);
-  const normalize = (value) => String(value || "").trim().toLowerCase();
+  const normalize = (value) =>
+    String(value || "")
+      .trim()
+      .toLowerCase();
   const setSelect = (select, value) => {
     select.value = value;
     select.dispatchEvent(new Event("change", { bubbles: true }));
@@ -99,7 +102,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (creators.some((creator) => creator.id === currentFilter)) {
       partnerFilter.value = currentFilter;
     }
-
   }
 
   function render() {
@@ -185,7 +187,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function currentRate() {
     const plan = fields.plan.value.toLowerCase();
-    const paymentType = fields.paymentType.value.toLowerCase().replace(" ", "_");
+    const paymentType = fields.paymentType.value
+      .toLowerCase()
+      .replace(" ", "_");
 
     if (
       activeReferral &&
@@ -207,7 +211,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   function updateCommissionPreview() {
     const rate = currentRate();
     const earnings = Number(fields.paddleTotalEarnings.value || 0);
-    const amount = Math.round((earnings * rate + Number.EPSILON) * 100) / 100;
+    const amount =
+      Math.round(((earnings * rate) / 100 + Number.EPSILON) * 100) / 100;
     commissionPreview.textContent = `${rate}% · ${auth.money(amount)}`;
   }
 
@@ -311,10 +316,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   function approvalDueDate(paymentDate) {
     let approvalDays = Number(settings.approval_days || 0);
 
-    if (
-      activeReferral?.payment_date &&
-      activeReferral?.approval_due_date
-    ) {
+    if (activeReferral?.payment_date && activeReferral?.approval_due_date) {
       approvalDays = dayDifference(
         activeReferral.payment_date,
         activeReferral.approval_due_date,
@@ -325,7 +327,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   function validateReferral(payload) {
-    if (!payload.creatorId || !payload.paddleCustomerId || !payload.paddleTransactionId) {
+    if (
+      !payload.creatorId ||
+      !payload.paddleCustomerId ||
+      !payload.paddleTransactionId
+    ) {
       dasToast("Partner and both Paddle IDs are required");
       return null;
     }
@@ -345,7 +351,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       return null;
     }
 
-    if (!Number.isFinite(payload.paddleTotalEarnings) || payload.paddleTotalEarnings < 0) {
+    if (
+      !Number.isFinite(payload.paddleTotalEarnings) ||
+      payload.paddleTotalEarnings < 0
+    ) {
       dasToast("Enter the Paddle Total earnings amount");
       return null;
     }
@@ -394,7 +403,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         renewalChanged &&
         payload.renewalNumber > Number(settings.monthly_renewal_count || 0)
       ) {
-        dasToast("This renewal number is outside the commissioned renewal limit");
+        dasToast(
+          "This renewal number is outside the commissioned renewal limit",
+        );
         return null;
       }
 
@@ -412,10 +423,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     const dueDate = approvalDueDate(payload.paymentDate);
-    if (payload.status === "approved" && today() < dueDate) {
-      dasToast(`This referral cannot be approved before ${formatDate(dueDate)}`);
-      return null;
-    }
 
     return {
       firstPayment,
@@ -484,7 +491,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
 
     if (sourceError) {
-      await auth.client.from("partner_referrals").delete().eq("id", referral.id);
+      await auth.client
+        .from("partner_referrals")
+        .delete()
+        .eq("id", referral.id);
       throw sourceError;
     }
 
@@ -494,9 +504,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   async function updateReferral(payload, validation) {
     const source = sources.find((item) => item.referral_id === payload.id);
-    if (!source || !activeReferral) throw new Error("Referral source not found.");
+    if (!source || !activeReferral)
+      throw new Error("Referral source not found.");
     if (activeReferral.payout_id) {
-      throw new Error("This referral is locked because it is already in a payout.");
+      throw new Error(
+        "This referral is locked because it is already in a payout.",
+      );
     }
 
     const oldSource = {
@@ -570,7 +583,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     activityBody.innerHTML = activity
       .map((item) => {
-        const creator = item.creator_id ? creatorsMap.get(item.creator_id) : null;
+        const creator = item.creator_id
+          ? creatorsMap.get(item.creator_id)
+          : null;
         const partner = creator
           ? `${creator.name} · ${creator.promo_code}`
           : "Partner program";
@@ -692,7 +707,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
   closeButton.addEventListener("click", closeDrawer);
   document.addEventListener("pointerdown", (event) => {
-    if (drawer.classList.contains("is-open") && !drawer.contains(event.target)) {
+    if (
+      drawer.classList.contains("is-open") &&
+      !drawer.contains(event.target)
+    ) {
       closeDrawer();
     }
   });

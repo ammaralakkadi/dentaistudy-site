@@ -61,14 +61,18 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (!authState?.profile) return;
 
     const { profile } = authState;
+    if (nameInput) nameInput.value = profile.name || "";
+    if (emailInput) emailInput.value = profile.email || "";
+    set("[data-payout-method]", profile.payout_method || "Not added");
+
+    const cachedSummary = auth.getCachedPartnerSummary(profile.id);
+    if (cachedSummary) set("[data-next-payout]", cachedSummary.nextPayout);
+
     const [summary] = await Promise.all([
       auth.loadPartnerSummary(profile),
       loadDeletionRequestState(profile),
     ]);
 
-    if (nameInput) nameInput.value = profile.name || "";
-    if (emailInput) emailInput.value = profile.email || "";
-    set("[data-payout-method]", profile.payout_method || "Not added");
     set("[data-next-payout]", summary.nextPayout);
   } catch (error) {
     console.error("Partner settings could not load:", error);

@@ -453,10 +453,13 @@
     content: attr(data-label);
     grid-column: 1;
     grid-row: 1;
+    min-width: 0;
     color: var(--subtle);
     font-size: 12px;
     font-weight: 720;
     line-height: 1.35;
+    white-space: normal;
+    overflow-wrap: anywhere;
   }
   .admin-content .payout-queue-table .payout-partner-email {
     white-space: normal;
@@ -578,34 +581,153 @@
     text-align: left;
   }
 
-  .activity-row,
-  .activity-page-row {
-    grid-template-columns: 58px minmax(0, 1fr);
-    gap: 10px;
-    align-items: start;
+  .grid.activity-summary-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+    margin-bottom: 22px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background: #fff;
+    box-shadow: var(--shadow-card);
   }
-  .activity-page-row {
-    padding: 12px 0;
+  .activity-summary-grid .stat-card {
+    display: grid;
+    min-width: 0;
+    min-height: 68px;
+    grid-template-columns: 32px minmax(0, 1fr) auto;
+    grid-template-areas:
+      "icon label value"
+      "icon note value";
+    column-gap: 12px;
+    row-gap: 2px;
+    align-items: center;
+    justify-content: stretch;
+    justify-items: stretch;
+    padding: 13px 16px;
+    border: 0;
+    border-bottom: 1px solid var(--line);
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    text-align: left;
   }
-  .activity-date {
-    font-size: 12px;
+  .activity-summary-grid .stat-card:last-child {
+    border-bottom: 0;
   }
-  .activity-title-line {
-    gap: 6px;
-    align-items: flex-start;
+  .activity-summary-grid .activity-stat-copy {
+    display: contents;
   }
-  .activity-title {
-    font-size: 12.5px;
-    line-height: 1.35;
+  .activity-summary-grid .icon-circle {
+    grid-area: icon;
+    width: 32px;
+    height: 32px;
+    flex-basis: 32px;
+    justify-self: start;
   }
-  .activity-title-line .pill {
-    margin-left: auto;
-    font-size: 9px;
+  .activity-summary-grid .icon-circle svg {
+    width: 15px;
+    height: 15px;
+  }
+  .activity-summary-grid .stat-label {
+    grid-area: label;
+    justify-self: start;
+    align-self: end;
+    font-size: 13px;
+    line-height: 1.25;
+  }
+  .activity-summary-grid .stat-note {
+    display: block;
+    grid-area: note;
+    justify-self: start;
+    align-self: start;
+    margin-top: 0;
+    font-size: 11.5px;
+    line-height: 1.3;
+  }
+  .activity-summary-grid .stat-value {
+    grid-area: value;
+    justify-self: end;
+    align-self: center;
+    margin-top: 0;
+    font-size: 20px;
+    line-height: 1;
     white-space: nowrap;
   }
-  .activity-sub {
-    margin-top: 3px;
-    font-size: 10.5px;
-    line-height: 1.4;
+
+  .activity-page-row {
+    grid-template-columns: 1fr;
+    gap: 5px;
+    align-items: start;
+    padding: 15px 0;
+  }
+  .activity-page-row .activity-date {
+    color: var(--subtle);
+    font-size: 11.5px;
+    line-height: 1.3;
+  }
+  .activity-page-row .activity-date strong {
+    font-weight: 620;
+  }
+  .activity-page-row .activity-title-line {
+    gap: 10px;
+    align-items: center;
+  }
+  .activity-page-row .activity-title {
+    font-size: 14px;
+    line-height: 1.35;
+    font-weight: 680;
+  }
+  .activity-page-row .activity-title-line .pill {
+    min-height: 28px;
+    margin-left: auto;
+    padding: 0 10px;
+    font-size: 11px;
+    white-space: nowrap;
+  }
+  .activity-page-row .activity-sub {
+    margin-top: 4px;
+    font-size: 12.5px;
+    line-height: 1.5;
+  }
+
+  [data-partner-summary] .preview-rows .rule-line {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 12px;
+    align-items: center;
+    padding: 14px 0;
+  }
+  [data-partner-summary] .preview-rows .rule-line > span {
+    min-width: 0;
+  }
+  [data-partner-summary] [data-summary-account],
+  [data-partner-summary] [data-summary-qualification],
+  [data-partner-summary] [data-summary-payout] {
+    display: contents;
+  }
+  [data-partner-summary] [data-summary-account] br,
+  [data-partner-summary] [data-summary-qualification] br,
+  [data-partner-summary] [data-summary-payout] br {
+    display: none;
+  }
+  [data-partner-summary] [data-summary-account] .pill,
+  [data-partner-summary] [data-summary-qualification] .pill,
+  [data-partner-summary] [data-summary-payout] .pill {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: end;
+  }
+  [data-partner-summary] [data-summary-qualification] .small-muted,
+  [data-partner-summary] [data-summary-payout] .small-muted {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    justify-self: stretch;
+    margin-top: 0;
+    padding-top: 2px;
+    font-weight: 600;
+    text-align: center;
+  }
+  [data-partner-summary] [data-summary-pro] {
+    text-align: right;
   }
 }

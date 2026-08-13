@@ -13,19 +13,6 @@
   margin-left: 0;
   max-width: 780px;
 }
-.dashboard-sync-note {
-  margin-top: 12px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--subtle);
-  font-size: 13px;
-}
-.dashboard-sync-note svg {
-  width: 16px;
-  height: 16px;
-  flex: 0 0 auto;
-}
 .dashboard-top-grid {
   align-items: stretch;
 }
@@ -425,9 +412,6 @@
   }
   .dashboard-title-row {
     margin-bottom: 18px;
-  }
-  .dashboard-sync-note {
-    align-items: flex-start;
   }
   .payout-window-card {
     align-items: flex-start;

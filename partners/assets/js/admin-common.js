@@ -73,7 +73,7 @@ async function adminStatTotals() {
     }
   });
 
-  return {
+  const totals = {
     creators: creators.length,
     referrals: referrals.length,
     confirmed: confirmedCustomers.size,
@@ -94,6 +94,9 @@ async function adminStatTotals() {
       )
       .reduce((sum, payout) => sum + Number(payout.amount_usd || 0), 0),
   };
+
+  auth.writeCache("stats", totals);
+  return totals;
 }
 
 async function adminSyncPartnerEntitlements() {
@@ -112,9 +115,8 @@ async function adminSyncPartnerEntitlements() {
   return data || null;
 }
 
-async function adminHydrateStats() {
+function adminRenderStats(totals) {
   const auth = window.DentAIStudyPartnerSupabase;
-  const totals = await adminStatTotals();
   if (!totals) return;
 
   document.querySelectorAll("[data-stat]").forEach((element) => {
@@ -124,6 +126,19 @@ async function adminHydrateStats() {
       ? auth.money(value)
       : value ?? 0;
   });
+}
+
+async function adminHydrateStats() {
+  const auth = window.DentAIStudyPartnerSupabase;
+  if (!auth?.enabled) return;
+
+  const authState = await window.DentAIStudyPartnerAuthReady;
+  if (!authState?.user) return;
+
+  adminRenderStats(auth.readCache("stats"));
+
+  const totals = await adminStatTotals();
+  adminRenderStats(totals);
 }
 
 function adminHydrateTableLabels(root = document) {

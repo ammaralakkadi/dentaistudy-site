@@ -8,11 +8,24 @@
     return;
   }
 
+  const params = new URLSearchParams(window.location.search);
+  const adminPortal =
+    window.location.pathname.startsWith("/partners/admin") ||
+    params.get("admin") === "1";
+  const authStorageKey = adminPortal
+    ? "dentaistudy-partner-admin-auth"
+    : "dentaistudy-partner-auth";
+  const cachePrefix = adminPortal
+    ? "dentaistudy-partner-admin-cache"
+    : "dentaistudy-partner-cache";
+  const cacheMaxAge = 24 * 60 * 60 * 1000;
+
   const client = window.supabase.createClient(
     SUPABASE_URL,
     SUPABASE_PUBLISHABLE_KEY,
     {
       auth: {
+        storageKey: authStorageKey,
         autoRefreshToken: true,
         persistSession: true,
         detectSessionInUrl: true,
@@ -21,6 +34,39 @@
   );
 
   const isAdmin = (user) => user?.app_metadata?.partner_admin === true;
+
+  function readCache(key, maxAge = cacheMaxAge) {
+    try {
+      const raw = window.localStorage.getItem(`${cachePrefix}:${key}`);
+      if (!raw) return null;
+
+      const cached = JSON.parse(raw);
+      if (
+        !cached ||
+        typeof cached.savedAt !== "number" ||
+        Date.now() - cached.savedAt > maxAge
+      ) {
+        window.localStorage.removeItem(`${cachePrefix}:${key}`);
+        return null;
+      }
+
+      return cached.value ?? null;
+    } catch (error) {
+      console.warn("Partner cache could not be read:", error);
+      return null;
+    }
+  }
+
+  function writeCache(key, value) {
+    try {
+      window.localStorage.setItem(
+        `${cachePrefix}:${key}`,
+        JSON.stringify({ savedAt: Date.now(), value }),
+      );
+    } catch (error) {
+      console.warn("Partner cache could not be saved:", error);
+    }
+  }
 
   const money = (value) =>
     `$${Number(value || 0).toLocaleString("en-US", {
@@ -91,12 +137,21 @@
   };
 
   async function getCurrentUser() {
-    const { data, error } = await client.auth.getUser();
+    const { data, error } = await client.auth.getClaims();
     if (error) {
       if (error.name !== "AuthSessionMissingError") console.error(error);
       return null;
     }
-    return data?.user || null;
+
+    const claims = data?.claims;
+    if (!claims?.sub) return null;
+
+    return {
+      id: claims.sub,
+      email: claims.email || null,
+      app_metadata: claims.app_metadata || {},
+      user_metadata: claims.user_metadata || {},
+    };
   }
 
   async function getPartnerProfile(userId) {
@@ -262,14 +317,43 @@
     };
   }
 
+  function getCachedPartnerSummary(profileId) {
+    if (!profileId) return null;
+    return readCache(`summary:${profileId}`);
+  }
+
+  function cachePartnerSummary(profileId, summary) {
+    if (!profileId || !summary) return;
+
+    writeCache(`summary:${profileId}`, {
+      confirmed: summary.confirmed,
+      pendingUsers: summary.pendingUsers,
+      pendingCommission: summary.pendingCommission,
+      approvedCommission: summary.approvedCommission,
+      paidCommission: summary.paidCommission,
+      minimumUsers: summary.minimumUsers,
+      minimumPayout: summary.minimumPayout,
+      qualified: summary.qualified,
+      payoutStatus: summary.payoutStatus,
+      nextPayout: summary.nextPayout,
+    });
+  }
+
   async function loadPartnerSummary(profile) {
     const [settings, referrals, payouts] = await Promise.all([
       getPartnerSettings(),
       getPartnerReferrals(profile.id),
       getPartnerPayouts(profile.id),
     ]);
+    const summary = derivePartnerSummary(
+      profile,
+      settings,
+      referrals,
+      payouts,
+    );
 
-    return derivePartnerSummary(profile, settings, referrals, payouts);
+    cachePartnerSummary(profile.id, summary);
+    return summary;
   }
 
   function safeNext(defaultPath) {
@@ -359,7 +443,10 @@
     getPartnerReferrals,
     getPartnerPayouts,
     getPartnerActivity,
+    getCachedPartnerSummary,
     loadPartnerSummary,
+    readCache,
+    writeCache,
     activityPresentation,
     money,
     titleCase,

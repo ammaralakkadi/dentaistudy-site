@@ -29,6 +29,33 @@
   width: 100%;
 }
 
+.login-forgot-row {
+  display: flex;
+  justify-content: flex-end;
+  margin: -2px 0 12px;
+}
+.login-forgot-button {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  color: var(--blue);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 650;
+  cursor: pointer;
+}
+.login-forgot-button:hover,
+.login-forgot-button:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.login-forgot-button:focus-visible {
+  outline: 3px solid var(--blue-soft);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+
 .login-message {
   min-height: 20px;
   margin: -2px 0 12px;
