@@ -4,10 +4,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="noindex, nofollow" />
-    <title>Referral ledger · DentAIstudy Partner Admin</title>
+    <title>Payment records · DentAIstudy Partner Admin</title>
     <meta
       name="description"
-      content="Manually record and review DentAIstudy partner referrals."
+      content="Manually record and review DentAIstudy partner payments."
     />
     <link rel="stylesheet" href="../../assets/css/partner-base.css" />
     <link rel="stylesheet" href="../../assets/css/partner-admin.css" />
@@ -36,7 +36,7 @@
             ><span data-icon="users"></span>Partners</a
           >
           <a class="is-active" href="../../admin/activity/"
-            ><span data-icon="tag"></span>Referrals</a
+            ><span data-icon="tag"></span>Payments</a
           >
           <a href="../../admin/payouts/"
             ><span data-icon="dollar"></span>Payouts</a
@@ -79,7 +79,7 @@
               ><span data-icon="users"></span><span>Partners</span></a
             >
             <a data-nav href="../../admin/activity/"
-              ><span data-icon="tag"></span><span>Referrals</span></a
+              ><span data-icon="tag"></span><span>Payments</span></a
             >
             <a data-nav href="../../admin/payouts/"
               ><span data-icon="dollar"></span><span>Payouts</span></a
@@ -126,7 +126,7 @@
 
         <div class="admin-content">
           <div class="admin-page-head">
-            <h1>Referral ledger</h1>
+            <h1>Payment records</h1>
             <p>
               Record each Paddle payment once, including the Total earnings
               shown by Paddle. Qualification and commission totals are
@@ -138,7 +138,7 @@
             <div class="card stat-card">
               <span class="icon-circle"><span data-icon="tag"></span></span>
               <div>
-                <div class="stat-label">Ledger records</div>
+                <div class="stat-label">Payment records</div>
                 <div class="stat-value" data-stat="referrals">0</div>
                 <div class="stat-note">All recorded payments</div>
               </div>
@@ -148,7 +148,7 @@
                 ><span data-icon="check"></span
               ></span>
               <div>
-                <div class="stat-label">Confirmed paid users</div>
+                <div class="stat-label">Confirmed paid customers</div>
                 <div class="stat-value" data-stat="confirmed">0</div>
                 <div class="stat-note">Approved first payments</div>
               </div>
@@ -178,11 +178,11 @@
           <div class="card card-inner referral-ledger-card">
             <div class="card-head">
               <div>
-                <h2 class="card-title">Payment records</h2>
+                <h2 class="card-title">Recorded payments</h2>
                 <p class="card-text">First payments and eligible renewals.</p>
               </div>
               <button class="btn btn-primary" type="button" data-add-referral>
-                <span data-icon="plus"></span>Add referral
+                <span data-icon="plus"></span>Add payment
               </button>
             </div>
 
@@ -190,7 +190,7 @@
               <input
                 class="input referral-search"
                 data-search-referrals
-                aria-label="Search referral records"
+                aria-label="Search payment records"
                 placeholder="Search Paddle customer or transaction ID..."
               />
               <select
@@ -265,12 +265,12 @@
             aria-hidden="true"
           >
             <div class="drawer-head">
-              <h2 class="card-title" data-referral-form-title>Add referral</h2>
+              <h2 class="card-title" data-referral-form-title>Add payment</h2>
               <button
                 class="drawer-close"
                 type="button"
                 data-referral-drawer-close
-                aria-label="Close referral form"
+                aria-label="Close payment form"
               >
                 <span data-icon="close"></span>
               </button>
@@ -301,7 +301,7 @@
                     placeholder="ctm_..."
                   />
                   <span class="small-muted"
-                    >Fixed after the referral is created.</span
+                    >Fixed after the payment is created.</span
                   >
                 </div>
 
@@ -401,7 +401,7 @@
                 </div>
 
                 <button class="btn btn-primary" type="submit">
-                  Save referral
+                  Save payment
                 </button>
               </form>
             </div>

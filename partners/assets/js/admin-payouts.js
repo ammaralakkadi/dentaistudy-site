@@ -310,7 +310,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             </td>
             <td class="cell-amount" data-label="Commission">
               <strong>${auth.money(payout.amount_usd)}</strong>
-              <span class="small-muted">${confirmedCount(payout.creator_id)} confirmed paid users</span>
+              <span class="small-muted">${confirmedCount(payout.creator_id)} confirmed paid customers</span>
             </td>
             <td data-label="Payment">
               <strong>${dasEscapeHtml(payout.payment_method)}</strong>

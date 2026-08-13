@@ -285,7 +285,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     summaryAccount.innerHTML = badge(partner.accountStatus);
     summaryQualification.innerHTML = `${badge(
       partner.qualified ? "Qualified" : "In progress",
-    )}<br><span class="small-muted">${partner.confirmed} / ${settings.minimum_confirmed_paid_users} confirmed users</span>`;
+    )}<br><span class="small-muted">${partner.confirmed} / ${settings.minimum_confirmed_paid_users} confirmed customers</span>`;
     summaryPayout.innerHTML = `${badge(
       partner.payoutStatus,
     )}<br><span class="small-muted">${auth.money(
@@ -390,9 +390,16 @@ document.addEventListener("DOMContentLoaded", async () => {
       } catch (_) {
         // Keep the Supabase error message when no JSON body is available.
       }
-      throw new Error(message);
+      throw new Error(message.replace(/\breferral\b/gi, "payment"));
     }
-    if (!data?.ok) throw new Error(data?.error || "Could not delete this Partner.");
+    if (!data?.ok) {
+      throw new Error(
+        String(data?.error || "Could not delete this Partner.").replace(
+          /\breferral\b/gi,
+          "payment",
+        ),
+      );
+    }
   }
 
   async function updatePartner(payload) {

@@ -137,10 +137,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (!visible.length) {
       const emptyMessage = !creators.length
-        ? "No Partners yet. Add a Partner before recording referrals."
+        ? "No Partners yet. Add a Partner before recording payments."
         : !referrals.length
-          ? "No referral records yet."
-          : "No matching referral records.";
+          ? "No payment records yet."
+          : "No matching payment records.";
       tbody.innerHTML = `<tr><td class="referral-empty" colspan="8">${emptyMessage}</td></tr>`;
       return;
     }
@@ -255,7 +255,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (!referral || !source) return;
 
       if (referral.payout_id) {
-        dasToast("This referral is locked because it is already in a payout");
+        dasToast("This payment record is locked because it is already in a payout");
         return;
       }
 
@@ -285,7 +285,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       syncPaymentFields();
     }
 
-    formTitle.textContent = id ? "Edit referral" : "Add referral";
+    formTitle.textContent = id ? "Edit payment" : "Add payment";
     drawer.classList.add("is-open");
     drawer.setAttribute("aria-hidden", "false");
     requestAnimationFrame(() =>
@@ -447,8 +447,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       metadata: {
         status: auth.titleCase(referral.status),
         title: statusChanged
-          ? `Referral ${auth.titleCase(referral.status).toLowerCase()}`
-          : "Referral updated",
+          ? `Payment ${auth.titleCase(referral.status).toLowerCase()}`
+          : "Payment updated",
       },
     });
 
@@ -505,10 +505,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   async function updateReferral(payload, validation) {
     const source = sources.find((item) => item.referral_id === payload.id);
     if (!source || !activeReferral)
-      throw new Error("Referral source not found.");
+      throw new Error("Payment source not found.");
     if (activeReferral.payout_id) {
       throw new Error(
-        "This referral is locked because it is already in a payout.",
+        "This payment record is locked because it is already in a payout.",
       );
     }
 
@@ -606,7 +606,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   async function loadLedger() {
     tbody.innerHTML =
-      '<tr><td class="referral-empty" colspan="8">Loading referral records…</td></tr>';
+      '<tr><td class="referral-empty" colspan="8">Loading payment records…</td></tr>';
 
     const [settingsResult, creatorsResult, referralsResult, sourcesResult] =
       await Promise.all([
@@ -673,10 +673,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     try {
       if (payload.id) {
         await updateReferral(payload, validation);
-        dasToast("Referral updated");
+        dasToast("Payment updated");
       } else {
         await insertReferral(payload, validation);
-        dasToast("Referral added");
+        dasToast("Payment added");
       }
 
       await adminSyncPartnerEntitlements();
@@ -685,7 +685,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       await adminHydrateStats();
     } catch (error) {
       console.error(error);
-      dasToast(error?.message || "Referral could not be saved");
+      const message = String(error?.message || "Payment could not be saved")
+        .replace(/\breferrals\b/gi, "payments")
+        .replace(/\breferral\b/gi, "payment");
+      dasToast(message);
     } finally {
       submitButton.disabled = false;
     }
@@ -700,7 +703,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   statusFilter.addEventListener("change", render);
   addButton.addEventListener("click", () => {
     if (!creators.length) {
-      dasToast("Add a Partner before adding a referral");
+      dasToast("Add a Partner before adding a payment");
       return;
     }
     openDrawer();
@@ -726,9 +729,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   } catch (error) {
     console.error(error);
     tbody.innerHTML =
-      '<tr><td class="referral-empty" colspan="8">Referral records could not be loaded.</td></tr>';
+      '<tr><td class="referral-empty" colspan="8">Payment records could not be loaded.</td></tr>';
     activityBody.innerHTML =
       '<tr><td class="referral-empty" colspan="5">Activity could not be loaded.</td></tr>';
-    dasToast("Referral records could not be loaded");
+    dasToast("Payment records could not be loaded");
   }
 });

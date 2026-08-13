@@ -631,6 +631,63 @@ body:has(.admin-drawer.is-open)::before {
   .preview-rows .rule-line strong {
     overflow-wrap: normal;
   }
+  .admin-content .table-wrap {
+    overflow-x: hidden;
+  }
+  .admin-content table.admin-table-wide {
+    min-width: 0;
+    table-layout: fixed;
+  }
+  .referral-ledger-table th:nth-child(1) {
+    width: 11%;
+  }
+  .referral-ledger-table th:nth-child(2) {
+    width: 11%;
+  }
+  .referral-ledger-table th:nth-child(3) {
+    width: 24%;
+  }
+  .referral-ledger-table th:nth-child(4) {
+    width: 11%;
+  }
+  .referral-ledger-table th:nth-child(5) {
+    width: 14%;
+  }
+  .referral-ledger-table th:nth-child(6) {
+    width: 10%;
+  }
+  .referral-ledger-table th:nth-child(7) {
+    width: 10%;
+  }
+  .referral-ledger-table th:nth-child(8) {
+    width: 9%;
+  }
+  .referral-ledger-table .cell-transaction strong,
+  .referral-ledger-table .cell-transaction .small-muted {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+  .partner-accounts-table th:nth-child(1) {
+    width: 18%;
+  }
+  .partner-accounts-table th:nth-child(2) {
+    width: 12%;
+  }
+  .partner-accounts-table th:nth-child(3) {
+    width: 11%;
+  }
+  .partner-accounts-table th:nth-child(4) {
+    width: 18%;
+  }
+  .partner-accounts-table th:nth-child(5) {
+    width: 17%;
+  }
+  .partner-accounts-table th:nth-child(6) {
+    width: 15%;
+  }
+  .partner-accounts-table th:nth-child(7) {
+    width: 9%;
+  }
 }
 .preview-actions {
   display: flex;
@@ -843,6 +900,66 @@ body:has(.admin-drawer.is-open)::before {
   }
   .partner-accounts-table .creator-cell strong {
     white-space: normal;
+  }
+  .admin-content table.referral-ledger-table {
+    min-width: 0;
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+  .referral-ledger-table thead {
+    display: none;
+  }
+  .referral-ledger-table tbody {
+    display: grid;
+    gap: 12px;
+  }
+  .referral-ledger-table tr {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 20px;
+    padding: 14px 16px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    background: #fff;
+    box-shadow: var(--shadow-card);
+  }
+  .referral-ledger-table td {
+    display: grid;
+    grid-template-columns: 108px minmax(0, 1fr);
+    gap: 12px;
+    align-items: start;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--line);
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+  .referral-ledger-table td::before {
+    content: attr(data-label);
+    color: var(--subtle);
+    font-size: 12px;
+    font-weight: 720;
+    line-height: 1.35;
+  }
+  .referral-ledger-table .cell-actions {
+    grid-column: 1 / -1;
+    border-bottom: 0;
+  }
+  .referral-ledger-table .cell-actions .table-action {
+    width: fit-content;
+    justify-self: end;
+  }
+  .referral-ledger-table tr.is-empty-row {
+    display: block;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+  .referral-ledger-table tr.is-empty-row td.referral-empty {
+    display: block;
+    padding: 12px 0;
+    border-bottom: 0;
+    text-align: center;
   }
 }
 

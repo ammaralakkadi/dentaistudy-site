@@ -41,15 +41,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     set(
       "[data-progress-note]",
       remainingUsers === 0
-        ? "Payout qualification unlocked"
-        : `${remainingUsers} more to unlock payouts`,
+        ? "Payout qualification reached"
+        : `${remainingUsers} more to qualify for payouts`,
     );
     set("[data-pending-commission]", auth.money(summary.pendingCommission));
     set("[data-approved-commission]", auth.money(summary.approvedCommission));
     set("[data-paid-commission]", auth.money(summary.paidCommission));
     set(
       "[data-pending-note]",
-      `${summary.pendingUsers} ${summary.pendingUsers === 1 ? "user" : "users"} awaiting review`,
+      `${summary.pendingUsers} ${summary.pendingUsers === 1 ? "customer" : "customers"} awaiting review`,
     );
     set("[data-next-payout]", summary.nextPayout);
 
