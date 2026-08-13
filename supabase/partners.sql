@@ -305,14 +305,8 @@ begin
     end if;
   end if;
 
-  if new.status = 'approved' then
-    if current_date < new.approval_due_date then
-      raise exception 'Referral cannot be approved before its approval date';
-    end if;
-
-    if new.approved_at is null then
-      new.approved_at = now();
-    end if;
+    if new.status = 'approved' and new.approved_at is null then
+    new.approved_at = now();
   end if;
 
   return new;
