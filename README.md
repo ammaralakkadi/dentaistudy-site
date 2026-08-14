@@ -36,7 +36,7 @@ DentAIstudy helps users study dentistry from their own PDFs, weak topics, and ex
 
 ## Stack
 
-Jamstack full stack app · GitHub Pages · BaaS · SaaS API
+Jamstack full stack app · BaaS · SaaS API
 
 ---
 
