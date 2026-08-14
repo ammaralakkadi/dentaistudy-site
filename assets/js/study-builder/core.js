@@ -408,6 +408,37 @@
     ]);
   }
 
+  function enableUserBubbleToggle(bubble, body) {
+    const collapsedHeight = 132;
+
+    window.requestAnimationFrame(() => {
+      if (body.scrollHeight <= collapsedHeight + 4) return;
+
+      bubble.classList.add("is-collapsible");
+
+      const toggle = document.createElement("button");
+      toggle.type = "button";
+      toggle.className = "user-bubble-toggle";
+      toggle.setAttribute("aria-expanded", "false");
+
+      const label = document.createElement("span");
+      label.textContent = "Show more";
+
+      const chevron = document.createElement("span");
+      chevron.className = "user-bubble-chevron";
+      chevron.setAttribute("aria-hidden", "true");
+
+      toggle.append(label, chevron);
+      toggle.addEventListener("click", () => {
+        const expanded = bubble.classList.toggle("is-expanded");
+        toggle.setAttribute("aria-expanded", String(expanded));
+        label.textContent = expanded ? "Show less" : "Show more";
+      });
+
+      bubble.appendChild(toggle);
+    });
+  }
+
   function renderMessage({ role, text, pdfMeta }) {
     const wrap = document.createElement("div");
     wrap.className = `msg ${role} is-entering`;
@@ -464,6 +495,11 @@
 
     wrap.appendChild(bubble);
     messagesEl.appendChild(wrap);
+
+    if (role === "user") {
+      enableUserBubbleToggle(bubble, body);
+    }
+
     window.requestAnimationFrame(() => {
       wrap.classList.remove("is-entering");
     });

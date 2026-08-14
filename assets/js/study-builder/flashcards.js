@@ -4,6 +4,7 @@
 
   const tools = window.DentAIStudyTools;
   const SWIPE_THRESHOLD = 90;
+  const MAX_FLASHCARDS = 20;
 
   const els = {};
   let decks = [];
@@ -120,7 +121,7 @@
 
   function clampCount(value) {
     const n = Number(value || 12);
-    return Math.max(6, Math.min(30, Math.round(n)));
+    return Math.max(6, Math.min(MAX_FLASHCARDS, Math.round(n)));
   }
 
   function isTypingTarget(target) {
@@ -1037,7 +1038,7 @@
         back: String(card.back || card.answer || "").trim(),
       }))
       .filter((card) => card.front && card.back)
-      .slice(0, 30);
+      .slice(0, MAX_FLASHCARDS);
   }
 
   async function saveGeneratedDeck(title, aiCards) {
@@ -1078,9 +1079,9 @@
 
     const rawCount = Number(els.count?.value || 12);
 
-    if (rawCount > 30) {
-      tools.toast("Maximum is 30 flashcards per deck.", "error");
-      if (els.count) els.count.value = 30;
+    if (rawCount > MAX_FLASHCARDS) {
+      tools.toast("Maximum is 20 flashcards per deck.", "error");
+      if (els.count) els.count.value = MAX_FLASHCARDS;
       return;
     }
 

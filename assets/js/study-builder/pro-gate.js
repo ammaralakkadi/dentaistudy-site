@@ -37,7 +37,18 @@
 
   function deriveTier(user) {
     const appMeta = user?.app_metadata || {};
-    return appMeta.subscription_tier || "free";
+    const tier = appMeta.subscription_tier || "free";
+    if (tier === "pro" || tier === "pro_yearly") return tier;
+
+    const partnerProUntil = String(appMeta.partner_pro_until || "").trim();
+    const partnerProExpiresAt = partnerProUntil
+      ? new Date(`${partnerProUntil}T23:59:59.999Z`).getTime()
+      : NaN;
+
+    return Number.isFinite(partnerProExpiresAt) &&
+        partnerProExpiresAt >= Date.now()
+      ? "pro"
+      : tier;
   }
 
   function isProTier(tier) {

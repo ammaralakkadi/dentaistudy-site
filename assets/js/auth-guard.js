@@ -510,10 +510,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     const subscriptionTier = appMeta.subscription_tier || "free";
     const partnerProActive = hasActivePartnerPro(appMeta);
     const isPaidPlan = isDasProTier(subscriptionTier) || partnerProActive;
-    const effectiveTier =
-      partnerProActive && !isDasProTier(subscriptionTier)
-        ? "pro"
-        : subscriptionTier;
+    const isPartnerGrantedPro =
+      partnerProActive && !isDasProTier(subscriptionTier);
+    const effectiveTier = isPartnerGrantedPro ? "pro" : subscriptionTier;
 
     // Expose the effective entitlement for other modules (composer, etc.)
     window.DentAIUser = { tier: effectiveTier, isPro: isPaidPlan };
@@ -1052,6 +1051,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       const settingsPlanManage = document.getElementById(
         "das-settings-plan-manage-actions",
       );
+      const partnerBillingMessage =
+        "Your Pro access is included with the DentAIstudy Partner Program. No billing action is needed.";
 
       const deleteAccountBtn = document.getElementById("delete-account-btn");
       const deleteAccountStatus = document.getElementById(
@@ -1068,7 +1069,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
 
       if (settingsPlanNote && settingsPlanUpgrade && settingsPlanManage) {
-        if (isPaidPlan) {
+        if (isPartnerGrantedPro) {
+          settingsPlanNote.textContent = partnerBillingMessage;
+          settingsPlanUpgrade.style.display = "none";
+          settingsPlanManage.style.display = "flex";
+        } else if (isPaidPlan) {
           settingsPlanNote.textContent =
             "Your Pro access renews automatically until you cancel.";
           settingsPlanUpgrade.style.display = "none";
@@ -1128,6 +1133,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (billingBtn) {
         billingBtn.addEventListener("click", async (event) => {
           event.preventDefault();
+
+          if (isPartnerGrantedPro) {
+            setManageStatus(partnerBillingMessage);
+            return;
+          }
 
           if (!functionsBase) {
             setManageStatus(
@@ -1226,6 +1236,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (cancelBtn) {
         cancelBtn.addEventListener("click", async (event) => {
           event.preventDefault();
+
+          if (isPartnerGrantedPro) {
+            setManageStatus(partnerBillingMessage);
+            return;
+          }
 
           const confirmed = await dasConfirm({
             title: "Cancel plan",

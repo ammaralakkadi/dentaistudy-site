@@ -3,6 +3,7 @@
   "use strict";
 
   const tools = window.DentAIStudyTools;
+  const MAX_QUIZ_QUESTIONS = 20;
 
   const els = {};
   let quizzes = [];
@@ -350,7 +351,7 @@
 
   function clampCount(value) {
     const n = Number(value || 10);
-    return Math.max(5, Math.min(30, Math.round(n)));
+    return Math.max(5, Math.min(MAX_QUIZ_QUESTIONS, Math.round(n)));
   }
 
   function resetStage(message) {
@@ -835,7 +836,7 @@
           item.correct_index >= 0 &&
           item.correct_index < item.options.length,
       )
-      .slice(0, 40);
+      .slice(0, MAX_QUIZ_QUESTIONS);
   }
 
   async function loadNotes() {
@@ -1022,9 +1023,9 @@
     const difficulty = selectedDifficulty();
     const rawCount = Number(els.count?.value || 10);
 
-    if (rawCount > 30) {
-      tools.toast("Maximum is 30 quiz questions.", "error");
-      if (els.count) els.count.value = 30;
+    if (rawCount > MAX_QUIZ_QUESTIONS) {
+      tools.toast("Maximum is 20 quiz questions.", "error");
+      if (els.count) els.count.value = MAX_QUIZ_QUESTIONS;
       return;
     }
 

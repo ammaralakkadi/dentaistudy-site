@@ -926,6 +926,14 @@ body.study-modal-open {
   grid-template-columns: minmax(0, 1fr) minmax(112px, 144px);
 }
 
+.quiz-count-guidance {
+  margin: 7px 2px 0;
+  color: rgba(7, 17, 31, 0.5);
+  font-size: 11px;
+  font-weight: 520;
+  line-height: 1.35;
+}
+
 .quiz-create-form .tool-actions {
   margin-top: 0;
 }
