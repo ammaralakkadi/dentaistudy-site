@@ -148,7 +148,7 @@
               ></span>
               <div>
                 <div class="stat-label">Pending review</div>
-                <div class="stat-value" data-stat="pending">0</div>
+                <div class="stat-value" data-stat="pendingReferrals">0</div>
                 <div class="stat-note">Payments awaiting review</div>
               </div>
             </div>
@@ -201,7 +201,7 @@
                 </div>
                 <div class="breakdown-row">
                   <span>Pending review</span
-                  ><strong data-stat="pending">0</strong>
+                  ><strong data-stat="pendingReferrals">0</strong>
                 </div>
                 <div class="breakdown-row">
                   <span>Paid this month</span
@@ -245,9 +245,17 @@
                 </div>
 
                 <div class="rule-line">
-                  <span>Payment method</span>
+                  <span>Payout method</span>
                   <strong data-payout-method-preview>Not added</strong>
                 </div>
+                <div
+                  class="preview-rows payout-method-preview-rows"
+                  data-payout-method-details
+                ></div>
+                <p
+                  class="small-muted payout-method-create-status"
+                  data-payout-method-status
+                ></p>
 
                 <div class="form-row">
                   <label class="label" for="payout-scheduled-date"
@@ -279,7 +287,11 @@
                   cannot be typed manually.
                 </p>
 
-                <button class="btn btn-primary" type="submit">
+                <button
+                  class="btn btn-primary"
+                  type="submit"
+                  data-payout-submit
+                >
                   Create payout
                 </button>
               </form>

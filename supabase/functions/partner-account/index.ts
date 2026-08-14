@@ -118,7 +118,7 @@ Deno.serve(async (req) => {
     const { data: partner, error: partnerError } = await admin
       .from("partner_creators")
       .select(
-        "id,user_id,name,initials,email,promo_code,account_status,payout_method,accepted_at,pro_access_until,created_at,updated_at",
+        "id,user_id,name,initials,email,promo_code,account_status,payout_method,payout_details,accepted_at,pro_access_until,created_at,updated_at",
       )
       .eq("user_id", user.id)
       .maybeSingle();
@@ -146,7 +146,7 @@ Deno.serve(async (req) => {
         })
         .eq("id", partner.id)
         .select(
-          "id,user_id,name,initials,email,promo_code,account_status,payout_method,accepted_at,pro_access_until,created_at,updated_at",
+          "id,user_id,name,initials,email,promo_code,account_status,payout_method,payout_details,accepted_at,pro_access_until,created_at,updated_at",
         )
         .single();
 
@@ -169,6 +169,126 @@ Deno.serve(async (req) => {
 
       if (activityError) {
         console.error("[partner-account] profile activity failed", activityError);
+      }
+
+      return json({ ok: true, partner: updatedPartner });
+    }
+
+    if (action === "update_payout_method") {
+      const method = String(body?.method ?? "").trim();
+      const rawDetails =
+        body?.details && typeof body.details === "object" ? body.details : {};
+
+      if (!["Wise", "Bank transfer"].includes(method)) {
+        return json({ error: "Choose Wise or Bank transfer." }, 400);
+      }
+
+      let payoutDetails: Record<string, string>;
+
+      if (method === "Wise") {
+        const accountName = String(rawDetails.account_name ?? "").trim();
+        const email = String(rawDetails.email ?? "").trim().toLowerCase();
+
+        if (accountName.length < 2 || accountName.length > 120) {
+          return json({ error: "Enter the Wise account holder name." }, 400);
+        }
+
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          return json({ error: "Enter the email used for the Wise account." }, 400);
+        }
+
+        payoutDetails = {
+          account_name: accountName,
+          email,
+        };
+      } else {
+        const accountName = String(rawDetails.account_name ?? "").trim();
+        const bankName = String(rawDetails.bank_name ?? "").trim();
+        const accountNumber = String(rawDetails.account_number ?? "").trim();
+        const swiftBic = String(rawDetails.swift_bic ?? "").trim().toUpperCase();
+        const country = String(rawDetails.country ?? "").trim();
+
+        if (
+          !accountName ||
+          !bankName ||
+          !accountNumber ||
+          !swiftBic ||
+          !country
+        ) {
+          return json({ error: "Complete all bank transfer details." }, 400);
+        }
+
+        if (accountName.length > 120 || bankName.length > 120) {
+          return json({ error: "Bank account details are too long." }, 400);
+        }
+
+        if (accountNumber.length > 80 || swiftBic.length > 20 || country.length > 80) {
+          return json({ error: "Check the bank account details and try again." }, 400);
+        }
+
+        payoutDetails = {
+          account_name: accountName,
+          bank_name: bankName,
+          account_number: accountNumber,
+          swift_bic: swiftBic,
+          country,
+        };
+      }
+
+      const wasAdded =
+        !partner.payout_method ||
+        partner.payout_method === "Not added" ||
+        !partner.payout_details ||
+        Object.keys(partner.payout_details).length === 0;
+
+      const { data: updatedPartner, error: updateError } = await admin
+        .from("partner_creators")
+        .update({
+          payout_method: method,
+          payout_details: payoutDetails,
+        })
+        .eq("id", partner.id)
+        .select(
+          "id,user_id,name,initials,email,promo_code,account_status,payout_method,payout_details,accepted_at,pro_access_until,created_at,updated_at",
+        )
+        .single();
+
+      if (updateError) throw updateError;
+
+      const { error: readyPayoutError } = await admin
+        .from("partner_payouts")
+        .update({
+          payment_method: method,
+          payment_details: payoutDetails,
+        })
+        .eq("creator_id", partner.id)
+        .eq("status", "ready");
+
+      if (readyPayoutError) throw readyPayoutError;
+
+      const eventType = wasAdded
+        ? "payout_method_added"
+        : "payout_method_updated";
+      const title = wasAdded ? "Payout method added" : "Payout method updated";
+
+      const { error: activityError } = await admin
+        .from("partner_activity")
+        .insert({
+          creator_id: partner.id,
+          actor_user_id: user.id,
+          actor_kind: "partner",
+          event_type: eventType,
+          details: `${method} payout details ${wasAdded ? "added" : "updated"}.`,
+          visibility: "partner",
+          metadata: {
+            status: "Updated",
+            title,
+            payout_method: method,
+          },
+        });
+
+      if (activityError) {
+        console.error("[partner-account] payout method activity failed", activityError);
       }
 
       return json({ ok: true, partner: updatedPartner });

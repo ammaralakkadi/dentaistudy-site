@@ -254,6 +254,17 @@
                   </div>
                 </div>
 
+                <div class="form-row" data-admin-payout-details hidden>
+                  <span class="label">Payout details</span>
+                  <div class="preview-rows admin-payout-details">
+                    <div class="rule-line">
+                      <span>Method</span>
+                      <strong data-admin-payout-method>Not added</strong>
+                    </div>
+                    <div data-admin-payout-detail-rows></div>
+                  </div>
+                </div>
+
                 <div class="form-row">
                   <label class="label" for="partner-name">Name</label>
                   <input class="input" id="partner-name" name="name" required />
@@ -284,35 +295,19 @@
                   />
                 </div>
 
-                <div class="form-grid">
-                  <div class="form-row">
-                    <label class="label" for="partner-account-status"
-                      >Account status</label
-                    >
-                    <select
-                      class="select"
-                      id="partner-account-status"
-                      name="accountStatus"
-                    >
-                      <option value="Active">Active</option>
-                      <option value="Paused">Paused</option>
-                      <option value="Ended">Ended</option>
-                    </select>
-                  </div>
-                  <div class="form-row">
-                    <label class="label" for="partner-payout-method"
-                      >Payout method</label
-                    >
-                    <select
-                      class="select"
-                      id="partner-payout-method"
-                      name="payoutMethod"
-                    >
-                      <option value="Not added">Not added</option>
-                      <option value="Wise (USD)">Wise (USD)</option>
-                      <option value="Bank transfer">Bank transfer</option>
-                    </select>
-                  </div>
+                <div class="form-row">
+                  <label class="label" for="partner-account-status"
+                    >Account status</label
+                  >
+                  <select
+                    class="select"
+                    id="partner-account-status"
+                    name="accountStatus"
+                  >
+                    <option value="Active">Active</option>
+                    <option value="Paused">Paused</option>
+                    <option value="Ended">Ended</option>
+                  </select>
                 </div>
 
                 <div class="form-row">

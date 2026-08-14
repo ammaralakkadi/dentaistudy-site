@@ -223,16 +223,24 @@
 
             <section class="card card-inner settings-card">
               <div class="settings-card-heading">
-                <h2 class="card-title">Payout contact</h2>
+                <h2 class="card-title">Payout method</h2>
                 <p class="card-text">
-                  Your payout method is shown on your dashboard. Contact support
-                  if it changes.
+                  Choose where you want DentAIstudy to send your Partner payouts.
                 </p>
               </div>
               <div class="settings-info-list">
                 <div>
-                  <span>Current method</span
-                  ><strong data-payout-method>Not added</strong>
+                  <span>Current method</span>
+                  <button
+                    class="payout-method-trigger"
+                    type="button"
+                    data-payout-manage
+                    aria-haspopup="dialog"
+                    aria-controls="payout-method-drawer"
+                  >
+                    <span data-payout-method-action>Add payout method</span>
+                    <span data-icon="plus"></span>
+                  </button>
                 </div>
                 <div>
                   <span>Next payout window</span
@@ -270,6 +278,138 @@
         </div>
       </main>
     </div>
+
+    <aside
+      class="partner-drawer"
+      id="payout-method-drawer"
+      data-payout-drawer
+      aria-hidden="true"
+      aria-labelledby="payout-method-title"
+    >
+      <div class="partner-drawer-head">
+        <h2 class="card-title" id="payout-method-title">Payout method</h2>
+        <button
+          class="partner-drawer-close"
+          type="button"
+          data-payout-drawer-close
+          aria-label="Close payout method"
+        >
+          <span data-icon="close"></span>
+        </button>
+      </div>
+      <div class="partner-drawer-body">
+        <form data-payout-form autocomplete="off">
+          <div class="form-row">
+            <label class="label" for="payout-method">Method</label>
+            <select
+              class="select"
+              id="payout-method"
+              name="method"
+              data-payout-method-select
+              required
+            >
+              <option value="">Choose payout method</option>
+              <option value="Wise">Wise</option>
+              <option value="Bank transfer">Bank transfer</option>
+            </select>
+          </div>
+
+          <div class="payout-method-fields" data-payout-wise hidden>
+            <div class="form-row">
+              <label class="label" for="wise-account-name"
+                >Account holder name</label
+              >
+              <input
+                class="input"
+                id="wise-account-name"
+                name="wiseAccountName"
+                autocomplete="name"
+                maxlength="120"
+              />
+            </div>
+            <div class="form-row">
+              <label class="label" for="wise-email">Wise account email</label>
+              <input
+                class="input"
+                id="wise-email"
+                name="wiseEmail"
+                type="email"
+                autocomplete="email"
+              />
+            </div>
+          </div>
+
+          <div class="payout-method-fields" data-payout-bank hidden>
+            <div class="form-row">
+              <label class="label" for="bank-account-name"
+                >Account holder name</label
+              >
+              <input
+                class="input"
+                id="bank-account-name"
+                name="bankAccountName"
+                autocomplete="name"
+                maxlength="120"
+              />
+            </div>
+            <div class="form-row">
+              <label class="label" for="bank-name">Bank name</label>
+              <input
+                class="input"
+                id="bank-name"
+                name="bankName"
+                maxlength="120"
+              />
+            </div>
+            <div class="form-row">
+              <label class="label" for="bank-account-number"
+                >Account number / IBAN</label
+              >
+              <input
+                class="input"
+                id="bank-account-number"
+                name="bankAccountNumber"
+                maxlength="80"
+                autocapitalize="characters"
+              />
+            </div>
+            <div class="form-grid">
+              <div class="form-row">
+                <label class="label" for="bank-swift">SWIFT / BIC</label>
+                <input
+                  class="input"
+                  id="bank-swift"
+                  name="bankSwift"
+                  maxlength="20"
+                  autocapitalize="characters"
+                />
+              </div>
+              <div class="form-row">
+                <label class="label" for="bank-country">Bank country</label>
+                <input
+                  class="input"
+                  id="bank-country"
+                  name="bankCountry"
+                  maxlength="80"
+                  autocomplete="country-name"
+                />
+              </div>
+            </div>
+          </div>
+
+          <p class="small-muted payout-method-note">
+            Your payout details are only used to send Partner payouts.
+          </p>
+
+          <div class="settings-save-row">
+            <button class="btn btn-primary" type="submit">
+              Save payout method
+            </button>
+            <span class="settings-save-status" data-payout-status></span>
+          </div>
+        </form>
+      </div>
+    </aside>
 
     <div
       class="das-modal-overlay"

@@ -22,28 +22,42 @@ async function adminStatTotals() {
   const authState = await window.DentAIStudyPartnerAuthReady;
   if (!authState?.user) return null;
 
-  const [creatorsResult, referralsResult, payoutsResult] = await Promise.all([
-    auth.client.from("partner_creators").select("id"),
-    auth.client
-      .from("partner_referrals")
-      .select(
-        "creator_id,customer_token,payment_type,status,commission_amount,payout_id",
-      ),
-    auth.client
-      .from("partner_payouts")
-      .select("id,status,amount_usd,paid_date,scheduled_date"),
-  ]);
+  const [settingsResult, creatorsResult, referralsResult, payoutsResult] =
+    await Promise.all([
+      auth.client
+        .from("partner_settings")
+        .select("minimum_confirmed_paid_users,minimum_payout_usd")
+        .eq("id", 1)
+        .single(),
+      auth.client
+        .from("partner_creators")
+        .select("id,payout_method,payout_details"),
+      auth.client
+        .from("partner_referrals")
+        .select(
+          "creator_id,customer_token,payment_type,status,commission_amount,payout_id",
+        ),
+      auth.client
+        .from("partner_payouts")
+        .select("id,creator_id,status,amount_usd,paid_date,scheduled_date"),
+    ]);
 
   const error =
-    creatorsResult.error || referralsResult.error || payoutsResult.error;
+    settingsResult.error ||
+    creatorsResult.error ||
+    referralsResult.error ||
+    payoutsResult.error;
   if (error) throw error;
 
+  const settings = settingsResult.data || {};
   const creators = creatorsResult.data || [];
   const referrals = referralsResult.data || [];
   const payouts = payoutsResult.data || [];
   const payoutById = new Map(payouts.map((payout) => [payout.id, payout]));
   const confirmedCustomers = new Set();
   const pendingCustomers = new Set();
+  const minimumUsers = Number(settings.minimum_confirmed_paid_users || 10);
+  const minimumPayout = Number(settings.minimum_payout_usd || 50);
   let approved = 0;
 
   referrals.forEach((referral) => {
@@ -73,6 +87,53 @@ async function adminStatTotals() {
     }
   });
 
+  const readyCreators = new Set(
+    payouts
+      .filter((payout) => payout.status === "ready")
+      .map((payout) => payout.creator_id),
+  );
+
+  creators.forEach((creator) => {
+    if (readyCreators.has(creator.id)) return;
+
+    const creatorConfirmed = new Set(
+      referrals
+        .filter(
+          (referral) =>
+            referral.creator_id === creator.id &&
+            referral.payment_type === "first_payment" &&
+            referral.status === "approved",
+        )
+        .map((referral) => referral.customer_token),
+    ).size;
+
+    const availableApproved = referrals
+      .filter(
+        (referral) =>
+          referral.creator_id === creator.id &&
+          referral.status === "approved" &&
+          !referral.payout_id,
+      )
+      .reduce(
+        (sum, referral) => sum + Number(referral.commission_amount || 0),
+        0,
+      );
+
+    const payoutConfigured =
+      creator.payout_method &&
+      creator.payout_method !== "Not added" &&
+      creator.payout_details &&
+      Object.keys(creator.payout_details).length > 0;
+
+    if (
+      creatorConfirmed >= minimumUsers &&
+      availableApproved >= minimumPayout &&
+      payoutConfigured
+    ) {
+      readyCreators.add(creator.id);
+    }
+  });
+
   const totals = {
     creators: creators.length,
     referrals: referrals.length,
@@ -85,7 +146,7 @@ async function adminStatTotals() {
     paid: payouts
       .filter((payout) => payout.status === "paid")
       .reduce((sum, payout) => sum + Number(payout.amount_usd || 0), 0),
-    ready: payouts.filter((payout) => payout.status === "ready").length,
+    ready: readyCreators.size,
     paidThisMonth: payouts
       .filter(
         (payout) =>

@@ -275,6 +275,18 @@ html:has(.admin-shell) {
 .breakdown-row:last-child {
   border-bottom: 0;
 }
+.payout-method-preview-rows {
+  margin-top: 0;
+  border-top: 0;
+}
+.payout-method-create-status {
+  min-height: 20px;
+  margin: 8px 0 0;
+}
+.admin-payout-details {
+  margin-top: 0;
+}
+
 body:has(.admin-drawer.is-open) {
   overflow: hidden;
 }

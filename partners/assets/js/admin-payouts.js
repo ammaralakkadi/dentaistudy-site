@@ -25,6 +25,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   const fields = form.elements;
   const amountPreview = document.querySelector("[data-payout-amount]");
   const methodPreview = document.querySelector("[data-payout-method-preview]");
+  const methodDetailsPreview = document.querySelector(
+    "[data-payout-method-details]",
+  );
+  const methodStatus = document.querySelector("[data-payout-method-status]");
+  const createSubmit = document.querySelector("[data-payout-submit]");
 
   let settings = null;
   let creators = [];
@@ -68,6 +73,49 @@ document.addEventListener("DOMContentLoaded", async () => {
       );
   }
 
+  function hasPayoutDetails(creator) {
+    return Boolean(
+      creator?.payout_method &&
+        creator.payout_method !== "Not added" &&
+        creator?.payout_details &&
+        Object.keys(creator.payout_details).length > 0,
+    );
+  }
+
+  function payoutDetailPairs(method, details = {}) {
+    if (method === "Wise") {
+      return [
+        ["Account holder", details.account_name || "—"],
+        ["Wise email", details.email || "—"],
+      ];
+    }
+
+    if (method === "Bank transfer") {
+      return [
+        ["Account holder", details.account_name || "—"],
+        ["Bank", details.bank_name || "—"],
+        ["Account / IBAN", details.account_number || "—"],
+        ["SWIFT / BIC", details.swift_bic || "—"],
+        ["Country", details.country || "—"],
+      ];
+    }
+
+    return [];
+  }
+
+  function payoutDetailRows(method, details) {
+    return payoutDetailPairs(method, details)
+      .map(
+        ([label, value]) => `
+          <div class="rule-line">
+            <span>${dasEscapeHtml(label)}</span>
+            <strong>${dasEscapeHtml(value)}</strong>
+          </div>
+        `,
+      )
+      .join("");
+  }
+
   function buildCandidates() {
     const minimumUsers = Number(settings.minimum_confirmed_paid_users || 10);
     const minimumPayout = Number(settings.minimum_payout_usd || 50);
@@ -82,6 +130,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         creator,
         confirmed: confirmedCount(creator.id),
         amount: availableApproved(creator.id),
+        payoutConfigured: hasPayoutDetails(creator),
       }))
       .filter(
         (item) =>
@@ -103,9 +152,24 @@ document.addEventListener("DOMContentLoaded", async () => {
         : auth.money(0);
     }
 
-    if (methodPreview) {
-      methodPreview.textContent =
-        candidate?.creator.payout_method || "Not added";
+    const method = candidate?.creator.payout_method || "Not added";
+    const details = candidate?.creator.payout_details || {};
+
+    if (methodPreview) methodPreview.textContent = method;
+
+    if (methodDetailsPreview) {
+      methodDetailsPreview.innerHTML = payoutDetailRows(method, details);
+    }
+
+    if (methodStatus) {
+      methodStatus.textContent =
+        candidate && !candidate.payoutConfigured
+          ? "Waiting for the Partner to add payout details."
+          : "";
+    }
+
+    if (createSubmit) {
+      createSubmit.disabled = !candidate || !candidate.payoutConfigured;
     }
   }
 
@@ -224,11 +288,18 @@ document.addEventListener("DOMContentLoaded", async () => {
               <strong>${auth.money(payout.amount_usd)}</strong>
             </div>
             <div class="preview-metric">
-              <span>Payment method</span>
+              <span>Payout method</span>
               <strong>${dasEscapeHtml(payout.payment_method)}</strong>
             </div>
           </div>
           <div class="preview-rows">
+            ${payoutDetailRows(
+              payout.payment_method,
+              payout.payment_details &&
+                Object.keys(payout.payment_details).length > 0
+                ? payout.payment_details
+                : creator?.payout_details || {},
+            )}
             <div class="rule-line">
               <span>Scheduled date</span>
               <strong>${dasEscapeHtml(auth.dateLabel(payout.scheduled_date))}</strong>
@@ -354,7 +425,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         auth.client
           .from("partner_creators")
           .select(
-            "id,name,initials,email,promo_code,payout_method,account_status",
+            "id,name,initials,email,promo_code,payout_method,payout_details,account_status",
           )
           .order("name", { ascending: true }),
         auth.client
@@ -365,7 +436,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         auth.client
           .from("partner_payouts")
           .select(
-            "id,creator_id,amount_usd,payment_method,scheduled_date,status,transfer_reference,paid_date,notes,created_at,updated_at",
+            "id,creator_id,amount_usd,payment_method,payment_details,scheduled_date,status,transfer_reference,paid_date,notes,created_at,updated_at",
           )
           .order("created_at", { ascending: false }),
       ]);
@@ -394,9 +465,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     const scheduledDate = fields.scheduledDate.value;
     const notes = fields.notes.value.trim();
     const submit = form.querySelector('button[type="submit"]');
+    const candidate = candidates.find(
+      (item) => item.creator.id === creatorId,
+    );
 
     if (!creatorId || !scheduledDate) {
       dasToast("Choose an eligible Partner and scheduled date");
+      return;
+    }
+
+    if (!candidate?.payoutConfigured) {
+      dasToast("Waiting for the Partner to add payout details");
       return;
     }
 

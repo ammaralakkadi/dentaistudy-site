@@ -311,6 +311,14 @@
     flex-wrap: wrap;
     gap: 10px;
   }
+  .page-partner-home .hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .page-partner-home .hero-actions .btn {
+    width: 100%;
+    min-height: 52px;
+  }
   .btn {
     max-width: 100%;
   }
@@ -689,9 +697,9 @@
   }
 
   [data-partner-summary] .preview-rows .rule-line {
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 12px;
-    align-items: center;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    align-items: start;
     padding: 14px 0;
   }
   [data-partner-summary] .preview-rows .rule-line > span {
@@ -700,31 +708,23 @@
   [data-partner-summary] [data-summary-account],
   [data-partner-summary] [data-summary-qualification],
   [data-partner-summary] [data-summary-payout] {
-    display: contents;
-  }
-  [data-partner-summary] [data-summary-account] br,
-  [data-partner-summary] [data-summary-qualification] br,
-  [data-partner-summary] [data-summary-payout] br {
-    display: none;
-  }
-  [data-partner-summary] [data-summary-account] .pill,
-  [data-partner-summary] [data-summary-qualification] .pill,
-  [data-partner-summary] [data-summary-payout] .pill {
-    grid-column: 2;
-    grid-row: 1;
-    justify-self: end;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 8px 10px;
+    min-width: 0;
+    text-align: left;
   }
   [data-partner-summary] [data-summary-qualification] .small-muted,
   [data-partner-summary] [data-summary-payout] .small-muted {
-    grid-column: 1 / -1;
-    grid-row: 2;
-    justify-self: stretch;
+    flex: 1 1 100%;
     margin-top: 0;
-    padding-top: 2px;
     font-weight: 600;
-    text-align: center;
+    text-align: left;
   }
   [data-partner-summary] [data-summary-pro] {
-    text-align: right;
+    display: block;
+    text-align: left;
   }
 }

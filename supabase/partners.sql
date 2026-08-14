@@ -45,6 +45,8 @@ create table public.partner_creators (
   account_status text not null default 'active'
     check (account_status in ('active', 'paused', 'ended')),
   payout_method text not null default 'Not added',
+  payout_details jsonb not null default '{}'::jsonb
+    check (jsonb_typeof(payout_details) = 'object'),
   accepted_at timestamptz not null default now(),
   pro_access_until date,
   qualified_at timestamptz,
@@ -67,6 +69,8 @@ create table public.partner_payouts (
   creator_id uuid not null references public.partner_creators (id),
   amount_usd numeric(10, 2) not null check (amount_usd > 0),
   payment_method text not null default 'Wise or bank transfer',
+  payment_details jsonb not null default '{}'::jsonb
+    check (jsonb_typeof(payment_details) = 'object'),
   scheduled_date date,
   status text not null default 'ready'
     check (status in ('ready', 'paid', 'cancelled')),
@@ -630,7 +634,31 @@ begin
   if creator.payout_method is null
      or btrim(creator.payout_method) = ''
      or lower(btrim(creator.payout_method)) = 'not added' then
-    raise exception 'Add the Partner payout method before creating a payout';
+    raise exception 'The Partner has not added a payout method';
+  end if;
+
+  if creator.payout_details is null
+     or creator.payout_details = '{}'::jsonb then
+    raise exception 'The Partner payout details are incomplete';
+  end if;
+
+  if lower(btrim(creator.payout_method)) = 'wise'
+     and (
+       coalesce(btrim(creator.payout_details ->> 'account_name'), '') = ''
+       or coalesce(btrim(creator.payout_details ->> 'email'), '') = ''
+     ) then
+    raise exception 'The Partner Wise payout details are incomplete';
+  end if;
+
+  if lower(btrim(creator.payout_method)) = 'bank transfer'
+     and (
+       coalesce(btrim(creator.payout_details ->> 'account_name'), '') = ''
+       or coalesce(btrim(creator.payout_details ->> 'bank_name'), '') = ''
+       or coalesce(btrim(creator.payout_details ->> 'account_number'), '') = ''
+       or coalesce(btrim(creator.payout_details ->> 'swift_bic'), '') = ''
+       or coalesce(btrim(creator.payout_details ->> 'country'), '') = ''
+     ) then
+    raise exception 'The Partner bank transfer details are incomplete';
   end if;
 
   if exists (
@@ -668,6 +696,7 @@ begin
     creator_id,
     amount_usd,
     payment_method,
+    payment_details,
     scheduled_date,
     status,
     notes
@@ -676,6 +705,7 @@ begin
     p_creator_id,
     approved_amount,
     creator.payout_method,
+    creator.payout_details,
     coalesce(p_scheduled_date, current_date),
     'ready',
     nullif(btrim(coalesce(p_notes, '')), '')

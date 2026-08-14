@@ -568,7 +568,6 @@ Deno.serve(async (req) => {
     const email = normalizeEmail(body?.email);
     const promoCode = normalizeCode(body?.promoCode);
     const accountStatus = String(body?.accountStatus ?? "active").toLowerCase();
-    const payoutMethod = String(body?.payoutMethod ?? "Not added").trim();
     const notes = String(body?.notes ?? "").trim();
 
     if (!name || !email || !promoCode) {
@@ -667,12 +666,13 @@ Deno.serve(async (req) => {
         email,
         promo_code: promoCode,
         account_status: accountStatus,
-        payout_method: payoutMethod || "Not added",
+        payout_method: "Not added",
+        payout_details: {},
         pro_access_until: proUntil,
         notes: notes || null,
       })
       .select(
-        "id,user_id,name,email,promo_code,account_status,payout_method,pro_access_until,created_at,updated_at",
+        "id,user_id,name,email,promo_code,account_status,payout_method,payout_details,pro_access_until,created_at,updated_at",
       )
       .single();
 

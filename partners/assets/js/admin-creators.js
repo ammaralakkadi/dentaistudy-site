@@ -16,6 +16,15 @@ document.addEventListener("DOMContentLoaded", async () => {
   );
   const summaryPayout = document.querySelector("[data-summary-payout]");
   const summaryPro = document.querySelector("[data-summary-pro]");
+  const payoutDetailsPanel = document.querySelector(
+    "[data-admin-payout-details]",
+  );
+  const payoutMethodValue = document.querySelector(
+    "[data-admin-payout-method]",
+  );
+  const payoutDetailRows = document.querySelector(
+    "[data-admin-payout-detail-rows]",
+  );
   const emailNote = document.querySelector("[data-partner-email-note]");
   const deleteZone = document.querySelector("[data-partner-delete-zone]");
   const deleteButton = document.querySelector("[data-delete-partner]");
@@ -139,10 +148,20 @@ document.addEventListener("DOMContentLoaded", async () => {
         (payout) => payout.status === "paid",
       );
 
+      const payoutConfigured =
+        creator.payout_method &&
+        creator.payout_method !== "Not added" &&
+        creator.payout_details &&
+        Object.keys(creator.payout_details).length > 0;
+
       let payoutStatus = "Locked";
       if (qualified) {
-        if (hasReadyPayout || approvedCommission >= minimumPayout) {
+        if (hasReadyPayout) {
           payoutStatus = "Ready";
+        } else if (approvedCommission >= minimumPayout && payoutConfigured) {
+          payoutStatus = "Ready";
+        } else if (approvedCommission >= minimumPayout) {
+          payoutStatus = "Method needed";
         } else if (hasPaidPayout && approvedCommission === 0) {
           payoutStatus = "Paid";
         } else {
@@ -159,6 +178,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         code: creator.promo_code,
         accountStatus: titleCase(creator.account_status),
         payoutMethod: creator.payout_method || "Not added",
+        payoutDetails: creator.payout_details || {},
         notes: creator.notes || "",
         proAccessUntil: creator.pro_access_until,
         lastUpdated: creator.updated_at,
@@ -184,7 +204,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         auth.client
           .from("partner_creators")
           .select(
-            "id,user_id,name,initials,email,promo_code,account_status,payout_method,pro_access_until,notes,updated_at",
+            "id,user_id,name,initials,email,promo_code,account_status,payout_method,payout_details,pro_access_until,notes,updated_at",
           )
           .order("created_at", { ascending: false }),
         auth.client
@@ -285,15 +305,51 @@ document.addEventListener("DOMContentLoaded", async () => {
     summaryAccount.innerHTML = badge(partner.accountStatus);
     summaryQualification.innerHTML = `${badge(
       partner.qualified ? "Qualified" : "In progress",
-    )}<br><span class="small-muted">${partner.confirmed} / ${settings.minimum_confirmed_paid_users} confirmed customers</span>`;
+    )}<span class="small-muted">${partner.confirmed} / ${settings.minimum_confirmed_paid_users} confirmed customers</span>`;
     summaryPayout.innerHTML = `${badge(
       partner.payoutStatus,
-    )}<br><span class="small-muted">${auth.money(
+    )}<span class="small-muted">${auth.money(
       partner.approvedCommission,
     )} approved</span>`;
     summaryPro.textContent = partner.proAccessUntil
       ? `Through ${dateLabel(partner.proAccessUntil)}`
       : "Not set";
+  }
+
+  function renderPayoutDetails(partner) {
+    if (!payoutDetailsPanel || !payoutMethodValue || !payoutDetailRows) return;
+
+    const method = partner.payoutMethod || "Not added";
+    const details = partner.payoutDetails || {};
+    const rows = [];
+
+    payoutMethodValue.textContent = method;
+
+    if (method === "Wise") {
+      rows.push(["Account holder", details.account_name || "—"]);
+      rows.push(["Wise email", details.email || "—"]);
+    }
+
+    if (method === "Bank transfer") {
+      rows.push(["Account holder", details.account_name || "—"]);
+      rows.push(["Bank", details.bank_name || "—"]);
+      rows.push(["Account / IBAN", details.account_number || "—"]);
+      rows.push(["SWIFT / BIC", details.swift_bic || "—"]);
+      rows.push(["Country", details.country || "—"]);
+    }
+
+    payoutDetailRows.innerHTML = rows
+      .map(
+        ([label, value]) => `
+          <div class="rule-line">
+            <span>${escapeHtml(label)}</span>
+            <strong>${escapeHtml(value)}</strong>
+          </div>
+        `,
+      )
+      .join("");
+
+    payoutDetailsPanel.hidden = false;
   }
 
   function resetForm() {
@@ -303,8 +359,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     fields.email.readOnly = false;
     if (emailNote) emailNote.hidden = true;
     setSelect(fields.accountStatus, "Active");
-    setSelect(fields.payoutMethod, "Not added");
     summary.hidden = true;
+    if (payoutDetailsPanel) payoutDetailsPanel.hidden = true;
+    if (payoutDetailRows) payoutDetailRows.innerHTML = "";
     if (deleteZone) deleteZone.hidden = true;
   }
 
@@ -323,8 +380,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       fields.code.value = partner.code;
       fields.notes.value = partner.notes;
       setSelect(fields.accountStatus, partner.accountStatus);
-      setSelect(fields.payoutMethod, partner.payoutMethod);
       renderSummary(partner);
+      renderPayoutDetails(partner);
       summary.hidden = false;
       if (emailNote) emailNote.hidden = false;
       if (deleteZone) deleteZone.hidden = false;
@@ -354,7 +411,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         email: payload.email,
         promoCode: payload.code,
         accountStatus: payload.accountStatus,
-        payoutMethod: payload.payoutMethod,
         notes: payload.notes,
       },
     });
@@ -410,7 +466,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         initials: partnerInitials(payload.name),
         promo_code: payload.code,
         account_status: payload.accountStatus.toLowerCase(),
-        payout_method: payload.payoutMethod,
         notes: payload.notes || null,
       })
       .eq("id", activeId);
@@ -439,7 +494,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       email: fields.email.value.trim().toLowerCase(),
       code: fields.code.value.trim().toUpperCase(),
       accountStatus: fields.accountStatus.value,
-      payoutMethod: fields.payoutMethod.value,
       notes: fields.notes.value.trim(),
     };
 

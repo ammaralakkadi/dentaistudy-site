@@ -92,7 +92,7 @@
       return "blue";
     }
 
-    if (["pending", "below minimum", "paused"].includes(value)) {
+    if (["pending", "below minimum", "method needed", "paused"].includes(value)) {
       return "amber";
     }
 
@@ -131,6 +131,8 @@
       deletion_requested: "Deletion requested",
       profile_updated: "Profile updated",
       password_changed: "Password changed",
+      payout_method_added: "Payout method added",
+      payout_method_updated: "Payout method updated",
     };
 
     return titles[String(eventType || "")] || titleCase(eventType);
@@ -160,7 +162,7 @@
     const { data, error } = await client
       .from("partner_creators")
       .select(
-        "id,user_id,name,initials,email,promo_code,account_status,payout_method,accepted_at,pro_access_until,created_at,updated_at",
+        "id,user_id,name,initials,email,promo_code,account_status,payout_method,payout_details,accepted_at,pro_access_until,created_at,updated_at",
       )
       .eq("user_id", userId)
       .maybeSingle();
@@ -235,6 +237,8 @@
       payout_paid: "Paid",
       profile_updated: "Updated",
       password_changed: "Updated",
+      payout_method_added: "Updated",
+      payout_method_updated: "Updated",
       deletion_requested: "Pending",
     };
 
