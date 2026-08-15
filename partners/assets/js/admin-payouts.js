@@ -230,28 +230,30 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     return `
-      <form data-mark-paid-form class="grid" autocomplete="off">
-        <div class="form-row">
-          <label class="label" for="payout-transfer-reference">Transfer reference</label>
-          <input
-            class="input"
-            id="payout-transfer-reference"
-            name="transferReference"
-            required
-            autocomplete="off"
-          />
-        </div>
-        <div class="form-row">
-          <label class="label" for="payout-paid-date">Paid date</label>
-          <input
-            class="input"
-            id="payout-paid-date"
-            name="paidDate"
-            type="date"
-            max="${today()}"
-            value="${today()}"
-            required
-          />
+      <form data-mark-paid-form class="payout-record-form" autocomplete="off">
+        <div class="payout-record-fields">
+          <div class="form-row">
+            <label class="label" for="payout-transfer-reference">Transfer reference</label>
+            <input
+              class="input"
+              id="payout-transfer-reference"
+              name="transferReference"
+              required
+              autocomplete="off"
+            />
+          </div>
+          <div class="form-row">
+            <label class="label" for="payout-paid-date">Paid date</label>
+            <input
+              class="input"
+              id="payout-paid-date"
+              name="paidDate"
+              type="date"
+              max="${today()}"
+              value="${today()}"
+              required
+            />
+          </div>
         </div>
         <button class="btn btn-primary" type="submit">Record payment</button>
       </form>

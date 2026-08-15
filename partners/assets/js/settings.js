@@ -24,6 +24,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   const payoutMethodAction = document.querySelector(
     "[data-payout-method-action]",
   );
+  const payoutMethodValue = document.querySelector(
+    "[data-payout-method-value]",
+  );
   const payoutDrawer = document.querySelector("[data-payout-drawer]");
   const payoutDrawerClose = document.querySelector(
     "[data-payout-drawer-close]",
@@ -55,23 +58,19 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   function renderPayoutMethod(profile) {
-    if (!payoutMethodAction || !payoutManageButton) return;
+    if (!payoutMethodAction || !payoutManageButton || !payoutMethodValue) {
+      return;
+    }
 
     const method = profile?.payout_method || "Not added";
-    const icon = payoutManageButton.querySelector("[data-icon]");
+    const hasMethod = method !== "Not added";
 
-    payoutMethodAction.textContent =
-      method === "Not added" ? "Add payout method" : method;
+    payoutMethodValue.textContent = method;
+    payoutMethodAction.textContent = hasMethod ? "Manage" : "Add method";
     payoutManageButton.setAttribute(
       "aria-label",
-      method === "Not added" ? "Add payout method" : `Update ${method} payout method`,
+      hasMethod ? `Manage ${method} payout method` : "Add payout method",
     );
-
-    if (icon && window.DASIcons) {
-      icon.innerHTML =
-        window.DASIcons[method === "Not added" ? "plus" : "settings"] ||
-        icon.innerHTML;
-    }
   }
 
   function syncPayoutFields() {

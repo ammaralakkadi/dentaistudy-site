@@ -102,7 +102,8 @@
   }
 
   function logoutButtons() {
-    qsa("[data-logout]").forEach((btn) => {
+    qsa("[data-logout]:not([data-logout-bound])").forEach((btn) => {
+      btn.setAttribute("data-logout-bound", "true");
       btn.addEventListener("click", async () => {
         btn.disabled = true;
         const target = btn.getAttribute("data-redirect") || "../login/";
@@ -117,6 +118,54 @@
         }
       });
     });
+  }
+
+  async function syncPublicPartnerNavigation() {
+    const headerActions = qs(".header-actions-public");
+    const mobileLinks = qs("[data-mobile-panel] .slide-nav-links");
+    const auth = window.DentAIStudyPartnerSupabase;
+
+    if (!headerActions || !mobileLinks || !auth?.enabled) return;
+
+    try {
+      const user = await auth.getCurrentUser();
+      if (!user) return;
+
+      const profile = await auth.getPartnerProfile(user.id);
+      if (!profile) return;
+
+      headerActions.innerHTML = `
+        <a class="btn btn-primary header-request" href="/partners/dashboard/">Dashboard</a>
+        <a class="btn btn-outline header-login" href="/partners/settings/">Settings</a>
+      `;
+
+      mobileLinks.innerHTML = `
+        <a data-nav href="/partners/program/">
+          <span data-icon="program"></span><span>Program</span>
+        </a>
+        <div class="slide-nav-divider"></div>
+        <a data-nav href="/partners/dashboard/">
+          <span data-icon="pulse"></span><span>Dashboard</span>
+        </a>
+        <a data-nav href="/partners/settings/">
+          <span data-icon="settings"></span><span>Settings</span>
+        </a>
+        <button
+          class="slide-nav-button"
+          type="button"
+          data-logout
+          data-redirect="/partners/login/"
+        >
+          <span data-icon="logout"></span><span>Log out</span>
+        </button>
+      `;
+
+      iconize();
+      activeNav();
+      logoutButtons();
+    } catch (error) {
+      console.error("Partner public navigation check failed:", error);
+    }
   }
 
   function copyButtons() {
@@ -261,6 +310,7 @@
     mobileNav();
     accountMenu();
     logoutButtons();
+    syncPublicPartnerNavigation();
     setYear();
     copyButtons();
     setTimeout(enhanceSelects, 0);

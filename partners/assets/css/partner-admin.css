@@ -636,6 +636,21 @@ body:has(.admin-drawer.is-open)::before {
   text-align: right;
   overflow-wrap: anywhere;
 }
+[data-partner-summary] [data-summary-qualification],
+[data-partner-summary] [data-summary-payout] {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+[data-partner-summary] [data-summary-qualification] .small-muted,
+[data-partner-summary] [data-summary-payout] .small-muted {
+  margin: 0;
+  line-height: 1.4;
+  text-align: left;
+}
+
 @media (min-width: 1025px) {
   .preview-rows .rule-line {
     grid-template-columns: max-content minmax(0, 1fr);
@@ -702,14 +717,28 @@ body:has(.admin-drawer.is-open)::before {
   }
 }
 .preview-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  margin-top: 16px;
-  flex-wrap: wrap;
+  margin-top: 18px;
 }
-.preview-actions .btn {
-  width: auto;
+.payout-record-form {
+  width: 100%;
+}
+.payout-record-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+.payout-record-form .form-row {
+  min-width: 0;
+  margin: 0;
+}
+.payout-record-form .input {
+  width: 100%;
+  min-width: 0;
+}
+.payout-record-form .btn {
+  width: fit-content;
+  max-width: 100%;
+  margin-top: 14px;
 }
 .payout-preview-card {
   margin-top: 18px;
@@ -839,6 +868,54 @@ body:has(.admin-drawer.is-open)::before {
   font-size: 15px;
   white-space: nowrap;
 }
+@media (min-width: 1181px) {
+  .payout-admin-grid {
+    align-items: stretch;
+  }
+  .payout-admin-grid > .payout-main-column {
+    display: contents;
+  }
+  .payout-admin-grid > .payout-main-column > .card:first-child {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .payout-admin-grid > .payout-main-column > .payout-preview-card {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    margin-top: 0;
+  }
+  .payout-admin-grid > aside {
+    grid-column: 2;
+    grid-row: 1;
+    align-self: stretch;
+  }
+  .payout-admin-grid > aside .side-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .payout-admin-grid > aside .breakdown-row {
+    flex: 1 1 0;
+    min-height: 48px;
+  }
+  .payout-admin-grid .payout-preview-card .preview-metrics.cols-3 {
+    grid-template-columns: minmax(360px, 1.45fr) repeat(2, minmax(200px, 1fr));
+  }
+  .payout-admin-grid
+    .payout-preview-card
+    .preview-metric:first-child
+    strong {
+    font-family:
+      ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+      "Courier New", monospace;
+    font-size: 14px;
+    line-height: 1.35;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+    overflow-wrap: normal;
+  }
+}
+
 @media (min-width: 761px) and (max-width: 1180px) {
   .admin-grid-main {
     grid-template-columns: minmax(0, 1fr) 240px;

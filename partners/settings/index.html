@@ -229,17 +229,19 @@
                 </p>
               </div>
               <div class="settings-info-list">
-                <div>
-                  <span>Current method</span>
+                <div class="payout-method-summary">
+                  <div class="payout-method-current">
+                    <span>Current method</span>
+                    <strong data-payout-method-value>Not added</strong>
+                  </div>
                   <button
-                    class="payout-method-trigger"
+                    class="btn btn-primary btn-sm payout-method-trigger"
                     type="button"
                     data-payout-manage
                     aria-haspopup="dialog"
                     aria-controls="payout-method-drawer"
                   >
-                    <span data-payout-method-action>Add payout method</span>
-                    <span data-icon="plus"></span>
+                    <span data-payout-method-action>Add method</span>
                   </button>
                 </div>
                 <div>
@@ -397,9 +399,16 @@
             </div>
           </div>
 
-          <p class="small-muted payout-method-note">
-            Your payout details are only used to send Partner payouts.
-          </p>
+          <div class="payout-method-note" role="note">
+            <span class="payout-method-note-icon" data-icon="shield"></span>
+            <div>
+              <strong>Payout details</strong>
+              <span
+                >Used only to send Partner payouts. You can update them at any
+                time.</span
+              >
+            </div>
+          </div>
 
           <div class="settings-save-row">
             <button class="btn btn-primary" type="submit">
