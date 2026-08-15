@@ -145,7 +145,7 @@
         </a>
         <div class="slide-nav-divider"></div>
         <a data-nav href="/partners/dashboard/">
-          <span data-icon="pulse"></span><span>Dashboard</span>
+          <span data-icon="dashboard"></span><span>Dashboard</span>
         </a>
         <a data-nav href="/partners/settings/">
           <span data-icon="settings"></span><span>Settings</span>
