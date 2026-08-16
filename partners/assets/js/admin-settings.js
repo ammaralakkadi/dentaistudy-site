@@ -52,7 +52,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   function hydrate(row) {
-    field("programStatus").value = auth.titleCase(row.program_status);
+    const programStatus = field("programStatus");
+    programStatus.value = auth.titleCase(row.program_status);
+    programStatus.dispatchEvent(new Event("change", { bubbles: true }));
     field("minimumUsers").value = String(row.minimum_confirmed_paid_users);
     field("initialProMonths").value = String(row.initial_pro_months);
     field("qualifiedProMonths").value = String(row.qualified_pro_months);
@@ -147,5 +149,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   } catch (error) {
     console.error(error);
     dasToast("Partner settings could not be loaded");
+  } finally {
+    auth.revealProtectedPage();
   }
 });

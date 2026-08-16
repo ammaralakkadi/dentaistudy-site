@@ -56,7 +56,20 @@
 html {
   scroll-behavior: smooth;
 }
-html.partner-auth-pending body {
+html.partner-auth-pending[data-partner-auth="partner"] .partner-shell > main,
+html.partner-auth-pending[data-partner-auth="admin"] .admin-content {
+  visibility: hidden;
+}
+html.partner-auth-pending[data-partner-auth-success] body {
+  visibility: hidden;
+}
+html:not(.partner-public-auth-ready) .header-actions-public,
+html:not(.partner-public-auth-ready)
+  [data-mobile-panel]
+  a[href^="mailto:partners@dentaistudy.com"],
+html:not(.partner-public-auth-ready)
+  [data-mobile-panel]
+  a[data-nav][href$="login/"] {
   visibility: hidden;
 }
 

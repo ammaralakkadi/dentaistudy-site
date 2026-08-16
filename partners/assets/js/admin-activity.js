@@ -733,5 +733,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     activityBody.innerHTML =
       '<tr><td class="referral-empty" colspan="5">Activity could not be loaded.</td></tr>';
     dasToast("Payment records could not be loaded");
+  } finally {
+    await window.DentAIStudyAdminStatsReady;
+    auth.revealProtectedPage();
   }
 });

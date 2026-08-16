@@ -242,11 +242,17 @@
                     </div>
                     <div class="rule-line">
                       <span>Qualification</span
-                      ><strong data-summary-qualification></strong>
+                      ><strong
+                        class="partner-summary-status-stack"
+                        data-summary-qualification
+                      ></strong>
                     </div>
                     <div class="rule-line">
                       <span>Payout status</span
-                      ><strong data-summary-payout></strong>
+                      ><strong
+                        class="partner-summary-status-stack"
+                        data-summary-payout
+                      ></strong>
                     </div>
                     <div class="rule-line">
                       <span>Pro access</span><strong data-summary-pro></strong>
@@ -279,9 +285,6 @@
                     type="email"
                     required
                   />
-                  <span class="small-muted" data-partner-email-note hidden
-                    >Login email is fixed after Partner access is created.</span
-                  >
                 </div>
 
                 <div class="form-row">
@@ -327,7 +330,11 @@
                   Add partner
                 </button>
 
-                <div class="drawer-danger-action" data-partner-delete-zone hidden>
+                <div
+                  class="drawer-danger-action"
+                  data-partner-delete-zone
+                  hidden
+                >
                   <button
                     class="btn btn-danger"
                     type="button"

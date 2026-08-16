@@ -225,7 +225,7 @@
               <div class="settings-card-heading">
                 <h2 class="card-title">Payout method</h2>
                 <p class="card-text">
-                  Choose where you want DentAIstudy to send your Partner payouts.
+                  Manage the Wise account used for your Partner payouts.
                 </p>
               </div>
               <div class="settings-info-list">
@@ -303,20 +303,17 @@
         <form data-payout-form autocomplete="off">
           <div class="form-row">
             <label class="label" for="payout-method">Method</label>
-            <select
-              class="select"
+            <input
+              class="input"
               id="payout-method"
               name="method"
-              data-payout-method-select
-              required
-            >
-              <option value="">Choose payout method</option>
-              <option value="Wise">Wise</option>
-              <option value="Bank transfer">Bank transfer</option>
-            </select>
+              value="Wise"
+              readonly
+              aria-readonly="true"
+            />
           </div>
 
-          <div class="payout-method-fields" data-payout-wise hidden>
+          <div class="payout-method-fields">
             <div class="form-row">
               <label class="label" for="wise-account-name"
                 >Account holder name</label
@@ -327,6 +324,7 @@
                 name="wiseAccountName"
                 autocomplete="name"
                 maxlength="120"
+                required
               />
             </div>
             <div class="form-row">
@@ -337,65 +335,8 @@
                 name="wiseEmail"
                 type="email"
                 autocomplete="email"
+                required
               />
-            </div>
-          </div>
-
-          <div class="payout-method-fields" data-payout-bank hidden>
-            <div class="form-row">
-              <label class="label" for="bank-account-name"
-                >Account holder name</label
-              >
-              <input
-                class="input"
-                id="bank-account-name"
-                name="bankAccountName"
-                autocomplete="name"
-                maxlength="120"
-              />
-            </div>
-            <div class="form-row">
-              <label class="label" for="bank-name">Bank name</label>
-              <input
-                class="input"
-                id="bank-name"
-                name="bankName"
-                maxlength="120"
-              />
-            </div>
-            <div class="form-row">
-              <label class="label" for="bank-account-number"
-                >Account number / IBAN</label
-              >
-              <input
-                class="input"
-                id="bank-account-number"
-                name="bankAccountNumber"
-                maxlength="80"
-                autocapitalize="characters"
-              />
-            </div>
-            <div class="form-grid">
-              <div class="form-row">
-                <label class="label" for="bank-swift">SWIFT / BIC</label>
-                <input
-                  class="input"
-                  id="bank-swift"
-                  name="bankSwift"
-                  maxlength="20"
-                  autocapitalize="characters"
-                />
-              </div>
-              <div class="form-row">
-                <label class="label" for="bank-country">Bank country</label>
-                <input
-                  class="input"
-                  id="bank-country"
-                  name="bankCountry"
-                  maxlength="80"
-                  autocomplete="country-name"
-                />
-              </div>
             </div>
           </div>
 
@@ -412,7 +353,7 @@
 
           <div class="settings-save-row">
             <button class="btn btn-primary" type="submit">
-              Save payout method
+              Save Wise details
             </button>
             <span class="settings-save-status" data-payout-status></span>
           </div>

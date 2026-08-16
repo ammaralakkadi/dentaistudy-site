@@ -60,5 +60,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       list.innerHTML =
         '<p class="empty-note">Partner activity could not be loaded.</p>';
     }
+  } finally {
+    auth.revealProtectedPage();
   }
 });

@@ -59,5 +59,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.error(error);
     activityBody.innerHTML =
       '<tr><td class="referral-empty" colspan="2">Recent activity could not be loaded.</td></tr>';
+  } finally {
+    await window.DentAIStudyAdminStatsReady;
+    auth.revealProtectedPage();
   }
 });

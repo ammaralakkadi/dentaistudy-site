@@ -109,5 +109,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       list.innerHTML =
         '<p class="empty-note">Partner data could not be loaded.</p>';
     }
+  } finally {
+    auth.revealProtectedPage();
   }
 });

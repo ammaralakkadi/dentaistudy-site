@@ -425,7 +425,6 @@
         return authState;
       }
 
-      revealProtectedPage();
       return authState;
     } catch (error) {
       console.error("Partner access check failed:", error);
@@ -461,6 +460,7 @@
     safeNext,
     requirePartner,
     requireAdmin,
+    revealProtectedPage,
   };
 
   window.DentAIStudyPartnerAuthReady = guardCurrentRoute();

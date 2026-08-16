@@ -6,7 +6,7 @@ html:has(.admin-shell) {
   min-height: 100vh;
   background: #fff;
   display: grid;
-  grid-template-columns: 228px minmax(0, 1fr);
+  grid-template-columns: 210px minmax(0, 1fr);
   overflow-x: clip;
   max-width: 100%;
 }
@@ -124,9 +124,9 @@ html:has(.admin-shell) {
 }
 .admin-content {
   width: 100%;
-  max-width: 1280px;
+  max-width: 1440px;
   margin: 0 auto;
-  padding: 20px clamp(18px, 2.2vw, 28px) 32px;
+  padding: 18px clamp(16px, 1.8vw, 24px) 28px;
 }
 .admin-page-head {
   margin-bottom: 16px;
@@ -384,7 +384,7 @@ body:has(.admin-drawer.is-open)::before {
 }
 .admin-content th,
 .admin-content td {
-  padding: 10px;
+  padding: 9px;
   vertical-align: middle;
 }
 .admin-content th {
@@ -575,7 +575,7 @@ body:has(.admin-drawer.is-open)::before {
 
 .preview-grid {
   display: grid;
-  grid-template-columns: 210px minmax(0, 1fr);
+  grid-template-columns: 190px minmax(0, 1fr);
   gap: 22px;
   align-items: stretch;
 }
@@ -638,19 +638,38 @@ body:has(.admin-drawer.is-open)::before {
   text-align: right;
   overflow-wrap: anywhere;
 }
-[data-partner-summary] [data-summary-qualification],
-[data-partner-summary] [data-summary-payout] {
-  display: grid;
-  grid-template-columns: max-content minmax(0, 1fr);
-  align-items: center;
-  gap: 12px;
+[data-partner-summary] .rule-line .partner-summary-status-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
   min-width: 0;
+  text-align: left;
 }
-[data-partner-summary] [data-summary-qualification] .small-muted,
-[data-partner-summary] [data-summary-payout] .small-muted {
+[data-partner-summary] .rule-line .partner-summary-status-stack .small-muted {
   margin: 0;
   line-height: 1.4;
   text-align: left;
+}
+
+@media (min-width: 761px) {
+  [data-partner-summary] .rule-line .partner-summary-status-stack {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) max-content;
+    align-items: center;
+    gap: 18px;
+    width: 100%;
+  }
+  [data-partner-summary] .rule-line .partner-summary-status-stack .pill {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: end;
+  }
+  [data-partner-summary] .rule-line .partner-summary-status-stack .small-muted {
+    grid-column: 1;
+    grid-row: 1;
+    min-width: 0;
+  }
 }
 
 @media (min-width: 1025px) {
@@ -697,13 +716,13 @@ body:has(.admin-drawer.is-open)::before {
     overflow-wrap: anywhere;
   }
   .partner-accounts-table th:nth-child(1) {
-    width: 18%;
+    width: 20%;
   }
   .partner-accounts-table th:nth-child(2) {
-    width: 12%;
+    width: 11%;
   }
   .partner-accounts-table th:nth-child(3) {
-    width: 11%;
+    width: 10%;
   }
   .partner-accounts-table th:nth-child(4) {
     width: 18%;
@@ -818,6 +837,9 @@ body:has(.admin-drawer.is-open)::before {
 .referral-ledger-card .card-text {
   margin-top: 5px;
 }
+.referral-ledger-card + .card {
+  margin-top: 14px;
+}
 .referral-toolbar {
   margin-top: 4px;
   margin-bottom: 14px;
@@ -901,7 +923,7 @@ body:has(.admin-drawer.is-open)::before {
     min-height: 48px;
   }
   .payout-admin-grid .payout-preview-card .preview-metrics.cols-3 {
-    grid-template-columns: minmax(360px, 1.45fr) repeat(2, minmax(200px, 1fr));
+    grid-template-columns: minmax(0, 1.45fr) repeat(2, minmax(0, 1fr));
   }
   .payout-admin-grid
     .payout-preview-card
@@ -913,8 +935,6 @@ body:has(.admin-drawer.is-open)::before {
     font-size: 14px;
     line-height: 1.35;
     letter-spacing: -0.02em;
-    white-space: nowrap;
-    overflow-wrap: normal;
   }
 }
 
@@ -982,6 +1002,50 @@ body:has(.admin-drawer.is-open)::before {
   .partner-accounts-table .partner-cell-stack {
     width: 100%;
   }
+  .partner-accounts-table td.cell-status:nth-child(4),
+  .partner-accounts-table td.cell-status:nth-child(5) {
+    grid-template-columns: max-content minmax(0, 1fr) max-content;
+    align-items: center;
+    gap: 8px;
+  }
+  .partner-accounts-table td.cell-status:nth-child(4)::before,
+  .partner-accounts-table td.cell-status:nth-child(5)::before {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .partner-accounts-table
+    td.cell-status:nth-child(4)
+    .partner-cell-stack,
+  .partner-accounts-table
+    td.cell-status:nth-child(5)
+    .partner-cell-stack {
+    display: contents;
+  }
+  .partner-accounts-table
+    td.cell-status:nth-child(4)
+    .partner-cell-stack
+    .small-muted,
+  .partner-accounts-table
+    td.cell-status:nth-child(5)
+    .partner-cell-stack
+    .small-muted {
+    grid-column: 2;
+    grid-row: 1;
+    min-width: 0;
+    margin: 0;
+  }
+  .partner-accounts-table
+    td.cell-status:nth-child(4)
+    .partner-cell-stack
+    .pill,
+  .partner-accounts-table
+    td.cell-status:nth-child(5)
+    .partner-cell-stack
+    .pill {
+    grid-column: 3;
+    grid-row: 1;
+    justify-self: end;
+  }
   .partner-accounts-table .creator-cell {
     width: 100%;
     max-width: none;
@@ -1023,6 +1087,10 @@ body:has(.admin-drawer.is-open)::before {
     border-bottom: 1px solid var(--line);
     white-space: normal;
     overflow-wrap: anywhere;
+  }
+  .referral-ledger-table td > * {
+    grid-column: 2;
+    min-width: 0;
   }
   .referral-ledger-table td::before {
     content: attr(data-label);

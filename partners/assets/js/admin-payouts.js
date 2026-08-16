@@ -75,8 +75,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function hasPayoutDetails(creator) {
     return Boolean(
-      creator?.payout_method &&
-        creator.payout_method !== "Not added" &&
+      creator?.payout_method === "Wise" &&
         creator?.payout_details &&
         Object.keys(creator.payout_details).length > 0,
     );
@@ -87,16 +86,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       return [
         ["Account holder", details.account_name || "—"],
         ["Wise email", details.email || "—"],
-      ];
-    }
-
-    if (method === "Bank transfer") {
-      return [
-        ["Account holder", details.account_name || "—"],
-        ["Bank", details.bank_name || "—"],
-        ["Account / IBAN", details.account_number || "—"],
-        ["SWIFT / BIC", details.swift_bic || "—"],
-        ["Country", details.country || "—"],
       ];
     }
 
@@ -531,5 +520,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     preview.innerHTML =
       '<p class="empty-note">Payouts could not be loaded.</p>';
     dasToast("Payouts could not be loaded");
+  } finally {
+    await window.DentAIStudyAdminStatsReady;
+    auth.revealProtectedPage();
   }
 });

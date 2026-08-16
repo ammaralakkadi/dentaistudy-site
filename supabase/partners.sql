@@ -44,7 +44,7 @@ create table public.partner_creators (
   promo_code text not null check (btrim(promo_code) <> ''),
   account_status text not null default 'active'
     check (account_status in ('active', 'paused', 'ended')),
-  payout_method text not null default 'Not added',
+  payout_method text not null default 'Not added' check (payout_method in ('Not added', 'Wise')),
   payout_details jsonb not null default '{}'::jsonb
     check (jsonb_typeof(payout_details) = 'object'),
   accepted_at timestamptz not null default now(),
@@ -68,7 +68,7 @@ create table public.partner_payouts (
   id uuid primary key default gen_random_uuid(),
   creator_id uuid not null references public.partner_creators (id),
   amount_usd numeric(10, 2) not null check (amount_usd > 0),
-  payment_method text not null default 'Wise or bank transfer',
+  payment_method text not null default 'Wise' check (payment_method = 'Wise'),
   payment_details jsonb not null default '{}'::jsonb
     check (jsonb_typeof(payment_details) = 'object'),
   scheduled_date date,
@@ -373,6 +373,7 @@ using (
     select 1
     from public.partner_creators
     where partner_creators.user_id = (select auth.uid())
+      and partner_creators.account_status = 'active'
   )
 );
 
@@ -389,7 +390,10 @@ for select
 to authenticated
 using (
   (select auth.jwt() -> 'app_metadata' ->> 'partner_admin') = 'true'
-  or user_id = (select auth.uid())
+  or (
+    user_id = (select auth.uid())
+    and account_status = 'active'
+  )
 );
 
 create policy "Partner creators admin insert"
@@ -422,6 +426,7 @@ using (
     from public.partner_creators
     where partner_creators.id = partner_payouts.creator_id
       and partner_creators.user_id = (select auth.uid())
+      and partner_creators.account_status = 'active'
   )
 );
 
@@ -455,6 +460,7 @@ using (
     from public.partner_creators
     where partner_creators.id = partner_referrals.creator_id
       and partner_creators.user_id = (select auth.uid())
+      and partner_creators.account_status = 'active'
   )
 );
 
@@ -515,6 +521,7 @@ using (
       from public.partner_creators
       where partner_creators.id = partner_activity.creator_id
         and partner_creators.user_id = (select auth.uid())
+        and partner_creators.account_status = 'active'
     )
   )
 );
@@ -535,6 +542,7 @@ with check (
       from public.partner_creators
       where partner_creators.id = partner_activity.creator_id
         and partner_creators.user_id = (select auth.uid())
+        and partner_creators.account_status = 'active'
     )
   )
 );
@@ -565,6 +573,7 @@ using (
       from public.partner_creators
       where partner_creators.id = partner_deletion_requests.creator_id
         and partner_creators.user_id = (select auth.uid())
+        and partner_creators.account_status = 'active'
     )
   )
 );
@@ -580,6 +589,7 @@ with check (
     from public.partner_creators
     where partner_creators.id = partner_deletion_requests.creator_id
       and partner_creators.user_id = (select auth.uid())
+      and partner_creators.account_status = 'active'
   )
 );
 
@@ -642,23 +652,13 @@ begin
     raise exception 'The Partner payout details are incomplete';
   end if;
 
-  if lower(btrim(creator.payout_method)) = 'wise'
-     and (
-       coalesce(btrim(creator.payout_details ->> 'account_name'), '') = ''
-       or coalesce(btrim(creator.payout_details ->> 'email'), '') = ''
-     ) then
-    raise exception 'The Partner Wise payout details are incomplete';
+  if lower(btrim(creator.payout_method)) <> 'wise' then
+    raise exception 'Wise is the supported Partner payout method';
   end if;
 
-  if lower(btrim(creator.payout_method)) = 'bank transfer'
-     and (
-       coalesce(btrim(creator.payout_details ->> 'account_name'), '') = ''
-       or coalesce(btrim(creator.payout_details ->> 'bank_name'), '') = ''
-       or coalesce(btrim(creator.payout_details ->> 'account_number'), '') = ''
-       or coalesce(btrim(creator.payout_details ->> 'swift_bic'), '') = ''
-       or coalesce(btrim(creator.payout_details ->> 'country'), '') = ''
-     ) then
-    raise exception 'The Partner bank transfer details are incomplete';
+  if coalesce(btrim(creator.payout_details ->> 'account_name'), '') = ''
+     or coalesce(btrim(creator.payout_details ->> 'email'), '') = '' then
+    raise exception 'The Partner Wise payout details are incomplete';
   end if;
 
   if exists (

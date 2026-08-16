@@ -125,7 +125,11 @@ Deno.serve(async (req) => {
 
     if (partnerError) throw partnerError;
     if (!partner) {
-      return json({ error: "This account is not an active Partner record." }, 403);
+      return json({ error: "This account is not a Partner record." }, 403);
+    }
+
+    if (partner.account_status !== "active") {
+      return json({ error: "Partner access is not active for this account." }, 403);
     }
 
     const body = await req.json();
@@ -179,61 +183,25 @@ Deno.serve(async (req) => {
       const rawDetails =
         body?.details && typeof body.details === "object" ? body.details : {};
 
-      if (!["Wise", "Bank transfer"].includes(method)) {
-        return json({ error: "Choose Wise or Bank transfer." }, 400);
+      if (method !== "Wise") {
+        return json({ error: "Wise is the supported Partner payout method." }, 400);
       }
 
-      let payoutDetails: Record<string, string>;
+      const accountName = String(rawDetails.account_name ?? "").trim();
+      const email = String(rawDetails.email ?? "").trim().toLowerCase();
 
-      if (method === "Wise") {
-        const accountName = String(rawDetails.account_name ?? "").trim();
-        const email = String(rawDetails.email ?? "").trim().toLowerCase();
-
-        if (accountName.length < 2 || accountName.length > 120) {
-          return json({ error: "Enter the Wise account holder name." }, 400);
-        }
-
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-          return json({ error: "Enter the email used for the Wise account." }, 400);
-        }
-
-        payoutDetails = {
-          account_name: accountName,
-          email,
-        };
-      } else {
-        const accountName = String(rawDetails.account_name ?? "").trim();
-        const bankName = String(rawDetails.bank_name ?? "").trim();
-        const accountNumber = String(rawDetails.account_number ?? "").trim();
-        const swiftBic = String(rawDetails.swift_bic ?? "").trim().toUpperCase();
-        const country = String(rawDetails.country ?? "").trim();
-
-        if (
-          !accountName ||
-          !bankName ||
-          !accountNumber ||
-          !swiftBic ||
-          !country
-        ) {
-          return json({ error: "Complete all bank transfer details." }, 400);
-        }
-
-        if (accountName.length > 120 || bankName.length > 120) {
-          return json({ error: "Bank account details are too long." }, 400);
-        }
-
-        if (accountNumber.length > 80 || swiftBic.length > 20 || country.length > 80) {
-          return json({ error: "Check the bank account details and try again." }, 400);
-        }
-
-        payoutDetails = {
-          account_name: accountName,
-          bank_name: bankName,
-          account_number: accountNumber,
-          swift_bic: swiftBic,
-          country,
-        };
+      if (accountName.length < 2 || accountName.length > 120) {
+        return json({ error: "Enter the Wise account holder name." }, 400);
       }
+
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        return json({ error: "Enter the email used for the Wise account." }, 400);
+      }
+
+      const payoutDetails: Record<string, string> = {
+        account_name: accountName,
+        email,
+      };
 
       const wasAdded =
         !partner.payout_method ||

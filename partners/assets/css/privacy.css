@@ -82,3 +82,14 @@
   font-size: 0.94rem;
   line-height: 1.7;
 }
+.legal-content a {
+  color: var(--blue);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: rgba(11, 99, 255, 0.32);
+  text-underline-offset: 3px;
+}
+.legal-content a:hover {
+  color: var(--blue-dark);
+  opacity: 1;
+}

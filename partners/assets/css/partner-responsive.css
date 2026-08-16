@@ -736,22 +736,6 @@
     min-width: 0;
     text-align: left;
   }
-  [data-partner-summary] [data-summary-qualification],
-  [data-partner-summary] [data-summary-payout] {
-    display: grid;
-    grid-template-columns: 1fr;
-    justify-items: start;
-    gap: 8px;
-    min-width: 0;
-    text-align: left;
-  }
-  [data-partner-summary] [data-summary-qualification] .small-muted,
-  [data-partner-summary] [data-summary-payout] .small-muted {
-    margin-top: 0;
-    font-weight: 600;
-    line-height: 1.4;
-    text-align: left;
-  }
   [data-partner-summary] [data-summary-pro] {
     display: block;
     text-align: left;

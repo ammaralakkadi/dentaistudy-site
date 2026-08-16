@@ -122,6 +122,13 @@ async function clearPartnerAuthEntitlement(
   }
 
   const appMetadata = { ...(data.user.app_metadata ?? {}) };
+  if (
+    !("partner_program" in appMetadata) &&
+    !("partner_pro_until" in appMetadata)
+  ) {
+    return;
+  }
+
   delete appMetadata.partner_program;
   delete appMetadata.partner_pro_until;
 
@@ -130,6 +137,22 @@ async function clearPartnerAuthEntitlement(
   });
 
   if (updateError) throw updateError;
+}
+
+async function applyPartnerAccessState(
+  admin: ReturnType<typeof createClient>,
+  userId: string,
+  accountStatus: string,
+  proUntil: string | null,
+) {
+  if (!userId) return;
+
+  if (accountStatus === "active" && proUntil) {
+    await syncPartnerAuthEntitlement(admin, userId, proUntil);
+    return;
+  }
+
+  await clearPartnerAuthEntitlement(admin, userId);
 }
 
 async function syncAllPartnerEntitlements(
@@ -149,7 +172,7 @@ async function syncAllPartnerEntitlements(
       .single(),
     admin
       .from("partner_creators")
-      .select("id,user_id,pro_access_until,qualified_at"),
+      .select("id,user_id,account_status,pro_access_until,qualified_at"),
     admin
       .from("partner_referrals")
       .select("creator_id,customer_token")
@@ -203,8 +226,13 @@ async function syncAllPartnerEntitlements(
       newlyQualified += 1;
     }
 
-    if (creator.user_id && proUntil) {
-      await syncPartnerAuthEntitlement(admin, creator.user_id, proUntil);
+    if (creator.user_id) {
+      await applyPartnerAccessState(
+        admin,
+        creator.user_id,
+        String(creator.account_status || ""),
+        proUntil,
+      );
       synced += 1;
     }
   }
@@ -424,6 +452,131 @@ async function sendPartnerInvitationEmail(
   });
 }
 
+async function updatePartner(
+  admin: ReturnType<typeof createClient>,
+  callerId: string,
+  body: Record<string, unknown>,
+) {
+  const partnerId = String(body?.partnerId ?? "").trim();
+  const name = String(body?.name ?? "").trim();
+  const promoCode = normalizeCode(body?.promoCode);
+  const accountStatus = String(body?.accountStatus ?? "").trim().toLowerCase();
+  const notes = String(body?.notes ?? "").trim();
+
+  if (!partnerId || !name || !promoCode) {
+    return json({ error: "Partner ID, name, and promo code are required." }, 400);
+  }
+
+  if (!/^[A-Z0-9_-]{3,32}$/.test(promoCode)) {
+    return json(
+      {
+        error:
+          "Promo code must be 3–32 characters using letters, numbers, hyphens, or underscores.",
+      },
+      400,
+    );
+  }
+
+  if (!["active", "paused", "ended"].includes(accountStatus)) {
+    return json({ error: "Invalid account status." }, 400);
+  }
+
+  const { data: partner, error: partnerError } = await admin
+    .from("partner_creators")
+    .select(
+      "id,user_id,name,initials,email,promo_code,account_status,pro_access_until,notes",
+    )
+    .eq("id", partnerId)
+    .maybeSingle();
+
+  if (partnerError) throw partnerError;
+  if (!partner) {
+    return json({ error: "This Partner no longer exists." }, 404);
+  }
+
+  const { data: codeMatch, error: codeError } = await admin
+    .from("partner_creators")
+    .select("id")
+    .ilike("promo_code", promoCode)
+    .neq("id", partnerId)
+    .maybeSingle();
+
+  if (codeError) throw codeError;
+  if (codeMatch) {
+    return json({ error: "This promo code is already assigned." }, 409);
+  }
+
+  const { data: updatedPartner, error: updateError } = await admin
+    .from("partner_creators")
+    .update({
+      name,
+      initials: initials(name),
+      promo_code: promoCode,
+      account_status: accountStatus,
+      notes: notes || null,
+    })
+    .eq("id", partnerId)
+    .select(
+      "id,user_id,name,email,promo_code,account_status,payout_method,payout_details,pro_access_until,notes,updated_at",
+    )
+    .single();
+
+  if (updateError) throw updateError;
+
+  try {
+    await applyPartnerAccessState(
+      admin,
+      partner.user_id,
+      accountStatus,
+      partner.pro_access_until ? String(partner.pro_access_until) : null,
+    );
+  } catch (accessError) {
+    const { error: rollbackError } = await admin
+      .from("partner_creators")
+      .update({
+        name: partner.name,
+        initials: partner.initials,
+        promo_code: partner.promo_code,
+        account_status: partner.account_status,
+        notes: partner.notes,
+      })
+      .eq("id", partner.id);
+
+    if (rollbackError) {
+      console.error(
+      "[partner-invite] Partner update rollback failed",
+      rollbackError,
+    );
+    }
+
+    await applyPartnerAccessState(
+      admin,
+      partner.user_id,
+      String(partner.account_status || ""),
+      partner.pro_access_until ? String(partner.pro_access_until) : null,
+    ).catch(() => null);
+
+    throw accessError;
+  }
+
+  const statusLabel =
+    accountStatus.charAt(0).toUpperCase() + accountStatus.slice(1);
+  const { error: activityError } = await admin.from("partner_activity").insert({
+    creator_id: partner.id,
+    actor_user_id: callerId,
+    actor_kind: "admin",
+    event_type: "partner_updated",
+    details: `${promoCode} · ${statusLabel}`,
+    visibility: "admin",
+  });
+
+  if (activityError) {
+    console.error("[partner-invite] update activity insert failed", activityError);
+  }
+
+  return json({ ok: true, partner: updatedPartner });
+}
+
 async function deletePartner(
   admin: ReturnType<typeof createClient>,
   callerId: string,
@@ -564,6 +717,10 @@ Deno.serve(async (req) => {
       return await deletePartner(admin, caller.id, partnerId);
     }
 
+    if (action === "update_partner") {
+      return await updatePartner(admin, caller.id, body);
+    }
+
     const name = String(body?.name ?? "").trim();
     const email = normalizeEmail(body?.email);
     const promoCode = normalizeCode(body?.promoCode);
@@ -617,10 +774,19 @@ Deno.serve(async (req) => {
 
     const { data: settings, error: settingsError } = await admin
       .from("partner_settings")
-      .select("initial_pro_months")
+      .select("program_status,initial_pro_months")
       .eq("id", 1)
       .single();
     if (settingsError) throw settingsError;
+    if (settings.program_status === "paused") {
+      return json(
+        {
+          error:
+            "Partner invitations are paused. Resume the Partner Program in Settings before adding a Partner.",
+        },
+        409,
+      );
+    }
 
     const proUntil = addMonthsClamped(
       new Date(),
@@ -684,7 +850,7 @@ Deno.serve(async (req) => {
     }
 
     try {
-      await syncPartnerAuthEntitlement(admin, authUser.id, proUntil);
+      await applyPartnerAccessState(admin, authUser.id, accountStatus, proUntil);
       await sendPartnerInvitationEmail(email, actionUrl, mode === "linked");
     } catch (setupError) {
       await admin.from("partner_creators").delete().eq("id", partner.id);

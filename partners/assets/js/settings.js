@@ -32,11 +32,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     "[data-payout-drawer-close]",
   );
   const payoutForm = document.querySelector("[data-payout-form]");
-  const payoutMethodSelect = document.querySelector(
-    "[data-payout-method-select]",
-  );
-  const payoutWiseFields = document.querySelector("[data-payout-wise]");
-  const payoutBankFields = document.querySelector("[data-payout-bank]");
   const deleteRequestButton = document.querySelector("[data-delete-request]");
   const deleteModal = document.querySelector("[data-delete-modal]");
   const deleteCancelButton = document.querySelector("[data-delete-cancel]");
@@ -73,49 +68,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     );
   }
 
-  function syncPayoutFields() {
-    if (!payoutMethodSelect || !payoutWiseFields || !payoutBankFields) return;
-
-    const method = payoutMethodSelect.value;
-    const wiseActive = method === "Wise";
-    const bankActive = method === "Bank transfer";
-
-    payoutWiseFields.hidden = !wiseActive;
-    payoutBankFields.hidden = !bankActive;
-
-    payoutWiseFields.querySelectorAll("input").forEach((input) => {
-      input.required = wiseActive;
-    });
-    payoutBankFields.querySelectorAll("input").forEach((input) => {
-      input.required = bankActive;
-    });
-  }
-
   function populatePayoutForm(profile) {
-    if (!payoutForm || !payoutMethodSelect) return;
+    if (!payoutForm) return;
 
-    const method = ["Wise", "Bank transfer"].includes(profile?.payout_method)
-      ? profile.payout_method
-      : "";
+    const hasWise = profile?.payout_method === "Wise";
     const details = profile?.payout_details || {};
 
-    payoutMethodSelect.value = method;
-    payoutForm.elements.wiseAccountName.value =
-      method === "Wise" ? details.account_name || "" : "";
-    payoutForm.elements.wiseEmail.value =
-      method === "Wise" ? details.email || "" : "";
-    payoutForm.elements.bankAccountName.value =
-      method === "Bank transfer" ? details.account_name || "" : "";
-    payoutForm.elements.bankName.value =
-      method === "Bank transfer" ? details.bank_name || "" : "";
-    payoutForm.elements.bankAccountNumber.value =
-      method === "Bank transfer" ? details.account_number || "" : "";
-    payoutForm.elements.bankSwift.value =
-      method === "Bank transfer" ? details.swift_bic || "" : "";
-    payoutForm.elements.bankCountry.value =
-      method === "Bank transfer" ? details.country || "" : "";
+    payoutForm.elements.wiseAccountName.value = hasWise
+      ? details.account_name || ""
+      : "";
+    payoutForm.elements.wiseEmail.value = hasWise ? details.email || "" : "";
 
-    syncPayoutFields();
     setStatus("[data-payout-status]", "");
   }
 
@@ -129,7 +92,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     requestAnimationFrame(() =>
       (window.matchMedia("(pointer: coarse)").matches
         ? payoutDrawerClose
-        : payoutMethodSelect
+        : payoutForm?.elements.wiseAccountName
       )?.focus({ preventScroll: true }),
     );
   }
@@ -176,9 +139,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     set("[data-next-payout]", summary.nextPayout);
   } catch (error) {
     console.error("Partner settings could not load:", error);
+  } finally {
+    auth.revealProtectedPage();
   }
 
-  payoutMethodSelect?.addEventListener("change", syncPayoutFields);
   payoutManageButton?.addEventListener("click", openPayoutDrawer);
   payoutDrawerClose?.addEventListener("click", closePayoutDrawer);
 
@@ -202,29 +166,14 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   payoutForm?.addEventListener("submit", async (event) => {
     event.preventDefault();
-    if (!authState?.profile || !payoutMethodSelect) return;
+    if (!authState?.profile) return;
 
-    const method = payoutMethodSelect.value;
+    const method = "Wise";
     const submit = payoutForm.querySelector('button[type="submit"]');
-    let details = {};
-
-    if (method === "Wise") {
-      details = {
-        account_name: payoutForm.elements.wiseAccountName.value.trim(),
-        email: payoutForm.elements.wiseEmail.value.trim().toLowerCase(),
-      };
-    } else if (method === "Bank transfer") {
-      details = {
-        account_name: payoutForm.elements.bankAccountName.value.trim(),
-        bank_name: payoutForm.elements.bankName.value.trim(),
-        account_number: payoutForm.elements.bankAccountNumber.value.trim(),
-        swift_bic: payoutForm.elements.bankSwift.value.trim().toUpperCase(),
-        country: payoutForm.elements.bankCountry.value.trim(),
-      };
-    } else {
-      setStatus("[data-payout-status]", "Choose a payout method.", "error");
-      return;
-    }
+    const details = {
+      account_name: payoutForm.elements.wiseAccountName.value.trim(),
+      email: payoutForm.elements.wiseEmail.value.trim().toLowerCase(),
+    };
 
     if (submit) submit.disabled = true;
     setStatus("[data-payout-status]", "Saving…", "info");

@@ -233,12 +233,14 @@ function adminWatchTables() {
   });
 }
 
-document.addEventListener("DOMContentLoaded", async () => {
+window.DentAIStudyAdminStatsReady = Promise.resolve();
+
+document.addEventListener("DOMContentLoaded", () => {
   adminWatchTables();
 
-  try {
-    await adminHydrateStats();
-  } catch (error) {
+  if (!document.querySelector("[data-stat]")) return;
+
+  window.DentAIStudyAdminStatsReady = adminHydrateStats().catch((error) => {
     console.error("Admin stats could not be loaded:", error);
-  }
+  });
 });

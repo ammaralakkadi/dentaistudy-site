@@ -25,7 +25,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   const payoutDetailRows = document.querySelector(
     "[data-admin-payout-detail-rows]",
   );
-  const emailNote = document.querySelector("[data-partner-email-note]");
   const deleteZone = document.querySelector("[data-partner-delete-zone]");
   const deleteButton = document.querySelector("[data-delete-partner]");
   const deleteModal = document.querySelector("[data-admin-delete-modal]");
@@ -49,7 +48,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   if (!authState?.user) return;
 
   const fields = form.elements;
-  const adminUser = authState.user;
   let activeId = "";
   let settings = null;
   let partners = [];
@@ -149,8 +147,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       );
 
       const payoutConfigured =
-        creator.payout_method &&
-        creator.payout_method !== "Not added" &&
+        creator.payout_method === "Wise" &&
         creator.payout_details &&
         Object.keys(creator.payout_details).length > 0;
 
@@ -198,7 +195,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       await Promise.all([
         auth.client
           .from("partner_settings")
-          .select("minimum_confirmed_paid_users,minimum_payout_usd")
+          .select("program_status,minimum_confirmed_paid_users,minimum_payout_usd")
           .eq("id", 1)
           .single(),
         auth.client
@@ -225,6 +222,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (error) throw error;
 
     settings = settingsResult.data;
+    const invitationsPaused = settings.program_status === "paused";
+    addButton.setAttribute("aria-disabled", String(invitationsPaused));
+    addButton.title = invitationsPaused
+      ? "Resume the Partner Program in Settings before adding a Partner."
+      : "";
+
     partners = derivePartners(
       creatorsResult.data || [],
       referralsResult.data || [],
@@ -330,14 +333,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       rows.push(["Wise email", details.email || "—"]);
     }
 
-    if (method === "Bank transfer") {
-      rows.push(["Account holder", details.account_name || "—"]);
-      rows.push(["Bank", details.bank_name || "—"]);
-      rows.push(["Account / IBAN", details.account_number || "—"]);
-      rows.push(["SWIFT / BIC", details.swift_bic || "—"]);
-      rows.push(["Country", details.country || "—"]);
-    }
-
     payoutDetailRows.innerHTML = rows
       .map(
         ([label, value]) => `
@@ -357,7 +352,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     activeId = "";
     fields.id.value = "";
     fields.email.readOnly = false;
-    if (emailNote) emailNote.hidden = true;
     setSelect(fields.accountStatus, "Active");
     summary.hidden = true;
     if (payoutDetailsPanel) payoutDetailsPanel.hidden = true;
@@ -383,7 +377,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       renderSummary(partner);
       renderPayoutDetails(partner);
       summary.hidden = false;
-      if (emailNote) emailNote.hidden = false;
       if (deleteZone) deleteZone.hidden = false;
     }
 
@@ -459,31 +452,28 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   async function updatePartner(payload) {
-    const { error } = await auth.client
-      .from("partner_creators")
-      .update({
+    const { data, error } = await auth.client.functions.invoke("partner-invite", {
+      body: {
+        action: "update_partner",
+        partnerId: activeId,
         name: payload.name,
-        initials: partnerInitials(payload.name),
-        promo_code: payload.code,
-        account_status: payload.accountStatus.toLowerCase(),
-        notes: payload.notes || null,
-      })
-      .eq("id", activeId);
+        promoCode: payload.code,
+        accountStatus: payload.accountStatus,
+        notes: payload.notes,
+      },
+    });
 
-    if (error) throw error;
-
-    const { error: activityError } = await auth.client
-      .from("partner_activity")
-      .insert({
-        creator_id: activeId,
-        actor_user_id: adminUser.id,
-        actor_kind: "admin",
-        event_type: "partner_updated",
-        details: `${payload.code} · ${payload.accountStatus}`,
-        visibility: "admin",
-      });
-
-    if (activityError) console.error(activityError);
+    if (error) {
+      let message = error.message || "Could not update this Partner.";
+      try {
+        const body = await error.context?.json();
+        if (body?.error) message = body.error;
+      } catch (_) {
+        // Keep the Supabase error message when no JSON body is available.
+      }
+      throw new Error(message);
+    }
+    if (!data?.ok) throw new Error(data?.error || "Could not update this Partner.");
   }
 
   form.addEventListener("submit", async (event) => {
@@ -578,7 +568,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   search.addEventListener("input", render);
   accountFilter.addEventListener("change", render);
-  addButton.addEventListener("click", () => openDrawer());
+  addButton.addEventListener("click", () => {
+    if (settings?.program_status === "paused") {
+      dasToast("Partner invitations are paused");
+      return;
+    }
+    openDrawer();
+  });
   closeButton.addEventListener("click", closeDrawer);
   document.addEventListener("pointerdown", (event) => {
     if (
@@ -607,5 +603,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     tbody.innerHTML =
       '<tr><td class="referral-empty" colspan="7">Partner accounts could not be loaded.</td></tr>';
     dasToast("Partner accounts could not be loaded");
+  } finally {
+    auth.revealProtectedPage();
   }
 });

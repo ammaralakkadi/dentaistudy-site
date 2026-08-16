@@ -125,9 +125,11 @@
     const mobileLinks = qs("[data-mobile-panel] .slide-nav-links");
     const auth = window.DentAIStudyPartnerSupabase;
 
-    if (!headerActions || !mobileLinks || !auth?.enabled) return;
+    if (!headerActions || !mobileLinks) return;
 
     try {
+      if (!auth?.enabled) return;
+
       const user = await auth.getCurrentUser();
       if (!user) return;
 
@@ -135,8 +137,18 @@
       if (!profile) return;
 
       headerActions.innerHTML = `
-        <a class="btn btn-primary header-request" href="/partners/dashboard/">Dashboard</a>
-        <a class="btn btn-outline header-login" href="/partners/settings/">Settings</a>
+        <details class="das-account-menu partner-account-menu" data-account-menu>
+          <summary class="das-account-trigger">
+            <span class="das-account-dot"></span><span>Account</span>
+          </summary>
+          <div class="das-account-dropdown">
+            <a data-nav href="/partners/dashboard/">Dashboard</a>
+            <a data-nav href="/partners/settings/">Settings</a>
+            <button type="button" data-logout data-redirect="/partners/login/">
+              Log out
+            </button>
+          </div>
+        </details>
       `;
 
       mobileLinks.innerHTML = `
@@ -162,9 +174,12 @@
 
       iconize();
       activeNav();
+      accountMenu();
       logoutButtons();
     } catch (error) {
       console.error("Partner public navigation check failed:", error);
+    } finally {
+      document.documentElement.classList.add("partner-public-auth-ready");
     }
   }
 
