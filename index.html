@@ -1,0 +1,1919 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-65ZNB9L5D6"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-65ZNB9L5D6");
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>DentAIstudy | Dental Study App, Exams & Subjects</title>
+
+    <meta
+      name="description"
+      content="Study dentistry in one place with AI notes, flashcards, quizzes, Exam Coach answers, and clear guides for dental exams and subjects."
+    />
+
+    <link rel="canonical" href="https://dentaistudy.com/" />
+
+    <link rel="stylesheet" href="assets/css/style-v3.css" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/favicon-512.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon-512.png" />
+
+    <!-- JS: Supabase + Google Identity + auth UI + logout + main -->
+
+    <script src="https://cdn.paddle.com/paddle/v2/paddle.js" defer></script>
+    <script src="assets/js/paddle-init.js" defer></script>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+      defer
+    ></script>
+    <script src="https://accounts.google.com/gsi/client" defer></script>
+    <script src="assets/js/auth-client.js" defer></script>
+    <script src="assets/js/auth-guard.js" defer></script>
+    <script src="assets/js/auth-logout.js" defer></script>
+    <script defer src="assets/js/main.js"></script>
+  </head>
+
+  <body>
+    <div class="main-wrapper">
+      <!-- HEADER -->
+      <header class="site-header">
+        <div class="container header-inner">
+          <!-- hamburger (hidden on desktop via CSS) -->
+          <button class="menu-toggle" aria-label="Open menu">
+            <span></span><span></span><span></span>
+          </button>
+          <a class="brand" href="index.html">
+            <span>Dent</span><span>AIstudy</span>
+          </a>
+
+          <nav class="header-nav">
+            <a href="subjects.html">Subjects</a>
+            <a href="exams.html">Exams</a>
+            <a href="study-library.html">Library</a>
+            <a href="blogs.html">Blogs</a>
+            <a href="pricing.html">Pricing</a>
+          </nav>
+
+          <div class="header-right">
+            <a href="login.html" class="btn btn-outline header-login">Log in</a>
+            <a href="signup.html" class="btn btn-primary header-signup"
+              >Sign up</a
+            >
+          </div>
+        </div>
+      </header>
+
+      <!-- SLIDE MENU (mobile) -->
+      <div class="slide-nav-backdrop"></div>
+      <nav class="slide-nav">
+        <div class="slide-nav-links">
+          <a href="subjects.html">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M12 6v8l3-3 3 3V6" />
+              <path
+                d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2z"
+              />
+            </svg>
+            <span>Subjects</span>
+          </a>
+          <a href="exams.html">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M12 7v14" />
+              <path d="M16 12h2" />
+              <path d="M16 8h2" />
+              <path
+                d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"
+              />
+              <path d="M6 12h2" />
+              <path d="M6 8h2" />
+            </svg>
+            <span>Exams</span>
+          </a>
+          <a href="study-library.html">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <rect x="4" y="4" width="6" height="6" rx="1.5" />
+              <rect x="14" y="4" width="6" height="6" rx="1.5" />
+              <rect x="4" y="14" width="6" height="6" rx="1.5" />
+              <rect x="14" y="14" width="6" height="6" rx="1.5" />
+            </svg>
+            <span>Library</span>
+          </a>
+          <a href="blogs.html">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M12 20h9" />
+              <path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4z" />
+            </svg>
+            <span>Blogs</span>
+          </a>
+          <a href="pricing.html">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"
+              />
+              <line x1="7" y1="7" x2="7.01" y2="7" />
+            </svg>
+            <span>Pricing</span>
+          </a>
+
+          <div
+            class="slide-nav-divider"
+            role="separator"
+            aria-hidden="true"
+          ></div>
+
+          <a href="profile.html">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+            <span>My profile</span>
+          </a>
+          <a href="settings.html">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="3" />
+              <path
+                d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1.08-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1.08 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1.08 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c.26.604.852.997 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1.08z"
+              />
+            </svg>
+            <span>Account settings</span>
+          </a>
+
+          <div
+            class="slide-nav-divider"
+            role="separator"
+            aria-hidden="true"
+          ></div>
+
+          <a href="login.html" class="slide-login-link">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+              <polyline points="10 17 15 12 10 7" />
+              <line x1="15" y1="12" x2="3" y2="12" />
+            </svg>
+            <span>Log in</span>
+          </a>
+        </div>
+      </nav>
+
+      <!-- HERO -->
+      <div class="hero-home-shell">
+        <section class="hero hero-home">
+          <div
+            class="container hero-grid hero-home-grid hero-home-grid--showcase"
+          >
+            <div class="hero-copy-col">
+              <div class="hero-badge-row">
+                <span>
+                  <span class="hero-badge-dot"></span>
+                  <span>Dental AI notes • Exam Coach • Library</span>
+                </span>
+              </div>
+
+              <div class="hero-eyebrow">Dental exam study workspace</div>
+
+              <h1 class="hero-title">
+                Study dentistry in one place, not across random tabs
+              </h1>
+
+              <p class="hero-lead">
+                Create professional notes from your PDFs, ask Exam Coach when a
+                topic needs clarity, then practice and save the work in your
+                Library.
+              </p>
+
+              <div class="hero-actions hero-actions-main">
+                <a
+                  href="study-notes.html"
+                  class="btn btn-primary hero-cta-btn hero-cta-btn-primary"
+                >
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"
+                    />
+                    <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+                    <path d="M10 9H8" />
+                    <path d="M16 13H8" />
+                    <path d="M16 17H8" />
+                  </svg>
+                  <span class="hero-cta-label-desktop">Create Notes</span>
+                  <span class="hero-cta-label-mobile">Create Notes</span>
+                </a>
+
+                <a
+                  href="study.html"
+                  class="btn btn-outline hero-cta-btn hero-cta-btn-secondary"
+                >
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"
+                    />
+                    <path d="M8 9h8" />
+                    <path d="M8 13h5" />
+                  </svg>
+                  <span class="hero-cta-label-desktop">Open Exam Coach</span>
+                  <span class="hero-cta-label-mobile">Exam Coach</span>
+                </a>
+              </div>
+            </div>
+
+            <aside class="hero-visual-col">
+              <div
+                class="hero-product-stage"
+                aria-label="DentAIstudy Notes preview"
+              >
+                <img
+                  class="hero-product-img"
+                  src="assets/img/study-notes-hero-ui.png"
+                  alt="DentAIstudy Notes workspace preview"
+                  width="2048"
+                  height="1280"
+                  loading="eager"
+                  decoding="async"
+                  fetchpriority="high"
+                />
+
+                <div class="hero-product-cue hero-product-cue--top">
+                  PDF to professional notes
+                </div>
+
+                <div class="hero-product-cue hero-product-cue--bottom">
+                  Flashcards and quizzes next
+                </div>
+              </div>
+            </aside>
+
+            <div class="hero-proof-list">
+              <div class="hero-proof-item">
+                <strong>Start with your material</strong>
+                <span
+                  >Use dental PDFs, lecture slides, or dense notes when you need
+                  structure</span
+                >
+              </div>
+
+              <div class="hero-proof-item">
+                <strong>Use Exam Coach for clarity</strong>
+                <span
+                  >Ask focused dental questions when a topic needs
+                  explanation</span
+                >
+              </div>
+
+              <div class="hero-proof-item">
+                <strong>Practice and keep it saved</strong>
+                <span
+                  >Turn notes into flashcards, quizzes, and organized Library
+                  items</span
+                >
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- HOW DENTAISTUDY WORKS -->
+      <section class="section">
+        <div class="container">
+          <div class="section-header">
+            <div class="section-kicker">How DentAIstudy works</div>
+            <h2 class="section-title">
+              From dental material to usable study work
+            </h2>
+            <p class="section-subtitle">
+              Start with a PDF, topic, or exam question, then move into notes,
+              Exam Coach explanations, flashcards, quizzes, and your saved
+              Library.
+            </p>
+          </div>
+
+          <div class="workflow-walkthrough" data-workflow-walkthrough>
+            <div
+              class="workflow-walk-nav"
+              role="tablist"
+              aria-label="DentAIstudy workflow steps"
+            >
+              <button
+                class="workflow-walk-tab is-active"
+                type="button"
+                role="tab"
+                aria-selected="true"
+                aria-controls="workflow-panel-1"
+                id="workflow-tab-1"
+                data-workflow-step="1"
+              >
+                <span class="workflow-walk-index">1</span>
+                <span>
+                  <strong>Start with your material</strong>
+                  <small>Ask a topic or upload a PDF</small>
+                </span>
+              </button>
+
+              <button
+                class="workflow-walk-tab"
+                type="button"
+                role="tab"
+                aria-selected="false"
+                aria-controls="workflow-panel-2"
+                id="workflow-tab-2"
+                data-workflow-step="2"
+              >
+                <span class="workflow-walk-index">2</span>
+                <span>
+                  <strong>Generate cleaner notes</strong>
+                  <small>Turn dense content into study points</small>
+                </span>
+              </button>
+
+              <button
+                class="workflow-walk-tab"
+                type="button"
+                role="tab"
+                aria-selected="false"
+                aria-controls="workflow-panel-3"
+                id="workflow-tab-3"
+                data-workflow-step="3"
+              >
+                <span class="workflow-walk-index">3</span>
+                <span>
+                  <strong>Build flashcards</strong>
+                  <small>Review weak topics faster</small>
+                </span>
+              </button>
+
+              <button
+                class="workflow-walk-tab"
+                type="button"
+                role="tab"
+                aria-selected="false"
+                aria-controls="workflow-panel-4"
+                id="workflow-tab-4"
+                data-workflow-step="4"
+              >
+                <span class="workflow-walk-index">4</span>
+                <span>
+                  <strong>Practice with quizzes</strong>
+                  <small>Test recall before exams</small>
+                </span>
+              </button>
+
+              <button
+                class="workflow-walk-tab"
+                type="button"
+                role="tab"
+                aria-selected="false"
+                aria-controls="workflow-panel-5"
+                id="workflow-tab-5"
+                data-workflow-step="5"
+              >
+                <span class="workflow-walk-index">5</span>
+                <span>
+                  <strong>Save your study work</strong>
+                  <small>Keep notes, decks, and quizzes together</small>
+                </span>
+              </button>
+            </div>
+
+            <div class="workflow-walk-stage">
+              <article
+                class="workflow-walk-panel is-active"
+                id="workflow-panel-1"
+                role="tabpanel"
+                aria-labelledby="workflow-tab-1"
+                data-workflow-panel="1"
+              >
+                <div class="workflow-walk-copy">
+                  <p class="workflow-walk-eyebrow">Step 1</p>
+                  <h3>Start with the exact thing you need to understand.</h3>
+                  <p>
+                    Ask a dental question, paste a topic, or upload your own
+                    lecture PDF so the answer starts from your real study
+                    material.
+                  </p>
+                </div>
+
+                <div class="workflow-walk-image">
+                  <img
+                    src="assets/img/landing/notes-upload.png"
+                    alt="DentAIstudy turning a PDF into study notes"
+                    loading="lazy"
+                  />
+                </div>
+              </article>
+
+              <article
+                class="workflow-walk-panel"
+                id="workflow-panel-2"
+                role="tabpanel"
+                aria-labelledby="workflow-tab-2"
+                data-workflow-panel="2"
+                hidden
+              >
+                <div class="workflow-walk-copy">
+                  <p class="workflow-walk-eyebrow">Step 2</p>
+                  <h3>Convert dense material into notes you can revise.</h3>
+                  <p>
+                    DentAIstudy helps compress long explanations into clearer
+                    exam focused notes without losing the clinical meaning.
+                  </p>
+                </div>
+
+                <div class="workflow-walk-image">
+                  <img
+                    src="assets/img/landing/notes-generated.png"
+                    alt="Generated PDF note inside DentAIstudy"
+                    loading="lazy"
+                  />
+                </div>
+              </article>
+
+              <article
+                class="workflow-walk-panel"
+                id="workflow-panel-3"
+                role="tabpanel"
+                aria-labelledby="workflow-tab-3"
+                data-workflow-panel="3"
+                hidden
+              >
+                <div class="workflow-walk-copy">
+                  <p class="workflow-walk-eyebrow">Step 3</p>
+                  <h3>Turn weak topics into flashcards.</h3>
+                  <p>
+                    Create focused decks from the material you are studying so
+                    you can review faster and keep repeating what matters.
+                  </p>
+                </div>
+
+                <div class="workflow-walk-image">
+                  <img
+                    src="assets/img/landing/flashcards-desktop.png"
+                    alt="Create flashcard deck in DentAIstudy"
+                    loading="lazy"
+                  />
+                </div>
+              </article>
+
+              <article
+                class="workflow-walk-panel"
+                id="workflow-panel-4"
+                role="tabpanel"
+                aria-labelledby="workflow-tab-4"
+                data-workflow-panel="4"
+                hidden
+              >
+                <div class="workflow-walk-copy">
+                  <p class="workflow-walk-eyebrow">Step 4</p>
+                  <h3>Test yourself before the exam tests you.</h3>
+                  <p>
+                    Generate quiz practice from your own topic or notes and
+                    check whether you can actually recall the answer.
+                  </p>
+                </div>
+
+                <div class="workflow-walk-image">
+                  <img
+                    src="assets/img/landing/quiz-desktop.png"
+                    alt="Create quiz in DentAIstudy"
+                    loading="lazy"
+                  />
+                </div>
+              </article>
+
+              <article
+                class="workflow-walk-panel"
+                id="workflow-panel-5"
+                role="tabpanel"
+                aria-labelledby="workflow-tab-5"
+                data-workflow-panel="5"
+                hidden
+              >
+                <div class="workflow-walk-copy">
+                  <p class="workflow-walk-eyebrow">Step 5</p>
+                  <h3>Keep your study work organized.</h3>
+                  <p>
+                    Saved chats, flashcards, and quizzes stay inside your study
+                    library so you can return to them without starting again.
+                  </p>
+                </div>
+
+                <div class="workflow-walk-image">
+                  <img
+                    src="assets/img/landing/library-desktop.png"
+                    alt="DentAIstudy study library"
+                    loading="lazy"
+                  />
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FIND YOUR EXAM -->
+      <section class="section">
+        <div class="container">
+          <div class="section-header">
+            <div class="section-kicker">Find your exam</div>
+            <h2 class="section-title">Go straight to your exam hub</h2>
+            <p class="section-subtitle">
+              Start with the exam route you are preparing for, then move into
+              guides, articles, and study support
+            </p>
+          </div>
+
+          <div class="features-modern exam-hubs-grid">
+            <div class="feature-item">
+              <div class="feature-icon">
+                <img
+                  src="assets/img/exams/inbde.png"
+                  alt="INBDE exam hub"
+                  style="width: 72px; height: 72px; object-fit: contain"
+                />
+              </div>
+              <h3>INBDE</h3>
+              <p>
+                Exam guides, article clusters, and focused prep for the U.S.
+                dental licensure route
+              </p>
+              <div style="margin-top: 16px">
+                <a href="exams/inbde.html" class="btn btn-outline">Open hub</a>
+              </div>
+            </div>
+
+            <div class="feature-item">
+              <div class="feature-icon">
+                <img
+                  src="assets/img/exams/adex.png"
+                  alt="ADEX exam hub"
+                  style="width: 72px; height: 72px; object-fit: contain"
+                />
+              </div>
+              <h3>ADEX</h3>
+              <p>
+                OSCE, operative, viva, and practical exam content for candidates
+                who want structured prep
+              </p>
+              <div style="margin-top: 16px">
+                <a href="exams/adex.html" class="btn btn-outline">Open hub</a>
+              </div>
+            </div>
+
+            <div class="feature-item">
+              <div class="feature-icon">
+                <img
+                  src="assets/img/exams/ore.png"
+                  alt="ORE exam hub"
+                  style="width: 72px; height: 72px; object-fit: contain"
+                />
+              </div>
+              <h3>ORE</h3>
+              <p>
+                Entry point for ORE Part 1, Part 2, booking, timelines, and exam
+                specific article paths
+              </p>
+              <div style="margin-top: 16px">
+                <a href="exams/ore.html" class="btn btn-outline">Open hub</a>
+              </div>
+            </div>
+
+            <div class="feature-item">
+              <div class="feature-icon">
+                <img
+                  src="assets/img/exams/ndecc.png"
+                  alt="NDECC exam hub"
+                  style="width: 72px; height: 72px; object-fit: contain"
+                />
+              </div>
+              <h3>NDECC</h3>
+              <p>
+                Canadian equivalency exam guides, route explanations, and
+                supporting articles in one place
+              </p>
+              <div style="margin-top: 16px">
+                <a href="exams/ndecc.html" class="btn btn-outline">Open hub</a>
+              </div>
+            </div>
+
+            <div class="feature-item">
+              <div class="feature-icon">
+                <img
+                  src="assets/img/exams/adc.png"
+                  alt="ADC exam hub"
+                  style="width: 72px; height: 72px; object-fit: contain"
+                />
+              </div>
+              <h3>ADC</h3>
+              <p>
+                Assessment pathway, written exam, practical exam, costs,
+                deadlines, and Australia route content
+              </p>
+              <div style="margin-top: 16px">
+                <a href="exams/adc.html" class="btn btn-outline">Open hub</a>
+              </div>
+            </div>
+
+            <div class="feature-item">
+              <div class="feature-icon">
+                <img
+                  src="assets/img/exams/sdle.png"
+                  alt="SDLE exam hub"
+                  style="width: 72px; height: 72px; object-fit: contain"
+                />
+              </div>
+              <h3>SDLE</h3>
+              <p>
+                Saudi exam prep content, route guidance, and linked long tail
+                study articles for faster navigation
+              </p>
+              <div style="margin-top: 16px">
+                <a href="exams/sdle.html" class="btn btn-outline">Open hub</a>
+              </div>
+            </div>
+
+            <div class="feature-item">
+              <div class="feature-icon">
+                <img
+                  src="assets/img/exams/uae.png"
+                  alt="UAE dental exam hub"
+                  style="width: 72px; height: 72px; object-fit: contain"
+                />
+              </div>
+              <h3>UAE</h3>
+              <p>
+                DHA, MOH, and DOH pathways with route comparisons, licensing
+                content, and exam guidance
+              </p>
+              <div style="margin-top: 16px">
+                <a href="exams/uae.html" class="btn btn-outline">Open hub</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="section-main-action">
+            <a href="exams.html" class="btn btn-primary">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M12 7v14" />
+                <path d="M16 12h2" />
+                <path d="M16 8h2" />
+                <path
+                  d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"
+                />
+                <path d="M6 12h2" />
+                <path d="M6 8h2" />
+              </svg>
+              Browse Exams
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- STUDY OUTPUTS -->
+      <section class="section output-studio-section">
+        <div class="container">
+          <div class="output-studio" data-output-studio>
+            <div class="output-studio-copy">
+              <div class="section-kicker">Study outputs</div>
+              <h2 class="section-title">
+                Choose the format your revision needs
+              </h2>
+              <p class="section-subtitle">
+                Start with material or a weak topic, then turn it into notes,
+                OSCE flows, flashcards, or quiz practice without switching
+                tools.
+              </p>
+
+              <div
+                class="output-tabs"
+                role="tablist"
+                aria-label="DentAIstudy output types"
+              >
+                <button
+                  class="output-tab is-active"
+                  type="button"
+                  role="tab"
+                  aria-selected="true"
+                  aria-controls="output-panel-notes"
+                  id="output-tab-notes"
+                  data-output-tab="notes"
+                >
+                  <span>Exam ready notes</span>
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="m9 18 6-6-6-6" />
+                  </svg>
+                </button>
+
+                <button
+                  class="output-tab"
+                  type="button"
+                  role="tab"
+                  aria-selected="false"
+                  aria-controls="output-panel-osce"
+                  id="output-tab-osce"
+                  data-output-tab="osce"
+                >
+                  <span>OSCE flows</span>
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="m9 18 6-6-6-6" />
+                  </svg>
+                </button>
+
+                <button
+                  class="output-tab"
+                  type="button"
+                  role="tab"
+                  aria-selected="false"
+                  aria-controls="output-panel-flashcards"
+                  id="output-tab-flashcards"
+                  data-output-tab="flashcards"
+                >
+                  <span>Flashcard decks</span>
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="m9 18 6-6-6-6" />
+                  </svg>
+                </button>
+
+                <button
+                  class="output-tab"
+                  type="button"
+                  role="tab"
+                  aria-selected="false"
+                  aria-controls="output-panel-quiz"
+                  id="output-tab-quiz"
+                  data-output-tab="quiz"
+                >
+                  <span>Quiz practice</span>
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="m9 18 6-6-6-6" />
+                  </svg>
+                </button>
+              </div>
+
+              <div class="output-studio-actions">
+                <a href="study-notes.html" class="btn btn-primary">
+                  Create notes
+                </a>
+              </div>
+            </div>
+
+            <div class="output-stage" aria-live="polite">
+              <div class="output-float-label output-float-label--top">
+                From topic or PDF
+              </div>
+              <div class="output-float-label output-float-label--bottom">
+                Built for recall
+              </div>
+
+              <article
+                class="output-panel is-active"
+                id="output-panel-notes"
+                role="tabpanel"
+                aria-labelledby="output-tab-notes"
+                data-output-panel="notes"
+              >
+                <div class="output-preview-card">
+                  <div class="output-preview-bar">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </div>
+
+                  <div class="output-preview-body">
+                    <div class="output-preview-kicker">Notes output</div>
+                    <h3>Exam ready notes</h3>
+                    <p>
+                      Ameloblastoma is a benign but locally aggressive
+                      odontogenic tumour. Revision should focus on origin,
+                      radiographic pattern, management, and recurrence risk.
+                    </p>
+
+                    <div class="output-bullet-list">
+                      <span>Definition</span>
+                      <span>Clinical features</span>
+                      <span>Radiographic signs</span>
+                      <span>Management</span>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              <article
+                class="output-panel"
+                id="output-panel-osce"
+                role="tabpanel"
+                aria-labelledby="output-tab-osce"
+                data-output-panel="osce"
+                hidden
+              >
+                <div class="output-preview-card">
+                  <div class="output-preview-bar">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </div>
+
+                  <div class="output-preview-body">
+                    <div class="output-preview-kicker">Clinical station</div>
+                    <h3>OSCE answer flow</h3>
+                    <p>
+                      Build a station ready structure so you know what to ask,
+                      what to examine, and how to present management clearly.
+                    </p>
+
+                    <div class="output-flow-list">
+                      <div>
+                        <strong>History prompts</strong>
+                        <small>pain, swelling, duration, red flags</small>
+                      </div>
+                      <div>
+                        <strong>Clinical exam</strong>
+                        <small>extraoral, intraoral, lymph nodes</small>
+                      </div>
+                      <div>
+                        <strong>Management plan</strong>
+                        <small>urgent care, referral, follow up</small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              <article
+                class="output-panel"
+                id="output-panel-flashcards"
+                role="tabpanel"
+                aria-labelledby="output-tab-flashcards"
+                data-output-panel="flashcards"
+                hidden
+              >
+                <div class="output-preview-card">
+                  <div class="output-preview-bar">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </div>
+
+                  <div class="output-preview-body">
+                    <div class="output-preview-kicker">Active recall</div>
+                    <h3>Flashcard deck</h3>
+
+                    <div class="output-flashcard-stack">
+                      <div>
+                        <span>Q</span>
+                        What radiographic pattern is classically linked with
+                        ameloblastoma?
+                      </div>
+                      <div>
+                        <span>A</span>
+                        Multilocular radiolucency, often described as soap
+                        bubble or honeycomb.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              <article
+                class="output-panel"
+                id="output-panel-quiz"
+                role="tabpanel"
+                aria-labelledby="output-tab-quiz"
+                data-output-panel="quiz"
+                hidden
+              >
+                <div class="output-preview-card">
+                  <div class="output-preview-bar">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </div>
+
+                  <div class="output-preview-body">
+                    <div class="output-preview-kicker">Quiz mode</div>
+                    <h3>Test recall</h3>
+                    <p class="output-question">
+                      Which feature best explains why ameloblastoma often needs
+                      surgical management?
+                    </p>
+
+                    <div class="output-options">
+                      <span>High metastatic rate</span>
+                      <span class="is-correct">Local aggressiveness</span>
+                      <span>Viral origin</span>
+                    </div>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- POPULAR SUBJECTS -->
+      <section class="section">
+        <div class="container">
+          <div class="section-header">
+            <div class="section-kicker">Popular subjects</div>
+            <h2 class="section-title">Jump into core dental subjects</h2>
+            <p class="section-subtitle">
+              Use subject hubs when you want broader study by discipline, not
+              only by exam route
+            </p>
+          </div>
+
+          <div class="features-modern">
+            <div class="feature-item">
+              <div class="feature-icon">
+                <img
+                  src="assets/img/subjects/operative.png"
+                  alt="Operative Dentistry"
+                  style="width: 72px; height: 72px; object-fit: contain"
+                />
+              </div>
+              <h3>Operative Dentistry</h3>
+              <p>
+                Restorative principles, cavity preparation, matrix systems,
+                finishing, and exam focused basics
+              </p>
+              <div style="margin-top: 16px">
+                <a
+                  href="subjects/operative-dentistry.html"
+                  class="btn btn-outline"
+                  >Open subject</a
+                >
+              </div>
+            </div>
+
+            <div class="feature-item">
+              <div class="feature-icon">
+                <img
+                  src="assets/img/subjects/endodontics.png"
+                  alt="Endodontics"
+                  style="width: 72px; height: 72px; object-fit: contain"
+                />
+              </div>
+              <h3>Endodontics</h3>
+              <p>
+                Diagnosis, pulp therapy, irrigation, obturation logic, and the
+                core concepts students revisit often
+              </p>
+              <div style="margin-top: 16px">
+                <a href="subjects/endodontics.html" class="btn btn-outline"
+                  >Open subject</a
+                >
+              </div>
+            </div>
+
+            <div class="feature-item">
+              <div class="feature-icon">
+                <img
+                  src="assets/img/subjects/oral surgery.png"
+                  alt="Oral Surgery"
+                  style="width: 72px; height: 72px; object-fit: contain"
+                />
+              </div>
+              <h3>Oral Surgery</h3>
+              <p>
+                Extractions, post op principles, complications, emergency
+                thinking, and high yield clinical revision
+              </p>
+              <div style="margin-top: 16px">
+                <a href="subjects/oral-surgery.html" class="btn btn-outline"
+                  >Open subject</a
+                >
+              </div>
+            </div>
+
+            <div class="feature-item">
+              <div class="feature-icon">
+                <img
+                  src="assets/img/subjects/pedodontics.png"
+                  alt="Pediatric Dentistry"
+                  style="width: 72px; height: 72px; object-fit: contain"
+                />
+              </div>
+              <h3>Pediatric Dentistry</h3>
+              <p>
+                Behaviour guidance, pulpotomy and pulpectomy logic, prevention,
+                and child focused clinical topics
+              </p>
+              <div style="margin-top: 16px">
+                <a
+                  href="subjects/pediatric-dentistry.html"
+                  class="btn btn-outline"
+                  >Open subject</a
+                >
+              </div>
+            </div>
+
+            <div class="feature-item">
+              <div class="feature-icon">
+                <img
+                  src="assets/img/subjects/orthodontics.png"
+                  alt="Orthodontics"
+                  style="width: 72px; height: 72px; object-fit: contain"
+                />
+              </div>
+              <h3>Orthodontics</h3>
+              <p>
+                Problem lists, space analysis, diagnosis thinking, and revision
+                support for core ortho topics
+              </p>
+              <div style="margin-top: 16px">
+                <a href="subjects/orthodontics.html" class="btn btn-outline"
+                  >Open subject</a
+                >
+              </div>
+            </div>
+
+            <div class="feature-item">
+              <div class="feature-icon">
+                <img
+                  src="assets/img/subjects/periodontology.png"
+                  alt="Periodontology"
+                  style="width: 72px; height: 72px; object-fit: contain"
+                />
+              </div>
+              <h3>Periodontology</h3>
+              <p>
+                Assessment, staging, grading, maintenance, and the concepts that
+                keep appearing in exams and clinics
+              </p>
+              <div style="margin-top: 16px">
+                <a href="subjects/periodontology.html" class="btn btn-outline"
+                  >Open subject</a
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="section-main-action">
+            <a href="subjects.html" class="btn btn-primary">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M12 6v8l3-3 3 3V6" />
+                <path
+                  d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2z"
+                />
+              </svg>
+              Browse Subjects
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- REAL TESTIMONIALS -->
+      <section class="section testimonials-section">
+        <div class="container">
+          <div class="section-header">
+            <div class="section-kicker">testimonials</div>
+            <h2 class="section-title">What dental learners are saying</h2>
+            <p class="section-subtitle">
+              Feedback from dental students, candidates, and residents using
+              DentAIstudy for exam prep, clinical revision, and structured
+              study.
+            </p>
+          </div>
+        </div>
+
+        <div class="testimonials-marquee" aria-label="Dental learner feedback">
+          <div class="testimonials-row">
+            <div class="testimonials-track">
+              <article class="testimonial-card">
+                <div class="testimonial-header">
+                  <div class="testimonial-quote-icon" aria-hidden="true">
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path
+                        d="M10 11H6.8A3.8 3.8 0 0 1 10.6 7.2V5A6 6 0 0 0 4.6 11v6H10z"
+                      />
+                      <path
+                        d="M20 11h-3.2a3.8 3.8 0 0 1 3.8-3.8V5a6 6 0 0 0-6 6v6H20z"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <strong>Priya Patel</strong>
+                    <small>Dental Intern • United Kingdom</small>
+                  </div>
+                </div>
+
+                <div class="testimonial-stars">★★★★★</div>
+
+                <p>
+                  “I use Exam Coach when a topic feels too dense before clinics.
+                  It breaks things down clearly and helps me organize the
+                  clinical steps into something I can actually review.”
+                </p>
+              </article>
+
+              <article class="testimonial-card">
+                <div class="testimonial-header">
+                  <div class="testimonial-quote-icon" aria-hidden="true">
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path
+                        d="M10 11H6.8A3.8 3.8 0 0 1 10.6 7.2V5A6 6 0 0 0 4.6 11v6H10z"
+                      />
+                      <path
+                        d="M20 11h-3.2a3.8 3.8 0 0 1 3.8-3.8V5a6 6 0 0 0-6 6v6H20z"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <strong>Dr. David Chen</strong>
+                    <small>Orthodontic Resident • Canada</small>
+                  </div>
+                </div>
+
+                <div class="testimonial-stars">★★★★★</div>
+
+                <p>
+                  “For residency seminars I usually start with my PDF in Notes,
+                  then use Exam Coach when I need to go deeper into the
+                  mechanics. Having both in one place saves me a lot of
+                  switching around.”
+                </p>
+              </article>
+
+              <article class="testimonial-card">
+                <div class="testimonial-header">
+                  <div class="testimonial-quote-icon" aria-hidden="true">
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path
+                        d="M10 11H6.8A3.8 3.8 0 0 1 10.6 7.2V5A6 6 0 0 0 4.6 11v6H10z"
+                      />
+                      <path
+                        d="M20 11h-3.2a3.8 3.8 0 0 1 3.8-3.8V5a6 6 0 0 0-6 6v6H20z"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <strong>Dr. Isabella Rossi</strong>
+                    <small>General Dentist • Australia • ADC Board Prep</small>
+                  </div>
+                </div>
+
+                <div class="testimonial-stars">★★★★★</div>
+
+                <p>
+                  “The ADC Exam Hub gave me a much clearer place to start. I can
+                  follow the exam guidance, then use Exam Coach when I need a
+                  topic explained instead of searching across different sites.”
+                </p>
+              </article>
+
+              <article class="testimonial-card">
+                <div class="testimonial-header">
+                  <div class="testimonial-quote-icon" aria-hidden="true">
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path
+                        d="M10 11H6.8A3.8 3.8 0 0 1 10.6 7.2V5A6 6 0 0 0 4.6 11v6H10z"
+                      />
+                      <path
+                        d="M20 11h-3.2a3.8 3.8 0 0 1 3.8-3.8V5a6 6 0 0 0-6 6v6H20z"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <strong>Liam Mc.</strong>
+                    <small>4th Year Dental Student • Ireland</small>
+                  </div>
+                </div>
+
+                <div class="testimonial-stars">★★★★★</div>
+
+                <p>
+                  “I like turning my Notes into quizzes because rereading can
+                  make you think you know more than you do. The questions show
+                  me very quickly which parts I actually remember.”
+                </p>
+              </article>
+
+              <article class="testimonial-card" aria-hidden="true">
+                <div class="testimonial-header">
+                  <div class="testimonial-quote-icon" aria-hidden="true">
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path
+                        d="M10 11H6.8A3.8 3.8 0 0 1 10.6 7.2V5A6 6 0 0 0 4.6 11v6H10z"
+                      />
+                      <path
+                        d="M20 11h-3.2a3.8 3.8 0 0 1 3.8-3.8V5a6 6 0 0 0-6 6v6H20z"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <strong>Priya Patel</strong>
+                    <small>Dental Intern • United Kingdom</small>
+                  </div>
+                </div>
+                <div class="testimonial-stars">★★★★★</div>
+                <p>
+                  “I use Exam Coach when a topic feels too dense before clinics.
+                  It breaks things down clearly and helps me organize the
+                  clinical steps into something I can actually review.”
+                </p>
+              </article>
+
+              <article class="testimonial-card" aria-hidden="true">
+                <div class="testimonial-header">
+                  <div class="testimonial-quote-icon" aria-hidden="true">
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path
+                        d="M10 11H6.8A3.8 3.8 0 0 1 10.6 7.2V5A6 6 0 0 0 4.6 11v6H10z"
+                      />
+                      <path
+                        d="M20 11h-3.2a3.8 3.8 0 0 1 3.8-3.8V5a6 6 0 0 0-6 6v6H20z"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <strong>Dr. David Chen</strong>
+                    <small>Orthodontic Resident • Canada</small>
+                  </div>
+                </div>
+                <div class="testimonial-stars">★★★★★</div>
+                <p>
+                  “For residency seminars I usually start with my PDF in Notes,
+                  then use Exam Coach when I need to go deeper into the
+                  mechanics. Having both in one place saves me a lot of
+                  switching around.”
+                </p>
+              </article>
+
+              <article class="testimonial-card" aria-hidden="true">
+                <div class="testimonial-header">
+                  <div class="testimonial-quote-icon" aria-hidden="true">
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path
+                        d="M10 11H6.8A3.8 3.8 0 0 1 10.6 7.2V5A6 6 0 0 0 4.6 11v6H10z"
+                      />
+                      <path
+                        d="M20 11h-3.2a3.8 3.8 0 0 1 3.8-3.8V5a6 6 0 0 0-6 6v6H20z"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <strong>Dr. Isabella Rossi</strong>
+                    <small>General Dentist • Australia • ADC Board Prep</small>
+                  </div>
+                </div>
+                <div class="testimonial-stars">★★★★★</div>
+                <p>
+                  “The ADC Exam Hub gave me a much clearer place to start. I can
+                  follow the exam guidance, then use Exam Coach when I need a
+                  topic explained instead of searching across different sites.”
+                </p>
+              </article>
+
+              <article class="testimonial-card" aria-hidden="true">
+                <div class="testimonial-header">
+                  <div class="testimonial-quote-icon" aria-hidden="true">
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path
+                        d="M10 11H6.8A3.8 3.8 0 0 1 10.6 7.2V5A6 6 0 0 0 4.6 11v6H10z"
+                      />
+                      <path
+                        d="M20 11h-3.2a3.8 3.8 0 0 1 3.8-3.8V5a6 6 0 0 0-6 6v6H20z"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <strong>Liam Mc.</strong>
+                    <small>4th Year Dental Student • Ireland</small>
+                  </div>
+                </div>
+                <div class="testimonial-stars">★★★★★</div>
+                <p>
+                  “I like turning my Notes into quizzes because rereading can
+                  make you think you know more than you do. The questions show
+                  me very quickly which parts I actually remember.”
+                </p>
+              </article>
+            </div>
+          </div>
+
+          <div class="testimonials-row testimonials-row--reverse">
+            <div class="testimonials-track">
+              <article class="testimonial-card">
+                <div class="testimonial-header">
+                  <div class="testimonial-quote-icon" aria-hidden="true">
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path
+                        d="M10 11H6.8A3.8 3.8 0 0 1 10.6 7.2V5A6 6 0 0 0 4.6 11v6H10z"
+                      />
+                      <path
+                        d="M20 11h-3.2a3.8 3.8 0 0 1 3.8-3.8V5a6 6 0 0 0-6 6v6H20z"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <strong>Dr. Priya R.</strong>
+                    <small>INBDE Candidate • United States</small>
+                  </div>
+                </div>
+
+                <div class="testimonial-stars">★★★★★</div>
+
+                <p>
+                  “For INBDE prep I use the Exam Hub to stay oriented, then
+                  build flashcards from the topics I keep forgetting. It makes a
+                  huge syllabus feel much easier to work through.”
+                </p>
+              </article>
+
+              <article class="testimonial-card">
+                <div class="testimonial-header">
+                  <div class="testimonial-quote-icon" aria-hidden="true">
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path
+                        d="M10 11H6.8A3.8 3.8 0 0 1 10.6 7.2V5A6 6 0 0 0 4.6 11v6H10z"
+                      />
+                      <path
+                        d="M20 11h-3.2a3.8 3.8 0 0 1 3.8-3.8V5a6 6 0 0 0-6 6v6H20z"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <strong>Chloe W.</strong>
+                    <small>3rd Year Dental Student • New Zealand</small>
+                  </div>
+                </div>
+
+                <div class="testimonial-stars">★★★★★</div>
+
+                <p>
+                  “Oral Pathology used to feel like another language. I use Exam
+                  Coach to work through the presentation, radiographic features,
+                  and histology until the differences actually make sense.”
+                </p>
+              </article>
+
+              <article class="testimonial-card">
+                <div class="testimonial-header">
+                  <div class="testimonial-quote-icon" aria-hidden="true">
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path
+                        d="M10 11H6.8A3.8 3.8 0 0 1 10.6 7.2V5A6 6 0 0 0 4.6 11v6H10z"
+                      />
+                      <path
+                        d="M20 11h-3.2a3.8 3.8 0 0 1 3.8-3.8V5a6 6 0 0 0-6 6v6H20z"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <strong>Dr. Ahmed M.</strong>
+                    <small>MSc Resident • United Arab Emirates</small>
+                  </div>
+                </div>
+
+                <div class="testimonial-stars">★★★★★</div>
+
+                <p>
+                  “I use DentAIstudy to organize dense seminar material before I
+                  start presenting it. Notes gives me the structure, and Exam
+                  Coach is useful when I want to question or clarify a specific
+                  point.”
+                </p>
+              </article>
+
+              <article class="testimonial-card" aria-hidden="true">
+                <div class="testimonial-header">
+                  <div class="testimonial-quote-icon" aria-hidden="true">
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path
+                        d="M10 11H6.8A3.8 3.8 0 0 1 10.6 7.2V5A6 6 0 0 0 4.6 11v6H10z"
+                      />
+                      <path
+                        d="M20 11h-3.2a3.8 3.8 0 0 1 3.8-3.8V5a6 6 0 0 0-6 6v6H20z"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <strong>Dr. Priya R.</strong>
+                    <small>INBDE Candidate • United States</small>
+                  </div>
+                </div>
+                <div class="testimonial-stars">★★★★★</div>
+                <p>
+                  “For INBDE prep I use the Exam Hub to stay oriented, then
+                  build flashcards from the topics I keep forgetting. It makes a
+                  huge syllabus feel much easier to work through.”
+                </p>
+              </article>
+
+              <article class="testimonial-card" aria-hidden="true">
+                <div class="testimonial-header">
+                  <div class="testimonial-quote-icon" aria-hidden="true">
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path
+                        d="M10 11H6.8A3.8 3.8 0 0 1 10.6 7.2V5A6 6 0 0 0 4.6 11v6H10z"
+                      />
+                      <path
+                        d="M20 11h-3.2a3.8 3.8 0 0 1 3.8-3.8V5a6 6 0 0 0-6 6v6H20z"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <strong>Chloe W.</strong>
+                    <small>3rd Year Dental Student • New Zealand</small>
+                  </div>
+                </div>
+                <div class="testimonial-stars">★★★★★</div>
+                <p>
+                  “Oral Pathology used to feel like another language. I use Exam
+                  Coach to work through the presentation, radiographic features,
+                  and histology until the differences actually make sense.”
+                </p>
+              </article>
+
+              <article class="testimonial-card" aria-hidden="true">
+                <div class="testimonial-header">
+                  <div class="testimonial-quote-icon" aria-hidden="true">
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path
+                        d="M10 11H6.8A3.8 3.8 0 0 1 10.6 7.2V5A6 6 0 0 0 4.6 11v6H10z"
+                      />
+                      <path
+                        d="M20 11h-3.2a3.8 3.8 0 0 1 3.8-3.8V5a6 6 0 0 0-6 6v6H20z"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <strong>Dr. Ahmed M.</strong>
+                    <small>MSc Resident • United Arab Emirates</small>
+                  </div>
+                </div>
+                <div class="testimonial-stars">★★★★★</div>
+                <p>
+                  “I use DentAIstudy to organize dense seminar material before I
+                  start presenting it. Notes gives me the structure, and Exam
+                  Coach is useful when I want to question or clarify a specific
+                  point.”
+                </p>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section class="section">
+        <div class="container">
+          <div class="section-header">
+            <h2 class="section-title">Frequently asked questions</h2>
+            <p class="section-subtitle">
+              Clear answers about Notes, Exam Coach, flashcards, quizzes, and
+              how DentAIstudy fits into real dental exam prep.
+            </p>
+          </div>
+
+          <div class="faq-list">
+            <div class="faq-item">
+              <button class="faq-question">
+                <span>Is DentAIstudy free?</span
+                ><span class="faq-chevron" aria-hidden="true"></span>
+              </button>
+              <div class="faq-answer">
+                Yes. Free users can test Exam Coach with a light daily study
+                limit. Pro unlocks Notes, flashcards, quizzes, higher study
+                capacity, and a 3 day free trial. See
+                <a href="pricing.html">Pricing</a>.
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-question">
+                <span
+                  >What makes DentAIstudy different from a normal chatbot?</span
+                ><span class="faq-chevron" aria-hidden="true"></span>
+              </button>
+              <div class="faq-answer">
+                DentAIstudy is built around dental study work, not open ended
+                chatting. It connects Notes, Exam Coach, Flashcards, Quiz, and
+                Library so revision feels more structured.
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-question">
+                <span>Can I use my own PDFs and lecture notes?</span
+                ><span class="faq-chevron" aria-hidden="true"></span>
+              </button>
+              <div class="faq-answer">
+                Yes. Notes is the Pro PDF to study tool. Upload dental material
+                and turn it into cleaner notes you can revise, save, and use for
+                practice.
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-question">
+                <span>Are flashcards and quizzes included?</span
+                ><span class="faq-chevron" aria-hidden="true"></span>
+              </button>
+              <div class="faq-answer">
+                Flashcards and Quiz are Pro study tools. They help you turn
+                notes and weak topics into active recall instead of only
+                rereading material.
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-question">
+                <span>Can I rely on it clinically?</span
+                ><span class="faq-chevron" aria-hidden="true"></span>
+              </button>
+              <div class="faq-answer">
+                No. DentAIstudy is study support, not clinical advice or a pass
+                guarantee. Always follow your school, supervisors, official exam
+                guidance, and clinical guidelines in real patient care.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-actions">
+            <a href="faqs.html" class="btn btn-outline">View all FAQs</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- FOOTER -->
+      <footer class="site-footer">
+        <div class="container">
+          <div class="footer-top">
+            <div>
+              <a href="index.html" class="footer-brand">DentAIstudy</a>
+              <p>A focused study platform for dental students and residents.</p>
+              <div class="footer-social">
+                <a
+                  href="https://www.tiktok.com/@dentaistudy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="DentAIstudy on TikTok"
+                >
+                  <img
+                    src="assets/img/footer-icons/tiktok-icon.png"
+                    alt="TikTok"
+                    class="footer-social-img"
+                  />
+                </a>
+
+                <a
+                  href="mailto:info@dentaistudy.com"
+                  aria-label="Contact DentAIstudy by email"
+                >
+                  <img
+                    src="assets/img/footer-icons/email-icon.png"
+                    alt="Email"
+                    class="footer-social-img"
+                  />
+                </a>
+              </div>
+
+              <div class="footer-bottom">
+                © 2026 DentAIstudy. All rights reserved.
+              </div>
+            </div>
+
+            <div class="footer-column">
+              <h4>Product</h4>
+              <a href="subjects.html">Subjects</a>
+              <a href="exams.html">Exams</a>
+              <a href="study-notes.html">Notes</a>
+              <a href="study.html">Exam Coach</a>
+              <a href="study-library.html">Library</a>
+              <a href="blogs.html">Blogs</a>
+            </div>
+
+            <div class="footer-column">
+              <h4>Company</h4>
+              <a href="about.html">About</a>
+              <a href="contact.html">Contact</a>
+              <a href="pricing.html">Pricing</a>
+              <a href="faqs.html">FAQ</a>
+            </div>
+
+            <div class="footer-column">
+              <h4>Legal</h4>
+              <a href="privacy.html">Privacy Policy</a>
+              <a href="terms.html">Terms & Conditions</a>
+              <a href="cookies.html">Cookies Policy</a>
+              <a href="disclaimer.html">Disclaimer</a>
+              <a href="billing.html">Billing</a>
+              <a href="refund-policy.html">Refunds</a>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <!-- Cookie -->
+    <div class="cookie-banner">
+      <div class="container cookie-inner">
+        <div class="cookie-text">
+          <h3>Cookies &amp; privacy</h3>
+          <p>
+            We use essential cookies to keep DentAIstudy running and to improve
+            your study experience. By continuing, you agree to our
+            <a href="cookies.html">Cookies Policy</a>.
+          </p>
+        </div>
+
+        <div class="cookie-actions">
+          <a href="cookies.html" class="btn btn-outline">Learn more</a>
+          <button class="btn btn-primary cookie-accept">Accept</button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
