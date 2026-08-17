@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en" class="partner-auth-pending" data-partner-auth="partner">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Partner Dashboard · DentAIstudy Partners</title>
+    <meta
+      name="description"
+      content="DentAIstudy Partners private partner program."
+    />
+    <link rel="stylesheet" href="../assets/css/partner-base.css" />
+    <link rel="stylesheet" href="../assets/css/partner-dashboard.css" />
+
+    <link rel="stylesheet" href="../assets/css/partner-responsive.css" />
+  </head>
+  <body>
+    <div class="partner-shell">
+      <header class="partner-header">
+        <div class="container partner-header-inner">
+          <button
+            class="menu-toggle"
+            data-mobile-toggle
+            aria-label="Open menu"
+            aria-expanded="false"
+          >
+            <span></span><span></span><span></span>
+          </button>
+          <a
+            class="brand-lockup"
+            href="../"
+            aria-label="DentAIstudy Partners home"
+            ><span class="brand-text"
+              ><span>Dent</span><span>AIstudy</span></span
+            ><span class="brand-suffix">Partner</span></a
+          >
+          <div class="header-actions">
+            <details
+              class="das-account-menu partner-account-menu"
+              data-account-menu
+            >
+              <summary class="das-account-trigger">
+                <span class="das-account-dot"></span><span>Account</span>
+              </summary>
+              <div class="das-account-dropdown">
+                <a data-nav href="../dashboard/">Dashboard</a>
+                <a data-nav href="../settings/">Settings</a>
+                <button type="button" data-logout data-redirect="../login/">
+                  Log out
+                </button>
+              </div>
+            </details>
+          </div>
+        </div>
+      </header>
+      <div class="slide-nav-backdrop" data-mobile-backdrop></div>
+      <nav
+        class="slide-nav"
+        data-mobile-panel
+        aria-label="Mobile partner navigation"
+      >
+        <div class="slide-nav-links">
+          <a data-nav href="../program/"
+            ><span data-icon="program"></span><span>Program</span></a
+          >
+          <div class="slide-nav-divider"></div>
+          <a data-nav href="../dashboard/"
+            ><span data-icon="dashboard"></span><span>Dashboard</span></a
+          >
+          <a data-nav href="../settings/"
+            ><span data-icon="settings"></span><span>Settings</span></a
+          >
+          <button
+            class="slide-nav-button"
+            type="button"
+            data-logout
+            data-redirect="../login/"
+          >
+            <span data-icon="logout"></span><span>Log out</span>
+          </button>
+        </div>
+      </nav>
+      <main class="dashboard-main">
+        <div class="container">
+          <div class="dashboard-title-row">
+            <div>
+              <h1 class="section-title">Partner Dashboard</h1>
+              <p class="section-subtitle dashboard-subtitle">
+                Welcome back, <span data-creator-name>Partner</span>. Track your
+                verified customers, qualification progress, commission, payouts,
+                and recent activity in one place.
+              </p>
+            </div>
+          </div>
+
+          <div class="grid grid-3 dashboard-top-grid">
+            <div class="card card-inner">
+              <h2 class="card-title">Partner code</h2>
+              <div class="code-box dashboard-code-box">
+                <div class="kbd-code">
+                  <span data-code>—</span>
+                  <button
+                    class="code-copy-button"
+                    type="button"
+                    data-copy-code
+                    data-copy=""
+                    aria-label="Copy partner code"
+                  >
+                    <span data-icon="copy"></span>
+                  </button>
+                </div>
+              </div>
+              <p class="card-text">
+                Share this code so eligible subscriptions can be attributed to
+                your Partner account.
+              </p>
+            </div>
+
+            <div class="card card-inner">
+              <h2 class="card-title">Qualification progress</h2>
+              <div class="dashboard-progress-block">
+                <div class="stat-value">
+                  <span data-confirmed>0</span> /
+                  <span data-minimum>10</span> confirmed paid customers
+                </div>
+                <div class="progress-track">
+                  <div class="progress-fill" data-progress-fill></div>
+                </div>
+                <p class="card-text" data-progress-note>
+                  10 more to qualify for payouts
+                </p>
+              </div>
+            </div>
+
+            <div class="card card-inner payout-window-card">
+              <span class="icon-circle"
+                ><span data-icon="calendar"></span
+              ></span>
+              <div>
+                <h2 class="card-title">Next payout window</h2>
+                <div class="stat-value payout-date" data-next-payout>
+                  Not unlocked
+                </div>
+                <p class="card-text" data-payout-method>Not added</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid dashboard-mid-grid">
+            <div class="card card-inner">
+              <div class="card-head">
+                <h2 class="card-title">Commission status</h2>
+                <span data-status-pill class="pill gray">—</span>
+              </div>
+              <div class="commission-row">
+                <div class="commission-cell">
+                  <span class="commission-icon amber">
+                    <span data-icon="clock"></span>
+                  </span>
+                  <span class="commission-label">Pending</span>
+                  <strong data-pending-commission>$0.00</strong>
+                  <span class="commission-note" data-pending-note
+                    >0 customers awaiting review</span
+                  >
+                </div>
+                <div class="commission-cell">
+                  <span class="commission-icon">
+                    <span data-icon="check"></span>
+                  </span>
+                  <span class="commission-label">Approved</span>
+                  <strong data-approved-commission>$0.00</strong>
+                  <span class="commission-note">Ready for payout</span>
+                </div>
+                <div class="commission-cell">
+                  <span class="commission-icon green">
+                    <span data-icon="dollar"></span>
+                  </span>
+                  <span class="commission-label">Paid</span>
+                  <strong class="paid-value" data-paid-commission>
+                    $0.00
+                  </strong>
+                  <span class="commission-note">Total paid</span>
+                </div>
+              </div>
+              <p class="card-text">
+                Pending commission moves to approved after payment verification
+                and the applicable refund protection period.
+              </p>
+            </div>
+          </div>
+
+          <div class="grid grid-2 dashboard-bottom-grid">
+            <div class="card card-inner">
+              <h2 class="card-title">Recent activity</h2>
+              <div data-activity-list class="dashboard-activity-list"></div>
+              <a class="activity-more-link" href="../activity/"
+                >View full activity <span data-icon="arrow"></span
+              ></a>
+            </div>
+
+            <div class="card card-inner dashboard-support-card">
+              <h2 class="card-title">Program rules & support</h2>
+              <div class="support-list">
+                <a href="../program/#overview"
+                  >Program overview <span data-icon="arrow"></span
+                ></a>
+                <a href="../program/#commission"
+                  >Commission & payouts <span data-icon="arrow"></span
+                ></a>
+                <a href="../program/#faq"
+                  >FAQs <span data-icon="arrow"></span
+                ></a>
+              </div>
+              <div class="support-contact">
+                <p class="small-muted">Contact support</p>
+                <a href="mailto:partners@dentaistudy.com" data-support-email
+                  >partners@dentaistudy.com</a
+                >
+                <p class="card-text">
+                  If a customer, commission, or payout looks incorrect, contact us
+                  and we will review the record.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.111.0"
+      defer
+    ></script>
+    <script src="../assets/js/partner-supabase.js" defer></script>
+    <script src="../assets/js/partner-icons.js" defer></script>
+    <script src="../assets/js/partner-common.js" defer></script>
+    <script src="../assets/js/dashboard.js" defer></script>
+  </body>
+</html>
