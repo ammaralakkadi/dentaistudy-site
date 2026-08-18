@@ -24,14 +24,11 @@ const MAX_OUTPUT_TOKENS_DEEP = 12000;
 const GEMINI_EXAM_COACH_MODEL = "gemini-2.5-flash-lite";
 const GEMINI_STUDY_MODEL = "gemini-2.5-flash";
 const NOTES_SINGLE_PASS_CHAR_LIMIT = 150_000;
-const NOTES_HARD_SAFETY_CAP = 220_000;
 const LARGE_NOTES_MAX_CONTEXT_CHARS = 150_000;
 const LARGE_NOTES_OUTPUT_TOKENS = 14_000;
 const LARGE_NOTES_PAGE_THRESHOLD = 150;
 const MAX_NOTES_PDF_PAGES = 900;
 const CHARS_PER_PAGE_ESTIMATE = 2000;
-const CHUNK_CHARS = 2500;
-const CHUNK_OVERLAP = 150;
 function getTodayUTC(): string {
 return new Date().toISOString().slice(0, 10);
 }
@@ -546,50 +543,12 @@ const tail = t.slice(lastIndex).trim();
 if (tail) out.push({ page: lastPage, text: tail });
 return out;
 }
-function splitIntoPages(
-text: string,
-): Array<{ page: number | null; text: string }> {
-return parsePageMarkers(String(text || "").slice(0, NOTES_HARD_SAFETY_CAP));
-}
-function chunkText(pageText: string): string[] {
-const s = (pageText || "").replace(/\s+/g, " ").trim();
-if (!s) return [];
-const chunks: string[] = [];
-let i = 0;
-while (i < s.length) {
-const end = Math.min(s.length, i + CHUNK_CHARS);
-const slice = s.slice(i, end).trim();
-if (slice) chunks.push(slice);
-if (end >= s.length) break;
-i = Math.max(0, end - CHUNK_OVERLAP);
-}
-return chunks;
-}
 type PdfDoc = {
 file_id: string;
 file_name?: string;
 text: string;
 pages?: number | null;
 };
-function makeBatchesByCharLimit(rows: any[], maxChars: number) {
-const batches: any[][] = [];
-let cur: any[] = [];
-let curLen = 0;
-for (const r of rows) {
-const txt = String(r.content || "").trim();
-if (!txt) continue;
-const addLen = txt.length + 40; // tiny buffer for headers/newlines
-if (cur.length && curLen + addLen > maxChars) {
-batches.push(cur);
-cur = [];
-curLen = 0;
-}
-cur.push(r);
-curLen += addLen;
-}
-if (cur.length) batches.push(cur);
-return batches;
-}
 function formatBatch(rows: any[]) {
 let out = "";
 for (const r of rows) {
@@ -966,26 +925,6 @@ content: String(page.text || "").trim(),
 file_name: fileName,
 };
 }
-function buildRowsFromPages(
-pages: Array<{ page: number | null; text: string }>,
-fileName: string,
-) {
-const rows: any[] = [];
-let chunkIndex = 0;
-for (const page of pages) {
-const parts = chunkText(page.text);
-for (const part of parts) {
-rows.push({
-chunk_index: chunkIndex++,
-page_start: page.page,
-page_end: page.page,
-content: part,
-file_name: fileName,
-});
-}
-}
-return rows;
-}
 function buildLargePdfStudyRows(rawText: string, fileName: string) {
 const pages = parsePageMarkers(rawText);
 const selected = new Map<number, { page: number | null; text: string }>();
@@ -1291,21 +1230,20 @@ headers: { ...corsHeaders, "Content-Type": "application/json" },
 const isLargePdf =
 rawText.length > NOTES_SINGLE_PASS_CHAR_LIMIT ||
 estimatedPages > LARGE_NOTES_PAGE_THRESHOLD;
-const rows = isLargePdf
-? buildLargePdfStudyRows(rawText, fileName)
-: buildRowsFromPages(splitIntoPages(rawText), fileName);
+
+if (isLargePdf) {
+const rows = buildLargePdfStudyRows(rawText, fileName);
 if (!rows.length) {
 return new Response(JSON.stringify({ error: "NO_PDF_TEXT_FOUND" }), {
 status: 400,
 headers: { ...corsHeaders, "Content-Type": "application/json" },
 });
 }
-if (isLargePdf) {
+
 let studyMap = await generateGeminiTextWithFallback({
 model: GEMINI_STUDY_MODEL,
 fallbackModel: GEMINI_EXAM_COACH_MODEL,
-enableThinking: true,
-thinkingBudget: 3000,
+thinkingBudget: 0,
 ensureCompleteMarkdown: true,
 temperature: 0.3,
 maxOutputTokens: LARGE_NOTES_OUTPUT_TOKENS,
@@ -1348,72 +1286,40 @@ content:
 },
 ],
 });
+
 studyMap = cleanNotesMarkdown(studyMap);
 return new Response(JSON.stringify({ output: studyMap }), {
 status: 200,
 headers: { ...corsHeaders, "Content-Type": "application/json" },
 });
 }
-const batches = makeBatchesByCharLimit(rows, 12000);
-const partials: string[] = [];
-for (let i = 0; i < batches.length; i++) {
-const batchText = formatBatch(batches[i]);
-const sectionText = await generateGeminiTextWithFallback({
+
+let notes = await generateGeminiTextWithFallback({
 model: GEMINI_STUDY_MODEL,
 fallbackModel: GEMINI_EXAM_COACH_MODEL,
-enableThinking: true,
-thinkingBudget: 1200,
+thinkingBudget: 0,
 ensureCompleteMarkdown: true,
 temperature: 0.25,
-maxOutputTokens: MAX_OUTPUT_TOKENS_QA,
-messages: [
-{
-role: "system",
-content:
-"You are the DentAIstudy Notes engine — a senior dental educator, licensing exam coach, and medical education content editor. Create exam-ready notes from the provided PDF text. Use direct headings, high-yield bullets, mechanisms, clinical relevance, and exam traps where supported. Use clean markdown only: ## and ### headings, `1. Heading` not `1 Heading`, `- **Label:** text` for bullets, and valid tables when useful. Never use ####, #####, or deeper heading levels. Use **bold** for labels and *italic* only for true emphasis. Never leave raw asterisks visible in the final notes. Tables must be self-contained and complete: never stop after a table header or return a partial Markdown table. Never use footnote symbols such as *, #, \\*, or \\# in table cells. If the source table uses footnotes, rewrite them as a Notes column or as short bullets immediately under the table. If adult and children regimens are present, use separate tables or clear headings; never put Adults or Children as a blank body row inside a table. Ignore publisher details, ISBN, copyright, preface, acknowledgements, and generic book disclaimers unless clinically relevant. No greeting. No filler. Do not invent missing content.",
-},
-{
-role: "user",
-content:
-`Source: ${fileName}\n` +
-`Goal: Produce exam-ready notes for this section.\n` +
-`Section ${i + 1}/${batches.length}:\n\n` +
-batchText,
-},
-],
-});
-if (sectionText) partials.push(cleanNotesMarkdown(sectionText));
-}
-let merged = await generateGeminiTextWithFallback({
-model: GEMINI_STUDY_MODEL,
-fallbackModel: GEMINI_EXAM_COACH_MODEL,
-enableThinking: true,
-thinkingBudget: 1800,
-ensureCompleteMarkdown: true,
-temperature: 0.35,
 maxOutputTokens: MAX_OUTPUT_TOKENS_DEEP,
 messages: [
 {
 role: "system",
 content:
-"You are the DentAIstudy Notes engine — a senior dental educator, licensing exam coach, and medical education content editor. Create one polished exam-ready note sheet from the section notes. Start directly with the topic, then structure the answer with concise headings, core concepts, definitions, red flags, tables when useful, clinical reasoning, exam traps, and likely viva or MCQ angles. Use clean markdown only: correct heading punctuation, numbered headings with dots, bold labels, scannable bullets, and no raw asterisks. Use only ## and ### headings inside the note body. Never use ####, #####, or deeper heading levels. Tables must be self-contained and complete: never stop after a table header or return a partial Markdown table. Never use footnote symbols such as *, #, \\*, or \\# in table cells. If a table has adult and children regimens, make the age group clear using separate tables or clear headings, not blank table rows. Remove repeated points and publisher/admin material. No greeting. No filler.",
+"You are the DentAIstudy Notes engine — a senior dental educator, licensing exam coach, and medical education content editor. Create one complete exam-ready note sheet from the uploaded dental PDF. Preserve the important material across the full source. Use direct headings, high-yield bullets, mechanisms, clinical relevance, and exam traps where supported. Use clean markdown only: ## and ### headings, `1. Heading` not `1 Heading`, `- **Label:** text` for bullets, and valid tables when useful. Never use ####, #####, or deeper heading levels. Use **bold** for labels and *italic* only for true emphasis. Never leave raw asterisks visible in the final notes. Tables must be self-contained and complete. Never use footnote symbols such as *, #, \\*, or \\# in table cells. Ignore publisher details, ISBN, copyright, preface, acknowledgements, and generic book disclaimers unless clinically relevant. Remove repetition, but do not omit important source content. No greeting. No filler. Do not invent missing content.",
 },
 {
 role: "user",
 content:
 `Source: ${fileName}\n` +
-`Deliverable: Complete exam-ready notes from the uploaded PDF.\n\n` +
-partials
-.map(
-(part, index) =>
-`--- Section Notes ${index + 1} ---\n${part}`,
-)
-.join("\n\n"),
+`Detected size: about ${estimatedPages} pages.\n` +
+"Deliverable: Complete exam-ready notes from the full uploaded PDF.\n\n" +
+rawText,
 },
 ],
 });
-merged = cleanNotesMarkdown(merged);
-return new Response(JSON.stringify({ output: merged }), {
+
+notes = cleanNotesMarkdown(notes);
+return new Response(JSON.stringify({ output: notes }), {
 status: 200,
 headers: { ...corsHeaders, "Content-Type": "application/json" },
 });
