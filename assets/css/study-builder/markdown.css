@@ -2,6 +2,8 @@
    Uses your old Markdown renderer output (tables/bold) inside new chat bubbles.
 */
 .msg .msg-text {
+  min-width: 0;
+  max-width: 100%;
   line-height: 1.55;
 }
 .msg .msg-text p {
@@ -26,22 +28,32 @@
 }
 
 .msg .study-ai-table-wrap {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
   margin: 10px 0;
-  overflow: auto;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
   border: 1px solid rgba(15, 23, 42, 0.12);
   border-radius: 12px;
 }
 .msg .study-ai-table {
   width: 100%;
-  border-collapse: collapse;
   min-width: 560px;
+  border-collapse: collapse;
+  table-layout: auto;
 }
 .msg .study-ai-table th,
 .msg .study-ai-table td {
-  text-align: left;
+  min-width: 0;
   padding: 10px 12px;
   border-bottom: 1px solid rgba(15, 23, 42, 0.1);
+  text-align: left;
   vertical-align: top;
+  overflow-wrap: normal;
+  word-break: normal;
   font-size: 13px;
 }
 .msg .study-ai-table th {
@@ -50,6 +62,20 @@
 }
 .msg .study-ai-table tr:last-child td {
   border-bottom: none;
+}
+
+@media (max-width: 640px) {
+  .msg .study-ai-table {
+    width: 100%;
+    min-width: 560px;
+  }
+
+  .msg .study-ai-table th,
+  .msg .study-ai-table td {
+    padding: 9px 10px;
+    font-size: 12.5px;
+    line-height: 1.45;
+  }
 }
 
 /* ===== MCQ formatting ===== */

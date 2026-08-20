@@ -109,6 +109,7 @@
   }
 
   function inlineFormat(html) {
+    html = html.replace(/&lt;br\s*\/?&gt;/gi, "<br>");
     html = html.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
     html = html.replace(/\*([^*]+)\*/g, "<em>$1</em>");
     html = html.replace(/`([^`]+)`/g, "<code>$1</code>");

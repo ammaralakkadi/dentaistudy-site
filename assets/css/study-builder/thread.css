@@ -352,71 +352,18 @@
   min-width: 0;
 }
 .msg.ai .bubble {
+  min-width: 0;
+  max-width: 100%;
   background: transparent;
   color: var(--text);
   border-color: transparent;
   box-shadow: none;
-  overflow-x: auto;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(15, 23, 42, 0.32) transparent;
-}
-
-.msg.ai .bubble::-webkit-scrollbar {
-  height: 7px;
-}
-
-.msg.ai .bubble::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.msg.ai .bubble::-webkit-scrollbar-thumb {
-  border-radius: 999px;
-  background: rgba(15, 23, 42, 0.28);
-}
-
-.msg.ai .bubble::-webkit-scrollbar-button {
-  width: 0;
-  height: 0;
-  display: none;
-}
-
-.msg.ai .bubble table {
-  width: max-content;
-  min-width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  table-layout: auto;
-}
-
-.msg.ai .bubble th,
-.msg.ai .bubble td {
-  min-width: 180px;
-  white-space: normal;
-  word-break: normal;
-  overflow-wrap: normal;
-  vertical-align: top;
-}
-
-.msg.ai .bubble th:first-child,
-.msg.ai .bubble td:first-child {
-  min-width: 120px;
+  overflow-x: visible;
 }
 
 @media (max-width: 640px) {
   .msg.user .bubble {
     max-width: 92%;
-  }
-
-  .msg.ai .bubble {
-    scrollbar-color: transparent transparent;
-  }
-
-  .msg.ai .bubble::-webkit-scrollbar {
-    height: 4px;
-  }
-
-  .msg.ai .bubble::-webkit-scrollbar-thumb {
-    background: transparent;
   }
 }
 
